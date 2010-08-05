@@ -76,18 +76,8 @@ namespace xl
 		Array<T> m_aData;
 	};
 
-	typedef char CharA;
-	typedef wchar_t CharW;
-
-#ifdef _UNICODE
-	typedef CharW Char;
-#else
-	typedef CharA Char;
-#endif
-
-	typedef StringT<CharA> StringA;
-	typedef StringT<CharW> StringW;
-	typedef StringT<Char> String;
+	typedef StringT<char> StringA;
+	typedef StringT<wchar_t> String;
 
 	template <typename T>
 	inline StringT<T>::StringT()
