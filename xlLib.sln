@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Main", "UnitTest\Main\Main.vcxproj", "{EC10C8B7-1338-49F4-81DF-7C6B551E4519}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xlLib", "xlLib", "{41DE1E2B-20E7-4CA9-95BF-FED590434EBA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", "{FD3A4148-0987-4149-B459-5727872E3AA9}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Containers\xlArray.h = SourceCode\xl\Containers\xlArray.h
+		SourceCode\xl\Containers\xlList.h = SourceCode\xl\Containers\xlList.h
+		SourceCode\xl\Containers\xlMap.h = SourceCode\xl\Containers\xlMap.h
+		SourceCode\xl\Containers\xlPair.h = SourceCode\xl\Containers\xlPair.h
+		SourceCode\xl\Containers\xlRBTree.h = SourceCode\xl\Containers\xlRBTree.h
+		SourceCode\xl\Containers\xlSet.h = SourceCode\xl\Containers\xlSet.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Objects\xlString.h = SourceCode\xl\Objects\xlString.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnicTest", "UnicTest", "{32139451-1EE1-4BA6-9E40-C3E84993E9A6}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs11
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = UnitTest\\Main\\Main.vcxproj
+		SccProjectTopLevelParentUniqueName1 = xlLib.sln
+		SccProjectName1 = UnitTest/Main
+		SccLocalPath1 = UnitTest\\Main
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC10C8B7-1338-49F4-81DF-7C6B551E4519}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EC10C8B7-1338-49F4-81DF-7C6B551E4519}.Debug|Win32.Build.0 = Debug|Win32
+		{EC10C8B7-1338-49F4-81DF-7C6B551E4519}.Release|Win32.ActiveCfg = Release|Win32
+		{EC10C8B7-1338-49F4-81DF-7C6B551E4519}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FD3A4148-0987-4149-B459-5727872E3AA9} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{EC10C8B7-1338-49F4-81DF-7C6B551E4519} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
+	EndGlobalSection
+EndGlobal
