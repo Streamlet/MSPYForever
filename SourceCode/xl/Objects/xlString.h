@@ -4,7 +4,7 @@
 //
 //    File Name:   xlString.h
 //    Author:      Streamlet
-//    Create Time: 2010-08-05
+//    Create Time: 2009-03-27
 //    Description: 
 //
 //    Version history:
