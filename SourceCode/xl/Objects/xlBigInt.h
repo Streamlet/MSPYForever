@@ -124,7 +124,7 @@ namespace xl
             m_aValue.PushBack((T)val);
             val >>= sizeof(T) * 8;
         }
-   }
+    }
 
     template <typename T>
     BigIntT<T>::BigIntT(unsigned char uchar_value)
