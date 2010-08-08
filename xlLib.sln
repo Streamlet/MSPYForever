@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7}"
 	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Objects\xlBigInt.h = SourceCode\xl\Objects\xlBigInt.h
 		SourceCode\xl\Objects\xlString.h = SourceCode\xl\Objects\xlString.h
 	EndProjectSection
 EndProject
@@ -47,8 +48,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{EC10C8B7-1338-49F4-81DF-7C6B551E4519} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{FD3A4148-0987-4149-B459-5727872E3AA9} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{EC10C8B7-1338-49F4-81DF-7C6B551E4519} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 	EndGlobalSection
 EndGlobal
