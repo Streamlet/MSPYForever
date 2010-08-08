@@ -26,7 +26,6 @@ namespace xl
     {
     public:
         BigIntT();
-        BigIntT(const BigIntT &that);
         BigIntT(char char_value);
         BigIntT(unsigned char uchar_value);
         BigIntT(short short_value);
@@ -38,6 +37,7 @@ namespace xl
         BigIntT(long long int64_value);
         BigIntT(unsigned long long uint64_value);
         BigIntT(unsigned char *buffer, size_t size);
+        BigIntT(const BigIntT &that);
         BigIntT &operator = (const BigIntT &that);
         ~BigIntT();
 
@@ -105,14 +105,6 @@ namespace xl
         : m_bPositive(true)
     {
 
-    }
-    
-    template <typename T>
-    BigIntT<T>::BigIntT(const BigIntT &that)
-        : m_bPositive(true)
-    {
-        this->m_bPositive = that.m_bPositive;
-        this->m_aValue = that.m_aValue;
     }
 
     template <typename T>
@@ -213,6 +205,7 @@ namespace xl
 
     template <typename T>
     BigIntT<T>::BigIntT(long long_value)
+        : m_bPositive(true)
     {
         unsigned long long val = (unsigned long long)long_value;
 
@@ -297,6 +290,14 @@ namespace xl
 
             m_aValue.PushBack(val);
         }
+    }
+
+    template <typename T>
+    BigIntT<T>::BigIntT(const BigIntT &that)
+        : m_bPositive(true)
+    {
+        this->m_bPositive = that.m_bPositive;
+        this->m_aValue = that.m_aValue;
     }
 
     template <typename T>
