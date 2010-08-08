@@ -271,7 +271,7 @@ namespace xl
     BigIntT<T>::BigIntT(unsigned char *buffer, size_t size)
         : m_bPositive(true)
     {
-        for (size_t i = 0; i < size / sizeof(T); buffer += sizeof(T))
+        for (size_t i = 0; i < size / sizeof(T); ++i, buffer += sizeof(T))
         {
             m_aValue.PushBack(*(T *)buffer);
         }
@@ -509,7 +509,7 @@ namespace xl
         {
             T overflow = 0;
 
-            if (res.Size() <= i)
+            while (res.Size() <= i)
             {
                 res.PushBack((T)0);
             }
@@ -632,7 +632,7 @@ namespace xl
 
                 for (size_t k = 0; k < 2 && temp > 0; ++k, temp >>= sizeof(T) * 8)
                 {
-                    if (res.Size() <= i + j + k)
+                    while (res.Size() <= i + j + k)
                     {
                         res.PushBack((T)0);
                     }
@@ -641,7 +641,7 @@ namespace xl
 
                     if (res[i + j + k] < (T)temp)
                     {
-                        if (res.Size() <= i + j + k + 1)
+                        while (res.Size() <= i + j + k + 1)
                         {
                             res.PushBack((T)0);
                         }
