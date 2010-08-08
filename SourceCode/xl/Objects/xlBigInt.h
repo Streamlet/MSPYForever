@@ -739,7 +739,7 @@ namespace xl
             return 0u;
         }
 
-        if (exponent.m_aValue.empty())
+        if (exponent.m_aValue.Empty())
         {
             return 1u;
         }
@@ -826,7 +826,8 @@ namespace xl
     BigIntT<T> BigIntT<T>::operator ++(int)
     {
         BigIntT<T> ret(*this);
-        return Inc();
+        Inc();
+        return ret;
     }
 
     template <typename T>
@@ -839,7 +840,8 @@ namespace xl
     BigIntT<T> BigIntT<T>::operator --(int)
     {
         BigIntT<T> ret(*this);
-        return Dec();
+        Dec();
+        return ret;
     }
 
     template <typename T>
@@ -913,31 +915,111 @@ namespace xl
     template <typename T>
     char BigIntT<T>::ToChar() const
     {
-        return (char)*m_aValue.ReverseBegin();
+        long long ret = 0, temp = 0;
+        size_t i = 0;
+
+        while (i * sizeof(T) < sizeof(char) && m_aValue.Size() > i)
+        {
+            temp = m_aValue[i];
+            temp <<= i * sizeof(T) * 8;
+            ret |= temp;
+            ++i;
+        }
+
+        if (!m_bPositive)
+        {
+            ret = - ret;
+        }
+
+        return (char)ret;
     }
 
     template <typename T>
     short BigIntT<T>::ToShort() const
     {
+        long long ret = 0, temp = 0;
+        size_t i = 0;
 
+        while (i * sizeof(T) < sizeof(short) && m_aValue.Size() > i)
+        {
+            temp = m_aValue[i];
+            temp <<= i * sizeof(T) * 8;
+            ret |= temp;
+            ++i;
+        }
+
+        if (!m_bPositive)
+        {
+            ret = - ret;
+        }
+
+        return (short)ret;
     }
 
     template <typename T>
     int BigIntT<T>::ToInt() const
     {
+        long long ret = 0, temp = 0;
+        size_t i = 0;
 
+        while (i * sizeof(T) < sizeof(int) && m_aValue.Size() > i)
+        {
+            temp = m_aValue[i];
+            temp <<= i * sizeof(T) * 8;
+            ret |= temp;
+            ++i;
+        }
+
+        if (!m_bPositive)
+        {
+            ret = - ret;
+        }
+
+        return (int)ret;
     }
 
     template <typename T>
     long BigIntT<T>::ToLong() const
     {
+        long long ret = 0, temp = 0;
+        size_t i = 0;
 
+        while (i * sizeof(T) < sizeof(long) && m_aValue.Size() > i)
+        {
+            temp = m_aValue[i];
+            temp <<= i * sizeof(T) * 8;
+            ret |= temp;
+            ++i;
+        }
+
+        if (!m_bPositive)
+        {
+            ret = - ret;
+        }
+
+        return (long)ret;
     }
 
     template <typename T>
     long long BigIntT<T>::ToLongLong() const
     {
+        long long ret = 0, temp = 0;
+        size_t i = 0;
 
+        while (i * sizeof(T) < sizeof(long long) && m_aValue.Size() > i)
+        {
+            temp = m_aValue[i];
+            temp <<= i * sizeof(T) * 8;
+            ret |= temp;
+            ++i;
+        }
+
+        if (!m_bPositive)
+        {
+            ret = - ret;
+        }
+
+        return (long long)ret;
     }
 
     template <typename T>

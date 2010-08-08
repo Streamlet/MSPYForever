@@ -82,6 +82,115 @@ TEST_CASE(ctor_buffer)
     TEST_ASSERT(BigInt(buffer, 16) == a + BigInt(buffer + 8, 8) * b);
 }
 
+TEST_CASE(operator_set)
+{
+    BigInt a(-1), b(0x1ffffffff), c;
+    c = a;
+    TEST_ASSERT(c == a);
+
+    c = b;
+    TEST_ASSERT(c == b);
+}
+
+TEST_CASE(method_IsPositive)
+{
+    BigInt a;
+    TEST_ASSERT(a.IsPositive() == true);
+
+    BigInt b(1);
+    TEST_ASSERT(b.IsPositive() == true);
+
+    BigInt c(-1);
+    TEST_ASSERT(c.IsPositive() == false);
+}
+
+TEST_CASE(method_GetData)
+{
+    BigInt a(0xfffffffffffffffe);
+    Array<unsigned int> b;
+    b.PushBack(0xfffffffe);
+    b.PushBack(0xffffffff);
+
+    TEST_ASSERT(a.GetData() == b);
+}
+
+TEST_CASE(operator_lt_gt)
+{
+    BigInt a, b;
+
+    TEST_ASSERT(a == b);
+    TEST_ASSERT(!(a != b));
+    TEST_ASSERT(!(a < b));
+    TEST_ASSERT(a <= b);
+    TEST_ASSERT(!(a > b));
+    TEST_ASSERT(a >= b);
+
+    a = -1;
+    TEST_ASSERT(!(a == b));
+    TEST_ASSERT(a != b);
+    TEST_ASSERT(a < b);
+    TEST_ASSERT(a <= b);
+    TEST_ASSERT(!(a > b));
+    TEST_ASSERT(!(a >= b));
+
+    a = 1;
+    TEST_ASSERT(!(a == b));
+    TEST_ASSERT(a != b);
+    TEST_ASSERT(!(a < b));
+    TEST_ASSERT(!(a <= b));
+    TEST_ASSERT(a > b);
+    TEST_ASSERT(a >= b);
+}
+
+TEST_CASE(operator_math)
+{
+    BigInt a(13), b(29);
+
+    TEST_ASSERT(a++ == 13);
+    TEST_ASSERT(a == 14);
+    TEST_ASSERT(a-- == 14);
+    TEST_ASSERT(a == 13);
+    TEST_ASSERT(++a == 14);
+    TEST_ASSERT(a == 14);
+    TEST_ASSERT(--a == 13);
+    TEST_ASSERT(a == 13);
+
+    TEST_ASSERT(a + b == 42);
+    TEST_ASSERT(a - b == -16);
+    TEST_ASSERT(b - a == 16);
+    TEST_ASSERT(a * b == 377);
+    TEST_ASSERT(a / b == 0);
+    TEST_ASSERT(b / a == 2);
+    TEST_ASSERT(a % b == 13);
+    TEST_ASSERT(b % a == 3);
+
+    TEST_ASSERT((a += 4) == 17);
+    TEST_ASSERT(a == 17);
+    TEST_ASSERT((a -= 4) == 13);
+    TEST_ASSERT(a == 13);
+    TEST_ASSERT((a *= 3) == 39);
+    TEST_ASSERT(a == 39);
+    TEST_ASSERT((a /= 3) == 13);
+    TEST_ASSERT(a == 13);
+    TEST_ASSERT((a %= 5) == 3);
+    TEST_ASSERT(a == 3);
+
+    TEST_ASSERT(a.Exp(3) == 27);
+    TEST_ASSERT(a.ExpMod(5, 17) == 5);
+}
+
+TEST_CASE(to_number)
+{
+    BigInt a(0x1234567890abcdef);
+    a *= 0x10;
+
+    TEST_ASSERT(a.ToChar() == (char)0xf0);
+    TEST_ASSERT(a.ToShort() == (short)0xdef0);
+    TEST_ASSERT(a.ToInt() == 0x0abcdef0);
+    TEST_ASSERT(a.ToLong() == 0x0abcdef0);
+    TEST_ASSERT(a.ToLongLong() == 0x234567890abcdef0);
+}
+
 int main()
 {
     return 0;
