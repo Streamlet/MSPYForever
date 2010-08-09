@@ -54,7 +54,7 @@ TEST_CASE(ctor_copy)
     }
 }
 
-TEST_CASE(ctor_op_set)
+TEST_CASE(operator_set)
 {
     Array<int> a(10, 100), b;
 
@@ -68,7 +68,7 @@ TEST_CASE(ctor_op_set)
     }
 }
 
-TEST_CASE(ctor_op_equal)
+TEST_CASE(operator_equal)
 {
     Array<int> a(10, 100), b;
 
@@ -88,9 +88,149 @@ TEST_CASE(ctor_op_equal)
     TEST_ASSERT(b == a);
 }
 
-// TODO...
+TEST_CASE(method_size)
+{
+    Array<int> a;
+    TEST_ASSERT(a.Empty() == true);
+
+    a.PushBack(0);
+    TEST_ASSERT(a.Empty() == false);
+
+    a.PopBack();
+    TEST_ASSERT(a.Empty() == true);
+
+    a.PushFront(1);
+    a.PushFront(0);
+    TEST_ASSERT(a.Size() == 2);
+
+    a.Resize(5);
+    TEST_ASSERT(a.Size() == 5);
+    TEST_ASSERT(a[0] == 0);
+    TEST_ASSERT(a[1] == 1);
+}
+
+TEST_CASE(method_insert_delete)
+{
+    Array<int> a;
+    TEST_ASSERT(a.Empty() == true);
+
+    int data[4] = { 1, 3, 2, 4 };
+    a.Insert(0, data, 4);
+    TEST_ASSERT(a.Size() == 4);
+    TEST_ASSERT(a[0] == 1);
+    TEST_ASSERT(a[1] == 3);
+    TEST_ASSERT(a[2] == 2);
+    TEST_ASSERT(a[3] == 4);
+
+    a.Insert(2, 10);
+    TEST_ASSERT(a.Size() == 5);
+    TEST_ASSERT(a[0] == 1);
+    TEST_ASSERT(a[1] == 3);
+    TEST_ASSERT(a[2] == 10);
+    TEST_ASSERT(a[3] == 2);
+    TEST_ASSERT(a[4] == 4);
+
+    a.PushBack(15);
+    TEST_ASSERT(a.Size() == 6);
+    TEST_ASSERT(a[0] == 1);
+    TEST_ASSERT(a[1] == 3);
+    TEST_ASSERT(a[2] == 10);
+    TEST_ASSERT(a[3] == 2);
+    TEST_ASSERT(a[4] == 4);
+    TEST_ASSERT(a[5] == 15);
+
+    a.PushFront(20);
+    TEST_ASSERT(a.Size() == 7);
+    TEST_ASSERT(a[0] == 20);
+    TEST_ASSERT(a[1] == 1);
+    TEST_ASSERT(a[2] == 3);
+    TEST_ASSERT(a[3] == 10);
+    TEST_ASSERT(a[4] == 2);
+    TEST_ASSERT(a[5] == 4);
+    TEST_ASSERT(a[6] == 15);
+
+    a.Delete(2, 3);
+    TEST_ASSERT(a.Size() == 4);
+    TEST_ASSERT(a[0] == 20);
+    TEST_ASSERT(a[1] == 1);
+    TEST_ASSERT(a[2] == 4);
+    TEST_ASSERT(a[3] == 15);
+
+    a.Delete(1);
+    TEST_ASSERT(a.Size() == 3);
+    TEST_ASSERT(a[0] == 20);
+    TEST_ASSERT(a[1] == 4);
+    TEST_ASSERT(a[2] == 15);
+
+    a.PopFront();
+    TEST_ASSERT(a.Size() == 2);
+    TEST_ASSERT(a[0] == 4);
+    TEST_ASSERT(a[1] == 15);
+
+    a.PopBack();
+    TEST_ASSERT(a.Size() == 1);
+    TEST_ASSERT(a[0] == 4);
+    
+    a.Resize(100);
+    a[99] = 1001;
+    TEST_ASSERT(a.Size() == 100);
+    TEST_ASSERT(a[0] == 4);
+    TEST_ASSERT(a[99] == 1001);
+
+    a.Clear();
+    TEST_ASSERT(a.Size() == 0);
+}
+
+// Performance Test
+
+#include <stdio.h>
+#include <time.h>
+
+#define SECTION_BEGIN(name) \
+    printf("Testing \"" #name "\"...\n")
+#define SECTION_END()   \
+    printf("\n")
+#define PERFORMANCE_TEST_BEGIN(name)    \
+    printf("Test begins.\n");   \
+    clock_t begin_##name = clock()
+#define PERFORMANCE_TEST_END(name)  \
+    clock_t end_##name = clock();   \
+    printf("Test ends. Time elasped: %.3lfs.\n", (double)(end_##name - begin_##name) / CLK_TCK)
+
+#include <vector>
+using namespace std;
 
 int main()
 {
+    SECTION_BEGIN(StdVectorPushBack10000000);
+    vector<int> v1;
+    PERFORMANCE_TEST_BEGIN(StdVectorPushBack10000000);
+    for (int i = 0; i < 10000000; ++i)
+    {
+        v1.push_back(i);
+    }
+    PERFORMANCE_TEST_END(StdVectorPushBack10000000);
+    SECTION_END();
+
+    SECTION_BEGIN(xlArrayPushBack10000000);
+    Array<int> a1;
+    PERFORMANCE_TEST_BEGIN(xlArrayPushBack10000000);
+    for (int i = 0; i < 10000000; ++i)
+    {
+        a1.PushBack(i);
+    }
+    PERFORMANCE_TEST_END(xlArrayPushBack10000000);
+    SECTION_END();
+
+    SECTION_BEGIN(xlArrayPushFront10000000);
+    Array<int> a2;
+    PERFORMANCE_TEST_BEGIN(xlArrayPushFront10000000);
+    for (int i = 0; i < 10000000; ++i)
+    {
+        a2.PushFront(i);
+    }
+    PERFORMANCE_TEST_END(xlArrayPushFront10000000);
+    SECTION_END();
+
     return 0;
 }

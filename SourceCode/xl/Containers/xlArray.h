@@ -46,11 +46,11 @@ namespace xl
 		void Insert(size_t nIndex, const T &tValue);
 		void PushFront(const T &tValue);
 		void PushBack(const T &tValue);
-		void Delete(size_t nIndex, int nCount);
-		void Delete(size_t nIndex);
-		void PopFront();
-		void PopBack();
-		void Clear();
+        void Delete(size_t nIndex, int nCount);
+        void Delete(size_t nIndex);
+        void PopFront();
+        void PopBack();
+        void Clear();
 
 	protected:
 		T *m_pData;
@@ -293,7 +293,7 @@ namespace xl
 			T *pNewData = new T[nWellSize];
 			size_t nNewStart = (nWellSize - nSize) / 2;
 
-			CopyData(pNewData + nNewStart, m_nEof - m_nStart, m_pData + m_nStart);
+			CopyData(m_pData + m_nStart, m_nEof - m_nStart, pNewData + nNewStart);
 
 			Release();
 
