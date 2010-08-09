@@ -17,6 +17,7 @@
 #define __XLBigIntT_H_4ED560E8_F226_4D72_9016_828D1AA8696E_INCLUDED__
 
 #include <xl/Containers/xlArray.h>
+#include <xl/Containers/xlMap.h>
 #include <xl/Objects/xlString.h>
 
 namespace xl
@@ -37,6 +38,8 @@ namespace xl
         BigIntT(long long int64_value);
         BigIntT(unsigned long long uint64_value);
         BigIntT(unsigned char *buffer, size_t size);
+        BigIntT(const wchar_t *string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF");
+        BigIntT(const String &string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF");
         BigIntT(const BigIntT &that);
         BigIntT &operator = (const BigIntT &that);
         ~BigIntT();
@@ -292,6 +295,18 @@ namespace xl
         }
     }
 
+    template <typename T>
+    BigIntT<T>::BigIntT(const wchar_t *string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF")
+    {
+        FromString(string_value, base, alphabet);
+    }
+    
+    template <typename T>
+    BigIntT<T>::BigIntT(const String &string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF")
+    {
+        FromString(string_value, base, alphabet);
+    }
+    
     template <typename T>
     BigIntT<T>::BigIntT(const BigIntT &that)
         : m_bPositive(true)
@@ -750,7 +765,7 @@ namespace xl
         {
             T n = exponent.m_aValue[i];
 
-            for (T mask = 1u << sizeof(T) * 8 - 1; mask > 0; mask >>= 1)
+            for (T mask = (1u << (sizeof(T) * 8 - 1)); mask > 0; mask >>= 1)
             {
                 power = power.Mul(power);
 
@@ -788,7 +803,7 @@ namespace xl
         {
             T n = exponent.m_aValue[i];
 
-            for (T mask = 1u << sizeof(T) * 8 - 1; mask > 0; mask >>= 1)
+            for (T mask = (1u << (sizeof(T) * 8 - 1)); mask > 0; mask >>= 1)
             {
                 power = power.Mul(power);
                 power.Div(divisor, power);
@@ -1042,30 +1057,25 @@ namespace xl
             ++begin;
         }
 
+        Map<wchar_t, unsigned char> alphabet_reverse;
+
+        for (unsigned char i = 0; i < alphabet.Length(); ++i)
+        {
+            alphabet_reverse.Insert(alphabet[i], i);
+        }
+
         for (size_t i = begin; string_value[i] != '\0'; ++i)
         {
             wchar_t ch = string_value[i];
-            unsigned char value = 0;
 
-            if (ch >= L'0' && ch <= L'9')
-            {
-                value = ch - '0';
-            }
-            else if (ch >= L'A' && ch <= L'F')
-            {
-                value = ch - L'A' + 10;
-            }
-            else if (ch >= L'a' && ch <= L'f')
-            {
-                value = ch - L'a' + 10;
-            }
+            Map<wchar_t, unsigned char>::Iterator it = alphabet_reverse.Find(ch);
 
-            if (value >= base)
+            if (it == alphabet_reverse.End())
             {
                 break;
             }
-
-            *this = (*this) * base + value;
+            
+            *this = (*this) * base + it->Value;
         }
 
         this->m_bPositive = positive;

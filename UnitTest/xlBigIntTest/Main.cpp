@@ -179,7 +179,7 @@ TEST_CASE(operator_math)
     TEST_ASSERT(a.ExpMod(5, 17) == 5);
 }
 
-TEST_CASE(to_number)
+TEST_CASE(method_to_number)
 {
     BigInt a(0x1234567890abcdef);
     a *= 0x10;
@@ -189,6 +189,24 @@ TEST_CASE(to_number)
     TEST_ASSERT(a.ToInt() == 0x0abcdef0);
     TEST_ASSERT(a.ToLong() == 0x0abcdef0);
     TEST_ASSERT(a.ToLongLong() == 0x234567890abcdef0);
+}
+
+TEST_CASE(method_string)
+{
+    TEST_ASSERT(BigInt(L"1234567890") == 1234567890);
+    TEST_ASSERT(BigInt(L"1234567890ABCDEF", 16) == 0x1234567890abcdef);
+    TEST_ASSERT(BigInt(L"1234567123", 8) == 01234567123);
+    TEST_ASSERT(BigInt(L"12345678", 9) == 6053444);
+
+    TEST_ASSERT(BigInt(L"wertyuiopq", 10, L"qwertyuiop") == 1234567890);
+    TEST_ASSERT(BigInt(L"sdfghjklzaxcvbnm", 16, L"asdfghjklzxcvbnm") == 0x1234567890abcdef);
+    TEST_ASSERT(BigInt(L"zxcvbnmzxc", 8, L"0zxcvbnm") == 01234567123);
+    TEST_ASSERT(BigInt(L"[];',./{", 9, L"}[];',./{") == 6053444);
+
+    TEST_ASSERT(BigInt(L"1234567890").ToString() == String(L"1234567890"));
+    TEST_ASSERT(BigInt(L"1234567890").ToString(16) == String(L"499602D2"));
+    TEST_ASSERT(BigInt(L"1234567890").ToString(8) == String(L"11145401322"));
+    TEST_ASSERT(BigInt(L"1234567890").ToString(2) == String(L"1001001100101100000001011010010"));
 }
 
 int main()
