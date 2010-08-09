@@ -1102,7 +1102,7 @@ namespace xl
 
         String ret;
 
-        const unsigned int EXP[] = { 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 4 };
+        const unsigned int EXP[] = { 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4 };
         unsigned int exp = 0;
 
         if (base <= 16 && ((exp = EXP[base]) != 0))
