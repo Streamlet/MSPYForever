@@ -199,7 +199,7 @@ namespace xl
 			return false;
 		}
 
-		for (typename List<T>::Node *pThis = this->m_pHead, pThat = that.m_pHead; pThis != nullptr && pThat != nullptr; )
+		for (typename List<T>::Node *pThis = this->m_pHead, *pThat = that.m_pHead; pThis != nullptr && pThat != nullptr; )
 		{
 			if (pThis->tValue != pThat->tValue)
 			{
