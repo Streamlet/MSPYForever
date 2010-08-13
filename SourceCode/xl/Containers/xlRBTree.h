@@ -224,6 +224,7 @@ namespace xl
 
 		Release();
 		CopySubTree(this->m_pRoot, that.m_pRoot);
+        this->m_nSize = that.m_nSize;
 
 		return *this;
 	}
