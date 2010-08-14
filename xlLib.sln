@@ -34,9 +34,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlListTest", "UnitTest\xlLi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlRBTreeTest", "UnitTest\xlRBTreeTest\xlRBTreeTest.vcxproj", "{A2A7F472-0D0E-4788-A4A9-EEA393B0D39C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlPairTest", "UnitTest\xlPairTest\xlPairTest.vcxproj", "{F3E90435-67BE-4625-8442-47525AAE3C86}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlSetTest", "UnitTest\xlSetTest\xlSetTest.vcxproj", "{BB26E470-1F2B-4D70-AB44-00BBE861C9B4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlMapTest", "UnitTest\xlMapTest\xlMapTest.vcxproj", "{E83F331B-818B-40A0-BD86-7EA48A0C259B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlStringTest", "UnitTest\xlStringTest\xlStringTest.vcxproj", "{4B436D1F-D7BA-4FE7-9C71-06EEE609E6DD}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs11
 		SccLocalPath0 = .
@@ -60,6 +68,22 @@ Global
 		SccProjectTopLevelParentUniqueName5 = xlLib.sln
 		SccProjectName5 = UnitTest/xlRBTreeTest
 		SccLocalPath5 = UnitTest\\xlRBTreeTest
+		SccProjectUniqueName6 = UnitTest\\xlPairTest\\xlPairTest.vcxproj
+		SccProjectTopLevelParentUniqueName6 = xlLib.sln
+		SccProjectName6 = UnitTest/xlPairTest
+		SccLocalPath6 = UnitTest\\xlPairTest
+		SccProjectUniqueName7 = UnitTest\\xlSetTest\\xlSetTest.vcxproj
+		SccProjectTopLevelParentUniqueName7 = xlLib.sln
+		SccProjectName7 = UnitTest/xlSetTest
+		SccLocalPath7 = UnitTest\\xlSetTest
+		SccProjectUniqueName8 = UnitTest\\xlMapTest\\xlMapTest.vcxproj
+		SccProjectTopLevelParentUniqueName8 = xlLib.sln
+		SccProjectName8 = UnitTest/xlMapTest
+		SccLocalPath8 = UnitTest\\xlMapTest
+		SccProjectUniqueName9 = UnitTest\\xlStringTest\\xlStringTest.vcxproj
+		SccProjectTopLevelParentUniqueName9 = xlLib.sln
+		SccProjectName9 = UnitTest/xlStringTest
+		SccLocalPath9 = UnitTest\\xlStringTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -86,6 +110,22 @@ Global
 		{A2A7F472-0D0E-4788-A4A9-EEA393B0D39C}.Debug|Win32.Build.0 = Debug|Win32
 		{A2A7F472-0D0E-4788-A4A9-EEA393B0D39C}.Release|Win32.ActiveCfg = Release|Win32
 		{A2A7F472-0D0E-4788-A4A9-EEA393B0D39C}.Release|Win32.Build.0 = Release|Win32
+		{F3E90435-67BE-4625-8442-47525AAE3C86}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3E90435-67BE-4625-8442-47525AAE3C86}.Debug|Win32.Build.0 = Debug|Win32
+		{F3E90435-67BE-4625-8442-47525AAE3C86}.Release|Win32.ActiveCfg = Release|Win32
+		{F3E90435-67BE-4625-8442-47525AAE3C86}.Release|Win32.Build.0 = Release|Win32
+		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4}.Debug|Win32.Build.0 = Debug|Win32
+		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4}.Release|Win32.ActiveCfg = Release|Win32
+		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4}.Release|Win32.Build.0 = Release|Win32
+		{E83F331B-818B-40A0-BD86-7EA48A0C259B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E83F331B-818B-40A0-BD86-7EA48A0C259B}.Debug|Win32.Build.0 = Debug|Win32
+		{E83F331B-818B-40A0-BD86-7EA48A0C259B}.Release|Win32.ActiveCfg = Release|Win32
+		{E83F331B-818B-40A0-BD86-7EA48A0C259B}.Release|Win32.Build.0 = Release|Win32
+		{4B436D1F-D7BA-4FE7-9C71-06EEE609E6DD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B436D1F-D7BA-4FE7-9C71-06EEE609E6DD}.Debug|Win32.Build.0 = Debug|Win32
+		{4B436D1F-D7BA-4FE7-9C71-06EEE609E6DD}.Release|Win32.ActiveCfg = Release|Win32
+		{4B436D1F-D7BA-4FE7-9C71-06EEE609E6DD}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +136,10 @@ Global
 		{3E4BFCF9-C59F-4976-B16F-6CD3BE6CBADE} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{0D471331-A9CB-4A99-A848-C22CCD87EA2D} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{A2A7F472-0D0E-4788-A4A9-EEA393B0D39C} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
+		{F3E90435-67BE-4625-8442-47525AAE3C86} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
+		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
+		{E83F331B-818B-40A0-BD86-7EA48A0C259B} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
+		{4B436D1F-D7BA-4FE7-9C71-06EEE609E6DD} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{FD3A4148-0987-4149-B459-5727872E3AA9} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 	EndGlobalSection
