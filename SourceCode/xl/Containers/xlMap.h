@@ -21,222 +21,222 @@
 
 namespace xl
 {
-	template <typename K, typename V>
-	class Map
-	{
-	public:
-		Map();
-		Map(const Map &that);
-		~Map();
+    template <typename K, typename V>
+    class Map
+    {
+    public:
+        Map();
+        Map(const Map &that);
+        ~Map();
 
-	public:
-		Map<K, V> &operator = (const Map<K, V> &that);
-		bool operator == (const Map<K, V> &that) const;
-		bool operator != (const Map<K, V> &that) const;
-		V &operator [] (const K &key);
-		const V &operator [] (const K &key) const;
+    public:
+        Map<K, V> &operator = (const Map<K, V> &that);
+        bool operator == (const Map<K, V> &that) const;
+        bool operator != (const Map<K, V> &that) const;
+        V &operator [] (const K &key);
+        const V &operator [] (const K &key) const;
 
-	public:
-		bool Empty() const;
-		size_t Size() const;
+    public:
+        bool Empty() const;
+        size_t Size() const;
 
-	protected:
-		RBTree<Pair<K, V>> m_tData;
+    protected:
+        RBTree<Pair<K, V>> m_tData;
 
-	public:
-		void Delete(const K &key);
-		void Clear();
+    public:
+        void Delete(const K &key);
+        void Clear();
 
-	// Iterator
+    // Iterator
 
-	public:
-		typedef typename RBTree<Pair<K, V>>::Iterator Iterator;
-		typedef typename RBTree<Pair<K, V>>::ReverseIterator ReverseIterator;
+    public:
+        typedef typename RBTree<Pair<K, V>>::Iterator Iterator;
+        typedef typename RBTree<Pair<K, V>>::ReverseIterator ReverseIterator;
 
-	public:
-		Iterator Begin() const;
-		Iterator End() const;
-		ReverseIterator ReverseBegin() const;
-		ReverseIterator ReverseEnd() const;
+    public:
+        Iterator Begin() const;
+        Iterator End() const;
+        ReverseIterator ReverseBegin() const;
+        ReverseIterator ReverseEnd() const;
 
-	public:
-		Iterator Find(const K &key);
-		Iterator Insert(const K &key, const V &value);
-		Iterator Insert(const Pair<K, V> &pair);
-		Iterator Delete(const Iterator &itWhich);
-		ReverseIterator Delete(const ReverseIterator &itWhich);
-	};
+    public:
+        Iterator Find(const K &key);
+        Iterator Insert(const K &key, const V &value);
+        Iterator Insert(const Pair<K, V> &pair);
+        Iterator Delete(const Iterator &itWhich);
+        ReverseIterator Delete(const ReverseIterator &itWhich);
+    };
 
-	template <typename K, typename V>
-	inline Map<K, V>::Map()
-	{
+    template <typename K, typename V>
+    inline Map<K, V>::Map()
+    {
 
-	}
+    }
 
-	template <typename K, typename V>
-	inline Map<K, V>::Map(const Map &that)
-	{
-		this->m_tData = that.m_tData;
-	}
+    template <typename K, typename V>
+    inline Map<K, V>::Map(const Map &that)
+    {
+        this->m_tData = that.m_tData;
+    }
 
-	template <typename K, typename V>
-	inline Map<K, V>::~Map()
-	{
+    template <typename K, typename V>
+    inline Map<K, V>::~Map()
+    {
 
-	}
+    }
 
-	template <typename K, typename V>
-	inline Map<K, V> &Map<K, V>::operator = (const Map<K, V> &that)
-	{
-		if (this == &that)
-		{
-			return *this;
-		}
+    template <typename K, typename V>
+    inline Map<K, V> &Map<K, V>::operator = (const Map<K, V> &that)
+    {
+        if (this == &that)
+        {
+            return *this;
+        }
 
-		this->m_tData = that.m_tData;
+        this->m_tData = that.m_tData;
 
-		return *this;
-	}
+        return *this;
+    }
 
-	template <typename K, typename V>
-	inline bool Map<K, V>::operator == (const Map<K, V> &that) const
-	{
-		if (this == &that)
-		{
-			return true;
-		}
+    template <typename K, typename V>
+    inline bool Map<K, V>::operator == (const Map<K, V> &that) const
+    {
+        if (this == &that)
+        {
+            return true;
+        }
 
-		if (this->Size() != that.Size())
-		{
-			return false;
-		}
+        if (this->Size() != that.Size())
+        {
+            return false;
+        }
 
-		for (RBTree<Pair<K, V>>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
-			itThis != this->m_tData.End() && itThat != that.m_tData.End();
-			++itThis, ++itThat)
-		{
-			if (itThis->Key != itThat->Key || itThis->Value != itThat->Value)
-			{
-				return false;
-			}
-		}
+        for (RBTree<Pair<K, V>>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
+            itThis != this->m_tData.End() && itThat != that.m_tData.End();
+            ++itThis, ++itThat)
+        {
+            if (itThis->Key != itThat->Key || itThis->Value != itThat->Value)
+            {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	template <typename K, typename V>
-	inline bool Map<K, V>::operator != (const Map<K, V> &that) const
-	{
-		return !(*this == that);
-	}
+    template <typename K, typename V>
+    inline bool Map<K, V>::operator != (const Map<K, V> &that) const
+    {
+        return !(*this == that);
+    }
 
-	template <typename K, typename V>
-	inline V &Map<K, V>::operator [] (const K &key)
-	{
-		typename Map<K, V>::Iterator it = Find(key);
+    template <typename K, typename V>
+    inline V &Map<K, V>::operator [] (const K &key)
+    {
+        typename Map<K, V>::Iterator it = Find(key);
 
-		if (it == End())
-		{
-			it = m_tData.Insert(Pair<K, V>(key));
-		}
+        if (it == End())
+        {
+            it = m_tData.Insert(Pair<K, V>(key));
+        }
 
-		return it->Value;
-	}
-	
-	template <typename K, typename V>
-	inline const V &Map<K, V>::operator [] (const K &key) const
-	{
-		typename Map<K, V>::Iterator it = Find(key);
+        return it->Value;
+    }
+    
+    template <typename K, typename V>
+    inline const V &Map<K, V>::operator [] (const K &key) const
+    {
+        typename Map<K, V>::Iterator it = Find(key);
 
-		if (it == End())
-		{
-			return it->Value;
-		}
-		else
-		{
-			return V();
-		}
-	}
+        if (it == End())
+        {
+            return it->Value;
+        }
+        else
+        {
+            return V();
+        }
+    }
 
-	template <typename K, typename V>
-	inline bool Map<K, V>::Empty() const
-	{
-		return m_tData.Empty();
-	}
+    template <typename K, typename V>
+    inline bool Map<K, V>::Empty() const
+    {
+        return m_tData.Empty();
+    }
 
-	template <typename K, typename V>
-	inline size_t Map<K, V>::Size() const
-	{
-		return m_tData.Size();
-	}
+    template <typename K, typename V>
+    inline size_t Map<K, V>::Size() const
+    {
+        return m_tData.Size();
+    }
 
-	template <typename K, typename V>
-	inline void Map<K, V>::Delete(const K &key)
-	{
-		Delete(Find(key));
-	}
+    template <typename K, typename V>
+    inline void Map<K, V>::Delete(const K &key)
+    {
+        Delete(Find(key));
+    }
 
-	template <typename K, typename V>
-	inline void Map<K, V>::Clear()
-	{
-		m_tData.Clear();
-	}
+    template <typename K, typename V>
+    inline void Map<K, V>::Clear()
+    {
+        m_tData.Clear();
+    }
 
-	// Iterator
+    // Iterator
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::Iterator Map<K, V>::Begin() const
-	{
-		return m_tData.Begin();
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::Iterator Map<K, V>::Begin() const
+    {
+        return m_tData.Begin();
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::Iterator Map<K, V>::End() const
-	{
-		return m_tData.End();
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::Iterator Map<K, V>::End() const
+    {
+        return m_tData.End();
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::ReverseIterator Map<K, V>::ReverseBegin() const
-	{
-		return m_tData.ReverseBegin();
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::ReverseIterator Map<K, V>::ReverseBegin() const
+    {
+        return m_tData.ReverseBegin();
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::ReverseIterator Map<K, V>::ReverseEnd() const
-	{
-		return m_tData.ReverseEnd();
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::ReverseIterator Map<K, V>::ReverseEnd() const
+    {
+        return m_tData.ReverseEnd();
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::Iterator Map<K, V>::Find(const K &key)
-	{
-		return m_tData.Find(Pair<K, V>(key));
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::Iterator Map<K, V>::Find(const K &key)
+    {
+        return m_tData.Find(Pair<K, V>(key));
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::Iterator Map<K, V>::Insert(const K &key, const V &value)
-	{
-		return m_tData.Insert(Pair<K, V>(key, value));
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::Iterator Map<K, V>::Insert(const K &key, const V &value)
+    {
+        return m_tData.Insert(Pair<K, V>(key, value));
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::Iterator Map<K, V>::Insert(const Pair<K, V> &pair)
-	{
-		return m_tData.Insert(pair);
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::Iterator Map<K, V>::Insert(const Pair<K, V> &pair)
+    {
+        return m_tData.Insert(pair);
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::Iterator Map<K, V>::Delete(const typename Map<K, V>::Iterator &itWhich)
-	{
-		return m_tData.Delete(*itWhich);
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::Iterator Map<K, V>::Delete(const typename Map<K, V>::Iterator &itWhich)
+    {
+        return m_tData.Delete(*itWhich);
+    }
 
-	template <typename K, typename V>
-	inline typename Map<K, V>::ReverseIterator Map<K, V>::Delete(const typename Map<K, V>::ReverseIterator &itWhich)
-	{
-		return m_tData.Delete(*itWhich);
-	}
+    template <typename K, typename V>
+    inline typename Map<K, V>::ReverseIterator Map<K, V>::Delete(const typename Map<K, V>::ReverseIterator &itWhich)
+    {
+        return m_tData.Delete(*itWhich);
+    }
 
 };
 
