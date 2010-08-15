@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64
 		SourceCode\xl\Objects\xlString.h = SourceCode\xl\Objects\xlString.h
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnicTest", "UnicTest", "{32139451-1EE1-4BA6-9E40-C3E84993E9A6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{32139451-1EE1-4BA6-9E40-C3E84993E9A6}"
 	ProjectSection(SolutionItems) = preProject
 		UnitTest\UnitTestFrame.h = UnitTest\UnitTestFrame.h
 	EndProjectSection
