@@ -29,6 +29,8 @@ namespace xl
         Pair();
         Pair(const K &key);
         Pair(const K &key, const V &value);
+        Pair(const Pair &that);
+        Pair &operator = (const Pair &that);
 
     public:
         bool operator == (const Pair &that) const;
@@ -57,6 +59,25 @@ namespace xl
         : Key(key), Value(value)
     {
 
+    }
+
+    template <typename K, typename V>
+    Pair<K, V>::Pair(const Pair<K, V> &that)
+        : Key(that.Key), Value(that.Value)
+    {
+
+    }
+
+    template <typename K, typename V>
+    Pair<K, V> &Pair<K, V>::operator = (const Pair<K, V> &that)
+    {
+        if (this != &that)
+        {
+            this->Key = that.Key;
+            this->Value = that.Value;
+        }
+
+        return *this;
     }
 
     template <typename K, typename V>
