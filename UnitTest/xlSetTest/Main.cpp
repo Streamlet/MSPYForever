@@ -179,10 +179,9 @@ TEST_CASE(method_find)
     clock_t end_##name = clock();   \
     printf("Test ends. Time elasped: %lfs.\n", (double)(end_##name - begin_##name) / CLK_TCK)
 
-#include <vector>
+#include <set>
 using namespace std;
 
-#include <set>
 
 int main()
 {
