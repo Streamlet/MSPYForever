@@ -645,7 +645,7 @@ namespace xl
                 unsigned long long temp = lhs[i];
                 temp *= rhs[j];
 
-                for (size_t k = 0; k < 2 && temp > 0; ++k, temp >>= sizeof(T) * 8)
+                for (size_t k = 0; temp > 0; ++k)
                 {
                     while (res.Size() <= i + j + k)
                     {
@@ -656,12 +656,12 @@ namespace xl
 
                     if (res[i + j + k] < (T)temp)
                     {
-                        while (res.Size() <= i + j + k + 1)
-                        {
-                            res.PushBack((T)0);
-                        }
-
-                        ++res[i + j + k + 1];
+                        temp >>= sizeof(T) * 8;
+                        ++temp;
+                    }
+                    else
+                    {
+                        temp >>= sizeof(T) * 8;
                     }
                 }
             }

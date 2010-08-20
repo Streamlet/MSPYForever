@@ -207,6 +207,41 @@ TEST_CASE(method_string)
     TEST_ASSERT(BigInt(L"1234567890").ToString(16) == String(L"499602D2"));
     TEST_ASSERT(BigInt(L"1234567890").ToString(8) == String(L"11145401322"));
     TEST_ASSERT(BigInt(L"1234567890").ToString(2) == String(L"1001001100101100000001011010010"));
+
+    typedef BigIntT<unsigned short> BigIntT16;
+
+    TEST_ASSERT(BigIntT16(L"1234567890") == 1234567890);
+    TEST_ASSERT(BigIntT16(L"1234567890ABCDEF", 16) == 0x1234567890abcdef);
+    TEST_ASSERT(BigIntT16(L"1234567123", 8) == 01234567123);
+    TEST_ASSERT(BigIntT16(L"12345678", 9) == 6053444);
+
+    TEST_ASSERT(BigIntT16(L"wertyuiopq", 10, L"qwertyuiop") == 1234567890);
+    TEST_ASSERT(BigIntT16(L"sdfghjklzaxcvbnm", 16, L"asdfghjklzxcvbnm") == 0x1234567890abcdef);
+    TEST_ASSERT(BigIntT16(L"zxcvbnmzxc", 8, L"0zxcvbnm") == 01234567123);
+    TEST_ASSERT(BigIntT16(L"[];',./{", 9, L"}[];',./{") == 6053444);
+
+    TEST_ASSERT(BigIntT16(L"1234567890").ToString() == String(L"1234567890"));
+    TEST_ASSERT(BigIntT16(L"1234567890").ToString(16) == String(L"499602D2"));
+    TEST_ASSERT(BigIntT16(L"1234567890").ToString(8) == String(L"11145401322"));
+    TEST_ASSERT(BigIntT16(L"1234567890").ToString(2) == String(L"1001001100101100000001011010010"));
+
+
+    typedef BigIntT<unsigned char> BigIntT8;
+
+    TEST_ASSERT(BigIntT8(L"1234567890") == 1234567890);
+    TEST_ASSERT(BigIntT8(L"1234567890ABCDEF", 16) == 0x1234567890abcdef);
+    TEST_ASSERT(BigIntT8(L"1234567123", 8) == 01234567123);
+    TEST_ASSERT(BigIntT8(L"12345678", 9) == 6053444);
+
+    TEST_ASSERT(BigIntT8(L"wertyuiopq", 10, L"qwertyuiop") == 1234567890);
+    TEST_ASSERT(BigIntT8(L"sdfghjklzaxcvbnm", 16, L"asdfghjklzxcvbnm") == 0x1234567890abcdef);
+    TEST_ASSERT(BigIntT8(L"zxcvbnmzxc", 8, L"0zxcvbnm") == 01234567123);
+    TEST_ASSERT(BigIntT8(L"[];',./{", 9, L"}[];',./{") == 6053444);
+
+    TEST_ASSERT(BigIntT8(L"1234567890").ToString() == String(L"1234567890"));
+    TEST_ASSERT(BigIntT8(L"1234567890").ToString(16) == String(L"499602D2"));
+    TEST_ASSERT(BigIntT8(L"1234567890").ToString(8) == String(L"11145401322"));
+    TEST_ASSERT(BigIntT8(L"1234567890").ToString(2) == String(L"1001001100101100000001011010010"));
 }
 
 // Performance Test
@@ -273,6 +308,65 @@ TEST_CASE(rsa)
 
     TEST_ASSERT(p * q == n);
     TEST_ASSERT(d * e % ((p - 1) * (q - 1)) == 1);
+
+
+    BigIntT<unsigned short> p1, q1, n1, d1, e1;
+
+    p1.FromString(P_512, 16);
+    q1.FromString(Q_512, 16);
+    n1.FromString(N_512, 16);
+    d1.FromString(D_512, 16);
+    e1.FromString(E_512, 16);
+
+    TEST_ASSERT(p1 * q1 == n1);
+    TEST_ASSERT(d1 * e1 % ((p1 - 1) * (q1 - 1)) == 1);
+
+    p1.FromString(P_1024, 16);
+    q1.FromString(Q_1024, 16);
+    n1.FromString(N_1024, 16);
+    d1.FromString(D_1024, 16);
+    e1.FromString(E_1024, 16);
+
+    TEST_ASSERT(p1 * q1 == n1);
+    TEST_ASSERT(d1 * e1 % ((p1 - 1) * (q1 - 1)) == 1);
+
+    p1.FromString(P_2048, 16);
+    q1.FromString(Q_2048, 16);
+    n1.FromString(N_2048, 16);
+    d1.FromString(D_2048, 16);
+    e1.FromString(E_2048, 16);
+
+    TEST_ASSERT(p1 * q1 == n1);
+    TEST_ASSERT(d1 * e1 % ((p1 - 1) * (q1 - 1)) == 1);
+
+    BigIntT<unsigned char> p2, q2, n2, d2, e2;
+
+    p2.FromString(P_512, 16);
+    q2.FromString(Q_512, 16);
+    n2.FromString(N_512, 16);
+    d2.FromString(D_512, 16);
+    e2.FromString(E_512, 16);
+
+    TEST_ASSERT(p2 * q2 == n2);
+    TEST_ASSERT(d2 * e2 % ((p2 - 1) * (q2 - 1)) == 1);
+
+    p2.FromString(P_1024, 16);
+    q2.FromString(Q_1024, 16);
+    n2.FromString(N_1024, 16);
+    d2.FromString(D_1024, 16);
+    e2.FromString(E_1024, 16);
+
+    TEST_ASSERT(p2 * q2 == n2);
+    TEST_ASSERT(d2 * e2 % ((p2 - 1) * (q2 - 1)) == 1);
+
+    p2.FromString(P_2048, 16);
+    q2.FromString(Q_2048, 16);
+    n2.FromString(N_2048, 16);
+    d2.FromString(D_2048, 16);
+    e2.FromString(E_2048, 16);
+
+    TEST_ASSERT(p2 * q2 == n2);
+    TEST_ASSERT(d2 * e2 % ((p2- 1) * (q2 - 1)) == 1);
 }
 
 int main()
