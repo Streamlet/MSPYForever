@@ -38,8 +38,8 @@ namespace xl
         BigIntT(long long int64_value);
         BigIntT(unsigned long long uint64_value);
         BigIntT(unsigned char *buffer, size_t size);
-        BigIntT(const wchar_t *string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF");
-        BigIntT(const String &string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF");
+        BigIntT(const wchar_t *string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF");
+        BigIntT(const String &string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF");
         BigIntT(const BigIntT &that);
         BigIntT &operator = (const BigIntT &that);
         ~BigIntT();
@@ -96,9 +96,9 @@ namespace xl
         long long ToLongLong() const;
 
     public:
-        BigIntT &FromString(const wchar_t *string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF");
-        BigIntT &FromString(const String &string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF");
-        String ToString(unsigned int base = 10, const String alphabet = L"0123456789ABCDEF") const;
+        BigIntT &FromString(const wchar_t *string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF");
+        BigIntT &FromString(const String &string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF");
+        String ToString(unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF") const;
     };
 
     typedef BigIntT<unsigned int> BigInt;
@@ -296,13 +296,13 @@ namespace xl
     }
 
     template <typename T>
-    BigIntT<T>::BigIntT(const wchar_t *string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF")
+    BigIntT<T>::BigIntT(const wchar_t *string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF")
     {
         FromString(string_value, base, alphabet);
     }
     
     template <typename T>
-    BigIntT<T>::BigIntT(const String &string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF")
+    BigIntT<T>::BigIntT(const String &string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF")
     {
         FromString(string_value, base, alphabet);
     }
@@ -1038,7 +1038,7 @@ namespace xl
     }
 
     template <typename T>
-    BigIntT<T> &BigIntT<T>::FromString(const wchar_t *string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF")
+    BigIntT<T> &BigIntT<T>::FromString(const wchar_t *string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF")
     {
         m_aValue.Clear();
         m_bPositive = true;
@@ -1084,13 +1084,13 @@ namespace xl
     }
 
     template <typename T>
-    BigIntT<T> &BigIntT<T>::FromString(const String &string_value, unsigned int base = 10, const String alphabet = L"0123456789ABCDEF")
+    BigIntT<T> &BigIntT<T>::FromString(const String &string_value, unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF")
     {
         return FromString(string_value, base, alphabet);
     }
 
     template <typename T>
-    String BigIntT<T>::ToString(unsigned int base = 10, const String alphabet = L"0123456789ABCDEF") const
+    String BigIntT<T>::ToString(unsigned int base = 10, const String &alphabet = L"0123456789ABCDEF") const
     {
         if (base < 2 || base > (unsigned int)alphabet.Length())
         {
