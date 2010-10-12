@@ -41,8 +41,9 @@ namespace xl
         StringT<T> &operator += (const StringT<T> &that);
         T &operator [] (int nIndex);
         const T &operator [] (int nIndex) const;
-        operator T * ();
-        operator const T * () const;
+
+    public:
+        const T *GetAddress() const;
 
     public:
         int Length() const;
@@ -63,6 +64,8 @@ namespace xl
         StringT<T> Left(int nLength) const;
         StringT<T> Right(int nLength) const;
         StringT<T> SubString(int nStart, int nLength) const;
+
+    public:
         int IndexOf(const StringT<T> &strFind, int nStart) const;
         int IndexOf(const StringT<T> &strFind) const;
         int LastIndexOf(const StringT<T> &strFind, int nStart) const;
@@ -131,7 +134,7 @@ namespace xl
     template <typename T>
     bool StringT<T>::operator < (const StringT<T> &that) const
     {
-        for (int i = 0; i < this->m_aData.Size(); ++i)
+        for (size_t i = 0; i < this->m_aData.Size(); ++i)
         {
             if (this->m_aData[i] != that.m_aData[i] || this->m_aData[i] == T(0) || that.m_aData[i] == T(0))
             {
@@ -145,7 +148,7 @@ namespace xl
     template <typename T>
     bool StringT<T>::operator > (const StringT<T> &that) const
     {
-        for (int i = 0; i < this->m_aData.Size(); ++i)
+        for (size_t i = 0; i < this->m_aData.Size(); ++i)
         {
             if (this->m_aData[i] != that.m_aData[i] || this->m_aData[i] == T(0) || that.m_aData[i] == T(0))
             {
@@ -203,13 +206,7 @@ namespace xl
     }
 
     template <typename T>
-    inline StringT<T>::operator T * ()
-    {
-        return &m_aData[0];
-    }
-
-    template <typename T>
-    inline StringT<T>::operator const T * () const
+    inline const T *StringT<T>::GetAddress() const
     {
         return &m_aData[0];
     }
@@ -229,7 +226,7 @@ namespace xl
     template <typename T>
     StringT<T> &StringT<T>::MakeLower()
     {
-        for (int i = 0; i < m_aData.Size(); ++i)
+        for (size_t i = 0; i < m_aData.Size(); ++i)
         {
             if (m_aData[i] >= T('A') && m_aData[i] <= T('Z'))
             {
@@ -243,7 +240,7 @@ namespace xl
     template <typename T>
     StringT<T> &StringT<T>::MakeUpper()
     {
-        for (int i = 0; i < m_aData.Size(); ++i)
+        for (size_t i = 0; i < m_aData.Size(); ++i)
         {
             if (m_aData[i] >= T('a') && m_aData[i] <= T('z'))
             {
@@ -261,7 +258,7 @@ namespace xl
 
         strRet.m_aData.Resize(this->m_aData.Size());
 
-        for (int i = 0; i < m_aData.Size(); ++i)
+        for (size_t i = 0; i < m_aData.Size(); ++i)
         {
             if (this->m_aData[i] >= T('A') && this->m_aData[i] <= T('Z'))
             {
@@ -283,9 +280,9 @@ namespace xl
 
         strRet.m_aData.Resize(this->m_aData.Size());
 
-        for (int i = 0; i < m_aData.Size(); ++i)
+        for (size_t i = 0; i < m_aData.Size(); ++i)
         {
-            if (this->m_aData[i] >= T('z') && this->m_aData[i] <= T('z'))
+            if (this->m_aData[i] >= T('a') && this->m_aData[i] <= T('z'))
             {
                 strRet.m_aData[i] = m_aData[i] - ('a' - 'A');
             }
@@ -334,8 +331,6 @@ namespace xl
     {
         m_aData.Clear();
         m_aData.PushBack(T(0));
-
-        return *this;
     }
 
     template <typename T>
@@ -425,7 +420,7 @@ namespace xl
     template <typename T>
     inline int StringT<T>::LastIndexOf(const StringT<T> &strFind) const
     {
-        return LastIndexOf(strFind, this->Length() - 1)
+        return LastIndexOf(strFind, this->Length() - 1);
     }
 
     template <typename T>
@@ -455,7 +450,7 @@ namespace xl
 
                     --i;
 
-                    for (int k = 0; strFind[k] != ch && k < strFind.Length())
+                    for (int k = 0; strFind[k] != ch && k < strFind.Length(); ++k)
                     {
                         --i;
                     }
