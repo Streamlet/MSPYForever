@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Objects\xlBigInt.h = SourceCode\xl\Objects\xlBigInt.h
 		SourceCode\xl\Objects\xlQIPtr.h = SourceCode\xl\Objects\xlQIPtr.h
+		SourceCode\xl\Objects\xlRegExp.h = SourceCode\xl\Objects\xlRegExp.h
 		SourceCode\xl\Objects\xlString.h = SourceCode\xl\Objects\xlString.h
 	EndProjectSection
 EndProject
@@ -45,9 +46,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlStringTest", "UnitTest\xl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlQIPtrTest", "UnitTest\xlQIPtrTest\xlQIPtrTest.vcxproj", "{2C71993B-5063-4DFD-8E38-6CDE92CE8DDE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlRegExpTest", "UnitTest\xlRegExpTest\xlRegExpTest.vcxproj", "{680B706B-FAC0-438E-8459-EC5492D0BE33}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 12
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs11
 		SccLocalPath0 = .
@@ -91,6 +94,10 @@ Global
 		SccProjectTopLevelParentUniqueName10 = xlLib.sln
 		SccProjectName10 = UnitTest/xlQIPtrTest
 		SccLocalPath10 = UnitTest\\xlQIPtrTest
+		SccProjectUniqueName11 = UnitTest\\xlRegExpTest\\xlRegExpTest.vcxproj
+		SccProjectTopLevelParentUniqueName11 = xlLib.sln
+		SccProjectName11 = UnitTest/xlRegExpTest
+		SccLocalPath11 = UnitTest\\xlRegExpTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -137,6 +144,10 @@ Global
 		{2C71993B-5063-4DFD-8E38-6CDE92CE8DDE}.Debug|Win32.Build.0 = Debug|Win32
 		{2C71993B-5063-4DFD-8E38-6CDE92CE8DDE}.Release|Win32.ActiveCfg = Release|Win32
 		{2C71993B-5063-4DFD-8E38-6CDE92CE8DDE}.Release|Win32.Build.0 = Release|Win32
+		{680B706B-FAC0-438E-8459-EC5492D0BE33}.Debug|Win32.ActiveCfg = Debug|Win32
+		{680B706B-FAC0-438E-8459-EC5492D0BE33}.Debug|Win32.Build.0 = Debug|Win32
+		{680B706B-FAC0-438E-8459-EC5492D0BE33}.Release|Win32.ActiveCfg = Release|Win32
+		{680B706B-FAC0-438E-8459-EC5492D0BE33}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -152,6 +163,7 @@ Global
 		{E83F331B-818B-40A0-BD86-7EA48A0C259B} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{4B436D1F-D7BA-4FE7-9C71-06EEE609E6DD} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{2C71993B-5063-4DFD-8E38-6CDE92CE8DDE} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
+		{680B706B-FAC0-438E-8459-EC5492D0BE33} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{FD3A4148-0987-4149-B459-5727872E3AA9} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 	EndGlobalSection
