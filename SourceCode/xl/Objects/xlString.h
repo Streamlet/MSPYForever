@@ -79,8 +79,13 @@ namespace xl
         Array<T> m_aData;
     };
 
-    typedef StringT<char> StringA;
-    typedef StringT<wchar_t> String;
+    typedef char    CharA;
+    typedef wchar_t CharW;
+    typedef CharW   Char;
+
+    typedef StringT<CharA> StringA;
+    typedef StringT<CharW> StringW;
+    typedef StringW        String;
 
     template <typename T>
     inline StringT<T>::StringT()
