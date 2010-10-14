@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Main", "UnitTest\Main\Main.vcxproj", "{EC10C8B7-1338-49F4-81DF-7C6B551E4519}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xlLib", "xlLib", "{41DE1E2B-20E7-4CA9-95BF-FED590434EBA}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\xlDef.h = SourceCode\xl\xlDef.h
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", "{FD3A4148-0987-4149-B459-5727872E3AA9}"
 	ProjectSection(SolutionItems) = preProject
