@@ -20,9 +20,7 @@
 namespace xl
 {
 #if defined(_MSC_VER)
-#  if defined(_SIZE_T_DEFINED)
 #    define XL_SIZE_T_DEFINED
-#  endif
 #  if _MSC_VER >= 1600
 #    define XL_NULLPTR_DEFINED
 #  endif
@@ -34,7 +32,6 @@ namespace xl
 
 #ifndef XL_SIZE_T_DEFINED
     typedef unsigned int size_t;
-#define _SIZE_T_DEFINED
 #endif
 
 #ifndef XL_NULLPTR_DEFINED
