@@ -20,11 +20,16 @@
 namespace xl
 {
 #if defined(_MSC_VER)
-#  define XL_SIZE_T_DEFINED
+#  if defined(_SIZE_T_DEFINED)
+#    define XL_SIZE_T_DEFINED
+#  endif
 #  if _MSC_VER >= 1600
 #    define XL_NULLPTR_DEFINED
 #  endif
 #elif defined(__GNUC__)
+#  if defined(size_t)
+#    define XL_SIZE_T_DEFINED
+#  endif
 #endif
 
 #ifndef XL_SIZE_T_DEFINED
@@ -33,40 +38,7 @@ namespace xl
 #endif
 
 #ifndef XL_NULLPTR_DEFINED
-    const struct nullptr_t
-    {
-        template<typename T>
-        operator T * () const
-        {
-            return (T *)0;
-        }
-
-    } nullptr = {};
-
-    template <typename T>
-    inline bool operator == (T *ptr, nullptr_t)
-    {
-        return ptr == (T *)0;
-    }
-    template <typename T>
-
-    inline bool operator != (T *ptr, nullptr_t)
-    {
-        return ptr != (T *)0;
-    }
-
-    template <typename T>
-    inline bool operator == (nullptr_t, T *ptr)
-    {
-        return ptr == (T *)0;
-    }
-    template <typename T>
-
-    inline bool operator != (nullptr_t, T *ptr)
-    {
-        return ptr != (T *)0;
-    }
-
+#define nullptr 0
 #endif
 
 } // namespace xl

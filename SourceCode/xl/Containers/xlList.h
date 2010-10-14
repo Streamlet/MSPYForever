@@ -16,6 +16,9 @@
 #ifndef __XLLIST_H_2BEF1B3C_A056_4EC7_B5E3_9898E7945B54_INCLUDED__
 #define __XLLIST_H_2BEF1B3C_A056_4EC7_B5E3_9898E7945B54_INCLUDED__
 
+
+#include <xl/xlDef.h>
+
 namespace xl
 {
     template <typename T>
@@ -80,7 +83,7 @@ namespace xl
         protected:
             Iterator(Node *pCurrent);
             Iterator(Node *pCurrent, Node *pHead);
-            friend List;
+            friend class List;
 
         protected:
             Node *m_pCurrent;
@@ -113,7 +116,7 @@ namespace xl
         protected:
             ReverseIterator(Node *pCurrent);
             ReverseIterator(Node *pCurrent, Node *pHead);
-            friend List;
+            friend class List;
 
         public:
             ReverseIterator &operator ++ ();
@@ -496,14 +499,14 @@ namespace xl
     template <typename T>
     inline typename List<T>::ReverseIterator &List<T>::ReverseIterator::operator ++ ()
     {
-        if (m_pCurrent != nullptr)
+        if (this->m_pCurrent != nullptr)
         {
-            m_pCurrent = m_pCurrent->pPrev;
+            this->m_pCurrent = this->m_pCurrent->pPrev;
         }
 
-        if (m_pHead != nullptr && m_pCurrent == m_pHead->pPrev)
+        if (m_pHead != nullptr && this->m_pCurrent == m_pHead->pPrev)
         {
-            m_pCurrent = nullptr;
+            this->m_pCurrent = nullptr;
         }
 
         return *this;
@@ -522,17 +525,17 @@ namespace xl
     template <typename T>
     inline typename List<T>::ReverseIterator &List<T>::ReverseIterator::operator -- ()
     {
-        if (m_pHead == nullptr || (m_pHead != nullptr && m_pCurrent != m_pHead->pPrev))
+        if (m_pHead == nullptr || (m_pHead != nullptr && this->m_pCurrent != m_pHead->pPrev))
         {
-            if (m_pCurrent == nullptr)
+            if (this->m_pCurrent == nullptr)
             {
-                m_pCurrent = m_pHead;
+                this->m_pCurrent = m_pHead;
             }
             else
             {
-                if (m_pCurrent->pNext != m_pHead)
+                if (this->m_pCurrent->pNext != m_pHead)
                 {
-                    m_pCurrent = m_pCurrent->pNext;
+                    this->m_pCurrent = this->m_pCurrent->pNext;
                 }
             }
         }
@@ -695,7 +698,7 @@ namespace xl
     template <typename T>
     typename List<T>::ReverseIterator List<T>::Delete(const ReverseIterator &itWhich)
     {
-        typename Node<T> *pNode = itWhich.m_pCurrent;
+        typename List<T>::Node *pNode = itWhich.m_pCurrent;
 
         if (pNode == nullptr)
         {
@@ -730,7 +733,7 @@ namespace xl
 
         while (it != itAfterLastToDelete)
         {
-            it = Delete(it)
+            it = Delete(it);
         }
 
         return it;
@@ -743,7 +746,7 @@ namespace xl
 
         while (it != itAfterLastToDelete)
         {
-            it = Delete(it)
+            it = Delete(it);
         }
 
         return it;

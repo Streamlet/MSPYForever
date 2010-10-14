@@ -16,6 +16,8 @@
 #ifndef __XLSET_H_11EAD852_068B_4809_B06D_F0FDF1E34E48_INCLUDED__
 #define __XLSET_H_11EAD852_068B_4809_B06D_F0FDF1E34E48_INCLUDED__
 
+
+#include <xl/xlDef.h>
 #include <xl/Containers/xlRBTree.h>
 
 namespace xl
@@ -110,7 +112,7 @@ namespace xl
             return false;
         }
 
-        for (RBTree<T>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
+        for (typename RBTree<T>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
             itThis != this->m_tData.End() && itThat != that.m_tData.End();
             ++itThis, ++itThat)
         {
@@ -178,13 +180,13 @@ namespace xl
     }
 
     template <typename T>
-    inline typename Set<T>::Iterator Set<T>::FindMaxBelowGiven(const T &tValue, bool bIncludeEqual = true)
+    inline typename Set<T>::Iterator Set<T>::FindMaxBelowGiven(const T &tValue, bool bIncludeEqual /*= true*/)
     {
         return m_tData.FindMaxBelowGiven(tValue, bIncludeEqual);
     }
 
     template <typename T>
-    inline typename Set<T>::Iterator Set<T>::FindMinAboveGiven(const T &tValue, bool bIncludeEqual = true)
+    inline typename Set<T>::Iterator Set<T>::FindMinAboveGiven(const T &tValue, bool bIncludeEqual /*= true*/)
     {
         return m_tData.FindMinAboveGiven(tValue, bIncludeEqual);
     }

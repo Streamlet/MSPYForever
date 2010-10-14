@@ -17,6 +17,7 @@
 #define __XLREGEXP_H_D261C180_AEB3_495C_A81B_B0B2AA509797_INCLUDED__
 
 
+#include <xl/xlDef.h>
 #include <xl/Objects/xlString.h>
 
 namespace xl

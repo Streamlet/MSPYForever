@@ -16,6 +16,9 @@
 #ifndef __XLARRAY_H_3B18D7E2_B52A_4D57_BE4B_657F9D17320D_INCLUDED__
 #define __XLARRAY_H_3B18D7E2_B52A_4D57_BE4B_657F9D17320D_INCLUDED__
 
+
+#include <xl/xlDef.h>
+
 namespace xl
 {
     template <typename T>
@@ -79,7 +82,7 @@ namespace xl
         protected:
             Iterator(T *pValue);
             Iterator(T *pValue, T *pStart, T *pEof);
-            friend Array;
+            friend class Array;
 
         protected:
             T *m_pStart;
@@ -120,7 +123,7 @@ namespace xl
 
         protected:
             ReverseIterator(T *pValue, T *pStart, T *pEof);
-            friend Array;
+            friend class Array;
 
         public:
             ReverseIterator &operator ++ ();
@@ -724,9 +727,9 @@ namespace xl
     template <typename T>
     inline typename Array<T>::ReverseIterator &Array<T>::ReverseIterator::operator ++ ()
     {
-        if (m_pCurrent != m_pEof)
+        if (this->m_pCurrent != this->m_pEof)
         {
-            --m_pCurrent;
+            --this->m_pCurrent;
         }
 
         return *this;
@@ -745,9 +748,9 @@ namespace xl
     template <typename T>
     inline typename Array<T>::ReverseIterator &Array<T>::ReverseIterator::operator -- ()
     {
-        if (m_pCurrent != m_pStart)
+        if (this->m_pCurrent != this->m_pStart)
         {
-            ++m_pCurrent;
+            ++this->m_pCurrent;
         }
 
         return *this;
@@ -786,15 +789,15 @@ namespace xl
     template <typename T>
     inline typename Array<T>::ReverseIterator &Array<T>::ReverseIterator::operator += (int nDistance)
     {
-        m_pCurrent -= nDistance;
+        this->m_pCurrent -= nDistance;
 
-        if (nDistance > 0 && m_pCurrent > m_pStart)
+        if (nDistance > 0 && this->m_pCurrent > this->m_pStart)
         {
-            m_pCurrent = m_pStart;
+            this->m_pCurrent = this->m_pStart;
         }
-        else if (nDistance < 0 && m_pCurrent < m_pEof)
+        else if (nDistance < 0 && this->m_pCurrent < this->m_pEof)
         {
-            m_pCurrent = m_pEof;
+            this->m_pCurrent = this->m_pEof;
         }
 
         return *this;
@@ -803,15 +806,15 @@ namespace xl
     template <typename T>
     inline typename Array<T>::ReverseIterator &Array<T>::ReverseIterator::operator -= (int nDistance)
     {
-        m_pCurrent += nDistance;
+        this->m_pCurrent += nDistance;
 
-        if (nDistance > 0 && m_pCurrent > m_pStart)
+        if (nDistance > 0 && this->m_pCurrent > this->m_pStart)
         {
-            m_pCurrent = m_pStart;
+            this->m_pCurrent = this->m_pStart;
         }
-        else if (nDistance < 0 && m_pCurrent < m_pEof)
+        else if (nDistance < 0 && this->m_pCurrent < this->m_pEof)
         {
-            m_pCurrent = m_pEof;
+            this->m_pCurrent = this->m_pEof;
         }
 
         return *this;

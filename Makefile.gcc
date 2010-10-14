@@ -1,0 +1,44 @@
+CC = g++
+CFLAGS = -O2 -std=c++0x -ISourceCode
+DIR = UnitTest
+DEL_FILE = rm -rf
+
+all: Main xlArray xlList xlRBTree xlSet xlPair xlMap xlString xlQIPtr xlBigInt xlRegExp
+
+Main:
+	$(CC) $(CFLAGS) $(DIR)/Main/Main.cpp -o Main.out
+
+xlArray:
+	$(CC) $(CFLAGS) $(DIR)/xlArrayTest/Main.cpp -o xlArrayTest.out
+
+xlList:
+	$(CC) $(CFLAGS) $(DIR)/xlListTest/Main.cpp -o xlListTest.out
+
+xlRBTree:
+	$(CC) $(CFLAGS) $(DIR)/xlRBTreeTest/Main.cpp -o xlRBTreeTest.out
+
+xlSet:
+	$(CC) $(CFLAGS) $(DIR)/xlSetTest/Main.cpp -o xlSetTest.out
+
+xlPair:
+	$(CC) $(CFLAGS) $(DIR)/xlPairTest/Main.cpp -o xlPairTest.out
+
+xlMap:
+	$(CC) $(CFLAGS) $(DIR)/xlMapTest/Main.cpp -o xlMapTest.out
+
+xlString:
+	$(CC) $(CFLAGS) $(DIR)/xlStringTest/Main.cpp -o xlStringTest.out
+
+xlQIPtr:
+	$(CC) $(CFLAGS) $(DIR)/xlQIPtrTest/Main.cpp -o xlQIPtrTest.out
+
+xlBigInt:
+	$(CC) $(CFLAGS) $(DIR)/xlBigIntTest/Main.cpp -o xlBigIntTest.out
+
+xlRegExp:
+	$(CC) $(CFLAGS) $(DIR)/xlRegExpTest/Main.cpp -o xlRegExp.out
+
+
+clean:
+	$(DEL_FILE) *.o
+	$(DEL_FILE) *.out

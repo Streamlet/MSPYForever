@@ -16,9 +16,12 @@
 
 #define _CRTDBG_MAP_ALLOC 
 #include <stdlib.h>
+#ifdef _MSC_VER
 #include <crtdbg.h>
+#endif
 
 #include "../UnitTestFrame.h"
+#include <xl/xlDef.h>
 #include <xl/Objects/xlQIPtr.h>
 
 using namespace xl;
@@ -99,7 +102,9 @@ TEST_CASE(operator_point_ref)
 
 int main()
 {
+#ifdef _MSC_VER
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 
     new int;
 

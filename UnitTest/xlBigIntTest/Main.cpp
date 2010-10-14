@@ -246,6 +246,7 @@ TEST_CASE(method_string)
 
 // Performance Test
 
+#include <wchar.h>
 #include <stdio.h>
 #include <time.h>
 
@@ -258,7 +259,7 @@ TEST_CASE(method_string)
     clock_t begin_##name = clock()
 #define PERFORMANCE_TEST_END(name)  \
     clock_t end_##name = clock();   \
-    printf("Test ends. Time elasped: %.3lfs.\n", (double)(end_##name - begin_##name) / CLK_TCK)
+    printf("Test ends. Time elasped: %.3lfs.\n", (double)(end_##name - begin_##name) / CLOCKS_PER_SEC)
 
 #define P_512   L"BF273099C31081FA8F32819C4D5C219579A9430B5B594FB3825F5929B77D1813"
 #define Q_512   L"D91F81D4F71454D277E31C9C0B487D3A4CC490792ECCEC81CAA84603AE75716B"

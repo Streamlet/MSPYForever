@@ -19,6 +19,8 @@
 #define __XLQIPTR_H_E6B64B03_95F8_4C7D_BC72_C3CE917F3DEF_INCLUDED__
 
 
+#include <xl/xlDef.h>
+
 namespace xl
 {
     template <typename T>

@@ -16,6 +16,9 @@
 #ifndef __XLTREE_H_6BB48AA6_133A_4E9F_944E_504B887B6980_INCLUDED__
 #define __XLTREE_H_6BB48AA6_133A_4E9F_944E_504B887B6980_INCLUDED__
 
+
+#include <xl/xlDef.h>
+
 namespace xl
 {
     template <typename T>
@@ -104,8 +107,8 @@ namespace xl
         class ReverseIterator;
 
     protected:
-        friend Iterator;
-        friend ReverseIterator;
+        friend class Iterator;
+        friend class ReverseIterator;
 
     protected:
         void CopySubTree(Node *&pDestNode, Node *pSrcNode, Node *pParent = nullptr);
@@ -135,7 +138,7 @@ namespace xl
         protected:
             Iterator(Node *pCurrent);
             Iterator(Node *pCurrent, Node *pHead);
-            friend RBTree;
+            friend class RBTree;
 
         protected:
             Node *m_pCurrent;
@@ -168,7 +171,7 @@ namespace xl
         protected:
             ReverseIterator(Node *pCurrent);
             ReverseIterator(Node *pCurrent, Node *pHead);
-            friend RBTree;
+            friend class RBTree;
 
         public:
             ReverseIterator &operator ++ ();
@@ -804,7 +807,7 @@ namespace xl
     }
 
     template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindMaxBelowGiven(const T &tValue, typename RBTree<T>::Node *pRoot, bool bIncludeEqual = true)
+    typename RBTree<T>::Node *RBTree<T>::FindMaxBelowGiven(const T &tValue, typename RBTree<T>::Node *pRoot, bool bIncludeEqual /*= true*/)
     {
         if (pRoot == nullptr)
         {
@@ -834,7 +837,7 @@ namespace xl
     }
 
     template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindMinAboveGiven(const T &tValue, typename RBTree<T>::Node *pRoot, bool bIncludeEqual = true)
+    typename RBTree<T>::Node *RBTree<T>::FindMinAboveGiven(const T &tValue, typename RBTree<T>::Node *pRoot, bool bIncludeEqual /*= true*/)
     {
         if (pRoot == nullptr)
         {
@@ -939,7 +942,7 @@ namespace xl
     }
 
     template <typename T>
-    void RBTree<T>::CopySubTree(typename RBTree<T>::Node *&pDestNode, typename RBTree<T>::Node *pSrcNode, typename RBTree<T>::Node *pParent = nullptr)
+    void RBTree<T>::CopySubTree(typename RBTree<T>::Node *&pDestNode, typename RBTree<T>::Node *pSrcNode, typename RBTree<T>::Node *pParent /*= nullptr*/)
     {
         if (pSrcNode == nullptr)
         {
@@ -1202,7 +1205,7 @@ namespace xl
     template <typename T>
     inline typename RBTree<T>::Iterator RBTree<T>::Iterator::operator ++ (int)
     {
-        typename Array<T>::Iterator itRet = *this;
+        typename RBTree<T>::Iterator itRet = *this;
 
         ++*this;
 
@@ -1225,7 +1228,7 @@ namespace xl
     template <typename T>
     inline typename RBTree<T>::Iterator RBTree<T>::Iterator::operator -- (int)
     {
-        typename Array<T>::Iterator itRet = *this;
+        typename RBTree<T>::Iterator itRet = *this;
 
         --*this;
 
@@ -1262,7 +1265,7 @@ namespace xl
     template <typename T>
     typename RBTree<T>::ReverseIterator &RBTree<T>::ReverseIterator::operator ++ ()
     {
-        m_pCurrent = RBTree<T>::FindPrev(m_pCurrent);
+        this->m_pCurrent = RBTree<T>::FindPrev(this->m_pCurrent);
 
         return *this;
     }
@@ -1270,7 +1273,7 @@ namespace xl
     template <typename T>
     inline typename RBTree<T>::ReverseIterator RBTree<T>::ReverseIterator::operator ++ (int)
     {
-        typename Array<T>::ReverseIterator itRet = *this;
+        typename RBTree<T>::ReverseIterator itRet = *this;
 
         ++*this;
 
@@ -1280,13 +1283,13 @@ namespace xl
     template <typename T>
     inline typename RBTree<T>::ReverseIterator &RBTree<T>::ReverseIterator::operator -- ()
     {
-        if (m_pCurrent == nullptr)
+        if (this->m_pCurrent == nullptr)
         {
-            return typename RBTree<T>::ReverseIterator(RBTree<T>::FindMinInSubTree(m_pRoot), m_pHead);
+            return typename RBTree<T>::ReverseIterator(RBTree<T>::FindMinInSubTree(m_pRoot), this->m_pHead);
         }
         else
         {
-            m_pCurrent = RBTree<T>::FindNext(m_pCurrent);
+            this->m_pCurrent = RBTree<T>::FindNext(this->m_pCurrent);
         }
 
         return *this;
@@ -1295,7 +1298,7 @@ namespace xl
     template <typename T>
     inline typename RBTree<T>::ReverseIterator RBTree<T>::ReverseIterator::operator -- (int)
     {
-        typename Array<T>::ReverseIterator itRet = *this;
+        typename RBTree<T>::ReverseIterator itRet = *this;
 
         --*this;
 
@@ -1333,13 +1336,13 @@ namespace xl
     }
 
     template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::FindMaxBelowGiven(const T &tValue, bool bIncludeEqual = true) const
+    inline typename RBTree<T>::Iterator RBTree<T>::FindMaxBelowGiven(const T &tValue, bool bIncludeEqual /*= true*/) const
     {
         return typename RBTree<T>::Iterator(FindMaxBelowGiven(tValue, m_pRoot, bIncludeEqual), m_pRoot);
     }
 
     template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::FindMinAboveGiven(const T &tValue, bool bIncludeEqual = true) const
+    inline typename RBTree<T>::Iterator RBTree<T>::FindMinAboveGiven(const T &tValue, bool bIncludeEqual /*= true*/) const
     {
         return typename RBTree<T>::Iterator(FindMinAboveGiven(tValue, m_pRoot, bIncludeEqual), m_pRoot);
     }
@@ -1367,7 +1370,7 @@ namespace xl
         
         Delete(itWhich.m_pCurrent);
 
-        return typename RBTree<T>::Iterator(pNext, m_pRoot)
+        return typename RBTree<T>::Iterator(pNext, m_pRoot);
     }
 
     template <typename T>
@@ -1377,7 +1380,7 @@ namespace xl
 
         Delete(itWhich.m_pCurrent);
 
-        return typename RBTree<T>::Iterator(pPrev, m_pRoot)
+        return typename RBTree<T>::Iterator(pPrev, m_pRoot);
     }
 
 } // namespace xl

@@ -177,7 +177,7 @@ TEST_CASE(method_find)
     clock_t begin_##name = clock()
 #define PERFORMANCE_TEST_END(name)  \
     clock_t end_##name = clock();   \
-    printf("Test ends. Time elasped: %lfs.\n", (double)(end_##name - begin_##name) / CLK_TCK)
+    printf("Test ends. Time elasped: %lfs.\n", (double)(end_##name - begin_##name) / CLOCKS_PER_SEC)
 
 #include <set>
 using namespace std;

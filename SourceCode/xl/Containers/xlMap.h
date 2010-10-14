@@ -16,6 +16,8 @@
 #ifndef __XLMAP_H_793F2C3D_4121_413E_B70F_E7A686081AC4_INCLUDED__
 #define __XLMAP_H_793F2C3D_4121_413E_B70F_E7A686081AC4_INCLUDED__
 
+
+#include <xl/xlDef.h>
 #include <xl/Containers/xlRBTree.h>
 #include <xl/Containers/xlPair.h>
 
@@ -111,7 +113,7 @@ namespace xl
             return false;
         }
 
-        for (RBTree<Pair<K, V>>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
+        for (typename RBTree<Pair<K, V>>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
             itThis != this->m_tData.End() && itThat != that.m_tData.End();
             ++itThis, ++itThat)
         {
