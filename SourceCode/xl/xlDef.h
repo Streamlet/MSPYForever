@@ -30,16 +30,43 @@ namespace xl
 #ifndef XL_SIZE_T_DEFINED
     typedef unsigned int size_t;
 #define _SIZE_T_DEFINED
+#endif
 
 #ifndef XL_NULLPTR_DEFINED
-    const struct
+    const struct nullptr_t
     {
         template<typename T>
         operator T * () const
         {
             return (T *)0;
         }
-    } nullptr;  
+
+    } nullptr = {};
+
+    template <typename T>
+    inline bool operator == (T *ptr, nullptr_t)
+    {
+        return ptr == (T *)0;
+    }
+    template <typename T>
+
+    inline bool operator != (T *ptr, nullptr_t)
+    {
+        return ptr != (T *)0;
+    }
+
+    template <typename T>
+    inline bool operator == (nullptr_t, T *ptr)
+    {
+        return ptr == (T *)0;
+    }
+    template <typename T>
+
+    inline bool operator != (nullptr_t, T *ptr)
+    {
+        return ptr != (T *)0;
+    }
+
 #endif
 
 } // namespace xl
