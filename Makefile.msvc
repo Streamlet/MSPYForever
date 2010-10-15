@@ -3,7 +3,7 @@ CFLAGS = /Ox /MT /ISourceCode
 DIR = UnitTest
 DEL_FILE = del /F /Q
 
-all: Main xlArray xlList xlSet xlPair xlMap xlString xlQIPtr xlBigInt xlRegExp
+all: Main xlArray xlRBTree xlList xlSet xlPair xlMap xlString xlQIPtr xlBigInt xlRegExp
 
 Main:
 	$(CC) $(CFLAGS) $(DIR)\Main\Main.cpp -FeMain.exe
