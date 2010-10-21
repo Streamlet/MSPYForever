@@ -47,6 +47,7 @@ namespace xl
 
     public:
         void Insert(size_t nIndex, const T *pStart, int nCount);
+        void Insert(size_t nIndex, const T &tValue, int nCount);
         void Insert(size_t nIndex, const T &tValue);
         void PushFront(const T &tValue);
         void PushBack(const T &tValue);
@@ -367,8 +368,7 @@ namespace xl
         {
             nWellSize *= 3;
         }
-
-
+        
         // Not enough spaces, reallocate.
 
         T *pNewData = new T[nWellSize];
@@ -384,13 +384,95 @@ namespace xl
         m_nEof = nNewStart + nNewSize;
         m_nSize = nWellSize;
         m_pData = pNewData;
+    }
 
+    template <typename T>
+    void Array<T>::Insert(size_t nIndex, const T &tValue, int nCount)
+    {
+        if (nIndex < 0 || nIndex > m_nEof - m_nStart)
+        {
+            return;
+        }
+
+        if (nCount <= 0)
+        {
+            return;
+        }
+
+        if (m_nStart >= (size_t)nCount && nIndex <= m_nSize - (m_nStart + nIndex))
+        {
+            // In this case:
+            // There are enough spaces at the front,
+            // and (the position to insert is near the front, or there is not enough space at the back)
+
+            MoveData(m_pData + m_nStart, nIndex, -nCount);
+
+            for (int i = 0; i < nCount; ++i)
+            {
+                m_pData[m_nStart - nCount + nIndex + i] = tValue;
+            }
+
+            m_nStart -= nCount;
+
+            return;
+        }
+        // Else:
+        // There is not enough space at the front,
+        // or (the position to insert is near the back, and there are enough spaces at the back)
+        else if (m_nSize - m_nEof >= (size_t)nCount && nIndex > m_nSize - (m_nStart + nIndex))
+        {
+            // There are enough spaces at the back
+
+            MoveData(m_pData + m_nStart + nIndex, m_nEof - m_nStart - nIndex, nCount);
+
+            for (int i = 0; i < nCount; ++i)
+            {
+                m_pData[m_nStart + nIndex + i] = tValue;
+            }
+
+            m_nEof += nCount;
+
+            return;
+        }
+
+        // Now the case is:
+        // There is not enough space at the front or enough space at the back to hold the new elements itself
+        // But the total of the spaces might hold them
+
+        size_t nNewSize = m_nEof - m_nStart + nCount;
+        size_t nWellSize = m_nSize != 0 ? m_nSize : nNewSize;
+
+        while (nWellSize < nNewSize)
+        {
+            nWellSize *= 3;
+        }
+
+        // Not enough spaces, reallocate.
+
+        T *pNewData = new T[nWellSize];
+        size_t nNewStart = (nWellSize - nNewSize) / 2;
+
+        CopyData(m_pData + m_nStart, nIndex, pNewData + nNewStart);
+
+        for (int i = 0; i < nCount; ++i)
+        {
+            pNewData[nNewStart + nIndex + i] = tValue;
+        }
+
+        CopyData(m_pData + m_nStart + nIndex, m_nEof - m_nStart - nIndex, pNewData + nNewStart + nIndex + nCount);
+
+        Release();
+
+        m_nStart = nNewStart;
+        m_nEof = nNewStart + nNewSize;
+        m_nSize = nWellSize;
+        m_pData = pNewData;
     }
 
     template <typename T>
     inline void Array<T>::Insert(size_t nIndex, const T &tValue)
     {
-        Insert(nIndex, &tValue, 1);
+        Insert(nIndex, tValue, 1);
     }
 
     template <typename T>
