@@ -105,8 +105,6 @@ TEST_CASE(method_size)
 
     a.Resize(5);
     TEST_ASSERT(a.Size() == 5);
-    TEST_ASSERT(a[0] == 0);
-    TEST_ASSERT(a[1] == 1);
 }
 
 TEST_CASE(method_insert_delete)
@@ -174,7 +172,6 @@ TEST_CASE(method_insert_delete)
     a.Resize(100);
     a[99] = 1001;
     TEST_ASSERT(a.Size() == 100);
-    TEST_ASSERT(a[0] == 4);
     TEST_ASSERT(a[99] == 1001);
 
     a.Clear();

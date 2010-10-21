@@ -43,6 +43,7 @@ namespace xl
         bool Empty() const;
         size_t Size() const;
         void Resize(size_t nSize);
+        void Resize(size_t nSize, const T &tValue);
 
     public:
         void Insert(size_t nIndex, const T *pStart, int nCount);
@@ -284,8 +285,6 @@ namespace xl
 
             size_t nNewStart = (m_nSize - nSize) / 2;
 
-            MoveData(0, m_nEof - m_nStart, nNewStart - m_nStart);
-
             m_nStart = nNewStart;
             m_nEof = m_nStart + nSize;
         }
@@ -296,14 +295,23 @@ namespace xl
             T *pNewData = new T[nWellSize];
             size_t nNewStart = (nWellSize - nSize) / 2;
 
-            CopyData(m_pData + m_nStart, m_nEof - m_nStart, pNewData + nNewStart);
-
             Release();
 
             m_nStart = nNewStart;
             m_nEof = m_nStart + nSize;
             m_nSize = nWellSize;
             m_pData = pNewData;
+        }
+    }
+
+    template <typename T>
+    void Array<T>:: Resize(size_t nSize, const T &tValue)
+    {
+        Resize(nSize);
+
+        for (size_t i = m_nStart; i != m_nEof; ++i)
+        {
+            m_pData[i] = tValue;
         }
     }
 
