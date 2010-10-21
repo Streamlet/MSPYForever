@@ -640,6 +640,8 @@ namespace xl
             return product;
         }
 
+        res.Resize(lhs.Size() + rhs.Size(), 0);
+
         for (size_t i = 0; i < lhs.Size(); ++i)
         {
             for (size_t j = 0; j < rhs.Size(); ++j)
@@ -649,11 +651,6 @@ namespace xl
 
                 for (size_t k = 0; temp > 0; ++k)
                 {
-                    while (res.Size() <= i + j + k)
-                    {
-                        res.PushBack((T)0);
-                    }
-
                     res[i + j + k] += (T)temp;
 
                     if (res[i + j + k] < (T)temp)
@@ -667,6 +664,11 @@ namespace xl
                     }
                 }
             }
+        }
+
+        while (!res.Empty() && *res.ReverseBegin() == 0)
+        {
+            res.PopBack();
         }
 
         if ((this->m_bPositive != multiplicator.m_bPositive) && !res.Empty())
