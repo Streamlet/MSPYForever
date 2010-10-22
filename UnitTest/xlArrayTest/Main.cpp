@@ -235,7 +235,7 @@ int main()
     PERFORMANCE_TEST_BEGIN(StdVectorPushBack1000000);
     for (int i = 0; i < 1000000; ++i)
     {
-        v1.push_back(i);
+        v2.push_back(i);
     }
     PERFORMANCE_TEST_END(StdVectorPushBack1000000);
     SECTION_END();
@@ -245,7 +245,7 @@ int main()
     PERFORMANCE_TEST_BEGIN(xlArrayPushBack1000000);
     for (int i = 0; i < 1000000; ++i)
     {
-        a1.PushBack(i);
+        a3.PushBack(i);
     }
     PERFORMANCE_TEST_END(xlArrayPushBack1000000);
     SECTION_END();
@@ -255,7 +255,7 @@ int main()
     PERFORMANCE_TEST_BEGIN(xlArrayPushFront1000000);
     for (int i = 0; i < 1000000; ++i)
     {
-        a2.PushFront(i);
+        a4.PushFront(i);
     }
     PERFORMANCE_TEST_END(xlArrayPushFront1000000);
     SECTION_END();
@@ -266,7 +266,7 @@ int main()
     PERFORMANCE_TEST_BEGIN(StdVectorPushBack10000000);
     for (int i = 0; i < 10000000; ++i)
     {
-        v1.push_back(i);
+        v3.push_back(i);
     }
     PERFORMANCE_TEST_END(StdVectorPushBack10000000);
     SECTION_END();
@@ -276,7 +276,7 @@ int main()
     PERFORMANCE_TEST_BEGIN(xlArrayPushBack10000000);
     for (int i = 0; i < 10000000; ++i)
     {
-        a1.PushBack(i);
+        a5.PushBack(i);
     }
     PERFORMANCE_TEST_END(xlArrayPushBack10000000);
     SECTION_END();
@@ -286,7 +286,7 @@ int main()
     PERFORMANCE_TEST_BEGIN(xlArrayPushFront10000000);
     for (int i = 0; i < 10000000; ++i)
     {
-        a2.PushFront(i);
+        a6.PushFront(i);
     }
     PERFORMANCE_TEST_END(xlArrayPushFront10000000);
     SECTION_END();
