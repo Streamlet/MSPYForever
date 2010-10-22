@@ -962,7 +962,7 @@ namespace xl
     {
         size_t nIndex = itBeforeWhich.m_pCurrent - (m_pData + m_nStart);
 
-        Insert(nIndex, itFirstToInsert.m_pCurrent, itAfterLastToInsert - itFirstToInsert);
+        InsertBuffer(nIndex, itFirstToInsert.m_pCurrent, itAfterLastToInsert - itFirstToInsert);
     }
 
     template <typename T>
