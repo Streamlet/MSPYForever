@@ -46,7 +46,7 @@ namespace xl
         void Resize(size_t nSize, const T &tValue);
 
     public:
-        void Insert(size_t nIndex, const T *pStart, int nCount);
+        void InsertBuffer(size_t nIndex, const T *pStart, int nCount);
         void Insert(size_t nIndex, const T &tValue, int nCount);
         void Insert(size_t nIndex, const T &tValue);
         void PushFront(const T &tValue);
@@ -317,7 +317,7 @@ namespace xl
     }
 
     template <typename T>
-    void Array<T>::Insert(size_t nIndex, const T *pStart, int nCount)
+    void Array<T>::InsertBuffer(size_t nIndex, const T *pStart, int nCount)
     {
         if (nIndex < 0 || nIndex > m_nEof - m_nStart)
         {

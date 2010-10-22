@@ -112,8 +112,17 @@ TEST_CASE(method_insert_delete)
     Array<int> a;
     TEST_ASSERT(a.Empty() == true);
 
+    a.Insert(0, 5, 3);
+    TEST_ASSERT(a.Size() == 3);
+    TEST_ASSERT(a[0] == 5);
+    TEST_ASSERT(a[1] == 5);
+    TEST_ASSERT(a[2] == 5);
+    
+    a.Clear();
+    TEST_ASSERT(a.Empty() == true);
+
     int data[4] = { 1, 3, 2, 4 };
-    a.Insert(0, data, 4);
+    a.InsertBuffer(0, data, 4);
     TEST_ASSERT(a.Size() == 4);
     TEST_ASSERT(a[0] == 1);
     TEST_ASSERT(a[1] == 3);
