@@ -98,9 +98,12 @@ namespace xl
     template <typename T>
     StringT<T>::StringT(const T *szString)
     {
-        while (*szString != T(0))
+        if (szString != nullptr)
         {
-            m_aData.PushBack(*szString++);
+            while (*szString != T(0))
+            {
+                m_aData.PushBack(*szString++);
+            }
         }
 
         m_aData.PushBack(T(0));
