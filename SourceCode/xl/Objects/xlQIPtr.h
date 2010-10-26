@@ -110,7 +110,7 @@ namespace xl
         if (m_pcRefs != nullptr && --*m_pcRefs == 0)
         {
             delete m_pcRefs;
-            delete[] m_pData;
+            delete m_pData;
         }
     }
 

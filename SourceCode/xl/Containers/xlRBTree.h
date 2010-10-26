@@ -63,7 +63,7 @@ namespace xl
         bool Empty() const;
         size_t Size() const;
 
-    protected:
+    public:
         void Clear();
 
     protected:
