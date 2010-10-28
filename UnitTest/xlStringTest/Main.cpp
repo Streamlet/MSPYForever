@@ -29,6 +29,15 @@ TEST_CASE(ctor)
 
     String c(b);
     TEST_ASSERT(c == L"123");
+
+    String d(L"123", 3);
+    TEST_ASSERT(d == L"123");
+
+    String e(L"123", 4);
+    TEST_ASSERT(e == L"123");
+
+    String f(L"1\00023", 3);
+    TEST_ASSERT(f.Length() == 3 && f[0] == L'1' && f[1] == L'\0' && f[2] == L'2');
 }
 
 TEST_CASE(operator_set)

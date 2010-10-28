@@ -28,6 +28,7 @@ namespace xl
     public:
         StringT();
         StringT(const T *szString);
+        StringT(const T *szString, size_t nLength);
         StringT(const StringT<T> &that);
         ~StringT();
 
@@ -107,6 +108,23 @@ namespace xl
         }
 
         m_aData.PushBack(T(0));
+    }
+
+    template <typename T>
+    StringT<T>::StringT(const T *szString, size_t nLength)
+    {
+        if (szString != nullptr)
+        {
+            for (size_t i = 0; i < nLength; ++i)
+            {
+                m_aData.PushBack(szString[i]);
+            }
+        }
+
+        if (m_aData.Empty() || *m_aData.ReverseBegin() != T(0))
+        {
+            m_aData.PushBack(T(0));
+        }
     }
 
     template <typename T>
