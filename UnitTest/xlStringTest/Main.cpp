@@ -218,6 +218,7 @@ TEST_CASE(method_replace)
     TEST_ASSERT(a.Replace(L"abc", L"") == L"123456789");
     TEST_ASSERT(a.Replace(L"abc", L"@") == L"123@456@789");
     TEST_ASSERT(a.Replace(L"", L"@") == L"123abc456abc789");
+    TEST_ASSERT(a.Replace(L"abc", L"@", 1) == L"123@456abc789");
     TEST_ASSERT(a == L"123abc456abc789");
 }
 
@@ -227,11 +228,27 @@ TEST_CASE(method_split)
 
     Array<String> v = a.Split(L"|");
 
+    TEST_ASSERT(v.Size() == 5);
     TEST_ASSERT(v[0] == L"123");
     TEST_ASSERT(v[1] == L"456");
     TEST_ASSERT(v[2] == L"");
     TEST_ASSERT(v[3] == L"789");
     TEST_ASSERT(v[4] == L"");
+
+    v = a.Split(L"|", 3);
+
+    TEST_ASSERT(v.Size() == 3);
+    TEST_ASSERT(v[0] == L"123");
+    TEST_ASSERT(v[1] == L"456");
+    TEST_ASSERT(v[2] == L"|789|");
+    
+    String b(L"123|456");
+
+    v = b.Split(L"|", 3);
+
+    TEST_ASSERT(v.Size() == 2);
+    TEST_ASSERT(v[0] == L"123");
+    TEST_ASSERT(v[1] == L"456");
 }
 
 int main()

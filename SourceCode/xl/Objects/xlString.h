@@ -75,8 +75,8 @@ namespace xl
         int LastIndexOf(const StringT<T> &strFind) const;
 
     public:
-        StringT<T> Replace(const StringT<T> &strFind, const StringT<T> &strReplaceWith) const;
-        Array<StringT<T>> Split(const StringT<T> &strSeparator) const;
+        StringT<T> Replace(const StringT<T> &strFind, const StringT<T> &strReplaceWith, int nCount = 0) const;
+        Array<StringT<T>> Split(const StringT<T> &strSeparator, int nCount = 0) const;
 
     protected:
         Array<T> m_aData;
@@ -498,12 +498,14 @@ namespace xl
     }
 
     template <typename T>
-    StringT<T> StringT<T>::Replace(const StringT<T> &strFind, const StringT<T> &strReplaceWith) const
+    StringT<T> StringT<T>::Replace(const StringT<T> &strFind, const StringT<T> &strReplaceWith, int nCount /*= 0*/) const
     {
         StringT<T> strRet;
 
         int nFrom = 0;
         int nTo = this->IndexOf(strFind, nFrom);
+
+        int nReplaceCount = 0;
 
         while (nTo != -1)
         {
@@ -511,6 +513,11 @@ namespace xl
             strRet += strReplaceWith;
             nFrom = nTo + strFind.Length();
             nTo = this->IndexOf(strFind, nFrom);
+
+            if (nCount != 0 && ++nReplaceCount >= nCount)
+            {
+                break;
+            }
         }
 
         strRet += this->Right(this->Length() - nFrom);
@@ -519,18 +526,25 @@ namespace xl
     }
 
     template <typename T>
-    Array<StringT<T> > StringT<T>::Split(const StringT<T> &strSeparator) const
+    Array<StringT<T> > StringT<T>::Split(const StringT<T> &strSeparator, int nCount /*= 0*/) const
     {
         Array<StringT<T> > astrRet;
 
         int nFrom = 0;
         int nTo = this->IndexOf(strSeparator, nFrom);
 
+        int nSplitCount = 1;
+
         while (nTo != -1)
         {
             astrRet.PushBack(this->SubString(nFrom, nTo - nFrom));
             nFrom = nTo + strSeparator.Length();
             nTo = this->IndexOf(strSeparator, nFrom);
+
+            if (nCount != 0 && ++nSplitCount >= nCount)
+            {
+                break;
+            }
         }
 
         astrRet.PushBack(this->Right(this->Length() - nFrom));
