@@ -21,6 +21,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Objects\xlBigInt.h = SourceCode\xl\Objects\xlBigInt.h
+		SourceCode\xl\Objects\xlFunction.h = SourceCode\xl\Objects\xlFunction.h
 		SourceCode\xl\Objects\xlQIPtr.h = SourceCode\xl\Objects\xlQIPtr.h
 		SourceCode\xl\Objects\xlRegExp.h = SourceCode\xl\Objects\xlRegExp.h
 		SourceCode\xl\Objects\xlString.h = SourceCode\xl\Objects\xlString.h
