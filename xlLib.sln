@@ -52,6 +52,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlQIPtrTest", "UnitTest\xlQ
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlRegExpTest", "UnitTest\xlRegExpTest\xlRegExpTest.vcxproj", "{680B706B-FAC0-438E-8459-EC5492D0BE33}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{3CF5010F-D9AA-40DA-9823-D23D64A7BE33}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Meta\xlMacros.h = SourceCode\xl\Meta\xlMacros.h
+		SourceCode\xl\Meta\xlTypeList.h = SourceCode\xl\Meta\xlTypeList.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -120,5 +126,6 @@ Global
 		{680B706B-FAC0-438E-8459-EC5492D0BE33} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{FD3A4148-0987-4149-B459-5727872E3AA9} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{3CF5010F-D9AA-40DA-9823-D23D64A7BE33} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 	EndGlobalSection
 EndGlobal
