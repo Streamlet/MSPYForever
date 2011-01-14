@@ -49,19 +49,52 @@ namespace xl
         enum { Value = 1 + TLLength<T>::Value };
     };
 
-    template <typename TL, size_t i>
-    struct TLAt;
+    template <typename TL, typename F>
+    struct TLIndexOf;
 
     template <typename H, typename T>
-    struct TLAt<TypeList<H, T>, 0>
+    struct TLIndexOf<TypeList<H, T>, NullType>
+    {
+        enum { Value = -1 };
+    };
+
+    template <typename H>
+    struct TLIndexOf<TypeList<H, NullType>, H>
+    {
+        enum { Value = 0 };
+    };
+
+    template <typename H, typename F>
+    struct TLIndexOf<TypeList<H, NullType>, F>
+    {
+        enum { Value = -1 };
+    };
+
+    template <typename H, typename T>
+    struct TLIndexOf<TypeList<H, T>, H>
+    {
+        enum { Value = 0 };
+    };
+
+    template <typename H, typename T, typename F>
+    struct TLIndexOf<TypeList<H, T>, F>
+    {
+        enum { Value = 1 + TLIndexOf<T, F>::Value };
+    };
+
+    template <typename TL, size_t i>
+    struct TLTypeAt;
+
+    template <typename H, typename T>
+    struct TLTypeAt<TypeList<H, T>, 0>
     {
         typedef H Type;
     };
 
     template <typename H, typename T, size_t i>
-    struct TLAt<TypeList<H, T>, i>
+    struct TLTypeAt<TypeList<H, T>, i>
     {
-        typedef typename TLAt<T, i - 1>::Type Type;
+        typedef typename TLTypeAt<T, i - 1>::Type Type;
     };
 
     template <typename TL, typename T>
