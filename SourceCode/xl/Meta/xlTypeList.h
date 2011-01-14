@@ -52,20 +52,8 @@ namespace xl
     template <typename TL, typename F>
     struct TLIndexOf;
 
-    template <typename H, typename T>
-    struct TLIndexOf<TypeList<H, T>, NullType>
-    {
-        enum { Value = -1 };
-    };
-
-    template <typename H>
-    struct TLIndexOf<TypeList<H, NullType>, H>
-    {
-        enum { Value = 0 };
-    };
-
-    template <typename H, typename F>
-    struct TLIndexOf<TypeList<H, NullType>, F>
+    template <typename T>
+    struct TLIndexOf<NullType>
     {
         enum { Value = -1 };
     };
@@ -79,7 +67,7 @@ namespace xl
     template <typename H, typename T, typename F>
     struct TLIndexOf<TypeList<H, T>, F>
     {
-        enum { Value = 1 + TLIndexOf<T, F>::Value };
+        enum { Value = TLIndexOf<T, F>::Value == -1 ? -1 : 1 + TLIndexOf<T, F>::Value };
     };
 
     template <typename TL, size_t i>
