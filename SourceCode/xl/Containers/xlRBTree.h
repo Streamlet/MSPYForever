@@ -1385,4 +1385,49 @@ namespace xl
 
 } // namespace xl
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::RBTree
+// ;------------------------------------------------------------------------------
+// xl::RBTree<*>{
+//     preview (
+//         #(
+//             "[",
+//             $e.m_nSize,
+//             "](",
+//             #tree(
+//                 head: $e.m_pRoot,
+//                 left: pLeft,
+//                 right: pRight,
+//                 size: $e.m_nSize
+//             ) : $e.tValue,
+//             ")"
+//         )
+//     )
+//     children (
+//         #(
+//             #tree(
+//                 head: $e.m_pRoot,
+//                 left: pLeft,
+//                 right: pRight,
+//                 size: $e.m_nSize
+//             ) : $e.tValue
+//         )
+//     )
+// }
+// xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
+//     preview (
+//         $e.m_pCurrent->tValue
+//     )
+//     children (
+//         #(
+//             [ptr] : &$e.m_pCurrent->tValue
+//         )
+//     )
+// }
+//
+
 #endif // #ifndef __XLTREE_H_6BB48AA6_133A_4E9F_944E_504B887B6980_INCLUDED__

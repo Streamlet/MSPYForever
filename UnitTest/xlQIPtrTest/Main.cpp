@@ -96,8 +96,8 @@ TEST_CASE(operator_point_ref)
     pS->y = 2;
 
     QIPtr<s> b(pS);
-    TEST_ASSERT(pS->x == 1);
-    TEST_ASSERT(pS->y == 2);
+    TEST_ASSERT(b->x == 1);
+    TEST_ASSERT(b->y == 2);
 }
 
 int main()

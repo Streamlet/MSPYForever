@@ -121,4 +121,22 @@ namespace xl
 
 } // namespace xl
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::Pair
+// ;------------------------------------------------------------------------------
+// xl::Pair<*>{
+//     preview (
+//         #(
+//             $e.Key,
+//             "->",
+//             $e.Value
+//         )
+//     )
+// }
+//
+
 #endif // #ifndef __XLPAIR_H_E7935E32_4626_4FB9_B582_4D3DA2D9CF69_INCLUDED__

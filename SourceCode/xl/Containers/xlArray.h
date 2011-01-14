@@ -1014,4 +1014,43 @@ namespace xl
 
 } // namespace xl
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::Array
+// ;------------------------------------------------------------------------------
+// xl::Array<*>{
+//     preview (
+//         #(
+//             "[",
+//             $e.m_nEof - $e.m_nStart,
+//             "](",
+//             #array(
+//                 expr: $e.m_pData[$e.m_nStart + $i],
+//                 size: $e.m_nEof - $e.m_nStart
+//             ),
+//             ")"
+//         )
+//     )
+//     children (
+//         #(
+//             #array(
+//                 expr: $e.m_pData[$e.m_nStart + $i],
+//                 size: $e.m_nEof - $e.m_nStart
+//             )
+//         )
+//     )
+// }
+// xl::Array<*>::Iterator|xl::Array<*>::ReverseIterator{
+//     preview (
+//         *$e.m_pCurrent
+//     )
+//     children (
+//         #([ptr] : $e.m_pCurrent)
+//     )
+// }
+// 
+
 #endif // #ifndef __XLARRAY_H_3B18D7E2_B52A_4D57_BE4B_657F9D17320D_INCLUDED__

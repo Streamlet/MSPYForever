@@ -554,4 +554,45 @@ namespace xl
 
 } // namespace xl
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::String
+// ;------------------------------------------------------------------------------
+// xl::StringT<wchar_t>{
+//     preview (
+//         [&$e.m_aData.m_pData[$e.m_aData.m_nStart],su]
+//     )
+//     stringview (
+//         [&$e.m_aData.m_pData[$e.m_aData.m_nStart],sub]
+//     )
+//     children (
+//         #(
+//             #array(
+//                 expr: $e.m_aData.m_pData[$e.m_aData.m_nStart + $i],
+//                 size: $e.m_aData.m_nEof - $e.m_aData.m_nStart
+//             )
+//         )
+//     )
+// }
+// xl::StringT<char>{
+//     preview (
+//         [&$e.m_aData.m_pData[$e.m_aData.m_nStart],s]
+//     )
+//     stringview (
+//         [&$e.m_aData.m_pData[$e.m_aData.m_nStart],sb]
+//     )
+//     children (
+//         #(
+//             #array(
+//                 expr: $e.m_aData.m_pData[$e.m_aData.m_nStart + $i],
+//                 size: $e.m_aData.m_nEof - $e.m_aData.m_nStart
+//             )
+//         )
+//     )
+// }
+//
+
 #endif // #ifndef __XLSTRING_H_27999BE8_99C9_4C06_87AB_AA916A88B287_INCLUDED__

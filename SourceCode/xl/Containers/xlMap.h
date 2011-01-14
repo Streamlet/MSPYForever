@@ -242,4 +242,39 @@ namespace xl
 
 };
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::Map
+// ;------------------------------------------------------------------------------
+// xl::Map<*>{
+//     preview (
+//         #(
+//             "[",
+//             $e.m_tData.m_nSize,
+//             "](",
+//             #tree(
+//                 head: $e.m_tData.m_pRoot,
+//                 left: pLeft,
+//                 right: pRight,
+//                 size: $e.m_tData.m_nSize
+//             ) : $e.tValue,
+//             ")"
+//         )
+//     )
+//     children (
+//         #(
+//             #tree(
+//                 head: $e.m_tData.m_pRoot,
+//                 left: pLeft,
+//                 right: pRight,
+//                 size: $e.m_tData.m_nSize
+//             ) : $e.tValue
+//         )
+//     )
+// }
+//
+
 #endif // #ifndef __XLMAP_H_793F2C3D_4121_413E_B70F_E7A686081AC4_INCLUDED__

@@ -152,5 +152,29 @@ namespace xl
 
 } // namespace xl
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::QIPtr
+// ;------------------------------------------------------------------------------
+// xl::QIPtr<*>{
+//     preview (
+//         #(
+//             "[",
+//             #if ($e.m_pcRefs == 0) ( 0 ) #else ( *$e.m_pcRefs ),
+//             "] ",
+//             $e.m_pData
+//         )
+//     )
+//     children (
+//         #(
+//             [ref] : #if ($e.m_pcRefs == 0) ( 0 ) #else ( *$e.m_pcRefs ),
+//             [val] : *$e.m_pData
+//         )
+//     )
+// }
+//
 
 #endif // #ifndef __XLQIPTR_H_E6B64B03_95F8_4C7D_BC72_C3CE917F3DEF_INCLUDED__

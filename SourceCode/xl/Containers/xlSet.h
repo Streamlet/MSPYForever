@@ -219,4 +219,39 @@ namespace xl
 
 } // namespace xl
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::Set
+// ;------------------------------------------------------------------------------
+// xl::Set<*>{
+//     preview (
+//         #(
+//             "[",
+//             $e.m_tData.m_nSize,
+//             "](",
+//             #tree(
+//                 head: $e.m_tData.m_pRoot,
+//                 left: pLeft,
+//                 right: pRight,
+//                 size: $e.m_tData.m_nSize
+//             ) : $e.tValue,
+//             ")"
+//         )
+//     )
+//     children (
+//         #(
+//             #tree(
+//                 head: $e.m_tData.m_pRoot,
+//                 left: pLeft,
+//                 right: pRight,
+//                 size: $e.m_tData.m_nSize
+//             ) : $e.tValue
+//         )
+//     )
+// }
+//
+
 #endif // #ifndef __XLSET_H_11EAD852_068B_4809_B06D_F0FDF1E34E48_INCLUDED__
