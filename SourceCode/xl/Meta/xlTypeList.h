@@ -235,9 +235,9 @@ namespace xl
     };
 
 #if defined(_MSC_VER)
-#    define XL_TYPELIST(...)    ::xl::MakeTypeList<__VA_ARGS__>::Type
+#  define XL_TYPELIST(...)      ::xl::MakeTypeList<__VA_ARGS__>::Type
 #elif defined(__GNUC__)
-#    define XL_TYPELIST(args...)    ::xl::MakeTypeList<args>::Type
+#  define XL_TYPELIST(args...)  ::xl::MakeTypeList<args>::Type
 #endif
 
 } // namespace xl
