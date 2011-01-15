@@ -754,10 +754,11 @@ namespace xl
 
 // Extends to
 // m(0) d m(1) d ... d m(n)
-#define XL_REP(m, n, d)    XL_CONN(XL_REP_,  n)(m, d)
-#define XL_REPX(m, n, d)   XL_CONN(XL_REPX_, n)(m, d)
-#define XL_REPY(m, n, d)   XL_CONN(XL_REPY_, n)(m, d)
-#define XL_REPZ(m, n, d)   XL_CONN(XL_REPZ_, n)(m, d)
+#define XL_REP_MAX          99
+#define XL_REP(m, n, d)     XL_CONN(XL_REP_,  n)(m, d)
+#define XL_REPX(m, n, d)    XL_CONN(XL_REPX_, n)(m, d)
+#define XL_REPY(m, n, d)    XL_CONN(XL_REPY_, n)(m, d)
+#define XL_REPZ(m, n, d)    XL_CONN(XL_REPZ_, n)(m, d)
 
 } // namespace xl
 
