@@ -21,9 +21,12 @@
 #include <xl/Objects/xlQIPtr.h>
 #include <xl/Meta/xlMacros.h>
 #include <xl/Meta/xlTypeList.h>
+#include <xl/Meta/xlTypeTraits.h>
 
 namespace xl
 {
+#define XL_FUNCTION_DEFINE_MAX  20
+
 #define XL_FUNCTION_TYPENAME_DECLARE_PATTERN(n)     typename T##n
 #define XL_FUNCTION_TYPENAME_DECLARE(n)             XL_REPZ(XL_FUNCTION_TYPENAME_DECLARE_PATTERN, n, XL_COMMA)
 
@@ -36,356 +39,201 @@ namespace xl
 #define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        v##n
 #define XL_FUNCTION_VARIABLE_LIST(n)                XL_REPZ(XL_FUNCTION_VARIABLE_LIST_PATTERN, n, XL_COMMA)
 
-    template <typename S>
-    class Function;
-
-    //------------------------------------------------------------------------------
-    // void ()
-    //------------------------------------------------------------------------------
-
-    class Function_BaseVoid
-    {
-    public:
-        virtual void operator ()() = 0;
-    };
-
-    template <typename T>
-    class Function_Void : public Function_BaseVoid
-    {
-    private:
-        T m_tFunction;
-    public:
-        Function_Void(const T &tFunction)
-            : m_tFunction(tFunction)
-        {
-
-        }
-    public:
-        void operator ()()
-        {
-            return m_tFunction();
-        }
-    };
-
-    template <typename T>
-    class Function_ObjVoid : public Function_BaseVoid
-    {
-    private:
-        T *m_pObject;
-        void (T::*m_pFunction)();
-
-    public:
-        Function_ObjVoid(T *pObject, void (T::*pFunction)())
-            : m_pObject(pObject), m_pFunction(pFunction)
-        {
-
-        }
-    public:
-        void operator ()()
-        {
-            (m_pObject->*m_pFunction)();
-        }
-    };
-
-    template <>
-    class Function<void ()>
-    {
-    private:
-        QIPtr<Function_BaseVoid> m_pFunction;
-
-    public:
-        template <typename T>
-        Function(T tFunction)
-        {
-            m_pFunction = new Function_Void<T>(tFunction);
-        }
-
-        template <typename T>
-        Function(T *pObject, void (T::*pFunction)())
-        {
-            m_pFunction = new Function_ObjVoid<T>(pObject, pFunction);
-        }
-
-    public:
-        Function(const Function &that)
-        {
-            this->m_pFunction = that.m_pFunction;
-        }
-
-    public:
-        Function &operator = (const Function &that)
-        {
-            this->m_pFunction = that.m_pFunction;
-        }
-
-    public:
-        void operator()()
-        {
-            (*m_pFunction)();
-        }
-    };
-
-    //------------------------------------------------------------------------------
-    // R()
-    //------------------------------------------------------------------------------
+    template <typename R, typename TL>
+    class FunctionBase;
 
     template <typename R>
-    class Function_Base
+    class FunctionBase<R, XL_TYPELIST_0()>
     {
     public:
-        virtual R operator ()() = 0;
+        virtual FunctionBase *Clone() const = 0;
+        virtual R Invoke()                  = 0;
+        virtual ~FunctionBase() {}
     };
 
-    template <typename R, typename T>
-    class Function_ : public Function_Base<R>
+#define XL_FUNCTION_FUNCTORBASE_PATTERN(n)                                                          \
+                                                                                                    \
+    template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n)>                                          \
+    class FunctionBase<R, XL_EVAL(XL_CONN(XL_TYPELIST_, XL_INC(n)), XL_FUNCTION_TYPENAME_LIST(n))>  \
+    {                                                                                               \
+    public:                                                                                         \
+        virtual FunctionBase *Clone() const             = 0;                                        \
+        virtual R Invoke(XL_FUNCTION_TYPENAME_LIST(n))  = 0;                                        \
+        virtual ~FunctionBase() {}                                                                  \
+    };                                                                                              \
+
+#define XL_FUNCTION_FUNCTORBASE(n)  XL_REPY(XL_FUNCTION_FUNCTORBASE_PATTERN, n, XL_NIL)
+
+    XL_FUNCTION_FUNCTORBASE(XL_FUNCTION_DEFINE_MAX)
+
+    template <typename R, typename P, typename F>
+    class FunctionHandler : public FunctionBase<R, P>
     {
     private:
-        T m_tFunction;
+        typedef R ReturnType;
+        typedef P ParamList;
+        typedef F FunctionType;
+
     public:
-        Function_(const T &tFunction)
-            : m_tFunction(tFunction)
+        FunctionHandler(const FunctionType &fnFunction)
+            : m_fnFunction(fnFunction)
         {
 
         }
+
+    private:
+        FunctionType m_fnFunction;
+
     public:
-        R operator ()()
+        FunctionBase *Clone() const
         {
-            return m_tFunction();
+            return new FunctionHandler(m_fnFunction);
         }
+
+        ReturnType Invoke()
+        {
+            return m_fnFunction();
+        }
+
+#define XL_FUNCTION_FUNCTION_INVOKE_PATTERN(n)                          \
+                                                                        \
+        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type      \
+                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                   \
+                                                                        \
+        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))             \
+        {                                                               \
+            return m_fnFunction(XL_FUNCTION_VARIABLE_LIST(n));          \
+        }                                                               \
+
+#define XL_FUNCTION_FUNCTION_INVOKE(n)  XL_REPY(XL_FUNCTION_FUNCTION_INVOKE_PATTERN, n, XL_NIL)
+
+        XL_FUNCTION_FUNCTION_INVOKE(XL_FUNCTION_DEFINE_MAX)
     };
 
-    template <typename R, typename T>
-    class Function_Obj : public Function_Base<R>
+    template <typename R, typename P, typename T, typename F>
+    class MemberFunctionHandler : public FunctionBase<R, P>
     {
     private:
-        T *m_pObject;
-        R (T::*m_pFunction)();
+        typedef R ReturnType;
+        typedef P ParamList;
+        typedef T ClassPtrType;
+        typedef F MemberFunctionType;
 
     public:
-        Function_Obj(T *pObject, R (T::*pFunction)())
-            : m_pObject(pObject), m_pFunction(pFunction)
+        MemberFunctionHandler(const ClassPtrType &pObject, const MemberFunctionType &fnFunction)
+            : m_pObject(pObject), m_fnFunction(fnFunction)
         {
 
         }
+
+    private:
+        ClassPtrType        m_pObject;
+        MemberFunctionType  m_fnFunction;
+
     public:
-        R operator ()()
+        virtual FunctionBase *Clone()
         {
-            return (m_pObject->*m_pFunction)();
+            return new FunctionHandler(m_pObject, m_fnFunction);
         }
+
+        ReturnType Invoke()
+        {
+            return m_pObject->*m_fnFunction();
+        }
+
+#define XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN(n)                        \
+                                                                            \
+        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type          \
+                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                       \
+                                                                            \
+        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))                 \
+        {                                                                   \
+            return m_pObject->*m_fnFunction(XL_FUNCTION_VARIABLE_LIST(n));  \
+        }                                                                   \
+
+#define XL_FUNCTION_MEMBERFUNCTION_INVOKE(n)  XL_REPY(XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN, n, XL_NIL)
+
+        XL_FUNCTION_MEMBERFUNCTION_INVOKE(XL_FUNCTION_DEFINE_MAX)
     };
+
+    template <typename S>
+    class Function;
 
     template <typename R>
     class Function<R ()>
     {
     private:
-        QIPtr<Function_Base<R>> m_pFunction;
+        typedef R (&FunctionType)();
+        typedef typename MakeTypeList<>::Type   ParamList;
+
+#define XL_FUCTION_IMPLEMENT_BODY()                                                                             \
+                                                                                                                \
+    private:                                                                                                    \
+        typedef R                                   ReturnType;                                                 \
+        typedef FunctionBase<ReturnType, ParamList> FunctionBaseType;                                           \
+                                                                                                                \
+    public:                                                                                                     \
+        Function();                                                                                             \
+        Function(const Function &that)                                                                          \
+            : m_pFunctionBase(that.m_pFunctionBase)                                                             \
+        {                                                                                                       \
+                                                                                                                \
+        }                                                                                                       \
+                                                                                                                \
+    public:                                                                                                     \
+        Function(const FunctionType &fnFunction)                                                                \
+            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, FunctionType>(fnFunction))             \
+        {                                                                                                       \
+                                                                                                                \
+        }                                                                                                       \
+                                                                                                                \
+        template <typename F>                                                                                   \
+        Function(const F &fnFunction)                                                                           \
+            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, F>(fnFunction))                        \
+        {                                                                                                       \
+                                                                                                                \
+        }                                                                                                       \
+                                                                                                                \
+        template <typename T, typename F>                                                                       \
+        Function(const T &pObject, const F &pMemberFunction)                                                    \
+            : m_pFunctionBase(new MemberFunctionHandler<ReturnType, ParamList, F>(pObject, pMemberFunction))    \
+        {                                                                                                       \
+                                                                                                                \
+        }                                                                                                       \
+                                                                                                                \
+    private:                                                                                                    \
+        QIPtr<FunctionBaseType> m_pFunctionBase;                                                                \
+
+        XL_FUCTION_IMPLEMENT_BODY()
 
     public:
-        template <typename T>
-        Function(T tFunction)
+        ReturnType operator()()
         {
-            m_pFunction = new Function_<R, T>(tFunction);
-        }
-
-        template <typename T>
-        Function(T *pObject, R (T::*pFunction)())
-        {
-            m_pFunction = new Function_Obj<R, T>(pObject, pFunction);
-        }
-
-    public:
-        Function(const Function &that)
-        {
-            this->m_pFunction = that.m_pFunction;
-        }
-
-    public:
-        Function &operator = (const Function &that)
-        {
-            this->m_pFunction = that.m_pFunction;
-        }
-
-    public:
-        R operator()()
-        {
-            return (*m_pFunction)();
+            return m_pFunctionBase->Invoke();
         }
     };
 
-    //------------------------------------------------------------------------------
-    // void (T0, T0, ...)
-    // R (T0, T1, ...)
-    //------------------------------------------------------------------------------
+#define XL_FUNCTION_IMPLEMENT_PATTERN(n)                                                \
+                                                                                        \
+    template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n)>                              \
+    class Function<R (XL_FUNCTION_TYPENAME_LIST(n))>                                    \
+    {                                                                                   \
+    private:                                                                            \
+        typedef R (&FunctionType)(XL_FUNCTION_TYPENAME_LIST(n));                        \
+        typedef typename MakeTypeList<XL_FUNCTION_TYPENAME_LIST(n)>::Type ParamList;    \
+                                                                                        \
+        XL_FUCTION_IMPLEMENT_BODY()                                                     \
+                                                                                        \
+    public:                                                                             \
+        ReturnType operator()(XL_FUNCTION_TYPENAME_VARIABLE(n))                         \
+        {                                                                               \
+            return m_pFunctionBase->Invoke(XL_FUNCTION_VARIABLE_LIST(n));               \
+        }                                                                               \
+    };                                                                                  \
 
-#define XL_FUNCTION_GENERATOR(n)                                                                            \
-                                                                                                            \
-    template <XL_FUNCTION_TYPENAME_DECLARE(n)>                                                              \
-    class Function##n##BaseVoid                                                                             \
-    {                                                                                                       \
-    public:                                                                                                 \
-        virtual void operator ()(XL_FUNCTION_TYPENAME_LIST(n)) = 0;                                         \
-    };                                                                                                      \
-                                                                                                            \
-    template <XL_FUNCTION_TYPENAME_DECLARE(n), typename T>                                                  \
-    class Function##n##Void : public Function##n##BaseVoid<XL_FUNCTION_TYPENAME_LIST(n)>                    \
-    {                                                                                                       \
-    private:                                                                                                \
-        T m_tFunction;                                                                                      \
-    public:                                                                                                 \
-        Function##n##Void(const T &tFunction)                                                               \
-            : m_tFunction(tFunction)                                                                        \
-        {                                                                                                   \
-                                                                                                            \
-        }                                                                                                   \
-    public:                                                                                                 \
-        void operator ()(XL_FUNCTION_TYPENAME_VARIABLE(n))                                                  \
-        {                                                                                                   \
-            return m_tFunction(XL_FUNCTION_VARIABLE_LIST(n));                                               \
-        }                                                                                                   \
-    };                                                                                                      \
-                                                                                                            \
-    template <XL_FUNCTION_TYPENAME_DECLARE(n), typename T>                                                  \
-    class Function##n##ObjVoid : public Function##n##BaseVoid<XL_FUNCTION_TYPENAME_LIST(n)>                 \
-    {                                                                                                       \
-    private:                                                                                                \
-        T *m_pObject;                                                                                       \
-        void (T::*m_pFunction)(XL_FUNCTION_TYPENAME_LIST(n));                                               \
-                                                                                                            \
-    public:                                                                                                 \
-        Function##n##ObjVoid(T *pObject, void (T::*pFunction)(XL_FUNCTION_TYPENAME_LIST(n)))                \
-            : m_pObject(pObject), m_pFunction(pFunction)                                                    \
-        {                                                                                                   \
-                                                                                                            \
-        }                                                                                                   \
-    public:                                                                                                 \
-        void operator ()(XL_FUNCTION_TYPENAME_VARIABLE(n))                                                  \
-        {                                                                                                   \
-            (m_pObject->*m_pFunction)(XL_FUNCTION_VARIABLE_LIST(n));                                        \
-        }                                                                                                   \
-    };                                                                                                      \
-                                                                                                            \
-    template <XL_FUNCTION_TYPENAME_DECLARE(n)>                                                              \
-    class Function<void (XL_FUNCTION_TYPENAME_LIST(n))>                                                     \
-    {                                                                                                       \
-    private:                                                                                                \
-        QIPtr<Function##n##BaseVoid<XL_FUNCTION_TYPENAME_LIST(n)>> m_pFunction;                             \
-                                                                                                            \
-    public:                                                                                                 \
-        template <typename T>                                                                               \
-        Function(T tFunction)                                                                               \
-        {                                                                                                   \
-            m_pFunction = new Function##n##Void<XL_FUNCTION_TYPENAME_LIST(n), T>(tFunction);                \
-        }                                                                                                   \
-                                                                                                            \
-        template <typename T>                                                                               \
-        Function(T *pObject, void (T::*pFunction)(XL_FUNCTION_TYPENAME_LIST(n)))                            \
-        {                                                                                                   \
-            m_pFunction = new Function##n##ObjVoid<XL_FUNCTION_TYPENAME_LIST(n), T>(pObject, pFunction);    \
-        }                                                                                                   \
-                                                                                                            \
-    public:                                                                                                 \
-        Function(const Function &that)                                                                      \
-        {                                                                                                   \
-            this->m_pFunction = that.m_pFunction;                                                           \
-        }                                                                                                   \
-                                                                                                            \
-    public:                                                                                                 \
-        Function &operator = (const Function &that)                                                         \
-        {                                                                                                   \
-            this->m_pFunction = that.m_pFunction;                                                           \
-        }                                                                                                   \
-                                                                                                            \
-    public:                                                                                                 \
-        void operator()(XL_FUNCTION_TYPENAME_VARIABLE(n))                                                   \
-        {                                                                                                   \
-            (*m_pFunction)(XL_FUNCTION_VARIABLE_LIST(n));                                                   \
-        }                                                                                                   \
-    };                                                                                                      \
-                                                                                                            \
-    template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n)>                                                  \
-    class Function##n##Base                                                                                 \
-    {                                                                                                       \
-    public:                                                                                                 \
-        virtual R operator ()(XL_FUNCTION_TYPENAME_LIST(n)) = 0;                                            \
-    };                                                                                                      \
-                                                                                                            \
-    template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n), typename T>                                      \
-    class Function##n## : public Function##n##Base<R, XL_FUNCTION_TYPENAME_LIST(n)>                         \
-    {                                                                                                       \
-    private:                                                                                                \
-        T m_tFunction;                                                                                      \
-    public:                                                                                                 \
-        Function##n##(const T &tFunction)                                                                   \
-            : m_tFunction(tFunction)                                                                        \
-        {                                                                                                   \
-                                                                                                            \
-        }                                                                                                   \
-    public:                                                                                                 \
-        R operator ()(XL_FUNCTION_TYPENAME_VARIABLE(n))                                                     \
-        {                                                                                                   \
-            return m_tFunction(XL_FUNCTION_VARIABLE_LIST(n));                                               \
-        }                                                                                                   \
-    };                                                                                                      \
-                                                                                                            \
-    template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n), typename T>                                      \
-    class Function##n##Obj : public Function##n##Base<R, XL_FUNCTION_TYPENAME_LIST(n)>                      \
-    {                                                                                                       \
-    private:                                                                                                \
-        T *m_pObject;                                                                                       \
-        R (T::*m_pFunction)(XL_FUNCTION_TYPENAME_LIST(n));                                                  \
-                                                                                                            \
-    public:                                                                                                 \
-        Function##n##Obj(T *pObject, R (T::*pFunction)(XL_FUNCTION_TYPENAME_LIST(n)))                       \
-            : m_pObject(pObject), m_pFunction(pFunction)                                                    \
-        {                                                                                                   \
-                                                                                                            \
-        }                                                                                                   \
-    public:                                                                                                 \
-        R operator ()(XL_FUNCTION_TYPENAME_VARIABLE(n))                                                     \
-        {                                                                                                   \
-            return (m_pObject->*m_pFunction)(XL_FUNCTION_VARIABLE_LIST(n));                                 \
-        }                                                                                                   \
-    };                                                                                                      \
-                                                                                                            \
-    template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n)>                                                  \
-    class Function<R (XL_FUNCTION_TYPENAME_LIST(n))>                                                        \
-    {                                                                                                       \
-    private:                                                                                                \
-        QIPtr<Function##n##Base<R, XL_FUNCTION_TYPENAME_LIST(n)>> m_pFunction;                              \
-                                                                                                            \
-    public:                                                                                                 \
-        template <typename T>                                                                               \
-        Function(T tFunction)                                                                               \
-        {                                                                                                   \
-            m_pFunction = new Function##n##<R, XL_FUNCTION_TYPENAME_LIST(n), T>(tFunction);                 \
-        }                                                                                                   \
-                                                                                                            \
-        template <typename T>                                                                               \
-        Function(T *pObject, R (T::*pFunction)(XL_FUNCTION_TYPENAME_LIST(n)))                               \
-        {                                                                                                   \
-            m_pFunction = new Function##n##Obj<R, XL_FUNCTION_TYPENAME_LIST(n), T>(pObject, pFunction);     \
-        }                                                                                                   \
-                                                                                                            \
-    public:                                                                                                 \
-        Function(const Function &that)                                                                      \
-        {                                                                                                   \
-            this->m_pFunction = that.m_pFunction;                                                           \
-        }                                                                                                   \
-                                                                                                            \
-    public:                                                                                                 \
-        Function &operator = (const Function &that)                                                         \
-        {                                                                                                   \
-            this->m_pFunction = that.m_pFunction;                                                           \
-        }                                                                                                   \
-                                                                                                            \
-    public:                                                                                                 \
-        R operator()(XL_FUNCTION_TYPENAME_VARIABLE(n))                                                      \
-        {                                                                                                   \
-            return (*m_pFunction)(XL_FUNCTION_VARIABLE_LIST(n));                                            \
-        }                                                                                                   \
-    };                                                                                                      \
+#define XL_FUNCTION_IMPLEMENT(n)    XL_REPY(XL_FUNCTION_IMPLEMENT_PATTERN, n, XL_NIL)
 
-    XL_REPX(XL_FUNCTION_GENERATOR, 99, XL_NIL)
+    XL_FUNCTION_IMPLEMENT(XL_FUNCTION_DEFINE_MAX)
 
 } // namespace xl
 
