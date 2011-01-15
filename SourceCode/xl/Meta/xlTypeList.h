@@ -17,6 +17,7 @@
 #define __XLTYPELIST_H_E9C48089_4173_48B2_9442_5D9B052D5652_INCLUDED__
 
 
+#include <xl/xlDef.h>
 #include <xl/Meta/xlMacros.h>
 
 namespace xl
