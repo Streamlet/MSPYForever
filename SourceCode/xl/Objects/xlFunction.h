@@ -131,25 +131,25 @@ namespace xl
         MemberFunctionType  m_fnFunction;
 
     public:
-        virtual FunctionBase *Clone()
+        FunctionBase *Clone() const
         {
-            return new FunctionHandler(m_pObject, m_fnFunction);
+            return new MemberFunctionHandler(m_pObject, m_fnFunction);
         }
 
         ReturnType Invoke()
         {
-            return m_pObject->*m_fnFunction();
+            return (m_pObject->*m_fnFunction)();
         }
 
-#define XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN(n)                        \
-                                                                            \
-        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type          \
-                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                       \
-                                                                            \
-        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))                 \
-        {                                                                   \
-            return m_pObject->*m_fnFunction(XL_FUNCTION_VARIABLE_LIST(n));  \
-        }                                                                   \
+#define XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN(n)                            \
+                                                                                \
+        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type              \
+                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                           \
+                                                                                \
+        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))                     \
+        {                                                                       \
+            return (m_pObject->*m_fnFunction)(XL_FUNCTION_VARIABLE_LIST(n));    \
+        }                                                                       \
 
 #define XL_FUNCTION_MEMBERFUNCTION_INVOKE(n)  XL_REPY(XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN, n, XL_NIL)
 
@@ -163,8 +163,7 @@ namespace xl
     class Function<R ()>
     {
     private:
-        typedef R (&FunctionType)();
-        typedef typename MakeTypeList<>::Type   ParamList;
+        typedef typename MakeTypeList<>::Type ParamList;
 
 #define XL_FUCTION_IMPLEMENT_BODY()                                                                             \
                                                                                                                 \
@@ -173,7 +172,12 @@ namespace xl
         typedef FunctionBase<ReturnType, ParamList> FunctionBaseType;                                           \
                                                                                                                 \
     public:                                                                                                     \
-        Function();                                                                                             \
+        Function()                                                                                              \
+            : m_pFunctionBase(nullptr)                                                                          \
+        {                                                                                                       \
+                                                                                                                \
+        }                                                                                                       \
+                                                                                                                \
         Function(const Function &that)                                                                          \
             : m_pFunctionBase(that.m_pFunctionBase)                                                             \
         {                                                                                                       \
@@ -181,12 +185,6 @@ namespace xl
         }                                                                                                       \
                                                                                                                 \
     public:                                                                                                     \
-        Function(const FunctionType &fnFunction)                                                                \
-            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, FunctionType>(fnFunction))             \
-        {                                                                                                       \
-                                                                                                                \
-        }                                                                                                       \
-                                                                                                                \
         template <typename F>                                                                                   \
         Function(const F &fnFunction)                                                                           \
             : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, F>(fnFunction))                        \
@@ -196,9 +194,16 @@ namespace xl
                                                                                                                 \
         template <typename T, typename F>                                                                       \
         Function(const T &pObject, const F &pMemberFunction)                                                    \
-            : m_pFunctionBase(new MemberFunctionHandler<ReturnType, ParamList, F>(pObject, pMemberFunction))    \
+            : m_pFunctionBase(new MemberFunctionHandler<ReturnType, ParamList, T, F>(pObject, pMemberFunction)) \
         {                                                                                                       \
                                                                                                                 \
+        }                                                                                                       \
+                                                                                                                \
+    public:                                                                                                     \
+        Function &operator = (const Function &that)                                                             \
+        {                                                                                                       \
+            this->m_pFunctionBase = that.m_pFunctionBase->Clone();                                              \
+            return *this;                                                                                       \
         }                                                                                                       \
                                                                                                                 \
     private:                                                                                                    \
@@ -219,7 +224,6 @@ namespace xl
     class Function<R (XL_FUNCTION_TYPENAME_LIST(n))>                                    \
     {                                                                                   \
     private:                                                                            \
-        typedef R (&FunctionType)(XL_FUNCTION_TYPENAME_LIST(n));                        \
         typedef typename MakeTypeList<XL_FUNCTION_TYPENAME_LIST(n)>::Type ParamList;    \
                                                                                         \
         XL_FUCTION_IMPLEMENT_BODY()                                                     \
