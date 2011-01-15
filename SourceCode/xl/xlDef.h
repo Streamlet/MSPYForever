@@ -35,6 +35,9 @@ typedef unsigned int size_t;
 #define nullptr 0
 #endif
 
+    struct NullType;
+    struct EmptyType {};
+
 } // namespace xl
 
 #endif // #ifndef __XLDEF_H_1C304B99_7B3A_4BDB_9BE7_0C76AD3C1126_INCLUDED__

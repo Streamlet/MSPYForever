@@ -56,6 +56,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{3CF5010F-D
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Meta\xlMacros.h = SourceCode\xl\Meta\xlMacros.h
 		SourceCode\xl\Meta\xlTypeList.h = SourceCode\xl\Meta\xlTypeList.h
+		SourceCode\xl\Meta\xlTypeTraits.h = SourceCode\xl\Meta\xlTypeTraits.h
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlTypeListTest", "UnitTest\xlTypeListTest\xlTypeListTest.vcxproj", "{8D8EAAF1-93DD-42D0-8F08-D149A07E4E8C}"

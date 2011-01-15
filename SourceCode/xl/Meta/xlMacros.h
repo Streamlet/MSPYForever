@@ -22,6 +22,8 @@
 namespace xl
 {
 #define XL_NIL
+#define XL_LPARE    (
+#define XL_RPARE    )
 #define XL_COMMA    ,
 #define XL_VAL(s)   s
 
@@ -30,6 +32,8 @@ namespace xl
 
 #define XL_TOSTR_(s)    #s
 #define XL_TOSTR(s)     XL_TOSTR_(s)
+
+#define XL_EVAL(f, p)   f XL_LPARE p XL_RPARE
 
 #define XL_INC_0    1
 #define XL_INC_1    2
