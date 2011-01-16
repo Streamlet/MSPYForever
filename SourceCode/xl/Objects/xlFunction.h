@@ -163,6 +163,7 @@ namespace xl
     class Function<R ()>
     {
     private:
+        typedef R (&FunctionType)();
         typedef typename MakeTypeList<>::Type ParamList;
 
 #define XL_FUCTION_IMPLEMENT_BODY()                                                                             \
@@ -180,6 +181,13 @@ namespace xl
                                                                                                                 \
         Function(const Function &that)                                                                          \
             : m_pFunctionBase(that.m_pFunctionBase)                                                             \
+        {                                                                                                       \
+                                                                                                                \
+        }                                                                                                       \
+                                                                                                                \
+    public:                                                                                                     \
+        Function(const FunctionType &fnFunction)                                                                \
+            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, FunctionType>(fnFunction))             \
         {                                                                                                       \
                                                                                                                 \
         }                                                                                                       \
@@ -224,6 +232,7 @@ namespace xl
     class Function<R (XL_FUNCTION_TYPENAME_LIST(n))>                                    \
     {                                                                                   \
     private:                                                                            \
+        typedef R (&FunctionType)(XL_FUNCTION_TYPENAME_LIST(n));                        \
         typedef typename MakeTypeList<XL_FUNCTION_TYPENAME_LIST(n)>::Type ParamList;    \
                                                                                         \
         XL_FUCTION_IMPLEMENT_BODY()                                                     \

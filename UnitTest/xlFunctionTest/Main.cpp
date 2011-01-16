@@ -109,28 +109,36 @@ struct Test
 TEST_CASE(invoke)
 {
     Function<void ()>    void0_fun(&voidfun0);
+    Function<void ()>    void0_fun_(voidfun0);
     Function<void ()>    void0_functor(voidfunctor0);
     Function<void ()>    void0_memfun(&test, &Test::voidmem0);
     Function<void (int)> void1_fun(&voidfun1);
+    Function<void (int)> void1_fun_(voidfun1);
     Function<void (int)> void1_functor(voidfunctor1);
     Function<void (int)> void1_memfun(&test, &Test::voidmem1);
     Function<int  ()>    int0_fun(&intfun0);
+    Function<int  ()>    int0_fun_(intfun0);
     Function<int  ()>    int0_functor(intfunctor0);
     Function<int  ()>    int0_memfun(&test, &Test::intmem0);
     Function<int  (int)> int1_fun(&intfun1);
+    Function<int  (int)> int1_fun_(intfun1);
     Function<int  (int)> int1_functor(intfunctor1);
     Function<int  (int)> int1_memfun(&test, &Test::intmem1);
 
     void0_fun();
+    void0_fun_();
     void0_functor();
     void0_memfun();
     void1_fun(0);
+    void1_fun_(0);
     void1_functor(0);
     void1_memfun(0);
     TEST_ASSERT(int0_fun() == -1);
+    TEST_ASSERT(int0_fun_() == -1);
     TEST_ASSERT(int0_functor() == -2);
     TEST_ASSERT(int0_memfun() == -3);
     TEST_ASSERT(int1_fun(0) == 1);
+    TEST_ASSERT(int1_fun_(0) == 1);
     TEST_ASSERT(int1_functor(0) == 2);
     TEST_ASSERT(int1_memfun(0) == 3);
 
