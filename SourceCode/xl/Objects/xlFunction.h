@@ -38,6 +38,30 @@ namespace xl
 #define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        v##n
 #define XL_FUNCTION_VARIABLE_LIST(n)                XL_REPZ(XL_FUNCTION_VARIABLE_LIST_PATTERN, n, XL_COMMA)
 
+    template <typename Signature>
+    struct GlobalFunctionTraits
+    {
+        typedef Signature ParamType;
+    };
+        
+    template <typename RetType>
+    struct GlobalFunctionTraits<RetType ()>
+    {
+        typedef RetType (&ParamType)();
+    };
+
+#define XL_FUNCTION_GLOBALFUNCTIONTRAITS_PATTERN(n)                     \
+                                                                        \
+    template <typename RetType, XL_FUNCTION_TYPENAME_DECLARE(n)>        \
+    struct GlobalFunctionTraits<RetType (XL_FUNCTION_TYPENAME_LIST(n))> \
+    {                                                                   \
+        typedef RetType (&ParamType)(XL_FUNCTION_TYPENAME_LIST(n));     \
+    };                                                                  \
+
+#define XL_FUNCTION_GLOBALFUNCTIONTRAITS(n)  XL_REPY(XL_FUNCTION_GLOBALFUNCTIONTRAITS_PATTERN, n, XL_NIL)
+
+    XL_FUNCTION_GLOBALFUNCTIONTRAITS(XL_FUNCTION_DEFINE_MAX)
+
     template <typename R, typename TL>
     class FunctionBase;
 
@@ -162,7 +186,6 @@ namespace xl
     class Function<R ()>
     {
     private:
-        typedef R (&FunctionType)();
         typedef typename MakeTypeList<>::Type ParamList;
 
 #define XL_FUCTION_IMPLEMENT_BODY()                                                                             \
@@ -185,16 +208,11 @@ namespace xl
         }                                                                                                       \
                                                                                                                 \
     public:                                                                                                     \
-        Function(const FunctionType &fnFunction)                                                                \
-            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, FunctionType>(fnFunction))             \
-        {                                                                                                       \
-                                                                                                                \
-        }                                                                                                       \
-                                                                                                                \
-    public:                                                                                                     \
         template <typename F>                                                                                   \
         Function(const F &fnFunction)                                                                           \
-            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, F>(fnFunction))                        \
+            : m_pFunctionBase(new FunctionHandler<ReturnType,                                                   \
+                                                  ParamList,                                                    \
+                                                  typename GlobalFunctionTraits<F>::ParamType>(fnFunction))     \
         {                                                                                                       \
                                                                                                                 \
         }                                                                                                       \
@@ -231,7 +249,6 @@ namespace xl
     class Function<R (XL_FUNCTION_TYPENAME_LIST(n))>                                    \
     {                                                                                   \
     private:                                                                            \
-        typedef R (&FunctionType)(XL_FUNCTION_TYPENAME_LIST(n));                        \
         typedef typename MakeTypeList<XL_FUNCTION_TYPENAME_LIST(n)>::Type ParamList;    \
                                                                                         \
         XL_FUCTION_IMPLEMENT_BODY()                                                     \
