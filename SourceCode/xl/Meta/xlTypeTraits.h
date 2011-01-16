@@ -18,9 +18,26 @@
 
 
 #include <xl/xlDef.h>
+#include <xl/Meta/xlMetaBase.h>
+#include <xl/Meta/xlTypeList.h>
 
 namespace xl
 {
+    template <bool expr, typename TypeIfTrue, typename TypeIfFalse>
+    struct StaticSelect;
+
+    template <typename TypeIfTrue, typename TypeIfFalse>
+    struct StaticSelect<true, TypeIfTrue, TypeIfFalse>
+    {
+        typedef TypeIfTrue Type;
+    };
+
+    template <typename TypeIfTrue, typename TypeIfFalse>
+    struct StaticSelect<false, TypeIfTrue, TypeIfFalse>
+    {
+        typedef TypeIfFalse Type;
+    };
+
     template <typename T>
     struct ConstTraits
     {
@@ -46,11 +63,11 @@ namespace xl
     };
 
     template <typename T>
-    struct RefTraits <T &>
+    struct RefTraits<T &>
     {
         enum { IsRef = true };
-        typedef T        RefToType;
-        typedef NullType RefType;
+        typedef T  RefToType;
+        typedef T &RefType;
     };
 
     template <typename T>
@@ -62,11 +79,11 @@ namespace xl
     };
 
     template <typename T>
-    struct RValueRefTraits <T &&>
+    struct RValueRefTraits<T &&>
     {
         enum { IsRValueRef = true };
-        typedef T        RRefToType;
-        typedef NullType RRefType;
+        typedef T   RRefToType;
+        typedef T &&RRefType;
     };
 
     template <typename T>
@@ -85,6 +102,71 @@ namespace xl
         typedef T *PtrType;
     };
 
+    template <typename T>
+    struct MemPtrTraits
+    {
+        enum { IsMemPtr = false };
+        typedef NullType ClassType;
+        typedef NullType PtrToType;
+    };
+
+    template <typename T, typename C>
+    struct MemPtrTraits<T C::*>
+    {
+        enum { IsMemPtr = false };
+        typedef C ClassType;
+        typedef T PtrToType;
+    };
+
+    template <typename T>
+    class StdTypeDetect
+    {
+    private:
+        typedef typename MakeTypeList<void>::Type StdVoidTypes;
+        typedef typename MakeTypeList<bool>::Type StdBoolTypes;
+
+        typedef typename MakeTypeList<char,
+                                      short,
+                                      int,
+                                      long,
+                                      long long
+                                     >::Type StdSIntTypes;
+
+        typedef typename MakeTypeList<unsigned char,
+                                      unsigned short,
+                                      unsigned int,
+                                      unsigned long,
+                                      unsigned long long
+                                     >::Type StdUIntTypes;
+
+        typedef typename MakeTypeList<float,
+                                      double,
+                                      long double
+                                     >::Type StdFloatTypes;
+
+        typedef typename MakeTypeList<char,
+                                      wchar_t
+                                     >::Type StdCharTypes;
+
+    public:
+        enum { IsVoid  = (TLIndexOf<StdVoidTypes,  T>::Value >= 0) };
+        enum { IsBool  = (TLIndexOf<StdBoolTypes,  T>::Value >= 0) };
+        enum { IsSInt  = (TLIndexOf<StdSIntTypes,  T>::Value >= 0) };
+        enum { IsUInt  = (TLIndexOf<StdUIntTypes,  T>::Value >= 0) };
+        enum { IsFloat = (TLIndexOf<StdFloatTypes, T>::Value >= 0) };
+        enum { IsChar  = (TLIndexOf<StdCharTypes,  T>::Value >= 0) };
+
+        enum { IsInt     = (IsBool || IsSInt || IsUInt || IsChar) };
+        enum { IsStdType = (IsVoid || IsInt || IsFloat) };
+
+    public:
+        typedef typename StaticSelect<IsStdType,
+                                      T,
+                                      typename RefTraits<T>::RefType>::Type
+                         ParamType;
+    };
+
+    
 } // namespace xl
 
 #endif // #ifndef __XLTYPETRAITS_H_F84DEF1B_BC39_41ED_A130_A31D78520A8A_INCLUDED__

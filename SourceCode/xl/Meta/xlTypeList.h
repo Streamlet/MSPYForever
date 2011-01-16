@@ -19,6 +19,7 @@
 
 #include <xl/xlDef.h>
 #include <xl/Meta/xlMacros.h>
+#include <xl/Meta/xlMetaBase.h>
 
 namespace xl
 {
