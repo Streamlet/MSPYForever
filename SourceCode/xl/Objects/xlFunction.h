@@ -21,7 +21,6 @@
 #include <xl/Objects/xlQIPtr.h>
 #include <xl/Meta/xlMacros.h>
 #include <xl/Meta/xlTypeList.h>
-#include <xl/Meta/xlTypeTraits.h>
 
 namespace xl
 {
