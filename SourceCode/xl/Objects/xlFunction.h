@@ -39,23 +39,23 @@ namespace xl
 #define XL_FUNCTION_VARIABLE_LIST(n)                XL_REPZ(XL_FUNCTION_VARIABLE_LIST_PATTERN, n, XL_COMMA)
 
     template <typename Signature>
-    struct GlobalFunctionTraits
+    struct FunctionRefTraits
     {
-        typedef Signature ParamType;
+        typedef Signature RefType;
     };
         
     template <typename RetType>
-    struct GlobalFunctionTraits<RetType ()>
+    struct FunctionRefTraits<RetType ()>
     {
-        typedef RetType (&ParamType)();
+        typedef RetType (&RefType)();
     };
 
 #define XL_FUNCTION_GLOBALFUNCTIONTRAITS_PATTERN(n)                     \
                                                                         \
     template <typename RetType, XL_FUNCTION_TYPENAME_DECLARE(n)>        \
-    struct GlobalFunctionTraits<RetType (XL_FUNCTION_TYPENAME_LIST(n))> \
+    struct FunctionRefTraits<RetType (XL_FUNCTION_TYPENAME_LIST(n))>    \
     {                                                                   \
-        typedef RetType (&ParamType)(XL_FUNCTION_TYPENAME_LIST(n));     \
+        typedef RetType (&RefType)(XL_FUNCTION_TYPENAME_LIST(n));       \
     };                                                                  \
 
 #define XL_FUNCTION_GLOBALFUNCTIONTRAITS(n)  XL_REPY(XL_FUNCTION_GLOBALFUNCTIONTRAITS_PATTERN, n, XL_NIL)
@@ -212,7 +212,7 @@ namespace xl
         Function(const F &fnFunction)                                                                           \
             : m_pFunctionBase(new FunctionHandler<ReturnType,                                                   \
                                                   ParamList,                                                    \
-                                                  typename GlobalFunctionTraits<F>::ParamType>(fnFunction))     \
+                                                  typename FunctionRefTraits<F>::RefType>(fnFunction))          \
         {                                                                                                       \
                                                                                                                 \
         }                                                                                                       \
