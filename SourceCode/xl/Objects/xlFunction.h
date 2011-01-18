@@ -38,30 +38,6 @@ namespace xl
 #define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        v##n
 #define XL_FUNCTION_VARIABLE_LIST(n)                XL_REPZ(XL_FUNCTION_VARIABLE_LIST_PATTERN, n, XL_COMMA)
 
-    template <typename Signature>
-    struct FunctionRefTraits
-    {
-        typedef Signature RefType;
-    };
-        
-    template <typename RetType>
-    struct FunctionRefTraits<RetType ()>
-    {
-        typedef RetType (&RefType)();
-    };
-
-#define XL_FUNCTION_GLOBALFUNCTIONTRAITS_PATTERN(n)                     \
-                                                                        \
-    template <typename RetType, XL_FUNCTION_TYPENAME_DECLARE(n)>        \
-    struct FunctionRefTraits<RetType (XL_FUNCTION_TYPENAME_LIST(n))>    \
-    {                                                                   \
-        typedef RetType (&RefType)(XL_FUNCTION_TYPENAME_LIST(n));       \
-    };                                                                  \
-
-#define XL_FUNCTION_GLOBALFUNCTIONTRAITS(n)  XL_REPY(XL_FUNCTION_GLOBALFUNCTIONTRAITS_PATTERN, n, XL_NIL)
-
-    XL_FUNCTION_GLOBALFUNCTIONTRAITS(XL_FUNCTION_DEFINE_MAX)
-
     template <typename R, typename TL>
     class FunctionBase;
 
@@ -209,16 +185,14 @@ namespace xl
                                                                                                                 \
     public:                                                                                                     \
         template <typename F>                                                                                   \
-        Function(const F &fnFunction)                                                                           \
-            : m_pFunctionBase(new FunctionHandler<ReturnType,                                                   \
-                                                  ParamList,                                                    \
-                                                  typename FunctionRefTraits<F>::RefType>(fnFunction))          \
+        Function(F fnFunction)                                                                                  \
+            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, F>(fnFunction))                        \
         {                                                                                                       \
                                                                                                                 \
         }                                                                                                       \
                                                                                                                 \
         template <typename T, typename F>                                                                       \
-        Function(const T &pObject, const F &pMemberFunction)                                                    \
+        Function(T pObject, F pMemberFunction)                                                                  \
             : m_pFunctionBase(new MemberFunctionHandler<ReturnType, ParamList, T, F>(pObject, pMemberFunction)) \
         {                                                                                                       \
                                                                                                                 \
