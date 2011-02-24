@@ -73,8 +73,6 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         DispatchMessage(&msg);
     }
 
-    return (int)msg.wParam;
-
 	return 0;
 }
 
