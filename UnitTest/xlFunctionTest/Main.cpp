@@ -15,7 +15,7 @@
 
 
 #include "../UnitTestFrame.h"
-#include <xl/Objects/xlFunction.h>
+#include <xl/Meta/xlFunction.h>
 #include <stdio.h>
 
 using namespace xl;
