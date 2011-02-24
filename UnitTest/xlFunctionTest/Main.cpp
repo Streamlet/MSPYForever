@@ -144,7 +144,26 @@ TEST_CASE(invoke)
 
 }
 
+void __cdecl f1(int)
+{
+
+}
+
+void __stdcall f2(int)
+{
+
+}
+
+template<typename F>
+void call(F f ) { return f(); }
+
+void __cdecl f() { printf("cdecl\n"); }
+void __stdcall g() { printf("stdcall\n"); }
+
 int main()
 {
+    call(&f);
+    call(&g);
+
     return 0;
 }

@@ -64,6 +64,30 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlTypeListTest", "UnitTest\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlFunctionTest", "UnitTest\xlFunctionTest\xlFunctionTest.vcxproj", "{834426D1-CC21-42C7-9EE1-8933C8884784}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win32", "Win32", "{8F40867B-C99D-4C15-A0C7-F407C9CC741D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Threads", "Threads", "{C5DC26E9-5A2C-453C-993D-554D9D220DA1}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\Threads\xlCriticalSection.h = SourceCode\xl\Win32\Threads\xlCriticalSection.h
+		SourceCode\xl\Win32\Threads\xlTls.h = SourceCode\xl\Win32\Threads\xlTls.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\GUI\xlStdButton.h = SourceCode\xl\Win32\GUI\xlStdButton.h
+		SourceCode\xl\Win32\GUI\xlStdStatic.h = SourceCode\xl\Win32\GUI\xlStdStatic.h
+		SourceCode\xl\Win32\GUI\xlThunk.h = SourceCode\xl\Win32\GUI\xlThunk.h
+		SourceCode\xl\Win32\GUI\xlWindow.h = SourceCode\xl\Win32\GUI\xlWindow.h
+		SourceCode\xl\Win32\GUI\xlWindowBase.h = SourceCode\xl\Win32\GUI\xlWindowBase.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{8E12D1F8-E344-41C8-9FD9-2F93E874F24E}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\Memory\xlHeap.h = SourceCode\xl\Win32\Memory\xlHeap.h
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlGUITest", "UnitTest\xlGUITest\xlGUITest.vcxproj", "{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -122,6 +146,10 @@ Global
 		{834426D1-CC21-42C7-9EE1-8933C8884784}.Debug|Win32.Build.0 = Debug|Win32
 		{834426D1-CC21-42C7-9EE1-8933C8884784}.Release|Win32.ActiveCfg = Release|Win32
 		{834426D1-CC21-42C7-9EE1-8933C8884784}.Release|Win32.Build.0 = Release|Win32
+		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}.Debug|Win32.Build.0 = Debug|Win32
+		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}.Release|Win32.ActiveCfg = Release|Win32
+		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,8 +168,13 @@ Global
 		{680B706B-FAC0-438E-8459-EC5492D0BE33} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{8D8EAAF1-93DD-42D0-8F08-D149A07E4E8C} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{834426D1-CC21-42C7-9EE1-8933C8884784} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
+		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{FD3A4148-0987-4149-B459-5727872E3AA9} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{3CF5010F-D9AA-40DA-9823-D23D64A7BE33} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{8F40867B-C99D-4C15-A0C7-F407C9CC741D} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{C5DC26E9-5A2C-453C-993D-554D9D220DA1} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
+		{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
+		{8E12D1F8-E344-41C8-9FD9-2F93E874F24E} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 	EndGlobalSection
 EndGlobal
