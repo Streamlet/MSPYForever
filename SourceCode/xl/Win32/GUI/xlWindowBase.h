@@ -21,7 +21,7 @@
 #include <tchar.h>
 #include <xl/Containers/xlMap.h>
 #include <xl/Containers/xlList.h>
-#include <xl/Objects/xlFunction.h>
+#include <xl/Meta/xlFunction.h>
 #include <xl/Win32/GUI/xlThunk.h>
 #include <xl/Win32/Threads/xlTls.h>
 #include <xl/Win32/Threads/xlCriticalSection.h>
