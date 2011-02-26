@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include "../UnitTestFrame.h"
+#include <xl/Test/xlUnitTest.h>
 #include <xl/Meta/xlFunction.h>
 #include <stdio.h>
 
@@ -106,7 +106,7 @@ struct Test
 
 } test;
 
-TEST_CASE(invoke)
+XL_TEST_CASE()
 {
     Function<void ()>    void0_fun(&voidfun0);
     Function<void ()>    void0_fun_(voidfun0);
@@ -133,14 +133,14 @@ TEST_CASE(invoke)
     void1_fun_(0);
     void1_functor(0);
     void1_memfun(0);
-    TEST_ASSERT(int0_fun() == -1);
-    TEST_ASSERT(int0_fun_() == -1);
-    TEST_ASSERT(int0_functor() == -2);
-    TEST_ASSERT(int0_memfun() == -3);
-    TEST_ASSERT(int1_fun(0) == 1);
-    TEST_ASSERT(int1_fun_(0) == 1);
-    TEST_ASSERT(int1_functor(0) == 2);
-    TEST_ASSERT(int1_memfun(0) == 3);
+    XL_TEST_ASSERT(int0_fun() == -1);
+    XL_TEST_ASSERT(int0_fun_() == -1);
+    XL_TEST_ASSERT(int0_functor() == -2);
+    XL_TEST_ASSERT(int0_memfun() == -3);
+    XL_TEST_ASSERT(int1_fun(0) == 1);
+    XL_TEST_ASSERT(int1_fun_(0) == 1);
+    XL_TEST_ASSERT(int1_functor(0) == 2);
+    XL_TEST_ASSERT(int1_memfun(0) == 3);
 
 }
 

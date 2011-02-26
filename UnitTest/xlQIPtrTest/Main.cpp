@@ -20,70 +20,70 @@
 #include <crtdbg.h>
 #endif
 
-#include "../UnitTestFrame.h"
+#include <xl/Test/xlUnitTest.h>
 #include <xl/xlDef.h>
 #include <xl/Objects/xlQIPtr.h>
 
 using namespace xl;
 
-TEST_CASE(ctor)
+XL_TEST_CASE()
 {
     QIPtr<int> a;
-    TEST_ASSERT(a == nullptr);
+    XL_TEST_ASSERT(a == nullptr);
 
     int *pInt = new int;
     *pInt = 123;
 
     QIPtr<int> b(pInt), c(b);
-    TEST_ASSERT(b == pInt);
-    TEST_ASSERT(c == pInt);
-    TEST_ASSERT(b == c);
+    XL_TEST_ASSERT(b == pInt);
+    XL_TEST_ASSERT(c == pInt);
+    XL_TEST_ASSERT(b == c);
 
     QIPtr<int> d(c);
-    TEST_ASSERT(d == c);
+    XL_TEST_ASSERT(d == c);
     
     QIPtr<int> e;
-    TEST_ASSERT(e == nullptr);
+    XL_TEST_ASSERT(e == nullptr);
 
     e = d;
-    TEST_ASSERT(e == pInt);
+    XL_TEST_ASSERT(e == pInt);
 }
 
-TEST_CASE(operator_set_compare)
+XL_TEST_CASE()
 {
     QIPtr<int> a, b;
-    TEST_ASSERT(a == nullptr);
-    TEST_ASSERT(!(a != nullptr));
-    TEST_ASSERT(b == nullptr);
-    TEST_ASSERT(!(b != nullptr));
+    XL_TEST_ASSERT(a == nullptr);
+    XL_TEST_ASSERT(!(a != nullptr));
+    XL_TEST_ASSERT(b == nullptr);
+    XL_TEST_ASSERT(!(b != nullptr));
 
     int *pInt = new int;
     *pInt = 123;
 
     a = pInt;
-    TEST_ASSERT(a == pInt);
-    TEST_ASSERT(!(a != pInt));
-    TEST_ASSERT(a != b);
-    TEST_ASSERT(!(a == b));
+    XL_TEST_ASSERT(a == pInt);
+    XL_TEST_ASSERT(!(a != pInt));
+    XL_TEST_ASSERT(a != b);
+    XL_TEST_ASSERT(!(a == b));
 
     b = a;
-    TEST_ASSERT(a == b);
-    TEST_ASSERT(!(a != b));
+    XL_TEST_ASSERT(a == b);
+    XL_TEST_ASSERT(!(a != b));
 
     a = nullptr;
-    TEST_ASSERT(a == nullptr);
-    TEST_ASSERT(!(a != nullptr));
-    TEST_ASSERT(a != b);
-    TEST_ASSERT(!(a == b));
+    XL_TEST_ASSERT(a == nullptr);
+    XL_TEST_ASSERT(!(a != nullptr));
+    XL_TEST_ASSERT(a != b);
+    XL_TEST_ASSERT(!(a == b));
 }
 
-TEST_CASE(operator_point_ref)
+XL_TEST_CASE()
 {
     int *pInt = new int;
     *pInt = 123;
 
     QIPtr<int> a(pInt);
-    TEST_ASSERT(*a == 123);
+    XL_TEST_ASSERT(*a == 123);
 
     struct s
     {
@@ -96,8 +96,8 @@ TEST_CASE(operator_point_ref)
     pS->y = 2;
 
     QIPtr<s> b(pS);
-    TEST_ASSERT(b->x == 1);
-    TEST_ASSERT(b->y == 2);
+    XL_TEST_ASSERT(b->x == 1);
+    XL_TEST_ASSERT(b->y == 2);
 }
 
 int main()

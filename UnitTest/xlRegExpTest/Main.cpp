@@ -15,13 +15,13 @@
 
 
 #include <xl/Objects/xlRegExp.h>
-#include "../UnitTestFrame.h"
+#include <xl/Test/xlUnitTest.h>
 
 using namespace xl;
 
-TEST_CASE(grammar)
+XL_TEST_CASE()
 {
-    TEST_ASSERT(RegExp().Parse(L"^/d+$"));
+    XL_TEST_ASSERT(RegExp().Parse(L"^/d+$"));
 }
 
 int main()

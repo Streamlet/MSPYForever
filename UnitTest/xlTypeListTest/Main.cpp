@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include "../UnitTestFrame.h"
+#include <xl/Test/xlUnitTest.h>
 #include <xl/Meta/xlTypeList.h>
 
 using namespace xl;

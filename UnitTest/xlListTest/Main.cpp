@@ -15,17 +15,17 @@
 
 
 #include <xl/Containers/xlList.h>
-#include "../UnitTestFrame.h"
+#include <xl/Test/xlUnitTest.h>
 
 using namespace xl;
 
-TEST_CASE(ctor)
+XL_TEST_CASE()
 {
     List<int> a;
-    TEST_ASSERT(a.Size() == 0);
+    XL_TEST_ASSERT(a.Size() == 0);
 }
 
-TEST_CASE(ctor_copy)
+XL_TEST_CASE()
 {
     List<int> a;
 
@@ -34,15 +34,15 @@ TEST_CASE(ctor_copy)
 
     List<int> b(a);
 
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 
     List<int>::Iterator it = b.Begin();
-    TEST_ASSERT(*it == 1);
+    XL_TEST_ASSERT(*it == 1);
     ++it;
-    TEST_ASSERT(*it == 2);
+    XL_TEST_ASSERT(*it == 2);
 }
 
-TEST_CASE(operator_set)
+XL_TEST_CASE()
 {
     List<int> a;
 
@@ -53,15 +53,15 @@ TEST_CASE(operator_set)
 
     b = a;
 
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 
     List<int>::Iterator it = b.Begin();
-    TEST_ASSERT(*it == 10);
+    XL_TEST_ASSERT(*it == 10);
     ++it;
-    TEST_ASSERT(*it == 9);
+    XL_TEST_ASSERT(*it == 9);
 }
 
-TEST_CASE(operator_equal)
+XL_TEST_CASE()
 {
     List<int> a, b;
 
@@ -69,69 +69,69 @@ TEST_CASE(operator_equal)
     a.PushBack(22);
 
     b = a;
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 
     ++*b.Begin();
-    TEST_ASSERT(b != a);
+    XL_TEST_ASSERT(b != a);
 
     --*b.Begin();
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 
     a.PushBack(100);
-    TEST_ASSERT(b != a);
+    XL_TEST_ASSERT(b != a);
 
     a.PopBack();
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 }
 
-TEST_CASE(method_size)
+XL_TEST_CASE()
 {
     List<int> a;
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Empty() == true);
 
     a.PushBack(0);
-    TEST_ASSERT(a.Empty() == false);
+    XL_TEST_ASSERT(a.Empty() == false);
 
     a.PopBack();
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Empty() == true);
 
     a.PushFront(1);
     a.PushFront(0);
-    TEST_ASSERT(a.Size() == 2);
+    XL_TEST_ASSERT(a.Size() == 2);
 
     a.Clear();
-    TEST_ASSERT(a.Size() == 0);
+    XL_TEST_ASSERT(a.Size() == 0);
 }
 
-TEST_CASE(method_insert_delete)
+XL_TEST_CASE()
 {
     List<int> a;
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Empty() == true);
 
     a.Insert(a.Begin(), -1);
-    TEST_ASSERT(a.Size() == 1);
-    TEST_ASSERT(*a.Begin() == -1);
+    XL_TEST_ASSERT(a.Size() == 1);
+    XL_TEST_ASSERT(*a.Begin() == -1);
 
     a.PushBack(15);
-    TEST_ASSERT(a.Size() == 2);
-    TEST_ASSERT(*a.ReverseBegin() == 15);
+    XL_TEST_ASSERT(a.Size() == 2);
+    XL_TEST_ASSERT(*a.ReverseBegin() == 15);
 
     a.PushFront(20);
-    TEST_ASSERT(a.Size() == 3);
-    TEST_ASSERT(*a.Begin() == 20);
+    XL_TEST_ASSERT(a.Size() == 3);
+    XL_TEST_ASSERT(*a.Begin() == 20);
     
     a.Delete(a.Begin());
-    TEST_ASSERT(a.Size() == 2);
-    TEST_ASSERT(*a.Begin() == -1);
-    TEST_ASSERT(*(++a.Begin()) == 15);
+    XL_TEST_ASSERT(a.Size() == 2);
+    XL_TEST_ASSERT(*a.Begin() == -1);
+    XL_TEST_ASSERT(*(++a.Begin()) == 15);
 
     a.PopBack();
-    TEST_ASSERT(a.Size() == 1);
-    TEST_ASSERT(*a.Begin() == -1);
+    XL_TEST_ASSERT(a.Size() == 1);
+    XL_TEST_ASSERT(*a.Begin() == -1);
 
     a.Clear();
-    TEST_ASSERT(a.Size() == 0);
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Size() == 0);
+    XL_TEST_ASSERT(a.Empty() == true);
 }
 
 // Performance Test

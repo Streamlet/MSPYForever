@@ -15,176 +15,176 @@
 
 
 #include <xl/Containers/xlArray.h>
-#include "../UnitTestFrame.h"
+#include <xl/Test/xlUnitTest.h>
 
 using namespace xl;
 
-TEST_CASE(ctor)
+XL_TEST_CASE()
 {
     Array<int> a;
-    TEST_ASSERT(a.Size() == 0);
+    XL_TEST_ASSERT(a.Size() == 0);
 }
 
-TEST_CASE(ctor_int)
+XL_TEST_CASE()
 {
     Array<int> a(3);
-    TEST_ASSERT(a.Size() == 3);
+    XL_TEST_ASSERT(a.Size() == 3);
 }
 
-TEST_CASE(ctor_int_t)
+XL_TEST_CASE()
 {
     Array<int> a(5, 10);
-    TEST_ASSERT(a.Size() == 5);
+    XL_TEST_ASSERT(a.Size() == 5);
 
     for (size_t i = 0; i < a.Size(); ++i)
     {
-        TEST_ASSERT(a[i] == 10);
+        XL_TEST_ASSERT(a[i] == 10);
     }
 }
 
-TEST_CASE(ctor_copy)
+XL_TEST_CASE()
 {
     Array<int> a(10, 100), b(a);
 
-    TEST_ASSERT(b.Size() == 10);
+    XL_TEST_ASSERT(b.Size() == 10);
 
     for (size_t i = 0; i < b.Size(); ++i)
     {
-        TEST_ASSERT(b[i] == 100);
+        XL_TEST_ASSERT(b[i] == 100);
     }
 }
 
-TEST_CASE(operator_set)
+XL_TEST_CASE()
 {
     Array<int> a(10, 100), b;
 
     b = a;
 
-    TEST_ASSERT(b.Size() == 10);
+    XL_TEST_ASSERT(b.Size() == 10);
 
     for (size_t i = 0; i < b.Size(); ++i)
     {
-        TEST_ASSERT(b[i] == 100);
+        XL_TEST_ASSERT(b[i] == 100);
     }
 }
 
-TEST_CASE(operator_equal)
+XL_TEST_CASE()
 {
     Array<int> a(10, 100), b;
 
     b = a;
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 
     ++b[3];
-    TEST_ASSERT(b != a);
+    XL_TEST_ASSERT(b != a);
 
     --b[3];
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 
     a.PushBack(100);
-    TEST_ASSERT(b != a);
+    XL_TEST_ASSERT(b != a);
 
     a.PopFront();
-    TEST_ASSERT(b == a);
+    XL_TEST_ASSERT(b == a);
 }
 
-TEST_CASE(method_size)
+XL_TEST_CASE()
 {
     Array<int> a;
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Empty() == true);
 
     a.PushBack(0);
-    TEST_ASSERT(a.Empty() == false);
+    XL_TEST_ASSERT(a.Empty() == false);
 
     a.PopBack();
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Empty() == true);
 
     a.PushFront(1);
     a.PushFront(0);
-    TEST_ASSERT(a.Size() == 2);
+    XL_TEST_ASSERT(a.Size() == 2);
 
     a.Resize(5);
-    TEST_ASSERT(a.Size() == 5);
+    XL_TEST_ASSERT(a.Size() == 5);
 }
 
-TEST_CASE(method_insert_delete)
+XL_TEST_CASE()
 {
     Array<int> a;
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Empty() == true);
 
     a.Insert(0, 5, 3);
-    TEST_ASSERT(a.Size() == 3);
-    TEST_ASSERT(a[0] == 5);
-    TEST_ASSERT(a[1] == 5);
-    TEST_ASSERT(a[2] == 5);
+    XL_TEST_ASSERT(a.Size() == 3);
+    XL_TEST_ASSERT(a[0] == 5);
+    XL_TEST_ASSERT(a[1] == 5);
+    XL_TEST_ASSERT(a[2] == 5);
     
     a.Clear();
-    TEST_ASSERT(a.Empty() == true);
+    XL_TEST_ASSERT(a.Empty() == true);
 
     int data[4] = { 1, 3, 2, 4 };
     a.InsertBuffer(0, data, 4);
-    TEST_ASSERT(a.Size() == 4);
-    TEST_ASSERT(a[0] == 1);
-    TEST_ASSERT(a[1] == 3);
-    TEST_ASSERT(a[2] == 2);
-    TEST_ASSERT(a[3] == 4);
+    XL_TEST_ASSERT(a.Size() == 4);
+    XL_TEST_ASSERT(a[0] == 1);
+    XL_TEST_ASSERT(a[1] == 3);
+    XL_TEST_ASSERT(a[2] == 2);
+    XL_TEST_ASSERT(a[3] == 4);
 
     a.Insert(2, 10);
-    TEST_ASSERT(a.Size() == 5);
-    TEST_ASSERT(a[0] == 1);
-    TEST_ASSERT(a[1] == 3);
-    TEST_ASSERT(a[2] == 10);
-    TEST_ASSERT(a[3] == 2);
-    TEST_ASSERT(a[4] == 4);
+    XL_TEST_ASSERT(a.Size() == 5);
+    XL_TEST_ASSERT(a[0] == 1);
+    XL_TEST_ASSERT(a[1] == 3);
+    XL_TEST_ASSERT(a[2] == 10);
+    XL_TEST_ASSERT(a[3] == 2);
+    XL_TEST_ASSERT(a[4] == 4);
 
     a.PushBack(15);
-    TEST_ASSERT(a.Size() == 6);
-    TEST_ASSERT(a[0] == 1);
-    TEST_ASSERT(a[1] == 3);
-    TEST_ASSERT(a[2] == 10);
-    TEST_ASSERT(a[3] == 2);
-    TEST_ASSERT(a[4] == 4);
-    TEST_ASSERT(a[5] == 15);
+    XL_TEST_ASSERT(a.Size() == 6);
+    XL_TEST_ASSERT(a[0] == 1);
+    XL_TEST_ASSERT(a[1] == 3);
+    XL_TEST_ASSERT(a[2] == 10);
+    XL_TEST_ASSERT(a[3] == 2);
+    XL_TEST_ASSERT(a[4] == 4);
+    XL_TEST_ASSERT(a[5] == 15);
 
     a.PushFront(20);
-    TEST_ASSERT(a.Size() == 7);
-    TEST_ASSERT(a[0] == 20);
-    TEST_ASSERT(a[1] == 1);
-    TEST_ASSERT(a[2] == 3);
-    TEST_ASSERT(a[3] == 10);
-    TEST_ASSERT(a[4] == 2);
-    TEST_ASSERT(a[5] == 4);
-    TEST_ASSERT(a[6] == 15);
+    XL_TEST_ASSERT(a.Size() == 7);
+    XL_TEST_ASSERT(a[0] == 20);
+    XL_TEST_ASSERT(a[1] == 1);
+    XL_TEST_ASSERT(a[2] == 3);
+    XL_TEST_ASSERT(a[3] == 10);
+    XL_TEST_ASSERT(a[4] == 2);
+    XL_TEST_ASSERT(a[5] == 4);
+    XL_TEST_ASSERT(a[6] == 15);
 
     a.Delete(2, 3);
-    TEST_ASSERT(a.Size() == 4);
-    TEST_ASSERT(a[0] == 20);
-    TEST_ASSERT(a[1] == 1);
-    TEST_ASSERT(a[2] == 4);
-    TEST_ASSERT(a[3] == 15);
+    XL_TEST_ASSERT(a.Size() == 4);
+    XL_TEST_ASSERT(a[0] == 20);
+    XL_TEST_ASSERT(a[1] == 1);
+    XL_TEST_ASSERT(a[2] == 4);
+    XL_TEST_ASSERT(a[3] == 15);
 
     a.Delete(1);
-    TEST_ASSERT(a.Size() == 3);
-    TEST_ASSERT(a[0] == 20);
-    TEST_ASSERT(a[1] == 4);
-    TEST_ASSERT(a[2] == 15);
+    XL_TEST_ASSERT(a.Size() == 3);
+    XL_TEST_ASSERT(a[0] == 20);
+    XL_TEST_ASSERT(a[1] == 4);
+    XL_TEST_ASSERT(a[2] == 15);
 
     a.PopFront();
-    TEST_ASSERT(a.Size() == 2);
-    TEST_ASSERT(a[0] == 4);
-    TEST_ASSERT(a[1] == 15);
+    XL_TEST_ASSERT(a.Size() == 2);
+    XL_TEST_ASSERT(a[0] == 4);
+    XL_TEST_ASSERT(a[1] == 15);
 
     a.PopBack();
-    TEST_ASSERT(a.Size() == 1);
-    TEST_ASSERT(a[0] == 4);
+    XL_TEST_ASSERT(a.Size() == 1);
+    XL_TEST_ASSERT(a[0] == 4);
     
     a.Resize(100);
     a[99] = 1001;
-    TEST_ASSERT(a.Size() == 100);
-    TEST_ASSERT(a[99] == 1001);
+    XL_TEST_ASSERT(a.Size() == 100);
+    XL_TEST_ASSERT(a[99] == 1001);
 
     a.Clear();
-    TEST_ASSERT(a.Size() == 0);
+    XL_TEST_ASSERT(a.Size() == 0);
 }
 
 // Performance Test

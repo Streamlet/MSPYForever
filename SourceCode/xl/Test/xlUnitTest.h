@@ -41,7 +41,7 @@ namespace xl
                                         \
     do                                  \
     {                                   \
-        if (!condition)                 \
+        if (!(condition))               \
         {                               \
             throw "Test assert fails."; \
         }                               \

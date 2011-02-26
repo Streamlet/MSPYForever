@@ -27,9 +27,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{32139451-1EE1-4BA6-9E40-C3E84993E9A6}"
-	ProjectSection(SolutionItems) = preProject
-		UnitTest\UnitTestFrame.h = UnitTest\UnitTestFrame.h
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlArrayTest", "UnitTest\xlArrayTest\xlArrayTest.vcxproj", "{0200BE79-EA0F-438D-9681-B226E389B4A1}"
 EndProject
