@@ -324,7 +324,7 @@ namespace xl
     }
 
     template <typename T>
-    StringT<T> &StringT<T>::AppendFront(T ch, int nCount)
+    StringT<T> &StringT<T>::AppendFront(T ch, int nCount /*= 1*/)
     {
         for (int i = 0; i < nCount; ++i)
         {
@@ -335,7 +335,7 @@ namespace xl
     }
 
     template <typename T>
-    StringT<T> &StringT<T>::AppendBack(T ch, int nCount)
+    StringT<T> &StringT<T>::AppendBack(T ch, int nCount /*= 1*/)
     {
         if (nCount <= 0)
         {
