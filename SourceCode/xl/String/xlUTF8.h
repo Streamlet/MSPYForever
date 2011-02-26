@@ -59,23 +59,23 @@ namespace xl
                 CharW chMaskValueBits;      // To traits the "x" in the first byte of UTF-8
                 CharA chMaskLeadingBits;	// To Traits the leading "1" in the first byte of UTF-8
 
-                if (ch <= 0x7f)	                    // 0000 0000 0000 0000 - 0000 0000 0111 1111
+                if (ch <= 0x7f)	                    // 00000000 00000000 - 00000000 01111111
                 {
                     nBytes = 1;
-                    chMaskValueBits = 0x7f;			// 0111 1111
-                    chMaskLeadingBits = '\x00';     // 0000 0000
+                    chMaskValueBits = 0x7f;			// 01111111
+                    chMaskLeadingBits = '\x00';     // 00000000
                 }
-                else if (ch <= 0x7ff)	            // 0000 0000 1000 0000 - 0000 0111 1111 1111
+                else if (ch <= 0x7ff)	            // 00000000 10000000 - 00000111 11111111
                 {
                     nBytes = 2;
-                    chMaskValueBits = 0x1f;			// 0001 1111
-                    chMaskLeadingBits = '\xc0';	    // 1100 0000
+                    chMaskValueBits = 0x1f;			// 00011111
+                    chMaskLeadingBits = '\xc0';	    // 11000000
                 }
-                else if (ch <= 0xffff)	            // 0000 1000 0000 0000 - 1111 1111 1111 1111
+                else if (ch <= 0xffff)	            // 00001000 00000000 - 11111111 11111111
                 {
                     nBytes = 3;
-                    chMaskValueBits = 0x0f;			// 0000 1111
-                    chMaskLeadingBits = '\xe0';	    // 1110 0000
+                    chMaskValueBits = 0x0f;			// 00001111
+                    chMaskLeadingBits = '\xe0';	    // 11100000
                 }
 
                 CharA temp[3];
@@ -113,24 +113,24 @@ namespace xl
                 int nBytes = 0;             // How many bytes will the char cost
                 CharW chMaskValueBits;      // To traits the "x" in the first byte of UTF-8
 
-                if ((ch & 0x80) == 0)       // 0xxx xxxx
+                if ((ch & 0x80) == 0)       // 0xxxxxxx
                 {
                     nBytes = 1;
-                    chMaskValueBits = 0x7f;			// 0111 1111
+                    chMaskValueBits = 0x7f;	// 01111111
                 }
-                else if ((ch & 0x40) == 0)  // 10xx xxxx
+                else if ((ch & 0x40) == 0)  // 10xxxxxx
                 {
                     return false;
                 }
-                else if ((ch & 0x20) == 0)  // 110x xxxx
+                else if ((ch & 0x20) == 0)  // 110xxxxx
                 {
                     nBytes = 2;
-                    chMaskValueBits = 0x1f;			// 0001 1111
+                    chMaskValueBits = 0x1f;	// 00011111
                 }
-                else if ((ch & 0x10) == 0)  // 1110 xxxx
+                else if ((ch & 0x10) == 0)  // 1110xxxx
                 {
                     nBytes = 3;
-                    chMaskValueBits = 0x0f;			// 0000 1111
+                    chMaskValueBits = 0x0f;	// 00001111
                 }
                 else
                 {
