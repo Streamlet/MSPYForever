@@ -49,13 +49,13 @@ namespace xl
 
             while (cbCopied < cbSize)
             {
-                unsigned int cbToCopy = cbSize - cbCopied > 64 - m_cbBufferUsed ? 64 - m_cbBufferUsed : cbSize - cbCopied;
+                unsigned int cbToCopy = cbSize - cbCopied > BUFFER_LENGTH - m_cbBufferUsed ? BUFFER_LENGTH - m_cbBufferUsed : cbSize - cbCopied;
 
                 memcpy(m_ctx.buffer + m_cbBufferUsed, (const unsigned char *)lpBuffer + cbCopied, cbToCopy);
                 cbCopied += cbToCopy;
                 m_cbBufferUsed += cbToCopy;
 
-                if (m_cbBufferUsed == 64)
+                if (m_cbBufferUsed == BUFFER_LENGTH)
                 {
                     Transform(m_ctx);
                     m_cbBufferUsed = 0;
@@ -79,9 +79,9 @@ namespace xl
             }
 
             m_cbTotalSize *= BYTE_BITS_LENGTH;
-            m_ctx.buffer[BUFFER_LENGTH / sizeof(unsigned int) - 2] =
+            *(unsigned int *)&m_ctx.buffer[BUFFER_LENGTH - sizeof(unsigned int) * 2] =
                 BitSwap((unsigned char)(m_cbTotalSize >> (BYTE_BITS_LENGTH * sizeof(unsigned int))));
-            m_ctx.buffer[BUFFER_LENGTH / sizeof(unsigned int) - 1] =
+            *(unsigned int *)&m_ctx.buffer[BUFFER_LENGTH - sizeof(unsigned int)] =
                 BitSwap((unsigned char)m_cbTotalSize);
             Transform(m_ctx);
 

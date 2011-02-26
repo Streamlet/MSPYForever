@@ -103,6 +103,8 @@ namespace xl
                 return false;
             }
 
+            pstrUCS2->Clear();
+
             int i = 0;
             int n = strUTF8.Length();
 
