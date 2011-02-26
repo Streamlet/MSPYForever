@@ -17,8 +17,6 @@
 #define __XLMD5_H_9F168AAD_4EE5_4F50_A910_E9280F1CBA2E_INCLUDED__
 
 
-#include <memory>
-
 namespace xl
 {
     class MD5
@@ -51,7 +49,11 @@ namespace xl
             {
                 size_t cbToCopy = cbSize - cbCopied > BUFFER_LENGTH - m_cbBufferUsed ? BUFFER_LENGTH - m_cbBufferUsed : cbSize - cbCopied;
 
-                memcpy(m_ctx.buffer + m_cbBufferUsed, (const unsigned char *)lpBuffer + cbCopied, cbToCopy);
+                for (size_t i = 0; i < cbToCopy; ++i)
+                {
+                    m_ctx.buffer[m_cbBufferUsed + i] = ((const unsigned char *)lpBuffer)[i];
+                }
+
                 cbCopied += cbToCopy;
                 m_cbBufferUsed += cbToCopy;
 
@@ -69,20 +71,35 @@ namespace xl
         {
             if (m_cbBufferUsed >= BUFFER_LIMIT)
             {
-                memcpy(m_ctx.buffer + m_cbBufferUsed, PADDING, BUFFER_LENGTH - m_cbBufferUsed);
+                for (size_t i = 0; i < BUFFER_LENGTH - m_cbBufferUsed; ++i)
+                {
+                    m_ctx.buffer[m_cbBufferUsed + i] = PADDING[i];
+                }
+                
                 Transform(m_ctx);
-                memcpy(m_ctx.buffer, PADDING + BUFFER_LENGTH - m_cbBufferUsed, BUFFER_LIMIT);
+
+                for (size_t i = 0; i < BUFFER_LIMIT; ++i)
+                {
+                    m_ctx.buffer[i] = PADDING[BUFFER_LENGTH - m_cbBufferUsed + i];
+                }
             }
             else
             {
-                memcpy(m_ctx.buffer + m_cbBufferUsed, PADDING, BUFFER_LIMIT - m_cbBufferUsed);
+                for (size_t i = 0; i < BUFFER_LIMIT - m_cbBufferUsed; ++i)
+                {
+                    m_ctx.buffer[m_cbBufferUsed + i] = PADDING[i];
+                }
             }
 
             m_cbTotalSize *= BYTE_BITS_LENGTH;
-            memcpy(m_ctx.buffer + BUFFER_LIMIT, (void *)&m_cbTotalSize, BYTE_BITS_LENGTH);
+            *(unsigned long long *)(m_ctx.buffer + BUFFER_LIMIT) = m_cbTotalSize;
+
             Transform(m_ctx);
 
-            memcpy(digest, m_ctx.digest, sizeof(Digest));
+            for (size_t i = 0; i < DIGEST_LENGTH; ++i)
+            {
+                digest[i] = m_ctx.digest[i];
+            }
 
             Initialize();
         }
@@ -109,11 +126,18 @@ namespace xl
     private:
         void Initialize()
         {
+            for (size_t i = 0; i < sizeof(CTX); ++i)
+            {
+                ((unsigned char *)&m_ctx)[i] = 0;
+            }
+
+            for (size_t i = 0; i < sizeof(Digest); ++i)
+            {
+                m_ctx.digest[i] = STATE[i];
+            }
+
             m_cbBufferUsed = 0;
             m_cbTotalSize = 0;
-
-            memset(&m_ctx, 0, sizeof(m_ctx));
-            memcpy(m_ctx.digest, STATE, sizeof(m_ctx.digest));
         }
 
         void Transform(CTX &ctx)

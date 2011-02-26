@@ -17,8 +17,6 @@
 #define __XLSHA1_H_2D27EEEA_B8E7_46F2_8855_0CDA1C148C4F_INCLUDED__
 
 
-#include <memory>
-
 namespace xl
 {
     class SHA1
@@ -45,13 +43,17 @@ namespace xl
     public:
         void SHA1::AppendData(const void *lpBuffer, size_t cbSize)
         {
-            unsigned int cbCopied = 0;
+            size_t cbCopied = 0;
 
             while (cbCopied < cbSize)
             {
                 unsigned int cbToCopy = cbSize - cbCopied > BUFFER_LENGTH - m_cbBufferUsed ? BUFFER_LENGTH - m_cbBufferUsed : cbSize - cbCopied;
 
-                memcpy(m_ctx.buffer + m_cbBufferUsed, (const unsigned char *)lpBuffer + cbCopied, cbToCopy);
+                for (size_t i = 0; i < cbToCopy; ++i)
+                {
+                    m_ctx.buffer[m_cbBufferUsed + i] = ((const unsigned char *)lpBuffer)[cbCopied + i];
+                }
+
                 cbCopied += cbToCopy;
                 m_cbBufferUsed += cbToCopy;
 
@@ -69,13 +71,24 @@ namespace xl
         {
             if (m_cbBufferUsed >= BUFFER_LIMIT)
             {
-                memcpy(m_ctx.buffer + m_cbBufferUsed, PADDING, BUFFER_LENGTH - m_cbBufferUsed);
+                for (size_t i = 0; i < BUFFER_LENGTH - m_cbBufferUsed; ++i)
+                {
+                    m_ctx.buffer[m_cbBufferUsed + i] = PADDING[i];
+                }
+
                 Transform(m_ctx);
-                memcpy(m_ctx.buffer, PADDING + BUFFER_LENGTH - m_cbBufferUsed, BUFFER_LIMIT);
+
+                for (size_t i = 0; i < BUFFER_LIMIT; ++i)
+                {
+                    m_ctx.buffer[i] = PADDING[BUFFER_LENGTH - m_cbBufferUsed + i];
+                }
             }
             else
             {
-                memcpy(m_ctx.buffer + m_cbBufferUsed, PADDING, BUFFER_LIMIT - m_cbBufferUsed);
+                for (size_t i = 0; i < BUFFER_LIMIT - m_cbBufferUsed; ++i)
+                {
+                    m_ctx.buffer[m_cbBufferUsed + i] = PADDING[i];
+                }
             }
 
             m_cbTotalSize *= BYTE_BITS_LENGTH;
@@ -85,7 +98,10 @@ namespace xl
                 BitSwap((unsigned char)m_cbTotalSize);
             Transform(m_ctx);
 
-            memcpy(digest, m_ctx.digest, sizeof(Digest));
+            for (size_t i = 0; i < DIGEST_LENGTH; ++i)
+            {
+                digest[i] = m_ctx.digest[i];
+            }
 
             Initialize();
         }
@@ -112,8 +128,15 @@ namespace xl
     private:
         void SHA1::Initialize()
         {
-            memset(&m_ctx, 0, sizeof(m_ctx));
-            memcpy(m_ctx.digest, STATE, sizeof(m_ctx.digest));
+            for (size_t i = 0; i < sizeof(CTX); ++i)
+            {
+                ((unsigned char *)&m_ctx)[i] = 0;
+            }
+
+            for (size_t i = 0; i < sizeof(Digest); ++i)
+            {
+                ((unsigned char *)m_ctx.digest)[i] = STATE[i];
+            }
 
             m_cbTotalSize = 0;
             m_cbBufferUsed = 0;
