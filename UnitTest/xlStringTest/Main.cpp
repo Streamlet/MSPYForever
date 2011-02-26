@@ -15,7 +15,7 @@
 
 
 #include <xl/Test/xlUnitTest.h>
-#include <xl/Objects/xlString.h>
+#include <xl/String/xlString.h>
 
 using namespace xl;
 

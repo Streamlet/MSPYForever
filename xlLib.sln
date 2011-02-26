@@ -23,7 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64
 		SourceCode\xl\Objects\xlBigInt.h = SourceCode\xl\Objects\xlBigInt.h
 		SourceCode\xl\Objects\xlQIPtr.h = SourceCode\xl\Objects\xlQIPtr.h
 		SourceCode\xl\Objects\xlRegExp.h = SourceCode\xl\Objects\xlRegExp.h
-		SourceCode\xl\Objects\xlString.h = SourceCode\xl\Objects\xlString.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTest", "UnitTest", "{32139451-1EE1-4BA6-9E40-C3E84993E9A6}"
@@ -101,6 +100,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{27631DF6-2FAF-4EDA-A7BB-FB989284C771}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Test\xlUnitTest.h = SourceCode\xl\Test\xlUnitTest.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "String", "String", "{3001410B-F3F0-4387-9E64-3BE6078D1C7E}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\String\xlString.h = SourceCode\xl\String\xlString.h
 	EndProjectSection
 EndProject
 Global
@@ -205,6 +209,7 @@ Global
 		{8F40867B-C99D-4C15-A0C7-F407C9CC741D} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{54E546A4-BE6C-49B1-90D1-10C609CB1115} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{27631DF6-2FAF-4EDA-A7BB-FB989284C771} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{3001410B-F3F0-4387-9E64-3BE6078D1C7E} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{C5DC26E9-5A2C-453C-993D-554D9D220DA1} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 		{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 		{8E12D1F8-E344-41C8-9FD9-2F93E874F24E} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}

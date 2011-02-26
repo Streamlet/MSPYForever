@@ -18,7 +18,7 @@
 
 
 #include <xl/xlDef.h>
-#include <xl/Objects/xlString.h>
+#include <xl/String/xlString.h>
 
 namespace xl
 {

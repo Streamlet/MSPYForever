@@ -15,7 +15,7 @@
 
 
 #include <xl/Cryption/xlMD5.h>
-#include <xl/Objects/xlString.h>
+#include <xl/String/xlString.h>
 #include <cstdio>
 #include <tchar.h>
 
