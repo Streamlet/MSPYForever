@@ -54,15 +54,15 @@ namespace xl
                     HINSTANCE hInstance = nullptr)
         {
             if (!Window::Create(nWidth,
-                nHeight,
-                x,
-                y,
-                pParent,
-                GetClassName(),
-                dwStyle,
-                dwExStyle,
-                (HMENU)nID,
-                hInstance))
+                                nHeight,
+                                x,
+                                y,
+                                pParent,
+                                GetClassName(),
+                                dwStyle,
+                                dwExStyle,
+                                (HMENU)nID,
+                                hInstance))
             {
                 return false;
             }
