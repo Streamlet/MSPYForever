@@ -17,6 +17,8 @@
 #define __XLMD5_H_9F168AAD_4EE5_4F50_A910_E9280F1CBA2E_INCLUDED__
 
 
+#include <xl/Memory/xlMemory.h>
+
 namespace xl
 {
     class MD5
@@ -49,10 +51,7 @@ namespace xl
             {
                 size_t cbToCopy = cbSize - cbCopied > BUFFER_LENGTH - m_cbBufferUsed ? BUFFER_LENGTH - m_cbBufferUsed : cbSize - cbCopied;
 
-                for (size_t i = 0; i < cbToCopy; ++i)
-                {
-                    m_ctx.buffer[m_cbBufferUsed + i] = ((const unsigned char *)lpBuffer)[i];
-                }
+                Memory::Copy(m_ctx.buffer + m_cbBufferUsed, (const unsigned char *)lpBuffer + cbCopied, cbToCopy);
 
                 cbCopied += cbToCopy;
                 m_cbBufferUsed += cbToCopy;
@@ -71,24 +70,13 @@ namespace xl
         {
             if (m_cbBufferUsed >= BUFFER_LIMIT)
             {
-                for (size_t i = 0; i < BUFFER_LENGTH - m_cbBufferUsed; ++i)
-                {
-                    m_ctx.buffer[m_cbBufferUsed + i] = PADDING[i];
-                }
-                
+                Memory::Copy(m_ctx.buffer + m_cbBufferUsed, PADDING, BUFFER_LENGTH - m_cbBufferUsed);
                 Transform(m_ctx);
-
-                for (size_t i = 0; i < BUFFER_LIMIT; ++i)
-                {
-                    m_ctx.buffer[i] = PADDING[BUFFER_LENGTH - m_cbBufferUsed + i];
-                }
+                Memory::Copy(m_ctx.buffer, PADDING + BUFFER_LENGTH - m_cbBufferUsed, BUFFER_LIMIT);
             }
             else
             {
-                for (size_t i = 0; i < BUFFER_LIMIT - m_cbBufferUsed; ++i)
-                {
-                    m_ctx.buffer[m_cbBufferUsed + i] = PADDING[i];
-                }
+                Memory::Copy(m_ctx.buffer + m_cbBufferUsed, PADDING, BUFFER_LIMIT - m_cbBufferUsed);
             }
 
             m_cbTotalSize *= BYTE_BITS_LENGTH;
@@ -96,10 +84,7 @@ namespace xl
 
             Transform(m_ctx);
 
-            for (size_t i = 0; i < DIGEST_LENGTH; ++i)
-            {
-                digest[i] = m_ctx.digest[i];
-            }
+            Memory::Copy(digest, m_ctx.digest, sizeof(Digest));
 
             Initialize();
         }
@@ -126,15 +111,8 @@ namespace xl
     private:
         void Initialize()
         {
-            for (size_t i = 0; i < sizeof(CTX); ++i)
-            {
-                ((unsigned char *)&m_ctx)[i] = 0;
-            }
-
-            for (size_t i = 0; i < sizeof(Digest); ++i)
-            {
-                m_ctx.digest[i] = STATE[i];
-            }
+            Memory::Set(&m_ctx, sizeof(m_ctx));
+            Memory::Copy(m_ctx.digest, STATE, sizeof(m_ctx.digest));
 
             m_cbBufferUsed = 0;
             m_cbTotalSize = 0;
