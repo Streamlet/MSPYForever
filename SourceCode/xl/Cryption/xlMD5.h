@@ -111,7 +111,7 @@ namespace xl
     private:
         void Initialize()
         {
-            Memory::Set(&m_ctx, sizeof(m_ctx));
+            Memory::Zero(m_ctx);
             Memory::Copy(m_ctx.digest, STATE, sizeof(m_ctx.digest));
 
             m_cbBufferUsed = 0;

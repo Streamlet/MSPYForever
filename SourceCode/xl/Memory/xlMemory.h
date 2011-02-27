@@ -131,6 +131,12 @@ namespace xl
 
             return pDest;
         }
+
+        template <typename T>
+        static void Zero(T &tVar)
+        {
+            Set(&tVar, sizeof(T));
+        }
     };
 
 } // namespace xl
