@@ -17,6 +17,8 @@
 #define __XLSTDEDIT_H_5CD8BC6E_A964_41C4_B01F_18F00DBB4A0E_INCLUDED__
 
 
+#include <xl/Win32/GUI/xlWindow.h>
+
 namespace xl
 {
     class StdEdit : public Window
