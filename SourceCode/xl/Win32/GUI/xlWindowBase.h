@@ -285,12 +285,13 @@ namespace xl
                     lResult = (*it)(uMsg, wParam, lParam);
                 }
 
-                return lResult;
+                if (uMsg != WM_COMMAND && uMsg != WM_NOTIFY)
+                {
+                    return lResult;
+                }
             }
-            else
-            {
-                return m_fnDefaultProc(m_hWnd, uMsg, wParam, lParam);
-            }
+
+            return m_fnDefaultProc(m_hWnd, uMsg, wParam, lParam);
         }
 
     // Command message maps

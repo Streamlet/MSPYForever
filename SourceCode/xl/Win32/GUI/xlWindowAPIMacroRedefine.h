@@ -19,6 +19,18 @@
 
 #include <Windows.h>
 
+#ifdef GetClassName
+#undef GetClassName
+inline BOOL WINAPI GetClassName(__in HWND hWnd, __out_ecount_part(nMaxCount, return) LPWSTR lpClassName, __in int nMaxCount)
+{
+#ifdef UNICODE
+    return GetClassNameW(hWnd, lpClassName, nMaxCount);
+#else
+    return GetClassNameA(hWnd, lpClassName, nMaxCount);
+#endif
+}
+#endif
+
 #ifdef GetWindowLong
 #undef GetWindowLong
 inline LONG WINAPI GetWindowLong(__in HWND hWnd, __in int nIndex)
