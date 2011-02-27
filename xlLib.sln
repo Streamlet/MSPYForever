@@ -34,6 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{3CF5010F-D
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win32", "Win32", "{8F40867B-C99D-4C15-A0C7-F407C9CC741D}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\xlWin32Ver.h = SourceCode\xl\Win32\xlWin32Ver.h
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Threads", "Threads", "{C5DC26E9-5A2C-453C-993D-554D9D220DA1}"
 	ProjectSection(SolutionItems) = preProject
@@ -47,6 +50,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{B9EA58CE-58D
 		SourceCode\xl\Win32\GUI\xlStdStatic.h = SourceCode\xl\Win32\GUI\xlStdStatic.h
 		SourceCode\xl\Win32\GUI\xlThunk.h = SourceCode\xl\Win32\GUI\xlThunk.h
 		SourceCode\xl\Win32\GUI\xlWindow.h = SourceCode\xl\Win32\GUI\xlWindow.h
+		SourceCode\xl\Win32\GUI\xlWindowAPIMacroRedefine.h = SourceCode\xl\Win32\GUI\xlWindowAPIMacroRedefine.h
 		SourceCode\xl\Win32\GUI\xlWindowBase.h = SourceCode\xl\Win32\GUI\xlWindowBase.h
 	EndProjectSection
 EndProject

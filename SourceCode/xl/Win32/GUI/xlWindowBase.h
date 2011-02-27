@@ -17,6 +17,7 @@
 #define __XLWINDOWBASE_H_93972CEE_2D67_4A8B_927D_E327BDE8D4A4_INCLUDED__
 
 
+#include <xl/Win32/xlWin32Ver.h>
 #include <Windows.h>
 #include <tchar.h>
 #include <xl/Containers/xlMap.h>

@@ -124,6 +124,8 @@ namespace xl
 	        return (HBITMAP)::SendMessage(m_hWnd, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitmap);
         }
 
+#if (_WIN32_WINNT >= 0x0501)
+
         BOOL GetIdealSize(LPSIZE lpSize) const
         {
 	        return (BOOL)::SendMessage(m_hWnd, BCM_GETIDEALSIZE, 0, (LPARAM)lpSize);
@@ -149,10 +151,17 @@ namespace xl
 	        return (BOOL)::SendMessage(m_hWnd, BCM_SETTEXTMARGIN, 0, (LPARAM)lpRect);
         }
 
+#endif // (_WIN32_WINNT >= 0x0501)
+
+#if (WINVER >= 0x0600)
+
         void SetDontClick(BOOL bDontClick)
         {
 	        ::SendMessage(m_hWnd, BM_SETDONTCLICK, (WPARAM)bDontClick, 0);
         }
+#endif // (WINVER >= 0x0600)
+
+#if (_WIN32_WINNT >= 0x0600)
 
         BOOL SetDropDownState(BOOL bDropDown)
         {
@@ -188,6 +197,8 @@ namespace xl
         {
 	        return ::SendMessage(m_hWnd, BCM_SETSHIELD, 0, (LPARAM)bSet);
         }
+
+#endif // (_WIN32_WINNT >= 0x0600)
 
     public: // Operations
         
