@@ -49,7 +49,7 @@ namespace xl
 
             while (cbCopied < cbSize)
             {
-                unsigned int cbToCopy = cbSize - cbCopied > BUFFER_LENGTH - m_cbBufferUsed ? BUFFER_LENGTH - m_cbBufferUsed : cbSize - cbCopied;
+                size_t cbToCopy = cbSize - cbCopied > BUFFER_LENGTH - m_cbBufferUsed ? BUFFER_LENGTH - m_cbBufferUsed : cbSize - cbCopied;
 
                 Memory::Copy(m_ctx.buffer + m_cbBufferUsed, (const unsigned char *)lpBuffer + cbCopied, cbToCopy);
 
@@ -295,13 +295,26 @@ namespace xl
             b = ROTATE_LEFT(b, 30);
         }
 
-        static inline unsigned int BitSwap(const unsigned int x)
+        static inline unsigned int BitSwap(unsigned int x)
         {
+#ifdef _WIN64
+            unsigned int result = 0;
+
+            for (size_t i = 0; i < sizeof(unsigned int); ++i)
+            {
+                result <<= 8;
+                result |= x & 0xff;
+                x >>= 8;
+            }
+
+            return result;
+#else
             __asm
             {
                 mov eax, x
                 bswap eax
             }
+#endif
         }
 
 

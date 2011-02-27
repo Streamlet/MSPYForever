@@ -699,7 +699,7 @@ namespace xl
             size_t zeros = dividend.m_aValue.Size() - div.m_aValue.Size();
 
             BigIntT<T> temp;
-            temp.m_aValue.Insert(temp.m_aValue.Begin(), dividend.m_aValue.Begin() + zeros, dividend.m_aValue.End());
+            temp.m_aValue.Insert(temp.m_aValue.Begin(), dividend.m_aValue.Begin() + (int)zeros, dividend.m_aValue.End());
 
             unsigned long long a = temp.m_aValue[temp.m_aValue.Size() - 1];
             unsigned long long b = div.m_aValue[div.m_aValue.Size() - 1];
@@ -707,7 +707,7 @@ namespace xl
             if (temp < div)
             {
                 --zeros;
-                temp.m_aValue.Insert(temp.m_aValue.Begin(), dividend.m_aValue.Begin() + zeros, dividend.m_aValue.Begin() + zeros + 1);
+                temp.m_aValue.Insert(temp.m_aValue.Begin(), dividend.m_aValue.Begin() + (int)zeros, dividend.m_aValue.Begin() + (int)zeros + 1);
                 a <<= sizeof(T) * 8;
                 a += temp.m_aValue[temp.m_aValue.Size() - 2];
             }

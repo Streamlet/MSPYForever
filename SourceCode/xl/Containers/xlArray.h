@@ -66,7 +66,7 @@ namespace xl
     protected:
         void Release();
         size_t GetWellSize(size_t nSize) const;
-        void MoveData(T *pMem, int nCount, int nDistance);
+        void MoveData(T *pMem, size_t nCount, int nDistance);
         void CopyData(const T *pMem, size_t nCount, T *pNewMem);
 
     // Iterator
@@ -565,7 +565,7 @@ namespace xl
     }
 
     template <typename T>
-    inline void Array<T>::MoveData(T *pMem, int nCount, int nDistance)
+    inline void Array<T>::MoveData(T *pMem, size_t nCount, int nDistance)
     {
          if (nDistance == 0)
          {
@@ -573,7 +573,7 @@ namespace xl
          }
          else if (nDistance > 0)
          {
-             for (int i = nCount - 1 + nDistance; i > - 1 + nDistance; --i)
+             for (size_t i = nCount - 1 + nDistance; i > - 1 + nDistance; --i)
              {
                  pMem[i] = pMem[i - nDistance];
              }
@@ -592,7 +592,7 @@ namespace xl
     {
          if (pNewMem >= pMem && pNewMem < pMem + m_nSize)
          {
-             MoveData(const_cast<T *>(pMem), nCount, pNewMem - pMem);
+             MoveData(const_cast<T *>(pMem), nCount, (int)(pNewMem - pMem));
          }
          else
          {
@@ -962,7 +962,7 @@ namespace xl
     {
         size_t nIndex = itBeforeWhich.m_pCurrent - (m_pData + m_nStart);
 
-        InsertBuffer(nIndex, itFirstToInsert.m_pCurrent, itAfterLastToInsert - itFirstToInsert);
+        InsertBuffer(nIndex, itFirstToInsert.m_pCurrent, (int)(itAfterLastToInsert - itFirstToInsert));
     }
 
     template <typename T>
