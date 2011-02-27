@@ -17,7 +17,6 @@
 #define __XLSTDBUTTON_H_A3754322_DF44_433F_847E_1A4FE4CA46F7_INCLUDED__
 
 #include <xl/Win32/GUI/xlWindow.h>
-#include <CommCtrl.h>
 
 namespace xl
 {
