@@ -189,8 +189,13 @@ namespace xl
 
             if (bStdControl)
             {
+#ifdef _WIN64
+                m_fnDefaultProc = (WNDPROC)GetWindowLongPtr(m_hWnd, GWLP_WNDPROC);
+                SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
+#else
                 m_fnDefaultProc = (WNDPROC)GetWindowLong(m_hWnd, GWL_WNDPROC);
                 SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)StartWndProc);
+#endif
             }
 
             return true;
@@ -230,7 +235,11 @@ namespace xl
 
             WNDPROC pWndProc = pThis->m_thunk.GetThunkWndProc();
 
+#ifdef _WIN64
+            SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pWndProc);
+#else
             SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pWndProc);
+#endif
 
             return pWndProc(hWnd, uMsg, wParam, lParam);
         }
@@ -376,7 +385,7 @@ namespace xl
         void AppendNotifyMsgHandler(UINT_PTR uID, UINT uCode, NotifyMsgHandler pMsgHandler)
         {
             m_csNotifyMsgMap.Lock();
-            m_NotifyMsgMap[MakeNotifyMsgFinder(uID, uCode)].PushBack(pMsgHandler);
+            m_NotifyMsgMap[MakeNotifyMsgFinder((UINT)uID, uCode)].PushBack(pMsgHandler);
             m_csNotifyMsgMap.UnLock();
         }
 
@@ -386,7 +395,7 @@ namespace xl
             m_csNotifyMsgMap.Lock();
 
             LPNMHDR pNMHDR = (LPNMHDR)lParam;
-            UINT uID = pNMHDR->idFrom;
+            UINT uID = (UINT)pNMHDR->idFrom;
             UINT uCode = pNMHDR->code;
 
             NotifyMsgHandlerList *pNotifyMsgHandlers = nullptr;

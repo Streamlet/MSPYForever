@@ -190,7 +190,7 @@ namespace xl
 
         BOOL SendNotifyMessage(UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
-            return ::SendNotifyMessage(m_hWnd, wParam, wParam, lParam);
+            return ::SendNotifyMessage(m_hWnd, uMsg, wParam, lParam);
         }
 
     public: // Window Text Functions

@@ -26,16 +26,35 @@ namespace xl
     class Thunk
     {
     private:
-#pragma pack(push,1)
+
+#ifdef _WIN64
+
+#pragma pack(push, 1)
         typedef struct _StdCallThunk
         {
-            DWORD   m_mov;
+            USHORT  m_mov_rcx;  // mov rcx, pThis
+            ULONG64 m_this;
+            USHORT  m_mov_rax;  // mov rax, target
+            ULONG64 m_relproc;
+            USHORT  m_jmp;      // jmp target
+
+        } StdCallThunk;
+#pragma pack(pop)
+
+#else
+
+#pragma pack(push, 1)
+        typedef struct _StdCallThunk
+        {
+            DWORD   m_mov;      // mov dword ptr [esp+4], pThis
             DWORD   m_this;
-            BYTE    m_jmp;
+            BYTE    m_jmp;      // jmp pWndProc
             DWORD   m_relproc;
 
         } StdCallThunk;
 #pragma pack(pop)
+
+#endif
 
     private:
         static Heap m_sHeap;
@@ -46,10 +65,20 @@ namespace xl
             : m_pThunk(nullptr)
         {
             m_pThunk = (StdCallThunk *)m_sHeap.Alloc(sizeof(StdCallThunk));
-            m_pThunk->m_mov     = 0x042444c7;
-            m_pThunk->m_jmp     = 0xe9;
-            m_pThunk->m_this    = 0;
+
+#ifdef _WIN64
+            m_pThunk->m_mov_rcx = 0xb948;   // mov rcx, pThis
+            m_pThunk->m_this = 0;
+            m_pThunk->m_mov_rax = 0xb848;   // mov rax, target
             m_pThunk->m_relproc = 0;
+            m_pThunk->m_jmp = 0xe0ff;       // jmp rax
+
+#else
+            m_pThunk->m_mov     = 0x042444c7;   // mov dword ptr [esp+4], pThis
+            m_pThunk->m_this    = 0;
+            m_pThunk->m_jmp     = 0xe9;         // jmp pWndProc
+            m_pThunk->m_relproc = 0;
+#endif
         }
 
         ~Thunk()
@@ -64,15 +93,22 @@ namespace xl
         template <typename T>
         void SetObject(const T *pObject)
         {
+#ifdef _WIN64
+            m_pThunk->m_this = (ULONG64)pObject;
+#else
             m_pThunk->m_this = (DWORD)pObject;
+#endif
         }
 
         void SetRealWndProc(WNDPROC pWndProc)
         {
-            m_pThunk->m_relproc = (DWORD)pWndProc - ((DWORD)m_pThunk + sizeof(StdCallThunk));
+#ifdef _WIN64
+            m_pThunk->m_relproc = (ULONG64)pWndProc;
+#else
+            m_pThunk->m_relproc = (ULONG64)pWndProc - ((ULONG64)m_pThunk + sizeof(StdCallThunk));
+#endif
         }
-
-        WNDPROC GetThunkWndProc()
+               WNDPROC GetThunkWndProc()
         {
             return (WNDPROC)m_pThunk;
         }
