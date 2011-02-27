@@ -85,5 +85,5 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         DispatchMessage(&msg);
     }
 
-	return 0;
+    return 0;
 }

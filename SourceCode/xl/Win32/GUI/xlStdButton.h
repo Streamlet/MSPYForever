@@ -75,79 +75,79 @@ namespace xl
 
         UINT GetState() const
         {
-	        return (UINT)::SendMessage(m_hWnd, BM_GETSTATE, 0, 0);
+            return (UINT)::SendMessage(m_hWnd, BM_GETSTATE, 0, 0);
         }
 
         void SetState(BOOL bHighlight)
         {
-	        ::SendMessage(m_hWnd, BM_SETSTATE, bHighlight, 0);
+            ::SendMessage(m_hWnd, BM_SETSTATE, bHighlight, 0);
         }
 
         int GetCheck() const
         {
-	        return (int)::SendMessage(m_hWnd, BM_GETCHECK, 0, 0L);
+            return (int)::SendMessage(m_hWnd, BM_GETCHECK, 0, 0L);
         }
 
         void SetCheck(int nCheck)
         {
-	        ::SendMessage(m_hWnd, BM_SETCHECK, nCheck, 0);
+            ::SendMessage(m_hWnd, BM_SETCHECK, nCheck, 0);
         }
 
         UINT GetButtonStyle() const
         {
-	        return (UINT)::GetWindowLong(m_hWnd, GWL_STYLE) & 0xFFFF;
+            return (UINT)::GetWindowLong(m_hWnd, GWL_STYLE) & 0xFFFF;
         }
 
         void SetButtonStyle(UINT nStyle, BOOL bRedraw = TRUE)
         {
-	        ::SendMessage(m_hWnd, BM_SETSTYLE, nStyle, (LPARAM)bRedraw);
+            ::SendMessage(m_hWnd, BM_SETSTYLE, nStyle, (LPARAM)bRedraw);
         }
 
         HICON GetIcon() const
         {
-	        return (HICON)::SendMessage(m_hWnd, BM_GETIMAGE, IMAGE_ICON, 0);
+            return (HICON)::SendMessage(m_hWnd, BM_GETIMAGE, IMAGE_ICON, 0);
         }
 
         HICON SetIcon(HICON hIcon)
         {
-	        return (HICON)::SendMessage(m_hWnd, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hIcon);
+            return (HICON)::SendMessage(m_hWnd, BM_SETIMAGE, IMAGE_ICON, (LPARAM)hIcon);
         }
 
         HBITMAP GetBitmap() const
         {
-	        return (HBITMAP)::SendMessage(m_hWnd, BM_GETIMAGE, IMAGE_BITMAP, 0L);
+            return (HBITMAP)::SendMessage(m_hWnd, BM_GETIMAGE, IMAGE_BITMAP, 0L);
         }
 
         HBITMAP SetBitmap(HBITMAP hBitmap)
         {
-	        return (HBITMAP)::SendMessage(m_hWnd, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitmap);
+            return (HBITMAP)::SendMessage(m_hWnd, BM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitmap);
         }
 
 #if (_WIN32_WINNT >= 0x0501)
 
         BOOL GetIdealSize(LPSIZE lpSize) const
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_GETIDEALSIZE, 0, (LPARAM)lpSize);
+            return (BOOL)::SendMessage(m_hWnd, BCM_GETIDEALSIZE, 0, (LPARAM)lpSize);
         }
 
         BOOL GetImageList(PBUTTON_IMAGELIST pButtonImagelist)
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_GETIMAGELIST, 0, (LPARAM)pButtonImagelist);
+            return (BOOL)::SendMessage(m_hWnd, BCM_GETIMAGELIST, 0, (LPARAM)pButtonImagelist);
         }
 
         BOOL SetImageList(PBUTTON_IMAGELIST pButtonImagelist)
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_SETIMAGELIST, 0, (LPARAM)pButtonImagelist);
+            return (BOOL)::SendMessage(m_hWnd, BCM_SETIMAGELIST, 0, (LPARAM)pButtonImagelist);
         }
 
         BOOL GetTextMargin(LPRECT lpRect) const
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_GETTEXTMARGIN, 0, (LPARAM)lpRect);
+            return (BOOL)::SendMessage(m_hWnd, BCM_GETTEXTMARGIN, 0, (LPARAM)lpRect);
         }
 
         BOOL SetTextMargin(LPRECT lpRect)
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_SETTEXTMARGIN, 0, (LPARAM)lpRect);
+            return (BOOL)::SendMessage(m_hWnd, BCM_SETTEXTMARGIN, 0, (LPARAM)lpRect);
         }
 
 #endif // (_WIN32_WINNT >= 0x0501)
@@ -156,7 +156,7 @@ namespace xl
 
         void SetDontClick(BOOL bDontClick)
         {
-	        ::SendMessage(m_hWnd, BM_SETDONTCLICK, (WPARAM)bDontClick, 0);
+            ::SendMessage(m_hWnd, BM_SETDONTCLICK, (WPARAM)bDontClick, 0);
         }
 #endif // (WINVER >= 0x0600)
 
@@ -164,37 +164,37 @@ namespace xl
 
         BOOL SetDropDownState(BOOL bDropDown)
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_SETDROPDOWNSTATE, (WPARAM)bDropDown, 0);
+            return (BOOL)::SendMessage(m_hWnd, BCM_SETDROPDOWNSTATE, (WPARAM)bDropDown, 0);
         }
 
         BOOL GetSplitInfo(PBUTTON_SPLITINFO pSplitInfo) const
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_GETSPLITINFO, 0, (LPARAM)pSplitInfo);
+            return (BOOL)::SendMessage(m_hWnd, BCM_GETSPLITINFO, 0, (LPARAM)pSplitInfo);
         }
 
         BOOL SetSplitInfo(PBUTTON_SPLITINFO pSplitInfo)
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_SETSPLITINFO, 0, (LPARAM)pSplitInfo);
+            return (BOOL)::SendMessage(m_hWnd, BCM_SETSPLITINFO, 0, (LPARAM)pSplitInfo);
         }
 
         int GetNoteLength() const
         {
-	        return (int)::SendMessage(m_hWnd, BCM_GETNOTELENGTH, 0, 0L);
+            return (int)::SendMessage(m_hWnd, BCM_GETNOTELENGTH, 0, 0L);
         }
 
         BOOL GetNote(LPWSTR lpstrNoteText, int cchNoteText) const
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_GETNOTE, cchNoteText, (LPARAM)lpstrNoteText);
+            return (BOOL)::SendMessage(m_hWnd, BCM_GETNOTE, cchNoteText, (LPARAM)lpstrNoteText);
         }
 
         BOOL SetNote(LPCWSTR lpstrNoteText)
         {
-	        return (BOOL)::SendMessage(m_hWnd, BCM_SETNOTE, 0, (LPARAM)lpstrNoteText);
+            return (BOOL)::SendMessage(m_hWnd, BCM_SETNOTE, 0, (LPARAM)lpstrNoteText);
         }
 
         LRESULT SetElevationRequiredState(BOOL bSet)
         {
-	        return ::SendMessage(m_hWnd, BCM_SETSHIELD, 0, (LPARAM)bSet);
+            return ::SendMessage(m_hWnd, BCM_SETSHIELD, 0, (LPARAM)bSet);
         }
 
 #endif // (_WIN32_WINNT >= 0x0600)
@@ -203,7 +203,7 @@ namespace xl
         
         void Click()
         {
-	        ::SendMessage(m_hWnd, BM_CLICK, 0, 0);
+            ::SendMessage(m_hWnd, BM_CLICK, 0, 0);
         }
     };
 

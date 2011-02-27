@@ -74,44 +74,44 @@ namespace xl
 
     public:
         HICON GetIcon() const
-	    {
-		    return (HICON)::SendMessage(m_hWnd, STM_GETICON, 0, 0);
-	    }
-
-	    HICON SetIcon(HICON hIcon)
-	    {
-		    return (HICON)::SendMessage(m_hWnd, STM_SETICON, (WPARAM)hIcon, 0);
-	    }
-
-	    HENHMETAFILE GetEnhMetaFile() const
-	    {
-		    return (HENHMETAFILE)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_ENHMETAFILE, 0);
-	    }
-
-	    HENHMETAFILE SetEnhMetaFile(HENHMETAFILE hMetaFile)
-	    {
-		    return (HENHMETAFILE)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_ENHMETAFILE, (LPARAM)hMetaFile);
+        {
+            return (HICON)::SendMessage(m_hWnd, STM_GETICON, 0, 0);
         }
 
-	    HBITMAP GetBitmap() const
-	    {
-		    return (HBITMAP)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_BITMAP, 0);
-	    }
+        HICON SetIcon(HICON hIcon)
+        {
+            return (HICON)::SendMessage(m_hWnd, STM_SETICON, (WPARAM)hIcon, 0);
+        }
 
-	    HBITMAP SetBitmap(HBITMAP hBitmap)
-	    {
-		    return (HBITMAP)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitmap);
-	    }
+        HENHMETAFILE GetEnhMetaFile() const
+        {
+            return (HENHMETAFILE)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_ENHMETAFILE, 0);
+        }
 
-	    HCURSOR GetCursor() const
-	    {
-		    return (HCURSOR)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_CURSOR, 0);
-	    }
+        HENHMETAFILE SetEnhMetaFile(HENHMETAFILE hMetaFile)
+        {
+            return (HENHMETAFILE)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_ENHMETAFILE, (LPARAM)hMetaFile);
+        }
 
-	    HCURSOR SetCursor(HCURSOR hCursor)
-	    {
-		    return (HCURSOR)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_CURSOR, (LPARAM)hCursor);
-	    }
+        HBITMAP GetBitmap() const
+        {
+            return (HBITMAP)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_BITMAP, 0);
+        }
+
+        HBITMAP SetBitmap(HBITMAP hBitmap)
+        {
+            return (HBITMAP)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitmap);
+        }
+
+        HCURSOR GetCursor() const
+        {
+            return (HCURSOR)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_CURSOR, 0);
+        }
+
+        HCURSOR SetCursor(HCURSOR hCursor)
+        {
+            return (HCURSOR)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_CURSOR, (LPARAM)hCursor);
+        }
     };
 
 } // namespace xl

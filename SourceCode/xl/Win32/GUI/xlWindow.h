@@ -158,12 +158,12 @@ namespace xl
 
         LONG_PTR GetWindowLongPtr(int nIndex)
         {
-	        return ::GetWindowLongPtr(m_hWnd, nIndex);
+            return ::GetWindowLongPtr(m_hWnd, nIndex);
         }
 
         LONG_PTR SetWindowLongPtr(int nIndex, LONG_PTR dwNewLong)
         {
-	        return ::SetWindowLongPtr(m_hWnd, nIndex, dwNewLong);
+            return ::SetWindowLongPtr(m_hWnd, nIndex, dwNewLong);
         }
 
         WORD GetWindowWord(int nIndex)
