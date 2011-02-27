@@ -18,7 +18,7 @@
 
 
 #include <xl/xlDef.h>
-#include <xl/Objects/xlQIPtr.h>
+#include <xl/Memory/xlQIPtr.h>
 #include <xl/Meta/xlMacros.h>
 #include <xl/Meta/xlTypeList.h>
 

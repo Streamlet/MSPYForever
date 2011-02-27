@@ -22,7 +22,7 @@
 
 #include <xl/Test/xlUnitTest.h>
 #include <xl/xlDef.h>
-#include <xl/Objects/xlQIPtr.h>
+#include <xl/Memory/xlQIPtr.h>
 
 using namespace xl;
 

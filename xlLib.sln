@@ -19,7 +19,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Objects\xlBigInt.h = SourceCode\xl\Objects\xlBigInt.h
-		SourceCode\xl\Objects\xlQIPtr.h = SourceCode\xl\Objects\xlQIPtr.h
 		SourceCode\xl\Objects\xlRegExp.h = SourceCode\xl\Objects\xlRegExp.h
 	EndProjectSection
 EndProject
@@ -132,6 +131,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{C3
 		Document\autoexp.txt = Document\autoexp.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{9274E5C4-72E6-4147-BB18-30853424D2D3}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Memory\xlQIPtr.h = SourceCode\xl\Memory\xlQIPtr.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -226,6 +230,7 @@ Global
 		{54E546A4-BE6C-49B1-90D1-10C609CB1115} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{27631DF6-2FAF-4EDA-A7BB-FB989284C771} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{3001410B-F3F0-4387-9E64-3BE6078D1C7E} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{9274E5C4-72E6-4147-BB18-30853424D2D3} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{EE975764-0A8A-4B44-9824-1D330B25F008} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{9A95D796-D8CA-4BA6-8AA2-1558F3915BF8} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
 		{39CAF48B-875F-4F5B-B195-93A452020737} = {32139451-1EE1-4BA6-9E40-C3E84993E9A6}
