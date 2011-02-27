@@ -85,7 +85,7 @@ namespace xl
 
         int GetCheck() const
         {
-            return (int)::SendMessage(m_hWnd, BM_GETCHECK, 0, 0L);
+            return (int)::SendMessage(m_hWnd, BM_GETCHECK, 0, 0);
         }
 
         void SetCheck(int nCheck)
@@ -115,7 +115,7 @@ namespace xl
 
         HBITMAP GetBitmap() const
         {
-            return (HBITMAP)::SendMessage(m_hWnd, BM_GETIMAGE, IMAGE_BITMAP, 0L);
+            return (HBITMAP)::SendMessage(m_hWnd, BM_GETIMAGE, IMAGE_BITMAP, 0);
         }
 
         HBITMAP SetBitmap(HBITMAP hBitmap)
@@ -179,7 +179,7 @@ namespace xl
 
         int GetNoteLength() const
         {
-            return (int)::SendMessage(m_hWnd, BCM_GETNOTELENGTH, 0, 0L);
+            return (int)::SendMessage(m_hWnd, BCM_GETNOTELENGTH, 0, 0);
         }
 
         BOOL GetNote(LPWSTR lpstrNoteText, int cchNoteText) const

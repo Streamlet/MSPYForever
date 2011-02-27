@@ -124,7 +124,7 @@ namespace xl
 
         void SetLimitText(UINT nMax)
         {
-            ::SendMessage(m_hWnd, EM_SETLIMITTEXT, nMax, 0L);
+            ::SendMessage(m_hWnd, EM_SETLIMITTEXT, nMax, 0);
         }
 
         DWORD PosFromChar(UINT nChar) const
@@ -250,7 +250,7 @@ namespace xl
 
             if(!bNoScroll)
             {
-                ::SendMessage(m_hWnd, EM_SCROLLCARET, 0, 0L);
+                ::SendMessage(m_hWnd, EM_SCROLLCARET, 0, 0);
             }
         }
 
@@ -260,7 +260,7 @@ namespace xl
 
             if(!bNoScroll)
             {
-                ::SendMessage(m_hWnd, EM_SCROLLCARET, 0, 0L);
+                ::SendMessage(m_hWnd, EM_SCROLLCARET, 0, 0);
             }
         }
 
@@ -281,7 +281,7 @@ namespace xl
 
         BOOL SetTabStops()
         {
-            return (BOOL)::SendMessage(m_hWnd, EM_SETTABSTOPS, 0, 0L);
+            return (BOOL)::SendMessage(m_hWnd, EM_SETTABSTOPS, 0, 0);
         }
 
         BOOL SetTabStops(const int &cxEachStop)    // takes an 'int'
@@ -291,12 +291,12 @@ namespace xl
 
         void ScrollCaret()
         {
-            ::SendMessage(m_hWnd, EM_SCROLLCARET, 0, 0L);
+            ::SendMessage(m_hWnd, EM_SCROLLCARET, 0, 0);
         }
 
         DWORD Scroll(int nScrollAction)
         {
-            return (DWORD)::SendMessage(m_hWnd, EM_SCROLL, nScrollAction, 0L);
+            return (DWORD)::SendMessage(m_hWnd, EM_SCROLL, nScrollAction, 0);
         }
 
         void InsertText(int nInsertAfterChar, LPCTSTR lpstrText, BOOL bNoScroll = FALSE, BOOL bCanUndo = FALSE)
@@ -362,7 +362,7 @@ namespace xl
 
         void Paste()
         {
-            ::SendMessage(m_hWnd, WM_PASTE, 0, 0L);
+            ::SendMessage(m_hWnd, WM_PASTE, 0, 0);
         }
     };
 
