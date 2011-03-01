@@ -153,6 +153,7 @@ namespace xl
         }
 
     public: // for combobox item
+
         DWORD_PTR GetItemData(int nIndex)
         {
             return (DWORD_PTR)::SendMessage(m_hWnd, CB_GETITEMDATA, nIndex, 0);
@@ -322,7 +323,6 @@ namespace xl
         {
             ::SendMessage(m_hWnd, WM_PASTE, 0, 0);
         }
-
     };
 
 } // namespace xl
