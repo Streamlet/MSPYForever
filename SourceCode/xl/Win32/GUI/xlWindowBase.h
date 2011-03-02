@@ -57,12 +57,14 @@ namespace xl
     {
     protected:
         // MsgHandler Parameters:
+        // HWND:   hWnd
         // UINT:   uMsg
         // WPARAM: wParam
         // LPARAM: lParam
-        typedef Function<LRESULT (UINT, WPARAM, LPARAM)> MsgHandler;
+        typedef Function<LRESULT (HWND, UINT, WPARAM, LPARAM)> MsgHandler;
 
         // CommandMsgHandler Parameters:
+        // HWND: hWnd
         // WORD: wID
         // WORD: wCode
         //           For menus, it will always be 0;
@@ -71,13 +73,14 @@ namespace xl
         // HWND: hControl
         //           For controls, it will be the HWND of the control,
         //           otherwise, it will be 0.
-        typedef Function<LRESULT (WORD, WORD, HWND)> CommandMsgHandler;
+        typedef Function<LRESULT (HWND, WORD, WORD, HWND)> CommandMsgHandler;
 
         // MsgHandler Parameters:
+        // HWND: hWnd
         // UINT: wID
         // UINT: uCode
         // HWND: hControl
-        typedef Function<LRESULT (UINT, UINT, HWND)> NotifyMsgHandler;
+        typedef Function<LRESULT (HWND, UINT, UINT, HWND)> NotifyMsgHandler;
 
     private:
         inline UINT MakeMsgFinder(UINT uMsg)
@@ -291,7 +294,7 @@ namespace xl
 
                 for (MsgHandlerList::Iterator it = pMsgHandlers->Begin(); it != pMsgHandlers->End(); ++it)
                 {
-                    lResult = (*it)(uMsg, wParam, lParam);
+                    lResult = (*it)(m_hWnd, uMsg, wParam, lParam);
                 }
 
                 if (uMsg != WM_COMMAND && uMsg != WM_NOTIFY)
@@ -337,7 +340,7 @@ namespace xl
         }
 
     private:
-        LRESULT OnCommand(UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             m_csCommandMsgMap.Lock();
 
@@ -360,7 +363,7 @@ namespace xl
 
                 for (CommandMsgHandlerList::Iterator it = pCommandMsgHandlers->Begin(); it != pCommandMsgHandlers->End(); ++it)
                 {
-                    lResult = (*it)(wID, wCode, (HWND)lParam);
+                    lResult = (*it)(m_hWnd, wID, wCode, (HWND)lParam);
                 }
 
                 return lResult;
@@ -390,7 +393,7 @@ namespace xl
         }
 
     private:
-        LRESULT OnNotify(UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnNotify(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             m_csNotifyMsgMap.Lock();
 
@@ -414,7 +417,7 @@ namespace xl
 
                 for (NotifyMsgHandlerList::Iterator it = pNotifyMsgHandlers->Begin(); it != pNotifyMsgHandlers->End(); ++it)
                 {
-                    lResult = (*it)(uID, uCode, pNMHDR->hwndFrom);
+                    lResult = (*it)(m_hWnd, uID, uCode, pNMHDR->hwndFrom);
                 }
 
                 return lResult;

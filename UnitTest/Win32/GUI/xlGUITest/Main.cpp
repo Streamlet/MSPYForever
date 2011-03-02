@@ -48,7 +48,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     combo.AddString(_T("Item3"));
     combo.SetCurSel(0);
 
-    wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](WORD wID, WORD wCode, HWND hControl) -> LRESULT
+    wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {
         TCHAR szText[MAX_PATH];
         edit.GetWindowText(szText, MAX_PATH);
@@ -57,17 +57,17 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.AppendCommandMsgHandler(3, [&wnd, &edit](WORD wID, WORD wCode, HWND hControl) -> LRESULT
+    wnd.AppendCommandMsgHandler(3, [&edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {
         TCHAR szText[MAX_PATH];
         edit.GetWindowText(szText, MAX_PATH);
 
-        wnd.MessageBox(szText, _T("MessageBox"), MB_OK | MB_ICONINFORMATION);
+        MessageBox(hWnd, szText, _T("MessageBox"), MB_OK | MB_ICONINFORMATION);
 
         return FALSE;
     });
 
-    wnd.AppendCommandMsgHandler(4, CBN_SELCHANGE, [&edit, &combo](WORD wID, WORD wCode, HWND hControl) ->LRESULT
+    wnd.AppendCommandMsgHandler(4, CBN_SELCHANGE, [&edit, &combo](HWND hWnd, WORD wID, WORD wCode, HWND hControl) ->LRESULT
     {
         TCHAR szText[MAX_PATH];
         combo.GetWindowText(szText, MAX_PATH);
@@ -76,7 +76,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.AppendMsgHandler(WM_DESTROY, [](UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
+    wnd.AppendMsgHandler(WM_DESTROY, [](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
     {
         PostQuitMessage(0);
         return FALSE;
