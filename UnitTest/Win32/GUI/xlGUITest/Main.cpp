@@ -19,6 +19,7 @@
 #include <xl/Win32/GUI/xlStdButton.h>
 #include <xl/Win32/GUI/xlStdEdit.h>
 #include <xl/Win32/GUI/xlStdComboBox.h>
+#include <xl/Win32/GUI/xlStdListBox.h>
 
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,
@@ -48,6 +49,12 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     combo.AddString(_T("Item3"));
     combo.SetCurSel(0);
 
+    xl::StdListBox list;
+    list.Create(5, &wnd, 80, 140, 200, 100);
+    list.AddString(_T("ListItem1"));
+    list.AddString(_T("ListItem2"));
+    list.AddString(_T("ListItem3"));
+
     wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {
         TCHAR szText[MAX_PATH];
@@ -71,6 +78,15 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     {
         TCHAR szText[MAX_PATH];
         combo.GetWindowText(szText, MAX_PATH);
+        edit.SetWindowText(szText);
+
+        return FALSE;
+    });
+
+    wnd.AppendCommandMsgHandler(5, LBN_SELCHANGE, [&edit, &list](HWND hWnd, WORD wID, WORD wCode, HWND hControl) ->LRESULT
+    {
+        TCHAR szText[MAX_PATH];
+        list.GetText(list.GetCurSel(), szText);
         edit.SetWindowText(szText);
 
         return FALSE;

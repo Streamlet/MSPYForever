@@ -136,7 +136,7 @@ namespace xl
             return (BOOL)::SendMessage(m_hWnd, CB_GETCOMBOBOXINFO, 0, (LPARAM)pComboBoxInfo);
 #else // !(_WIN32_WINNT >= 0x0501)
             return ::GetComboBoxInfo(m_hWnd, pComboBoxInfo);
-#endif // (_WIN32_WINNT >= 0x0501)
+#endif // !(_WIN32_WINNT >= 0x0501)
         }
 #endif // (WINVER >= 0x0500)
 
