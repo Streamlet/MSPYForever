@@ -17,16 +17,15 @@
 #define __XLWINDOW_H_0646591E_8D6A_44AA_A773_084A53A0B190_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindowBase.h>
+#include <xl/Win32/GUI/xlWindowBaseEx.h>
 #include <xl/Win32/GUI/xlWindowAPIMacroRedefine.h>
 
 namespace xl
 {
-    class Window : public WindowBase
+    class Window : public WindowBaseEx
     {
     public:
         Window() :
-            WindowBase(),
             m_hFontCaption(nullptr),
             m_hFontSmallCaption(nullptr),
             m_hFontMenu(nullptr),

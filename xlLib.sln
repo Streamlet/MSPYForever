@@ -54,6 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{B9EA58CE-58D
 		SourceCode\xl\Win32\GUI\xlWindow.h = SourceCode\xl\Win32\GUI\xlWindow.h
 		SourceCode\xl\Win32\GUI\xlWindowAPIMacroRedefine.h = SourceCode\xl\Win32\GUI\xlWindowAPIMacroRedefine.h
 		SourceCode\xl\Win32\GUI\xlWindowBase.h = SourceCode\xl\Win32\GUI\xlWindowBase.h
+		SourceCode\xl\Win32\GUI\xlWindowBaseEx.h = SourceCode\xl\Win32\GUI\xlWindowBaseEx.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{8E12D1F8-E344-41C8-9FD9-2F93E874F24E}"

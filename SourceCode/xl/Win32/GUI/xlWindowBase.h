@@ -63,47 +63,11 @@ namespace xl
         // LPARAM: lParam
         typedef Function<LRESULT (HWND, UINT, WPARAM, LPARAM)> MsgHandler;
 
-        // CommandMsgHandler Parameters:
-        // HWND: hWnd
-        // WORD: wID
-        // WORD: wCode
-        //           For menus, it will always be 0;
-        //           for accelerators, it will always be 1;
-        //           for controls, it depends on the very control.
-        // HWND: hControl
-        //           For controls, it will be the HWND of the control,
-        //           otherwise, it will be 0.
-        typedef Function<LRESULT (HWND, WORD, WORD, HWND)> CommandMsgHandler;
-
-        // MsgHandler Parameters:
-        // HWND: hWnd
-        // UINT: wID
-        // UINT: uCode
-        // HWND: hControl
-        typedef Function<LRESULT (HWND, UINT, UINT, HWND)> NotifyMsgHandler;
-
-    private:
-        inline UINT MakeMsgFinder(UINT uMsg)
-        {
-            return uMsg;
-        }
-
-        inline UINT MakeCommandMsgFinder(WORD wID, WORD wCode)
-        {
-            return ((UINT)wID | ((UINT)wCode << 16));
-        }
-
-        inline ULONGLONG MakeNotifyMsgFinder(UINT uID, UINT uCode)
-        {
-            return ((ULONGLONG)uID | ((ULONGLONG)uCode << 32));
-        }
-
     public:
         WindowBase() :
             m_hWnd(nullptr), m_fnDefaultProc(DefWindowProc)
         {
-            AppendMsgHandler(WM_COMMAND, MsgHandler(this, &WindowBase::OnCommand));
-            AppendMsgHandler(WM_NOTIFY,  MsgHandler(this, &WindowBase::OnNotify));
+
         }
 
         ~WindowBase()
@@ -269,7 +233,7 @@ namespace xl
         void AppendMsgHandler(UINT uMsg, MsgHandler pMsgHandler)
         {
             m_csMsgMap.Lock();
-            m_MsgMap[MakeMsgFinder(uMsg)].PushBack(pMsgHandler);
+            m_MsgMap[uMsg].PushBack(pMsgHandler);
             m_csMsgMap.UnLock();
         }
 
@@ -279,7 +243,7 @@ namespace xl
             m_csMsgMap.Lock();
 
             MsgHandlerList *pMsgHandlers = nullptr;
-            MsgMap::Iterator itMsgMap = m_MsgMap.Find(MakeMsgFinder(uMsg));
+            MsgMap::Iterator itMsgMap = m_MsgMap.Find(uMsg);
 
             if (itMsgMap != m_MsgMap.End())
             {
@@ -304,128 +268,6 @@ namespace xl
             }
 
             return m_fnDefaultProc(m_hWnd, uMsg, wParam, lParam);
-        }
-
-    // Command message maps
-
-    private:
-        typedef List<CommandMsgHandler> CommandMsgHandlerList;
-        typedef Map<WPARAM, CommandMsgHandlerList> CommandMsgMap;
-
-    private:
-        CommandMsgMap   m_CommandMsgMap;
-        CriticalSection m_csCommandMsgMap;
-    
-    public:
-        void AppendCommandMsgHandler(WORD wID, WORD wCode, CommandMsgHandler pMsgHandler)
-        {
-            m_csCommandMsgMap.Lock();
-            m_CommandMsgMap[MakeCommandMsgFinder(wID, wCode)].PushBack(pMsgHandler);
-            m_csCommandMsgMap.UnLock();
-        }
-
-        void AppendMenuCommandMsgHandler(WORD wID, CommandMsgHandler pMsgHandler)
-        {
-            AppendCommandMsgHandler(wID, 0, pMsgHandler);
-        }
-
-        void AppendAcceleratorCommandMsgHandler(WORD wID, CommandMsgHandler pMsgHandler)
-        {
-            AppendCommandMsgHandler(wID, 1, pMsgHandler);
-        }
-
-        void AppendCommandMsgHandler(WORD wID, CommandMsgHandler pMsgHandler)
-        {
-            AppendCommandMsgHandler(wID, 0, pMsgHandler);
-        }
-
-    private:
-        LRESULT OnCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-        {
-            m_csCommandMsgMap.Lock();
-
-            WORD wID = LOWORD(wParam);
-            WORD wCode = HIWORD(wParam);
-
-            CommandMsgHandlerList *pCommandMsgHandlers = nullptr;
-            CommandMsgMap::Iterator itCommandMsgMap = m_CommandMsgMap.Find(MakeCommandMsgFinder(wID, wCode));
-
-            if (itCommandMsgMap != m_CommandMsgMap.End())
-            {
-                pCommandMsgHandlers = &itCommandMsgMap->Value;
-            }
-
-            m_csCommandMsgMap.UnLock();
-
-            if (pCommandMsgHandlers != nullptr)
-            {
-                LRESULT lResult = 0;
-
-                for (CommandMsgHandlerList::Iterator it = pCommandMsgHandlers->Begin(); it != pCommandMsgHandlers->End(); ++it)
-                {
-                    lResult = (*it)(m_hWnd, wID, wCode, (HWND)lParam);
-                }
-
-                return lResult;
-            }
-            else
-            {
-                return FALSE;
-            }
-        }
-
-    // Notify message maps
-
-    private:
-        typedef List<NotifyMsgHandler> NotifyMsgHandlerList;
-        typedef Map<ULONGLONG, NotifyMsgHandlerList> NotifyMsgMap;
-
-    private:
-        NotifyMsgMap   m_NotifyMsgMap;
-        CriticalSection m_csNotifyMsgMap;
-
-    public:
-        void AppendNotifyMsgHandler(UINT_PTR uID, UINT uCode, NotifyMsgHandler pMsgHandler)
-        {
-            m_csNotifyMsgMap.Lock();
-            m_NotifyMsgMap[MakeNotifyMsgFinder((UINT)uID, uCode)].PushBack(pMsgHandler);
-            m_csNotifyMsgMap.UnLock();
-        }
-
-    private:
-        LRESULT OnNotify(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-        {
-            m_csNotifyMsgMap.Lock();
-
-            LPNMHDR pNMHDR = (LPNMHDR)lParam;
-            UINT uID = (UINT)pNMHDR->idFrom;
-            UINT uCode = pNMHDR->code;
-
-            NotifyMsgHandlerList *pNotifyMsgHandlers = nullptr;
-            NotifyMsgMap::Iterator itNotifyMsgMap = m_NotifyMsgMap.Find(MakeNotifyMsgFinder(uID, uCode));
-
-            if (itNotifyMsgMap != m_NotifyMsgMap.End())
-            {
-                pNotifyMsgHandlers = &itNotifyMsgMap->Value;
-            }
-
-            m_csNotifyMsgMap.UnLock();
-
-            if (pNotifyMsgHandlers != nullptr)
-            {
-                LRESULT lResult = 0;
-
-                for (NotifyMsgHandlerList::Iterator it = pNotifyMsgHandlers->Begin(); it != pNotifyMsgHandlers->End(); ++it)
-                {
-                    lResult = (*it)(m_hWnd, uID, uCode, pNMHDR->hwndFrom);
-                }
-
-                return lResult;
-            }
-            else
-            {
-                return FALSE;
-            }
         }
     };
 
