@@ -21,11 +21,16 @@
 #include <xl/Win32/GUI/xlStdComboBox.h>
 #include <xl/Win32/GUI/xlStdListBox.h>
 
+#pragma comment(lib, "Comctl32.lib")
+
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,
                      __in LPTSTR lpCmdLine,
                      __in int nShowCmd)
 {
+    INITCOMMONCONTROLSEX iccx = { sizeof(INITCOMMONCONTROLSEX), 0xffffffff };
+    InitCommonControlsEx(&iccx);
+
     xl::Window wnd;
     wnd.Create(360, 300, 300, 240);
     wnd.SetWindowText(_T("MyWindow"));
@@ -42,7 +47,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     button.SetWindowText(_T("Show input"));
 
     xl::StdComboBox combo;
-    combo.Create(4, &wnd, 80, 110, 200, 24);
+    combo.Create(4, &wnd, 80, 110, 200, 100);
     combo.AddString(_T("Please select"));
     combo.AddString(_T("Item1"));
     combo.AddString(_T("Item2"));
