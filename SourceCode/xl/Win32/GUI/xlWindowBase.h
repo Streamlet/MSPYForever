@@ -134,7 +134,7 @@ namespace xl
                 RegisterClassEx(&wcex);
             }
 
-            m_sTls.Set((LPVOID)this);
+            ms_Tls.Set((LPVOID)this);
 
             m_hWnd = CreateWindowEx(dwExStyle,
                                     lpClassName,
@@ -193,7 +193,7 @@ namespace xl
     private:
         static LRESULT CALLBACK StartWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
-            WindowBase *pThis = (WindowBase *)m_sTls.Get();
+            WindowBase *pThis = (WindowBase *)ms_Tls.Get();
 
             pThis->m_thunk.SetObject(pThis);
             pThis->m_thunk.SetRealWndProc(&WindowBase::StaticWndProc);
@@ -217,7 +217,7 @@ namespace xl
         }
 
     private:
-        static Tls  m_sTls;
+        static Tls  ms_Tls;
 
     // Message maps
 
@@ -271,7 +271,7 @@ namespace xl
         }
     };
 
-    __declspec(selectany) Tls  WindowBase::m_sTls;
+    __declspec(selectany) Tls  WindowBase::ms_Tls;
 
 } // namespace xl
 

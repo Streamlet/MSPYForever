@@ -19,6 +19,7 @@
 
 #include <xl/Win32/GUI/xlWindowBaseEx.h>
 #include <xl/Win32/GUI/xlWindowAPIMacroRedefine.h>
+#include <xl/Win32/GUI/xlCommCtrlInitializer.h>
 
 namespace xl
 {
@@ -117,6 +118,9 @@ namespace xl
         HFONT m_hFontMenu;
         HFONT m_hFontStatus;
         HFONT m_hFontMessage;
+        
+    private:
+        static CommCtrlInitializer ms_cci;
 
     public: // Attributes
 
@@ -708,6 +712,8 @@ namespace xl
             return ::ShowWindowAsync(m_hWnd, nCmdShow);
         }
     };
+
+    __declspec(selectany) CommCtrlInitializer  Window::ms_cci;
 
 } // namespace xl
 
