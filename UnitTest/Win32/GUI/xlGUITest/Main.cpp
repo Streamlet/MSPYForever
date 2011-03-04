@@ -20,6 +20,7 @@
 #include <xl/Win32/GUI/xlStdEdit.h>
 #include <xl/Win32/GUI/xlStdComboBox.h>
 #include <xl/Win32/GUI/xlStdListBox.h>
+#include <xl/Win32/GUI/xlStdScrollBar.h>
 
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,
@@ -54,6 +55,10 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     list.AddString(_T("ListItem1"));
     list.AddString(_T("ListItem2"));
     list.AddString(_T("ListItem3"));
+
+    xl::StdScrollBar scroll;
+    scroll.Create(6, &wnd, 334, 0, 20, 272);
+    scroll.SetScrollRange(0, 100);
 
     wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {
@@ -90,6 +95,53 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         edit.SetWindowText(szText);
 
         return FALSE;
+    });
+    
+    int nPos = 0;
+
+    wnd.AppendMsgHandler(WM_VSCROLL, [&scroll, &nPos](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
+    {
+        switch (LOWORD(wParam))
+        {
+        case SB_TOP:
+            --nPos;
+            break;
+        case SB_BOTTOM:
+            ++nPos;
+            break;
+        case SB_LINEUP:
+            nPos -= 3;
+            break;
+        case SB_LINEDOWN:
+            nPos += 3;
+            break;
+        case SB_PAGEUP:
+            nPos -= 10;
+            break;
+        case SB_PAGEDOWN:
+            nPos += 10;
+            break;
+        case SB_THUMBPOSITION:
+        case SB_THUMBTRACK:
+            nPos = HIWORD(wParam);
+            break;
+        default:
+            break;
+        }
+        
+        if (nPos < 0)
+        {
+            nPos = 0;
+        }
+
+        if (nPos > 100)
+        {
+            nPos = 100;
+        }
+
+        scroll.SetScrollPos(nPos);
+
+        return 0;
     });
 
     wnd.AppendMsgHandler(WM_DESTROY, [](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT

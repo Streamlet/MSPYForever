@@ -58,7 +58,7 @@ namespace xl
                     int y = CW_USEDEFAULT,
                     WindowBase *pParent = nullptr,
                     LPCTSTR lpszClassName = GetClassName(),
-                    DWORD dwStyle = WS_OVERLAPPEDWINDOW,
+                    DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
                     DWORD dwExStyle = WS_EX_CONTROLPARENT,
                     HMENU hMenu = nullptr,
                     HINSTANCE hInstance = nullptr)

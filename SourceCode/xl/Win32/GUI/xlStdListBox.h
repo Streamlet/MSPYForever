@@ -72,7 +72,6 @@ namespace xl
             return true;
         }
 
-
     public: // for entire listbox
 
         int GetCount()
