@@ -157,11 +157,9 @@ namespace xl
             if (bStdControl)
             {
 #ifdef _WIN64
-                m_fnDefaultProc = (WNDPROC)GetWindowLongPtr(m_hWnd, GWLP_WNDPROC);
-                SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
+                m_fnDefaultProc = (WNDPROC)SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
 #else
-                m_fnDefaultProc = (WNDPROC)GetWindowLong(m_hWnd, GWL_WNDPROC);
-                SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)StartWndProc);
+                m_fnDefaultProc = (WNDPROC)SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)StartWndProc);
 #endif
             }
 
@@ -265,6 +263,11 @@ namespace xl
                 {
                     return lResult;
                 }
+            }
+
+            if (m_fnDefaultProc == nullptr)
+            {
+                return 0;
             }
 
             return m_fnDefaultProc(m_hWnd, uMsg, wParam, lParam);
