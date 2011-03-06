@@ -35,8 +35,8 @@ namespace xl
         }
 
     private:
-        StdComboBox(const StdEdit &);
-        StdComboBox &operator =(const StdEdit &);
+        StdComboBox(const StdComboBox &);
+        StdComboBox &operator =(const StdComboBox &);
 
     protected:
         static LPCTSTR GetClassName()

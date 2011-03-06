@@ -711,6 +711,46 @@ namespace xl
         {
             return ::ShowWindowAsync(m_hWnd, nCmdShow);
         }
+
+        BOOL ModifyStyle(DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0)
+        {
+            DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_STYLE);
+            DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
+
+            if(dwStyle == dwNewStyle)
+            {
+                return FALSE;
+            }
+
+            ::SetWindowLong(m_hWnd, GWL_STYLE, dwNewStyle);
+
+            if(nFlags != 0)
+            {
+                ::SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | nFlags);
+            }
+
+            return TRUE;
+        }
+
+        BOOL ModifyStyleEx(DWORD dwRemove, DWORD dwAdd, UINT nFlags = 0)
+        {
+            DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
+            DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
+
+            if(dwStyle == dwNewStyle)
+            {
+                return FALSE;
+            }
+
+            ::SetWindowLong(m_hWnd, GWL_EXSTYLE, dwNewStyle);
+
+            if(nFlags != 0)
+            {
+                ::SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | nFlags);
+            }
+
+            return TRUE;
+        }
     };
 
     __declspec(selectany) CommCtrlInitializer  Window::ms_cci;
