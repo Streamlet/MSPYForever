@@ -573,14 +573,14 @@ namespace xl
          }
          else if (nDistance > 0)
          {
-             for (size_t i = nCount - 1 + nDistance; i > - 1 + nDistance; --i)
+             for (int i = (int)nCount - 1 + nDistance; i > - 1 + nDistance; --i)
              {
                  pMem[i] = pMem[i - nDistance];
              }
          }
          else if(nDistance < 0)
          {
-             for (int i = nDistance; i < nCount + nDistance; ++i)
+             for (int i = nDistance; i < (int)nCount + nDistance; ++i)
              {
                  pMem[i] = pMem[i - nDistance];
              }
