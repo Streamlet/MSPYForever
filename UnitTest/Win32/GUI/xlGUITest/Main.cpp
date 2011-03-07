@@ -21,6 +21,7 @@
 #include <xl/Win32/GUI/xlStdComboBox.h>
 #include <xl/Win32/GUI/xlStdListBox.h>
 #include <xl/Win32/GUI/xlStdScrollBar.h>
+#include <xl/Win32/GUI/xlStdListView.h>
 
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,
@@ -28,7 +29,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in int nShowCmd)
 {
     xl::Window wnd;
-    wnd.Create(360, 300, 300, 240);
+    wnd.Create(500, 400, 300, 240);
     wnd.SetWindowText(_T("MyWindow"));
 
     xl::StdStatic label;
@@ -57,8 +58,18 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     list.AddString(_T("ListItem3"));
 
     xl::StdScrollBar scroll;
-    scroll.Create(6, &wnd, 334, 0, 20, 272);
+    scroll.Create(6, &wnd, 474, 0, 20, 372);
     scroll.SetScrollRange(0, 100);
+
+    xl::StdListView listview;
+    listview.Create(7, &wnd, 300, 30, 160, 150);
+    listview.AddColumn(_T("Column0"), 0);
+    listview.AddColumn(_T("Column1"), 1);
+    listview.AddItem(0, 0, _T("R0C0"));
+    listview.AddItem(0, 1, _T("R0C1"));
+    listview.AddItem(1, 0, _T("R1C0"));
+    listview.AddItem(1, 1, _T("R1C1"));
+    listview.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT);
 
     wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {

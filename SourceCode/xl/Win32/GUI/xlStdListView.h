@@ -41,7 +41,7 @@ namespace xl
     protected:
         static LPCTSTR GetClassName()
         {
-            return STD_CONTROL_CLASSNAME_LISTBOX;
+            return STD_CONTROL_CLASSNAME_LISTVIEW;
         }
 
     public:
@@ -51,8 +51,8 @@ namespace xl
                     int y = CW_USEDEFAULT,
                     int nWidth = CW_USEDEFAULT,
                     int nHeight = CW_USEDEFAULT,
-                    DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_TABSTOP | LVS_REPORT | LVS_SHOWSELALWAYS,
-                    DWORD dwExStyle = WS_EX_CLIENTEDGE | LVS_EX_FULLROWSELECT,
+                    DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_TABSTOP | LVS_REPORT,
+                    DWORD dwExStyle = WS_EX_CLIENTEDGE,
                     HINSTANCE hInstance = nullptr)
         {
             if (!Window::Create(nWidth,
