@@ -22,6 +22,7 @@
 #include <xl/Win32/GUI/xlStdListBox.h>
 #include <xl/Win32/GUI/xlStdScrollBar.h>
 #include <xl/Win32/GUI/xlStdListView.h>
+#include <xl/Win32/GUI/xlStdLink.h>
 
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,
@@ -71,6 +72,10 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     listview.AddItem(1, 1, _T("R1C1"));
     listview.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT);
 
+    xl::StdLink link;
+    link.Create(8, &wnd, 300, 200, 160, 20);
+    link.SetWindowText(_T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
+
     wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {
         TCHAR szText[MAX_PATH];
@@ -108,6 +113,13 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
     
+    wnd.AppendNotifyMsgHandler(8, NM_CLICK, [](HWND hWnd, UINT wID, UINT wCode, HWND hControl) -> LRESULT
+    {
+        ShellExecute(hWnd, _T("open"), _T("http://www.streamlet.org/"), _T(""), _T(""), SW_SHOW);
+
+        return FALSE;
+    });
+
     int nPos = 0;
 
     wnd.AppendMsgHandler(WM_VSCROLL, [&scroll, &nPos](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
