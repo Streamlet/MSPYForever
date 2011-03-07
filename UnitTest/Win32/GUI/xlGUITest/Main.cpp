@@ -179,8 +179,11 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     while (GetMessage(&msg, NULL, 0, 0))
     {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        if (!IsDialogMessage(wnd.GetHWND(), &msg))
+        {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
     }
 
     return 0;
