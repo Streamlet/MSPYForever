@@ -46,7 +46,7 @@ namespace xl
         
     public:
         bool Create(UINT nID,
-                    WindowBase *pParent,
+                    Window *pParent,
                     int x = CW_USEDEFAULT,
                     int y = CW_USEDEFAULT,
                     int nWidth = CW_USEDEFAULT,
