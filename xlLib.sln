@@ -47,6 +47,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Win32\GUI\xlCommCtrlInitializer.h = SourceCode\xl\Win32\GUI\xlCommCtrlInitializer.h
+		SourceCode\xl\Win32\GUI\xlDialog.h = SourceCode\xl\Win32\GUI\xlDialog.h
 		SourceCode\xl\Win32\GUI\xlStdButton.h = SourceCode\xl\Win32\GUI\xlStdButton.h
 		SourceCode\xl\Win32\GUI\xlStdComboBox.h = SourceCode\xl\Win32\GUI\xlStdComboBox.h
 		SourceCode\xl\Win32\GUI\xlStdEdit.h = SourceCode\xl\Win32\GUI\xlStdEdit.h

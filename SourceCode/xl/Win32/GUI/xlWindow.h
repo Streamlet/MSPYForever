@@ -27,8 +27,6 @@ namespace xl
     {
     public:
         Window() :
-            m_bInModal(false),
-            m_nModalResult(-1),
 //          m_hFontCaption(nullptr),
 //          m_hFontSmallCaption(nullptr),
 //          m_hFontMenu(nullptr),
@@ -40,8 +38,6 @@ namespace xl
 
         Window(HWND hWnd) :
             WindowBaseEx(hWnd),
-            m_bInModal(false),
-            m_nModalResult(-1),
 //          m_hFontCaption(nullptr),
 //          m_hFontSmallCaption(nullptr),
 //          m_hFontMenu(nullptr),
@@ -67,10 +63,10 @@ namespace xl
         }
         
     public:
-        bool Create(int nWidth = CW_USEDEFAULT,
-                    int nHeight = CW_USEDEFAULT,
-                    int x = CW_USEDEFAULT,
+        bool Create(int x = CW_USEDEFAULT,
                     int y = CW_USEDEFAULT,
+                    int nWidth = CW_USEDEFAULT,
+                    int nHeight = CW_USEDEFAULT,
                     Window *pParent = nullptr,
                     LPCTSTR lpszClassName = GetClassName(),
                     DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
@@ -125,89 +121,6 @@ namespace xl
 
             return true;
         }
-
-    public:
-
-        INT_PTR DoModal()
-        {
-            HWND hOwner = GetWindow(GW_OWNER);
-
-            if (hOwner != nullptr)
-            {
-                ::EnableWindow(hOwner, FALSE);
-            }
-
-            AppendMsgHandler(WM_CLOSE,        MsgHandler(this, &Window::OnClose));
-            AppendCommandMsgHandler(IDOK,     CommandMsgHandler(this, &Window::OnOKCancel));
-            AppendCommandMsgHandler(IDCANCEL, CommandMsgHandler(this, &Window::OnOKCancel));
-
-            ModifyStyle(0, WS_POPUP);
-            ShowWindow(SW_SHOW);
-
-            INT_PTR nModalResult = RunModalLoop();
-
-            Destroy();
-
-            if (hOwner != nullptr)
-            {
-                ::EnableWindow(hOwner, TRUE);
-                ::BringWindowToTop(hOwner);
-            }
-
-            return nModalResult;
-        }
-
-        void EndDialog(INT_PTR nModulResult)
-        {
-            m_nModalResult = nModulResult;
-            m_bInModal = false;
-        }
-
-    private:
-
-        INT_PTR RunModalLoop()
-        {
-            m_nModalResult = -1;
-            m_bInModal = true;
-
-            MSG msg = {};
-
-            while (m_bInModal)
-            {
-                do
-                {
-                    if (!::GetMessage(&msg, NULL, NULL, NULL))
-                    {
-                        EndDialog(-1);
-                    }
-
-                    if (!IsDialogMessage(m_hWnd, &msg))
-                    {
-                        TranslateMessage(&msg);
-                        DispatchMessage(&msg);
-                    }
-                    
-                } while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE));
-            }
-
-            return m_nModalResult;
-        }
-
-        LRESULT OnClose(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-        {
-            EndDialog(IDCANCEL);
-            return 0;
-        }
-
-        LRESULT OnOKCancel(HWND hWnd, WORD wID, WORD wCode, HWND hControl)
-        {
-            EndDialog(wID);
-            return 0;
-        }
-
-    private:
-        bool    m_bInModal;
-        INT_PTR m_nModalResult;
 
     protected:
         NONCLIENTMETRICS m_tagNONCLIENTMETRICSW;

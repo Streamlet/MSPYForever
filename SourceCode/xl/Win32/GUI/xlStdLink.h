@@ -61,10 +61,10 @@ namespace xl
                     DWORD dwExStyle = 0,
                     HINSTANCE hInstance = nullptr)
         {
-            if (!Window::Create(nWidth,
-                                nHeight,
-                                x,
+            if (!Window::Create(x,
                                 y,
+                                nWidth,
+                                nHeight,
                                 pParent,
                                 GetClassName(),
                                 dwStyle,

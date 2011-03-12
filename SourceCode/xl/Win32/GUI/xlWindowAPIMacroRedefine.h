@@ -175,4 +175,16 @@ inline BOOL WINAPI WinHelp(__in_opt HWND hWndMain, __in_opt LPCWSTR lpszHelp, __
 }
 #endif
 
+#ifdef GetDlgItemText
+#undef GetDlgItemText
+inline BOOL WINAPI GetDlgItemText(__in HWND hDlg, __in int nIDDlgItem, __out_ecount(cchMax) LPWSTR lpString, __in int cchMax)
+{
+#ifdef UNICODE
+    return GetDlgItemTextW(hDlg, nIDDlgItem, lpString, cchMax);
+#else
+    return GetDlgItemTextA(hDlg, nIDDlgItem, lpString, cchMax);
+#endif
+}
+#endif
+
 #endif // #ifndef __XLWINDOWAPIMACROREDEFINE_H_61336F01_F8A8_4FA6_8762_1F60789DBC99_INCLUDED__

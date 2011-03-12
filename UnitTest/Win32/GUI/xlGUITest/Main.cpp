@@ -15,6 +15,7 @@
 
 
 #include <xl/Win32/GUI/xlWindow.h>
+#include <xl/Win32/GUI/xlDialog.h>
 #include <xl/Win32/GUI/xlStdStatic.h>
 #include <xl/Win32/GUI/xlStdButton.h>
 #include <xl/Win32/GUI/xlStdEdit.h>
@@ -30,7 +31,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in int nShowCmd)
 {
     xl::Window wnd;
-    wnd.Create(500, 400, 300, 240);
+    wnd.Create(300, 240, 500, 400);
     wnd.SetWindowText(_T("MyWindow"));
 
     xl::StdStatic label;
@@ -87,8 +88,8 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     wnd.AppendCommandMsgHandler(3, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {
-        xl::Window dlg;
-        dlg.Create(400, 400, 320, 250, &wnd);
+        xl::Dialog dlg;
+        dlg.Create(400, 400, &wnd);
         dlg.SetWindowText(_T("MyDialog"));
 
         INT_PTR nID = dlg.DoModal();
