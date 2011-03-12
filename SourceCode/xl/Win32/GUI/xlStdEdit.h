@@ -29,6 +29,12 @@ namespace xl
 
         }
 
+        StdEdit(HWND hWnd) :
+            Window(hWnd)
+        {
+
+        }
+
         ~StdEdit()
         {
 

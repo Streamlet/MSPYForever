@@ -29,6 +29,12 @@ namespace xl
 
         }
 
+        StdListView(HWND hWnd) :
+            Window(hWnd)
+        {
+
+        }
+
         ~StdListView()
         {
 

@@ -70,9 +70,16 @@ namespace xl
 
         }
 
+        WindowBase(HWND hWnd) :
+            m_hWnd(nullptr), m_fnDefaultProc(DefWindowProc)
+        {
+            Attach(hWnd);
+        }
+
         ~WindowBase()
         {
             Destroy();
+            Detach();
         }
 
     private:
@@ -132,35 +139,32 @@ namespace xl
                 wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
 
                 RegisterClassEx(&wcex);
+
+                ms_Tls.Set((LPVOID)this);
             }
 
-            ms_Tls.Set((LPVOID)this);
 
-            m_hWnd = CreateWindowEx(dwExStyle,
-                                    lpClassName,
-                                    lpWindowName,
-                                    dwStyle,
-                                    x,
-                                    y,
-                                    nWidth,
-                                    nHeight,
-                                    pParent == nullptr ? nullptr : pParent->m_hWnd,
-                                    hMenu,
-                                    hInstance,
-                                    lpParam);
+            HWND hWnd = CreateWindowEx(dwExStyle,
+                                       lpClassName,
+                                       lpWindowName,
+                                       dwStyle,
+                                       x,
+                                       y,
+                                       nWidth,
+                                       nHeight,
+                                       pParent == nullptr ? nullptr : pParent->m_hWnd,
+                                       hMenu,
+                                       hInstance,
+                                       lpParam);
 
-            if (m_hWnd == nullptr)
+            if (hWnd == nullptr)
             {
                 return false;
             }
 
             if (bStdControl)
             {
-#ifdef _WIN64
-                m_fnDefaultProc = (WNDPROC)SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
-#else
-                m_fnDefaultProc = (WNDPROC)SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)StartWndProc);
-#endif
+                Attach(hWnd);
             }
 
             return true;
@@ -179,6 +183,45 @@ namespace xl
             }
 
             return true;
+        }
+
+    public:
+        bool Attach(HWND hWnd)
+        {
+            if (m_hWnd != nullptr)
+            {
+                return false;
+            }
+
+            ms_Tls.Set((LPVOID)this);
+
+#ifdef _WIN64
+            m_fnDefaultProc = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
+#else
+            m_fnDefaultProc = (WNDPROC)::SetWindowLong(hWnd, GWL_WNDPROC, (LONG)StartWndProc);
+#endif
+
+            // Force the StartWndProc to be called:
+            ::SendMessage(hWnd, WM_NULL, 0, 0);
+
+            return true;
+        }
+
+        HWND Detach()
+        {
+            HWND hWnd = m_hWnd;
+
+            if (m_hWnd != nullptr)
+            {
+#ifdef _WIN64
+                ::SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)m_fnDefaultProc);
+#else
+                ::SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)m_fnDefaultProc);
+#endif
+                m_hWnd = nullptr;
+            }
+
+            return hWnd;
         }
 
     protected:

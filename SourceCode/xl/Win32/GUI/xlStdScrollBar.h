@@ -29,6 +29,12 @@ namespace xl
 
         }
 
+        StdScrollBar(HWND hWnd) :
+            Window(hWnd)
+        {
+
+        }
+
         ~StdScrollBar()
         {
 

@@ -61,6 +61,13 @@ namespace xl
             AppendMsgHandler(WM_NOTIFY,  MsgHandler(this, &WindowBaseEx::OnNotify));
         }
 
+        WindowBaseEx(HWND hWnd) :
+            WindowBase(hWnd)
+        {
+            AppendMsgHandler(WM_COMMAND, MsgHandler(this, &WindowBaseEx::OnCommand));
+            AppendMsgHandler(WM_NOTIFY,  MsgHandler(this, &WindowBaseEx::OnNotify));
+        }
+
         ~WindowBaseEx()
         {
 

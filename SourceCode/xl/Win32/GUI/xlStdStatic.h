@@ -29,6 +29,12 @@ namespace xl
 
         }
 
+        StdStatic(HWND hWnd) :
+            Window(hWnd)
+        {
+
+        }
+
         ~StdStatic()
         {
 

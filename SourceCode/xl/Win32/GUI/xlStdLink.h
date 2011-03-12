@@ -29,6 +29,12 @@ namespace xl
 
         }
 
+        StdLink(HWND hWnd) :
+            Window(hWnd)
+        {
+
+        }
+
         ~StdLink()
         {
 

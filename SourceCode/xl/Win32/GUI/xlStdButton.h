@@ -29,6 +29,12 @@ namespace xl
 
         }
 
+        StdButton(HWND hWnd) :
+            Window(hWnd)
+        {
+
+        }
+
         ~StdButton()
         {
 

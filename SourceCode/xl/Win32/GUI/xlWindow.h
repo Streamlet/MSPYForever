@@ -36,6 +36,17 @@ namespace xl
 
         }
 
+        Window(HWND hWnd) :
+            WindowBaseEx(hWnd),
+            m_hFontCaption(nullptr),
+            m_hFontSmallCaption(nullptr),
+            m_hFontMenu(nullptr),
+            m_hFontStatus(nullptr),
+            m_hFontMessage(nullptr)
+        {
+
+        }
+
         ~Window()
         {
 
@@ -512,7 +523,7 @@ namespace xl
             return ::SetFocus(m_hWnd);
         }
 
-    // Scrolling Functions
+    public: // Scrolling Functions
 
         int GetScrollPos(int nBar)
         {
@@ -750,6 +761,78 @@ namespace xl
             }
 
             return TRUE;
+        }
+
+    public: // Dialog-Box Item Functions
+
+        BOOL CheckDlgButton(int nIDButton, UINT nCheck)
+        {
+            return ::CheckDlgButton(m_hWnd, nIDButton, nCheck);
+        }
+
+        BOOL CheckRadioButton(int nIDFirstButton, int nIDLastButton, int nIDCheckButton)
+        {
+            return ::CheckRadioButton(m_hWnd, nIDFirstButton, nIDLastButton, nIDCheckButton);
+        }
+
+        int DlgDirList(LPTSTR lpPathSpec, int nIDListBox, int nIDStaticPath, UINT nFileType)
+        {
+            return ::DlgDirList(m_hWnd, lpPathSpec, nIDListBox, nIDStaticPath, nFileType);
+        }
+
+        int DlgDirListComboBox(LPTSTR lpPathSpec, int nIDComboBox, int nIDStaticPath, UINT nFileType)
+        {
+            return ::DlgDirListComboBox(m_hWnd, lpPathSpec, nIDComboBox, nIDStaticPath, nFileType);
+        }
+
+        BOOL DlgDirSelect(LPTSTR lpString, int nCount, int nIDListBox)
+        {
+            return ::DlgDirSelectEx(m_hWnd, lpString, nCount, nIDListBox);
+        }
+
+        BOOL DlgDirSelectComboBox(LPTSTR lpString, int nCount, int nIDComboBox)
+        {
+            return ::DlgDirSelectComboBoxEx(m_hWnd, lpString, nCount, nIDComboBox);
+        }
+
+        UINT GetDlgItemInt(int nID, BOOL* lpTrans = NULL, BOOL bSigned = TRUE)
+        {
+            return ::GetDlgItemInt(m_hWnd, nID, lpTrans, bSigned);
+        }
+
+        UINT GetDlgItemText(int nID, LPTSTR lpStr, int nMaxCount)
+        {
+            return ::GetDlgItemText(m_hWnd, nID, lpStr, nMaxCount);
+        }
+
+        HWND GetNextDlgGroupItem(HWND hWndCtl, BOOL bPrevious = FALSE)
+        {
+            return ::GetNextDlgGroupItem(m_hWnd, hWndCtl, bPrevious);
+        }
+
+        HWND GetNextDlgTabItem(HWND hWndCtl, BOOL bPrevious = FALSE)
+        {
+            return ::GetNextDlgTabItem(m_hWnd, hWndCtl, bPrevious);
+        }
+
+        UINT IsDlgButtonChecked(_In_ int nIDButton)
+        {
+            return ::IsDlgButtonChecked(m_hWnd, nIDButton);
+        }
+
+        LRESULT SendDlgItemMessage(int nID, UINT message, WPARAM wParam = 0, LPARAM lParam = 0)
+        {
+            return ::SendDlgItemMessage(m_hWnd, nID, message, wParam, lParam);
+        }
+
+        BOOL SetDlgItemInt(int nID, UINT nValue, BOOL bSigned = TRUE)
+        {
+            return ::SetDlgItemInt(m_hWnd, nID, nValue, bSigned);
+        }
+
+        BOOL SetDlgItemText(int nID, LPCTSTR lpszString)
+        {
+            return ::SetDlgItemText(m_hWnd, nID, lpszString);
         }
     };
 

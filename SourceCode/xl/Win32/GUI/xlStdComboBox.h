@@ -29,6 +29,12 @@ namespace xl
 
         }
 
+        StdComboBox(HWND hWnd) :
+            Window(hWnd)
+        {
+
+        }
+
         ~StdComboBox()
         {
 
