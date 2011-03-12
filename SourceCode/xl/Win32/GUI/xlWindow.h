@@ -27,10 +27,12 @@ namespace xl
     {
     public:
         Window() :
-            m_hFontCaption(nullptr),
-            m_hFontSmallCaption(nullptr),
-            m_hFontMenu(nullptr),
-            m_hFontStatus(nullptr),
+            m_bInModal(false),
+            m_nModalResult(-1),
+//          m_hFontCaption(nullptr),
+//          m_hFontSmallCaption(nullptr),
+//          m_hFontMenu(nullptr),
+//          m_hFontStatus(nullptr),
             m_hFontMessage(nullptr)
         {
 
@@ -38,10 +40,12 @@ namespace xl
 
         Window(HWND hWnd) :
             WindowBaseEx(hWnd),
-            m_hFontCaption(nullptr),
-            m_hFontSmallCaption(nullptr),
-            m_hFontMenu(nullptr),
-            m_hFontStatus(nullptr),
+            m_bInModal(false),
+            m_nModalResult(-1),
+//          m_hFontCaption(nullptr),
+//          m_hFontSmallCaption(nullptr),
+//          m_hFontMenu(nullptr),
+//          m_hFontStatus(nullptr),
             m_hFontMessage(nullptr)
         {
 
@@ -95,10 +99,10 @@ namespace xl
 
             SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &m_tagNONCLIENTMETRICSW, 0);
 
-//             m_hFontCaption      = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfCaptionFont);
-//             m_hFontSmallCaption = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfSmCaptionFont);
-//             m_hFontMenu         = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMenuFont);
-//             m_hFontStatus       = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfStatusFont);
+//          m_hFontCaption      = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfCaptionFont);
+//          m_hFontSmallCaption = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfSmCaptionFont);
+//          m_hFontMenu         = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMenuFont);
+//          m_hFontStatus       = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfStatusFont);
             m_hFontMessage      = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMessageFont);
 
             SetFont(m_hFontMessage, FALSE);
@@ -108,10 +112,10 @@ namespace xl
 
         bool Destroy()
         {
-//             DeleteObject(m_hFontCaption);
-//             DeleteObject(m_hFontSmallCaption);
-//             DeleteObject(m_hFontMenu);
-//             DeleteObject(m_hFontStatus);
+//          DeleteObject(m_hFontCaption);
+//          DeleteObject(m_hFontSmallCaption);
+//          DeleteObject(m_hFontMenu);
+//          DeleteObject(m_hFontStatus);
             DeleteObject(m_hFontMessage);
 
             if (!WindowBase::Destroy())
@@ -122,12 +126,95 @@ namespace xl
             return true;
         }
 
+    public:
+
+        INT_PTR DoModal()
+        {
+            HWND hOwner = GetWindow(GW_OWNER);
+
+            if (hOwner != nullptr)
+            {
+                ::EnableWindow(hOwner, FALSE);
+            }
+
+            AppendMsgHandler(WM_CLOSE,        MsgHandler(this, &Window::OnClose));
+            AppendCommandMsgHandler(IDOK,     CommandMsgHandler(this, &Window::OnOKCancel));
+            AppendCommandMsgHandler(IDCANCEL, CommandMsgHandler(this, &Window::OnOKCancel));
+
+            ModifyStyle(0, WS_POPUP);
+            ShowWindow(SW_SHOW);
+
+            INT_PTR nModalResult = RunModalLoop();
+
+            Destroy();
+
+            if (hOwner != nullptr)
+            {
+                ::EnableWindow(hOwner, TRUE);
+                ::BringWindowToTop(hOwner);
+            }
+
+            return nModalResult;
+        }
+
+        void EndDialog(INT_PTR nModulResult)
+        {
+            m_nModalResult = nModulResult;
+            m_bInModal = false;
+        }
+
+    private:
+
+        INT_PTR RunModalLoop()
+        {
+            m_nModalResult = -1;
+            m_bInModal = true;
+
+            MSG msg = {};
+
+            while (m_bInModal)
+            {
+                do
+                {
+                    if (!::GetMessage(&msg, NULL, NULL, NULL))
+                    {
+                        EndDialog(-1);
+                    }
+
+                    if (!IsDialogMessage(m_hWnd, &msg))
+                    {
+                        TranslateMessage(&msg);
+                        DispatchMessage(&msg);
+                    }
+                    
+                } while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE));
+            }
+
+            return m_nModalResult;
+        }
+
+        LRESULT OnClose(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        {
+            EndDialog(IDCANCEL);
+            return 0;
+        }
+
+        LRESULT OnOKCancel(HWND hWnd, WORD wID, WORD wCode, HWND hControl)
+        {
+            EndDialog(wID);
+            return 0;
+        }
+
+    private:
+        bool    m_bInModal;
+        INT_PTR m_nModalResult;
+
     protected:
         NONCLIENTMETRICS m_tagNONCLIENTMETRICSW;
-        HFONT m_hFontCaption;
-        HFONT m_hFontSmallCaption;
-        HFONT m_hFontMenu;
-        HFONT m_hFontStatus;
+//      HFONT m_hFontCaption;
+//      HFONT m_hFontSmallCaption;
+//      HFONT m_hFontMenu;
+//      HFONT m_hFontStatus;
         HFONT m_hFontMessage;
         
     private:
@@ -564,6 +651,48 @@ namespace xl
         BOOL EnableScrollBar( UINT uSBFlags, UINT uArrowFlags = ESB_ENABLE_BOTH)
         {
             return ::EnableScrollBar(m_hWnd, uSBFlags, uArrowFlags);
+        }
+
+    public: // Window Access Functions
+
+        HWND ChildWindowFromPoint(POINT point)
+        {
+            return ::ChildWindowFromPoint(m_hWnd, point);
+        }
+
+        HWND ChildWindowFromPointEx(POINT point, UINT uFlags)
+        {
+            return ::ChildWindowFromPointEx(m_hWnd, point, uFlags);
+        }
+
+        HWND GetTopWindow()
+        {
+            return ::GetTopWindow(m_hWnd);
+        }
+
+        HWND GetWindow(UINT nCmd)
+        {
+            return ::GetWindow(m_hWnd, nCmd);
+        }
+
+        HWND GetLastActivePopup()
+        {
+            return ::GetLastActivePopup(m_hWnd);
+        }
+
+        BOOL IsChild(HWND hWnd)
+        {
+            return ::IsChild(m_hWnd, hWnd);
+        }
+
+        HWND GetParent()
+        {
+            return ::GetParent(m_hWnd);
+        }
+
+        HWND SetParent(HWND hWndNewParent)
+        {
+            return ::SetParent(m_hWnd, hWndNewParent);
         }
 
     public: // Alert Functions

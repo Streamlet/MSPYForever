@@ -42,7 +42,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     xl::StdButton button;
     button.Create(3, &wnd, 80, 80, 200, 24);
-    button.SetWindowText(_T("Show input"));
+    button.SetWindowText(_T("Show Dialog"));
 
     xl::StdComboBox combo;
     combo.Create(4, &wnd, 80, 110, 200, 100);
@@ -85,12 +85,13 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.AppendCommandMsgHandler(3, [&edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
+    wnd.AppendCommandMsgHandler(3, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
     {
-        TCHAR szText[MAX_PATH];
-        edit.GetWindowText(szText, MAX_PATH);
+        xl::Window dlg;
+        dlg.Create(400, 400, 320, 250, &wnd);
+        dlg.SetWindowText(_T("MyDialog"));
 
-        MessageBox(hWnd, szText, _T("MessageBox"), MB_OK | MB_ICONINFORMATION);
+        INT_PTR nID = dlg.DoModal();
 
         return FALSE;
     });
