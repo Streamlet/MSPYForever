@@ -61,7 +61,8 @@ namespace xl
         // UINT:   uMsg
         // WPARAM: wParam
         // LPARAM: lParam
-        typedef Function<LRESULT (HWND, UINT, WPARAM, LPARAM)> MsgHandler;
+        // BOOL &: bHandled
+        typedef Function<LRESULT (HWND, UINT, WPARAM, LPARAM, BOOL &)> MsgHandler;
 
     public:
         WindowBase() :
@@ -296,13 +297,14 @@ namespace xl
             if (pMsgHandlers != nullptr)
             {
                 LRESULT lResult = 0;
+                BOOL bHandled = TRUE;
 
                 for (MsgHandlerList::Iterator it = pMsgHandlers->Begin(); it != pMsgHandlers->End(); ++it)
                 {
-                    lResult = (*it)(m_hWnd, uMsg, wParam, lParam);
+                    lResult = (*it)(m_hWnd, uMsg, wParam, lParam, bHandled);
                 }
 
-                if (uMsg != WM_COMMAND && uMsg != WM_NOTIFY)
+                if (bHandled)
                 {
                     return lResult;
                 }

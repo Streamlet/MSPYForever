@@ -176,7 +176,7 @@ namespace xl
 
     private:
 
-        LRESULT OnMsgCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnMsgCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
         {
             OnCreate();
 
@@ -190,7 +190,7 @@ namespace xl
             return TRUE;
         }
 
-        LRESULT OnMsgInitDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnMsgInitDialog(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
         {
             if (!OnInitDialog())
             {
@@ -200,7 +200,7 @@ namespace xl
             return TRUE;
         }
 
-        LRESULT OnMsgEraseBackground(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnMsgEraseBackground(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
         {
             HDC hDC = (HDC)wParam;
 
@@ -215,34 +215,34 @@ namespace xl
             return TRUE;
         }
 
-        LRESULT OnMsgClose(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnMsgClose(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
         {
             if (OnCancel())
             {
                 EndDialog(IDCANCEL);
             }
 
-            return 0;
+            return TRUE;
         }
 
-        LRESULT OnMsgOK(HWND hWnd, WORD wID, WORD wCode, HWND hControl)
+        LRESULT OnMsgOK(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
         {
             if (OnOK())
             {
                 EndDialog(IDOK);
             }
 
-            return 0;
+            return TRUE;
         }
 
-        LRESULT OnMsgCancel(HWND hWnd, WORD wID, WORD wCode, HWND hControl)
+        LRESULT OnMsgCancel(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
         {
             if (OnCancel())
             {
                 EndDialog(IDCANCEL);
             }
 
-            return 0;
+            return TRUE;
         }
 
     protected:

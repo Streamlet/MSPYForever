@@ -17,6 +17,7 @@
 #define __XLWINDOWBASEEX_H_AC4BA307_1739_4573_90E1_B080A8D1AB1E_INCLUDED__
 
 
+#include <xl/Containers/xlTuple.h>
 #include <xl/Win32/GUI/xlWindowBase.h>
 
 namespace xl
@@ -34,24 +35,30 @@ namespace xl
         // HWND: hControl
         //           For controls, it will be the HWND of the control,
         //           otherwise, it will be 0.
-        typedef Function<LRESULT (HWND, WORD, WORD, HWND)> CommandMsgHandler;
+        // BOOL &: bHandled
+        typedef Function<LRESULT (HWND, WORD, WORD, HWND, BOOL &)> CommandMsgHandler;
 
         // MsgHandler Parameters:
-        // HWND: hWnd
-        // UINT: wID
-        // UINT: uCode
-        // HWND: hControl
-        typedef Function<LRESULT (HWND, UINT, UINT, HWND)> NotifyMsgHandler;
+        // HWND:     hWnd
+        // UINT_PTR: wID
+        // UINT:     uCode
+        // HWND:     hControl
+        // BOOL &:   bHandled
+        typedef Function<LRESULT (HWND, UINT_PTR, UINT, HWND, BOOL &)> NotifyMsgHandler;
 
     private:
-        inline UINT MakeCommandMsgFinder(WORD wID, WORD wCode)
+        typedef Tuple<WORD, WORD> CommandMsgFinder;
+
+        inline CommandMsgFinder MakeCommandMsgFinder(WORD wID, WORD wCode)
         {
-            return ((UINT)wID | ((UINT)wCode << 16));
+            return CommandMsgFinder(wID, wCode);
         }
 
-        inline ULONGLONG MakeNotifyMsgFinder(UINT uID, UINT uCode)
+        typedef Tuple<UINT_PTR, UINT> NotifyMsgFinder;
+
+        inline NotifyMsgFinder MakeNotifyMsgFinder(UINT_PTR uID, UINT uCode)
         {
-            return ((ULONGLONG)uID | ((ULONGLONG)uCode << 32));
+            return NotifyMsgFinder(uID, uCode);
         }
 
     public:
@@ -81,7 +88,7 @@ namespace xl
 
     private:
         typedef List<CommandMsgHandler> CommandMsgHandlerList;
-        typedef Map<WPARAM, CommandMsgHandlerList> CommandMsgMap;
+        typedef Map<CommandMsgFinder, CommandMsgHandlerList> CommandMsgMap;
 
     private:
         CommandMsgMap   m_CommandMsgMap;
@@ -111,8 +118,10 @@ namespace xl
         }
 
     private:
-        LRESULT OnCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnCommand(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
         {
+            bHandled = FALSE;
+
             m_csCommandMsgMap.Lock();
 
             WORD wID = LOWORD(wParam);
@@ -134,22 +143,23 @@ namespace xl
 
                 for (CommandMsgHandlerList::Iterator it = pCommandMsgHandlers->Begin(); it != pCommandMsgHandlers->End(); ++it)
                 {
-                    lResult = (*it)(m_hWnd, wID, wCode, (HWND)lParam);
+                    lResult = (*it)(m_hWnd, wID, wCode, (HWND)lParam, bHandled);
                 }
 
-                return lResult;
+                if (bHandled)
+                {
+                    return lResult;
+                }
             }
-            else
-            {
-                return FALSE;
-            }
+
+            return FALSE;
         }
 
     // Notify message maps
 
     private:
         typedef List<NotifyMsgHandler> NotifyMsgHandlerList;
-        typedef Map<ULONGLONG, NotifyMsgHandlerList> NotifyMsgMap;
+        typedef Map<NotifyMsgFinder, NotifyMsgHandlerList> NotifyMsgMap;
 
     private:
         NotifyMsgMap   m_NotifyMsgMap;
@@ -159,17 +169,19 @@ namespace xl
         void AppendNotifyMsgHandler(UINT_PTR uID, UINT uCode, NotifyMsgHandler pMsgHandler)
         {
             m_csNotifyMsgMap.Lock();
-            m_NotifyMsgMap[MakeNotifyMsgFinder((UINT)uID, uCode)].PushBack(pMsgHandler);
+            m_NotifyMsgMap[MakeNotifyMsgFinder(uID, uCode)].PushBack(pMsgHandler);
             m_csNotifyMsgMap.UnLock();
         }
 
     private:
-        LRESULT OnNotify(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        LRESULT OnNotify(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
         {
+            bHandled = FALSE;
+
             m_csNotifyMsgMap.Lock();
 
             LPNMHDR pNMHDR = (LPNMHDR)lParam;
-            UINT uID = (UINT)pNMHDR->idFrom;
+            UINT_PTR uID = pNMHDR->idFrom;
             UINT uCode = pNMHDR->code;
 
             NotifyMsgHandlerList *pNotifyMsgHandlers = nullptr;
@@ -188,15 +200,16 @@ namespace xl
 
                 for (NotifyMsgHandlerList::Iterator it = pNotifyMsgHandlers->Begin(); it != pNotifyMsgHandlers->End(); ++it)
                 {
-                    lResult = (*it)(m_hWnd, uID, uCode, pNMHDR->hwndFrom);
+                    lResult = (*it)(m_hWnd, uID, uCode, pNMHDR->hwndFrom, bHandled);
                 }
 
-                return lResult;
+                if (bHandled)
+                {
+                    return lResult;
+                }
             }
-            else
-            {
-                return FALSE;
-            }
+
+            return FALSE;
         }
     };
 

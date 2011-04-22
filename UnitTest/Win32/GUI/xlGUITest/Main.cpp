@@ -77,7 +77,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     link.Create(8, &wnd, 300, 200, 160, 20);
     link.SetWindowText(_T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
 
-    wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
+    wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
         TCHAR szText[MAX_PATH];
         edit.GetWindowText(szText, MAX_PATH);
@@ -86,7 +86,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.AppendCommandMsgHandler(3, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl) -> LRESULT
+    wnd.AppendCommandMsgHandler(3, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
         xl::Dialog dlg;
         dlg.Create(400, 400, &wnd);
@@ -97,7 +97,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.AppendCommandMsgHandler(4, CBN_SELCHANGE, [&edit, &combo](HWND hWnd, WORD wID, WORD wCode, HWND hControl) ->LRESULT
+    wnd.AppendCommandMsgHandler(4, CBN_SELCHANGE, [&edit, &combo](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) ->LRESULT
     {
         TCHAR szText[MAX_PATH];
         combo.GetWindowText(szText, MAX_PATH);
@@ -106,7 +106,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.AppendCommandMsgHandler(5, LBN_SELCHANGE, [&edit, &list](HWND hWnd, WORD wID, WORD wCode, HWND hControl) ->LRESULT
+    wnd.AppendCommandMsgHandler(5, LBN_SELCHANGE, [&edit, &list](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) ->LRESULT
     {
         TCHAR szText[MAX_PATH];
         list.GetText(list.GetCurSel(), szText);
@@ -115,7 +115,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
     
-    wnd.AppendNotifyMsgHandler(8, NM_CLICK, [](HWND hWnd, UINT wID, UINT wCode, HWND hControl) -> LRESULT
+    wnd.AppendNotifyMsgHandler(8, NM_CLICK, [](HWND hWnd, UINT_PTR wID, UINT wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
         ShellExecute(hWnd, _T("open"), _T("http://www.streamlet.org/"), _T(""), _T(""), SW_SHOW);
 
@@ -124,7 +124,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     int nPos = 0;
 
-    wnd.AppendMsgHandler(WM_VSCROLL, [&scroll, &nPos](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
+    wnd.AppendMsgHandler(WM_VSCROLL, [&scroll, &nPos](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled) -> LRESULT
     {
         switch (LOWORD(wParam))
         {
@@ -169,7 +169,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return 0;
     });
 
-    wnd.AppendMsgHandler(WM_DESTROY, [](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) -> LRESULT
+    wnd.AppendMsgHandler(WM_DESTROY, [](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled) -> LRESULT
     {
         PostQuitMessage(0);
         return FALSE;
