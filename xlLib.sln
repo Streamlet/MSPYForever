@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", 
 		SourceCode\xl\Containers\xlPair.h = SourceCode\xl\Containers\xlPair.h
 		SourceCode\xl\Containers\xlRBTree.h = SourceCode\xl\Containers\xlRBTree.h
 		SourceCode\xl\Containers\xlSet.h = SourceCode\xl\Containers\xlSet.h
+		SourceCode\xl\Containers\xlTuple.h = SourceCode\xl\Containers\xlTuple.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7}"
@@ -149,6 +150,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{9274E5
 		SourceCode\xl\Memory\xlMemory.h = SourceCode\xl\Memory\xlMemory.h
 		SourceCode\xl\Memory\xlQIPtr.h = SourceCode\xl\Memory\xlQIPtr.h
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlTupleTest", "UnitTest\Containers\xlTupleTest\xlTupleTest.vcxproj", "{31A7DF67-2D8E-4812-AC51-BD82B7556ED3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -310,6 +313,12 @@ Global
 		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}.Release|Win32.Build.0 = Release|Win32
 		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}.Release|x64.ActiveCfg = Release|Win32
 		{6D840ACB-99F9-4D9C-8B0C-6247FF7A3E2D}.Release|x64.Build.0 = Release|Win32
+		{31A7DF67-2D8E-4812-AC51-BD82B7556ED3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{31A7DF67-2D8E-4812-AC51-BD82B7556ED3}.Debug|Win32.Build.0 = Debug|Win32
+		{31A7DF67-2D8E-4812-AC51-BD82B7556ED3}.Debug|x64.ActiveCfg = Debug|x64
+		{31A7DF67-2D8E-4812-AC51-BD82B7556ED3}.Release|Win32.ActiveCfg = Release|Win32
+		{31A7DF67-2D8E-4812-AC51-BD82B7556ED3}.Release|Win32.Build.0 = Release|Win32
+		{31A7DF67-2D8E-4812-AC51-BD82B7556ED3}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -339,6 +348,7 @@ Global
 		{F3E90435-67BE-4625-8442-47525AAE3C86} = {EE975764-0A8A-4B44-9824-1D330B25F008}
 		{A2A7F472-0D0E-4788-A4A9-EEA393B0D39C} = {EE975764-0A8A-4B44-9824-1D330B25F008}
 		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4} = {EE975764-0A8A-4B44-9824-1D330B25F008}
+		{31A7DF67-2D8E-4812-AC51-BD82B7556ED3} = {EE975764-0A8A-4B44-9824-1D330B25F008}
 		{F575776E-7237-4F70-96D5-FCCA801EC485} = {9A95D796-D8CA-4BA6-8AA2-1558F3915BF8}
 		{7160AD5D-CB11-43F3-A110-B5D3DC8EC322} = {9A95D796-D8CA-4BA6-8AA2-1558F3915BF8}
 		{AA2377B8-6EFE-419E-BDA8-95CEBBBF9286} = {9A95D796-D8CA-4BA6-8AA2-1558F3915BF8}
