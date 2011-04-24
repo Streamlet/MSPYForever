@@ -66,6 +66,46 @@ XL_TEST_CASE()
     XL_TEST_ASSERT(a >= b);
 }
 
+XL_TEST_CASE()
+{
+    Tuple<int, int> a(1, 1);
+    Tuple<double, double> b(1.0, 1.0);
+    XL_TEST_ASSERT(a == b);
+    XL_TEST_ASSERT(!(a != b));
+    XL_TEST_ASSERT(!(a < b));
+    XL_TEST_ASSERT(!(a > b));
+    XL_TEST_ASSERT(a <= b);
+    XL_TEST_ASSERT(a >= b);
+
+    a._0 = -1;
+    XL_TEST_ASSERT(!(a == b));
+    XL_TEST_ASSERT(a != b);
+    XL_TEST_ASSERT(a < b);
+    XL_TEST_ASSERT(!(a > b));
+    XL_TEST_ASSERT(a <= b);
+    XL_TEST_ASSERT(!(a >= b));
+
+    a._0 = 2;
+    XL_TEST_ASSERT(!(a == b));
+    XL_TEST_ASSERT(a != b);
+    XL_TEST_ASSERT(!(a < b));
+    XL_TEST_ASSERT(a > b);
+    XL_TEST_ASSERT(!(a <= b));
+    XL_TEST_ASSERT(a >= b);
+}
+
+XL_TEST_CASE()
+{
+    Tuple<int, int> a(1, 1);
+    Tuple<int, int, int> a2(1, 1, 1);
+    Tuple<double, double> b(1.0, 1.0);
+
+    a = b;  // warning
+    b = a;
+
+    a = a2;
+}
+
 int main()
 {
     return 0;

@@ -20,6 +20,7 @@
 #include <xl/xlDef.h>
 #include <xl/Meta/xlMacros.h>
 #include <xl/Meta/xlMetaBase.h>
+#include <xl/Meta/xlStaticAssert.h>
 
 namespace xl
 {
@@ -94,7 +95,8 @@ namespace xl
                                                     \
         }                                           \
                                                     \
-        Tuple(const Tuple &that)                    \
+        template <typename T>                       \
+        Tuple(const T &that)                        \
             : XL_TUPLE_INITIALIZE_LIST_COPY(n)      \
         {                                           \
                                                     \
@@ -104,6 +106,15 @@ namespace xl
             : XL_TUPLE_INITIALIZE_LIST(n)           \
         {                                           \
                                                     \
+        }                                           \
+                                                    \
+        template <typename T>                       \
+        Tuple &operator = (const T &that)           \
+        {                                           \
+            XL_STATIC_ASSERT(Size <= T::Size);      \
+            XL_TUPLE_ASSIGN(n)                      \
+                                                    \
+            return *this;                           \
         }                                           \
                                                     \
         Tuple &operator = (const Tuple &that)       \
@@ -117,36 +128,51 @@ namespace xl
         }                                           \
                                                     \
     public:                                         \
-        bool operator == (const Tuple &that) const  \
+        static const size_t Size = n;               \
+                                                    \
+    public:                                         \
+        template <typename T>                       \
+        bool operator == (const T &that) const      \
         {                                           \
+            XL_STATIC_ASSERT(Size == T::Size);      \
             return XL_TUPLE_EQUAL(n);               \
         }                                           \
                                                     \
-        bool operator != (const Tuple &that) const  \
+        template <typename T>                       \
+        bool operator != (const T &that) const      \
         {                                           \
+            XL_STATIC_ASSERT(Size == T::Size);      \
             return XL_TUPLE_NOT_EQUAL(n);           \
         }                                           \
                                                     \
-        bool operator < (const Tuple &that) const   \
+        template <typename T>                       \
+        bool operator < (const T &that) const       \
         {                                           \
+            XL_STATIC_ASSERT(Size == T::Size);      \
             XL_TUPLE_LITTER(n)                      \
             return false;                           \
         }                                           \
                                                     \
-        bool operator > (const Tuple &that) const   \
+        template <typename T>                       \
+        bool operator > (const T &that) const       \
         {                                           \
+            XL_STATIC_ASSERT(Size == T::Size);      \
             XL_TUPLE_GREATER(n)                     \
             return false;                           \
         }                                           \
                                                     \
-        bool operator <= (const Tuple &that) const  \
+        template <typename T>                       \
+        bool operator <= (const T &that) const      \
         {                                           \
+            XL_STATIC_ASSERT(Size == T::Size);      \
             XL_TUPLE_LITTER(n)                      \
             return true;                            \
         }                                           \
                                                     \
-        bool operator >= (const Tuple &that) const  \
+        template <typename T>                       \
+        bool operator >= (const T &that) const      \
         {                                           \
+            XL_STATIC_ASSERT(Size == T::Size);      \
             XL_TUPLE_GREATER(n)                     \
             return true;                            \
         }                                           \
