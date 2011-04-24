@@ -506,7 +506,7 @@ namespace xl
         {
             // It is near the back
 
-            MoveData(m_pData + m_nStart + nIndex + nCount, m_nEof - m_nStart - nIndex, -nCount);
+            MoveData(m_pData + m_nStart + nIndex + nCount, m_nEof - m_nStart - 1 - nIndex, -nCount);
             m_nEof -= nCount;
         }
     }
