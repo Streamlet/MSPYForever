@@ -17,6 +17,7 @@
 #define __UNITTESTFRAME_H_D6074214_D6DB_4590_9EF3_B25B76DB713D_INCLUDED__
 
 
+#include <xl/Meta/xlAssert.h>
 #include <xl/Meta/xlMacros.h>
 
 namespace xl
@@ -37,16 +38,7 @@ namespace xl
 
 #define XL_TEST_CASE()  XL_NAMED_TEST_CASE(__LINE__)
 
-#define XL_TEST_ASSERT(condition)       \
-                                        \
-    do                                  \
-    {                                   \
-        if (!(condition))               \
-        {                               \
-            throw "Test assert fails."; \
-        }                               \
-                                        \
-    } while (false)
+#define XL_TEST_ASSERT(expr)    XL_ASSERT(expr)
 
 } // namespace xl
 

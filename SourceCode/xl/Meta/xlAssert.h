@@ -18,30 +18,20 @@
 
 
 #include <xl/xlDef.h>
-#include <xl/Meta/xlMacros.h>
 
 namespace xl
 {
-    template <bool expr>
-    struct StaticAssert;
 
-    template <>
-    struct StaticAssert<true>
-    {
-
-    };
-
-    template <size_t x>
-    struct StaticAssertTest
-    {
-
-    };
-    
-#define XL_STATIC_ASSERT(expr) typedef xl::StaticAssertTest<sizeof(xl::StaticAssert<expr>)> XL_CONN(StaticAssert_, __COUNTER__)
-
-#if (!defined(_MSC_VER) || _MSC_VER < 1600)
-#define static_assert(expr, msg)    XL_STATIC_ASSERT(expr)
-#endif
+#define XL_ASSERT(expr)                 \
+                                        \
+    do                                  \
+    {                                   \
+        if (!(expr))                    \
+        {                               \
+            throw "Assert fails.";      \
+        }                               \
+                                        \
+    } while (false)
 
 } // namespace xl
 
