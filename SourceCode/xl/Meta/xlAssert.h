@@ -2,7 +2,7 @@
 //
 //    Copyright (C) Streamlet. All rights reserved.
 //
-//    File Name:   xlStaticAssert.h
+//    File Name:   xlAssert.h
 //    Author:      Streamlet
 //    Create Time: 2011-04-24
 //    Description: 
@@ -13,8 +13,8 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef __XLSTATICASSERT_H_8D45F3AE_6AA7_436B_AB6A_2C4D7A442220_INCLUDED__
-#define __XLSTATICASSERT_H_8D45F3AE_6AA7_436B_AB6A_2C4D7A442220_INCLUDED__
+#ifndef __XLASSERT_H_BABCC0B2_7AD9_4F55_99F2_5DBB6EAD1F4D_INCLUDED__
+#define __XLASSERT_H_BABCC0B2_7AD9_4F55_99F2_5DBB6EAD1F4D_INCLUDED__
 
 
 #include <xl/xlDef.h>
@@ -35,6 +35,4 @@ namespace xl
 
 } // namespace xl
 
-
-
-#endif // #ifndef __XLSTATICASSERT_H_8D45F3AE_6AA7_436B_AB6A_2C4D7A442220_INCLUDED__
+#endif // #ifndef __XLASSERT_H_BABCC0B2_7AD9_4F55_99F2_5DBB6EAD1F4D_INCLUDED__
