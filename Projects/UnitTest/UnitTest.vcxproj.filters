@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Containers">
+      <UniqueIdentifier>{e8a1584d-9ab4-4ed4-8744-8641b7365d26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cryption">
+      <UniqueIdentifier>{7826e3e8-c45f-4a5c-ac48-2c8641c4b124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Meta">
+      <UniqueIdentifier>{efe79f9d-491b-4ff8-9127-83bfadc6e614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{7d97d436-ee58-4f6d-9782-a832703fea27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\String">
+      <UniqueIdentifier>{a03295b1-d4b6-4d24-8413-b782cbe9f33f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Memory">
+      <UniqueIdentifier>{dcd14cc7-abea-4e8c-8ae5-ec45cc60febc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\xlArrayTest.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\xlListTest.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\xlMapTest.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\xlPairTest.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\xlRBTreeTest.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\xlSetTest.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Containers\xlTupleTest.cpp">
+      <Filter>Source Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Cryption\xlCRC32Test.cpp">
+      <Filter>Source Files\Cryption</Filter>
+    </ClCompile>
+    <ClCompile Include="Cryption\xlMD5Test.cpp">
+      <Filter>Source Files\Cryption</Filter>
+    </ClCompile>
+    <ClCompile Include="Cryption\xlSHA1Test.cpp">
+      <Filter>Source Files\Cryption</Filter>
+    </ClCompile>
+    <ClCompile Include="Meta\xlFunctionTest.cpp">
+      <Filter>Source Files\Meta</Filter>
+    </ClCompile>
+    <ClCompile Include="Objects\xlBigIntTest.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="String\xlBase64Test.cpp">
+      <Filter>Source Files\String</Filter>
+    </ClCompile>
+    <ClCompile Include="String\xlStringTest.cpp">
+      <Filter>Source Files\String</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\xlQIPtrTest.cpp">
+      <Filter>Source Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="String\xlUTF8Test.cpp">
+      <Filter>Source Files\String</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
