@@ -56,10 +56,6 @@ namespace xl
 
         }
 
-    private:
-        Dialog(const Dialog &);
-        Dialog &operator =(const Dialog &);
-
     protected:
         static LPCTSTR GetClassName()
         {

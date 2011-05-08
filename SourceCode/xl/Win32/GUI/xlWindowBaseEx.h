@@ -80,10 +80,6 @@ namespace xl
 
         }
 
-    private:
-        WindowBaseEx(const WindowBase &);
-        WindowBaseEx &operator =(const WindowBase &);
-
     // Command message maps
 
     private:

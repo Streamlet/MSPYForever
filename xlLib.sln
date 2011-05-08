@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{3CF5010F-D
 		SourceCode\xl\Meta\xlStaticAssert.h = SourceCode\xl\Meta\xlStaticAssert.h
 		SourceCode\xl\Meta\xlTypeList.h = SourceCode\xl\Meta\xlTypeList.h
 		SourceCode\xl\Meta\xlTypeTraits.h = SourceCode\xl\Meta\xlTypeTraits.h
+		SourceCode\xl\Meta\xlUtility.h = SourceCode\xl\Meta\xlUtility.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win32", "Win32", "{8F40867B-C99D-4C15-A0C7-F407C9CC741D}"
@@ -49,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{B9EA58CE-58D
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Win32\GUI\xlCommCtrlInitializer.h = SourceCode\xl\Win32\GUI\xlCommCtrlInitializer.h
 		SourceCode\xl\Win32\GUI\xlDialog.h = SourceCode\xl\Win32\GUI\xlDialog.h
+		SourceCode\xl\Win32\GUI\xlMenu.h = SourceCode\xl\Win32\GUI\xlMenu.h
+		SourceCode\xl\Win32\GUI\xlMenuBase.h = SourceCode\xl\Win32\GUI\xlMenuBase.h
 		SourceCode\xl\Win32\GUI\xlStdButton.h = SourceCode\xl\Win32\GUI\xlStdButton.h
 		SourceCode\xl\Win32\GUI\xlStdComboBox.h = SourceCode\xl\Win32\GUI\xlStdComboBox.h
 		SourceCode\xl\Win32\GUI\xlStdEdit.h = SourceCode\xl\Win32\GUI\xlStdEdit.h

@@ -40,10 +40,6 @@ namespace xl
 
         }
 
-    private:
-        StdStatic(const StdStatic &);
-        StdStatic &operator =(const StdStatic &);
-
     protected:
         static LPCTSTR GetClassName()
         {

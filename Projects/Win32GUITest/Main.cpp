@@ -15,6 +15,7 @@
 
 
 #include <xl/Win32/GUI/xlWindow.h>
+#include <xl/Win32/GUI/xlMenu.h>
 #include <xl/Win32/GUI/xlDialog.h>
 #include <xl/Win32/GUI/xlStdStatic.h>
 #include <xl/Win32/GUI/xlStdButton.h>
@@ -30,9 +31,24 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in LPTSTR lpCmdLine,
                      __in int nShowCmd)
 {
+    xl::Menu popupMenu;
+    popupMenu.CreatePopup();
+    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 103, _T("&New"));
+    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 104, _T("&Open"));
+    popupMenu.AppendMenu(MF_POPUP | MF_SEPARATOR, 0, nullptr);
+    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 105, _T("&Quit"));
+
+    xl::Menu mainMenu;
+    mainMenu.Create();
+    mainMenu.AppendMenu(MF_POPUP, (UINT_PTR)popupMenu.GetHMENU(), _T("&File"));
+    mainMenu.AppendMenu(MF_STRING, 101, _T("&Edit"));
+    mainMenu.AppendMenu(MF_SEPARATOR, 0, nullptr);
+    mainMenu.AppendMenu(MF_STRING, 102, _T("&Help"));
+                
     xl::Window wnd;
     wnd.Create(300, 240, 500, 400);
     wnd.SetWindowText(_T("MyWindow"));
+    wnd.SetMenu(mainMenu.GetHMENU());
 
     xl::StdStatic label;
     label.Create(1, &wnd, 80, 30, 200, 18);
@@ -76,6 +92,22 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     xl::StdLink link;
     link.Create(8, &wnd, 300, 200, 160, 20);
     link.SetWindowText(_T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
+
+    wnd.AppendMsgHandler(WM_RBUTTONUP, [&popupMenu](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled) -> LRESULT
+    {
+        POINT point = {};
+        GetCursorPos(&point);
+        popupMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, hWnd);
+
+        return FALSE;
+    });
+
+    wnd.AppendMenuCommandMsgHandler(103, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
+    {
+        wnd.MessageBox(_T("Menu"));
+
+        return FALSE;
+    });
 
     wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {

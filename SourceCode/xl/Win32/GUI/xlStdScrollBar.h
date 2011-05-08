@@ -40,10 +40,6 @@ namespace xl
 
         }
 
-    private:
-        StdScrollBar(const StdScrollBar &);
-        StdScrollBar &operator =(const StdScrollBar &);
-
     protected:
         static LPCTSTR GetClassName()
         {

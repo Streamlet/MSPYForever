@@ -40,10 +40,6 @@ namespace xl
 
         }
 
-    private:
-        StdEdit(const StdEdit &);
-        StdEdit &operator =(const StdEdit &);
-
     protected:
         static LPCTSTR GetClassName()
         {

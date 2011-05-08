@@ -17,11 +17,12 @@
 #define __XLCRITICALSECTION_H_C580E922_6ED8_483E_8223_2174E0EF7310_INCLUDED__
 
 
+#include <xl/Meta/xlUtility.h>
 #include <Windows.h>
 
 namespace xl
 {
-    class CriticalSection
+    class CriticalSection : public NonCopyable
     {
     public:
         CriticalSection()

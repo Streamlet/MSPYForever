@@ -52,10 +52,6 @@ namespace xl
 
         }
 
-    private:
-        Window(const Window &);
-        Window &operator =(const Window &);
-
     protected:
         static LPCTSTR GetClassName()
         {

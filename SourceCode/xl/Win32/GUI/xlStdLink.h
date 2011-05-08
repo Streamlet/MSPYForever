@@ -40,10 +40,6 @@ namespace xl
 
         }
 
-    private:
-        StdLink(const StdLink &);
-        StdLink &operator =(const StdLink &);
-
     protected:
         static LPCTSTR GetClassName()
         {

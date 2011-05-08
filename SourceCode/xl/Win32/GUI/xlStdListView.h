@@ -40,10 +40,6 @@ namespace xl
 
         }
 
-    private:
-        StdListView(const StdListView &);
-        StdListView &operator =(const StdListView &);
-
     protected:
         static LPCTSTR GetClassName()
         {

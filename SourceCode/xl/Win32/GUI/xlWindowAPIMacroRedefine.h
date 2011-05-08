@@ -187,4 +187,76 @@ inline BOOL WINAPI GetDlgItemText(__in HWND hDlg, __in int nIDDlgItem, __out_eco
 }
 #endif
 
+#ifdef AppendMenu
+#undef AppendMenu
+inline BOOL WINAPI AppendMenu(__in HMENU hMenu, __in UINT uFlags, __in UINT_PTR uIDNewItem, __in_opt LPCWSTR lpNewItem)
+{
+#ifdef UNICODE
+    return AppendMenuW(hMenu, uFlags, uIDNewItem, lpNewItem);
+#else
+    return AppendMenuA(hMenu, uFlags, uIDNewItem, lpNewItem);
+#endif
+}
+#endif
+
+#ifdef GetMenuString
+#undef GetMenuString
+inline BOOL WINAPI GetMenuString(__in HMENU hMenu, __in UINT uIDItem, __out_ecount_opt(cchMax) LPWSTR lpString, __in int cchMax, __in UINT flags)
+{
+#ifdef UNICODE
+    return GetMenuStringW(hMenu, uIDItem, lpString, cchMax, flags);
+#else
+    return GetMenuStringA(hMenu, uIDItem, lpString, cchMax, flags);
+#endif
+}
+#endif
+
+#ifdef GetMenuItemInfo
+#undef GetMenuItemInfo
+inline BOOL WINAPI GetMenuItemInfo(HMENU hMenu, UINT uItem, BOOL fByPosition, LPMENUITEMINFOW lpmii)
+{
+#ifdef UNICODE
+    return GetMenuItemInfoW(hMenu, uItem, fByPosition, lpmii);
+#else
+    return GetMenuItemInfoA(hMenu, uItem, fByPosition, lpmii);
+#endif
+}
+#endif
+
+#ifdef SetMenuItemInfo
+#undef SetMenuItemInfo
+inline BOOL WINAPI SetMenuItemInfo(__in HMENU hMenu, __in UINT uItem, __in BOOL fByPosition, __in LPCMENUITEMINFOW lpmii)
+{
+#ifdef UNICODE
+    return SetMenuItemInfoW(hMenu, uItem, fByPosition, lpmii);
+#else
+    return SetMenuItemInfoA(hMenu, uItem, fByPosition, lpmii);
+#endif
+}
+#endif
+
+#ifdef InsertMenuItem
+#undef InsertMenuItem
+inline BOOL WINAPI InsertMenuItem(__in HMENU hMenu, __in UINT uItem, __in BOOL fByPosition, __in LPCMENUITEMINFOW lpmii)
+{
+#ifdef UNICODE
+    return InsertMenuItemW(hMenu, uItem, fByPosition, lpmii);
+#else
+    return InsertMenuItemA(hMenu, uItem, fByPosition, lpmii);
+#endif
+}
+#endif
+
+#ifdef ModifyMenu
+#undef ModifyMenu
+inline BOOL WINAPI ModifyMenu(__in HMENU hMenu, __in UINT uPosition, __in UINT uFlags, __in UINT_PTR uIDNewItem, __in_opt LPCWSTR lpNewItem)
+{
+#ifdef UNICODE
+    return ModifyMenuW(hMenu, uPosition, uFlags, uIDNewItem, lpNewItem);
+#else
+    return ModifyMenuA(hMenu, uPosition, uFlags, uIDNewItem, lpNewItem);
+#endif
+}
+#endif
+
 #endif // #ifndef __XLWINDOWAPIMACROREDEFINE_H_61336F01_F8A8_4FA6_8762_1F60789DBC99_INCLUDED__

@@ -40,10 +40,6 @@ namespace xl
 
         }
 
-    private:
-        StdButton(const StdButton &);
-        StdButton &operator =(const StdButton &);
-
     protected:
         static LPCTSTR GetClassName()
         {

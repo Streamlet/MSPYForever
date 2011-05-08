@@ -21,6 +21,7 @@
 #include <xl/Containers/xlMap.h>
 #include <xl/Containers/xlList.h>
 #include <xl/Meta/xlFunction.h>
+#include <xl/Meta/xlUtility.h>
 #include <xl/Win32/GUI/xlThunk.h>
 #include <xl/Win32/Threads/xlTls.h>
 #include <xl/Win32/Threads/xlCriticalSection.h>
@@ -53,7 +54,7 @@ namespace xl
 #define STD_CONTROL_CLASSNAME_PAGESCROLLER  WC_PAGESCROLLER
 #define STD_CONTROL_CLASSNAME_NATIVEFONTCTL WC_NATIVEFONTCTL
 
-    class WindowBase
+    class WindowBase : public NonCopyable
     {
     protected:
         // MsgHandler Parameters:
@@ -82,10 +83,6 @@ namespace xl
             Destroy();
             Detach();
         }
-
-    private:
-        WindowBase(const WindowBase &);
-        WindowBase &operator =(const WindowBase &);
 
     protected:
         bool Create(LPCTSTR lpClassName,
