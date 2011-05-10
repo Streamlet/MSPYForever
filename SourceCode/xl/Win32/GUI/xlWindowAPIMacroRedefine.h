@@ -175,6 +175,18 @@ inline BOOL WINAPI WinHelp(__in_opt HWND hWndMain, __in_opt LPCWSTR lpszHelp, __
 }
 #endif
 
+#ifdef SendDlgItemMessage
+#undef SendDlgItemMessage
+inline BOOL WINAPI SendDlgItemMessage(__in HWND hDlg, __in int nIDDlgItem, __in UINT uMsg, __in WPARAM wParam, __in LPARAM lParam)
+{
+#ifdef UNICODE
+    return SendDlgItemMessageW(hDlg, nIDDlgItem, uMsg, wParam, lParam);
+#else
+    return SendDlgItemMessageA(hDlg, nIDDlgItem, uMsg, wParam, lParam);
+#endif
+}
+#endif
+
 #ifdef GetDlgItemText
 #undef GetDlgItemText
 inline BOOL WINAPI GetDlgItemText(__in HWND hDlg, __in int nIDDlgItem, __out_ecount(cchMax) LPWSTR lpString, __in int cchMax)
