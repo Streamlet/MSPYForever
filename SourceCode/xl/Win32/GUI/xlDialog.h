@@ -147,11 +147,18 @@ namespace xl
 
             while (m_bInModal)
             {
-                do
+                while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE))
                 {
+                    if (msg.message == WM_QUIT)
+                    {
+                        EndDialog(IDCANCEL);
+                        break;
+                    }
+
                     if (!::GetMessage(&msg, NULL, NULL, NULL))
                     {
-                        EndDialog(-1);
+                        EndDialog(IDCANCEL);
+                        break;
                     }
 
                     if (!IsDialogMessage(m_hWnd, &msg))
@@ -160,7 +167,9 @@ namespace xl
                         DispatchMessage(&msg);
                     }
 
-                } while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE));
+                }
+
+                Sleep(0);
             }
 
             return m_nModalResult;
