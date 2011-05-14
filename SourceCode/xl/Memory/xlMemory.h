@@ -27,6 +27,42 @@ namespace xl
         Memory();
 
     public:
+        static bool IsEqual(void *pMemory1, void *pMemory2, size_t cbSize)
+        {
+            if (pMemory1 == nullptr || pMemory2 == nullptr || cbSize == 0)
+            {
+                return pMemory1 == pMemory2;
+            }
+
+            unsigned int *pUInt1 = (unsigned int *)pMemory1;
+            unsigned int *pUInt2 = (unsigned int *)pMemory2;
+
+            while (cbSize >= 4)
+            {
+                if (*pUInt1 != *pUInt2)
+                {
+                    return false;
+                }
+
+                cbSize -= 4;
+            }
+
+            unsigned char *pUChar1 = (unsigned char *)pUInt1;
+            unsigned char *pUChar2 = (unsigned char *)pUInt2;
+
+            while (cbSize > 0)
+            {
+                if (*pUChar1 != *pUChar2)
+                {
+                    return false;
+                }
+
+                --cbSize;
+            }
+
+            return true;
+        }
+
         static void *Set(void *pMemory, size_t cbSize, unsigned int nValue = 0)
         {
             if (pMemory == nullptr || cbSize == 0)

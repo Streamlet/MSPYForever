@@ -177,7 +177,7 @@ inline BOOL WINAPI WinHelp(__in_opt HWND hWndMain, __in_opt LPCWSTR lpszHelp, __
 
 #ifdef SendDlgItemMessage
 #undef SendDlgItemMessage
-inline BOOL WINAPI SendDlgItemMessage(__in HWND hDlg, __in int nIDDlgItem, __in UINT uMsg, __in WPARAM wParam, __in LPARAM lParam)
+inline LRESULT WINAPI SendDlgItemMessage(__in HWND hDlg, __in int nIDDlgItem, __in UINT uMsg, __in WPARAM wParam, __in LPARAM lParam)
 {
 #ifdef UNICODE
     return SendDlgItemMessageW(hDlg, nIDDlgItem, uMsg, wParam, lParam);

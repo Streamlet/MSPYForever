@@ -43,6 +43,9 @@ namespace xl
         T &operator*() const;
         T *operator->() const;
 
+    public:
+        operator T *();
+
     private:
         void AddRef();
         void Release();
@@ -146,6 +149,12 @@ namespace xl
 
     template <typename T>
     inline T *QIPtr<T>::operator->() const
+    {
+        return this->m_pData;
+    }
+
+    template <typename T>
+    inline QIPtr<T>::operator T *()
     {
         return this->m_pData;
     }
