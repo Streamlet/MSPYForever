@@ -19,6 +19,12 @@
 
 namespace xl
 {
+    class NonInstantiable
+    {
+    private:
+        NonInstantiable();
+    };
+
     class NonCopyable
     {
     public:
