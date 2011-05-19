@@ -80,18 +80,18 @@ namespace xl
 
                 CharA temp[3];
 
-                for (int i = nBytes - 1; i > 0; --i)
+                for (int j = nBytes - 1; j > 0; --j)
                 {
-                    temp[i] = (CharA)(ch & 0x3f) | 0x80;    // Get the lower 6 bits, and set the high 2 bits to "10"
+                    temp[j] = (CharA)(ch & 0x3f) | 0x80;    // Get the lower 6 bits, and set the high 2 bits to "10"
                     ch >>= 6;
                 }
 
                 // Solve the first byte. Get the lower value bits, and the set the high bits to "1...10"
                 temp[0] = (CharA)(ch & chMaskValueBits) | chMaskLeadingBits;
 
-                for (int i = 0; i < nBytes; ++i)
+                for (int j = 0; j < nBytes; ++j)
                 {
-                    pstrUTF8->AppendBack(temp[i]);
+                    pstrUTF8->AppendBack(temp[j]);
                 }
             }
         }
