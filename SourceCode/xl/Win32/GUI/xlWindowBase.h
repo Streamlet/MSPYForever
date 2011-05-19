@@ -105,24 +105,24 @@ namespace xl
 
             bool bStdControl = false;
 
-            if (lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_STATIC       ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_BUTTON       ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_EDIT         ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_COMBOBOX     ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_LISTBOX      ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_SCROLLBAR    ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_RICHEDIT1    ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_RICHEDIT2    ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_MDICLIENT    ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_HEADER       ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_LINK         ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_LISTVIEW     ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_TREEVIEW     ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_COMBOBOXEX   ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_TABCONTROL   ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_IPADDRESS    ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_PAGESCROLLER ) == 0 ||
-                lstrcmpi(lpClassName, STD_CONTROL_CLASSNAME_NATIVEFONTCTL) == 0)
+            if (CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_STATIC       , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_BUTTON       , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_EDIT         , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_COMBOBOX     , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_LISTBOX      , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_SCROLLBAR    , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_RICHEDIT1    , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_RICHEDIT2    , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_MDICLIENT    , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_HEADER       , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_LINK         , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_LISTVIEW     , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_TREEVIEW     , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_COMBOBOXEX   , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_TABCONTROL   , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_IPADDRESS    , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_PAGESCROLLER , -1) == CSTR_EQUAL ||
+                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_NATIVEFONTCTL, -1) == CSTR_EQUAL)
             {
                 bStdControl = true;
             }
