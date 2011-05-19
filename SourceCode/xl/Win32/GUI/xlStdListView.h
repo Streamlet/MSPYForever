@@ -53,7 +53,7 @@ namespace xl
                     int y = CW_USEDEFAULT,
                     int nWidth = CW_USEDEFAULT,
                     int nHeight = CW_USEDEFAULT,
-                    DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_TABSTOP | LVS_REPORT,
+                    DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_TABSTOP | LVS_REPORT | LVS_SHOWSELALWAYS,
                     DWORD dwExStyle = WS_EX_CLIENTEDGE,
                     HINSTANCE hInstance = nullptr)
         {
