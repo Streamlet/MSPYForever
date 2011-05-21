@@ -221,7 +221,7 @@ xl::StringT<char>{
 }
 
 ;------------------------------------------------------------------------------
-;  xl::SharedPtr, xl::SharedPtr
+;  xl::SharedPtr, xl::SharedArray
 ;------------------------------------------------------------------------------
 xl::SharedPtr<*>|xl::SharedArray<*>{
     preview (
