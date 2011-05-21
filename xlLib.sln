@@ -70,6 +70,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{8E12D1F8-E344-41C8-9FD9-2F93E874F24E}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Win32\Memory\xlHeap.h = SourceCode\xl\Win32\Memory\xlHeap.h
+		SourceCode\xl\Win32\Memory\xlSafeSmartPtr.h = SourceCode\xl\Win32\Memory\xlSafeSmartPtr.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cryption", "Cryption", "{54E546A4-BE6C-49B1-90D1-10C609CB1115}"
