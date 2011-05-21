@@ -218,7 +218,7 @@ namespace xl
 
         }
 
-        SharedArray(const SharedPtr &that) :
+        SharedArray(const SharedArray &that) :
         SmartPtrBase(that)
         {
 
