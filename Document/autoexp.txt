@@ -189,10 +189,10 @@ xl::Map<*>{
 ;------------------------------------------------------------------------------
 xl::StringT<wchar_t>{
     preview (
-        [&$e.m_aData.m_pData[$e.m_aData.m_nStart],su]
+        [&$e.m_aData.m_pData[$e.m_aData.m_nStart], su]
     )
     stringview (
-        [&$e.m_aData.m_pData[$e.m_aData.m_nStart],sub]
+        [&$e.m_aData.m_pData[$e.m_aData.m_nStart], sub]
     )
     children (
         #(
@@ -205,10 +205,10 @@ xl::StringT<wchar_t>{
 }
 xl::StringT<char>{
     preview (
-        [&$e.m_aData.m_pData[$e.m_aData.m_nStart],s]
+        [&$e.m_aData.m_pData[$e.m_aData.m_nStart], s]
     )
     stringview (
-        [&$e.m_aData.m_pData[$e.m_aData.m_nStart],sb]
+        [&$e.m_aData.m_pData[$e.m_aData.m_nStart], sb]
     )
     children (
         #(
@@ -221,20 +221,20 @@ xl::StringT<char>{
 }
 
 ;------------------------------------------------------------------------------
-;  xl::QIPtr
+;  xl::SharedPtr, xl::SharedPtr
 ;------------------------------------------------------------------------------
-xl::QIPtr<*>{
+xl::SharedPtr<*>|xl::SharedArray<*>{
     preview (
         #(
             "[",
-            #if ($e.m_pcRefs == 0) ( 0 ) #else ( *$e.m_pcRefs ),
+            #if ($e.m_pRefCounter == 0) ( 0 ) #else ( $e.m_pRefCounter->m_nCount ),
             "] ",
             $e.m_pData
         )
     )
     children (
         #(
-            [ref] : #if ($e.m_pcRefs == 0) ( 0 ) #else ( *$e.m_pcRefs ),
+            [ref] : #if ($e.m_pRefCounter == 0) ( 0 ) #else ( $e.m_pRefCounter->m_nCount ),
             [val] : *$e.m_pData
         )
     )

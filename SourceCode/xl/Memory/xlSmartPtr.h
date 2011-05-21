@@ -227,4 +227,29 @@ namespace xl
 
 } // namespace xl
 
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+//
+// ;------------------------------------------------------------------------------
+// ;  xl::SharedPtr, xl::SharedPtr
+// ;------------------------------------------------------------------------------
+// xl::SharedPtr<*>|xl::SharedArray<*>{
+//     preview (
+//         #(
+//             "[",
+//             #if ($e.m_pRefCounter == 0) ( 0 ) #else ( $e.m_pRefCounter->m_nCount ),
+//             "] ",
+//             $e.m_pData
+//         )
+//     )
+//     children (
+//         #(
+//             [ref] : #if ($e.m_pRefCounter == 0) ( 0 ) #else ( $e.m_pRefCounter->m_nCount ),
+//             [val] : *$e.m_pData
+//         )
+//     )
+// }
+//
+
 #endif // #ifndef __XLSMARTPTR_H_0020004E_79A8_4C64_B292_F102DBE1BF96_INCLUDED__
