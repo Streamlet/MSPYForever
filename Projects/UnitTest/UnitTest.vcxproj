@@ -150,7 +150,7 @@
     <ClCompile Include="Cryption\xlMD5Test.cpp" />
     <ClCompile Include="Cryption\xlSHA1Test.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Memory\xlQIPtrTest.cpp" />
+    <ClCompile Include="Memory\xlSmartPtrTest.cpp" />
     <ClCompile Include="Meta\xlFunctionTest.cpp" />
     <ClCompile Include="Objects\xlBigIntTest.cpp" />
     <ClCompile Include="String\xlBase64Test.cpp" />

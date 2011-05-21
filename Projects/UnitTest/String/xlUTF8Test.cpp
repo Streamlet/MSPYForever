@@ -35,12 +35,12 @@ namespace
 
         if (WideCharToMultiByte(dwCodePage, 0, strUnicode, -1, szAnsi, size, NULL, NULL) == 0)
         {
-            delete szAnsi;
+            delete[] szAnsi;
             return "";
         }
 
         CStringA ret = szAnsi;
-        delete szAnsi;
+        delete[] szAnsi;
 
         return ret;
     }

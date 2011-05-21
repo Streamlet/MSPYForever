@@ -18,7 +18,7 @@
 
 
 #include <xl/xlDef.h>
-#include <xl/Memory/xlQIPtr.h>
+#include <xl/Memory/xlSmartPtr.h>
 #include <xl/Meta/xlMacros.h>
 #include <xl/Meta/xlTypeList.h>
 
@@ -208,7 +208,7 @@ namespace xl
         }                                                                                                       \
                                                                                                                 \
     private:                                                                                                    \
-        QIPtr<FunctionBaseType> m_pFunctionBase;                                                                \
+        SharedPtr<FunctionBaseType> m_pFunctionBase;                                                                \
 
         XL_FUCTION_IMPLEMENT_BODY()
 

@@ -102,7 +102,7 @@ namespace
         Tuple<int, int, int> a2(1, 1, 1);
         Tuple<double, double> b(1.0, 1.0);
 
-        a = b;  // warning
+//         a = b;  // warning
         b = a;
 
         a = a2;

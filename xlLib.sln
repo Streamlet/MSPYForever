@@ -99,7 +99,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{9274E5C4-72E6-4147-BB18-30853424D2D3}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Memory\xlMemory.h = SourceCode\xl\Memory\xlMemory.h
-		SourceCode\xl\Memory\xlQIPtr.h = SourceCode\xl\Memory\xlQIPtr.h
+		SourceCode\xl\Memory\xlSmartPtr.h = SourceCode\xl\Memory\xlSmartPtr.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{4F5286EA-D279-4EED-ADAD-5E1F8428F49D}"

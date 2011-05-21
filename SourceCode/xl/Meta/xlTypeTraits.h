@@ -41,7 +41,7 @@ namespace xl
     template <typename T>
     struct ConstTraits
     {
-        enum { IsConst = false };
+        static const bool IsConst = false;
         typedef const T ConstType;
         typedef T       NonConstType;
     };
@@ -49,7 +49,7 @@ namespace xl
     template <typename T>
     struct ConstTraits<const T>
     {
-        enum { IsConst = true };
+        static const bool IsConst = true;
         typedef const T ConstType;
         typedef T       NonConstType;
     };
@@ -57,7 +57,7 @@ namespace xl
     template <typename T>
     struct RefTraits
     {
-        enum { IsRef = false };
+        static const bool IsRef = false;
         typedef NullType RefToType;
         typedef T       &RefType;
     };
@@ -65,7 +65,7 @@ namespace xl
     template <typename T>
     struct RefTraits<T &>
     {
-        enum { IsRef = true };
+        static const bool IsRef = true;
         typedef T  RefToType;
         typedef T &RefType;
     };
@@ -73,7 +73,7 @@ namespace xl
     template <typename T>
     struct RValueRefTraits
     {
-        enum { IsRValueRef = false };
+        static const bool IsRValueRef = false;
         typedef NullType RRefToType;
         typedef T       &RRefType;
     };
@@ -81,7 +81,7 @@ namespace xl
     template <typename T>
     struct RValueRefTraits<T &&>
     {
-        enum { IsRValueRef = true };
+        static const bool IsRValueRef = true;
         typedef T   RRefToType;
         typedef T &&RRefType;
     };
@@ -89,7 +89,7 @@ namespace xl
     template <typename T>
     struct PtrTraits
     {
-        enum { IsPtr = false };
+        static const bool IsPtr = false;
         typedef NullType PtrToType;
         typedef T       *PtrType;
     };
@@ -97,7 +97,7 @@ namespace xl
     template <typename T>
     struct PtrTraits<T *>
     {
-        enum { IsPtr = true };
+        static const bool IsPtr = true;
         typedef T  PtrToType;
         typedef T *PtrType;
     };
@@ -105,7 +105,7 @@ namespace xl
     template <typename T>
     struct MemPtrTraits
     {
-        enum { IsMemPtr = false };
+        static const bool IsMemPtr = false;
         typedef NullType ClassType;
         typedef NullType PtrToType;
     };
@@ -113,9 +113,21 @@ namespace xl
     template <typename T, typename C>
     struct MemPtrTraits<T C::*>
     {
-        enum { IsMemPtr = false };
+        static const bool IsMemPtr = false;
         typedef C ClassType;
         typedef T PtrToType;
+    };
+
+    template <typename T, typename U>
+    struct SameTypeDetect
+    {
+        static const bool IsSameType = false;
+    };
+
+    template <typename T>
+    struct SameTypeDetect<T, T>
+    {
+        static const bool IsSameType = true;
     };
 
     template <typename T>
@@ -149,15 +161,15 @@ namespace xl
                                      >::Type StdCharTypes;
 
     public:
-        enum { IsVoid  = (TLIndexOf<StdVoidTypes,  T>::Value >= 0) };
-        enum { IsBool  = (TLIndexOf<StdBoolTypes,  T>::Value >= 0) };
-        enum { IsSInt  = (TLIndexOf<StdSIntTypes,  T>::Value >= 0) };
-        enum { IsUInt  = (TLIndexOf<StdUIntTypes,  T>::Value >= 0) };
-        enum { IsFloat = (TLIndexOf<StdFloatTypes, T>::Value >= 0) };
-        enum { IsChar  = (TLIndexOf<StdCharTypes,  T>::Value >= 0) };
+        static const bool IsVoid  = (TLIndexOf<StdVoidTypes,  T>::Value >= 0);
+        static const bool IsBool  = (TLIndexOf<StdBoolTypes,  T>::Value >= 0);
+        static const bool IsSInt  = (TLIndexOf<StdSIntTypes,  T>::Value >= 0);
+        static const bool IsUInt  = (TLIndexOf<StdUIntTypes,  T>::Value >= 0);
+        static const bool IsFloat = (TLIndexOf<StdFloatTypes, T>::Value >= 0);
+        static const bool IsChar  = (TLIndexOf<StdCharTypes,  T>::Value >= 0);
 
-        enum { IsInt     = (IsBool || IsSInt || IsUInt || IsChar) };
-        enum { IsStdType = (IsVoid || IsInt || IsFloat) };
+        static const bool IsInt     = (IsBool || IsSInt || IsUInt || IsChar);
+        static const bool IsStdType = (IsVoid || IsInt || IsFloat);
 
     public:
         typedef typename StaticSelect<IsStdType,
