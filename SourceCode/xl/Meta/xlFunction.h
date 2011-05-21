@@ -208,7 +208,7 @@ namespace xl
         }                                                                                                       \
                                                                                                                 \
     private:                                                                                                    \
-        SharedPtr<FunctionBaseType> m_pFunctionBase;                                                                \
+        SharedPtr<FunctionBaseType> m_pFunctionBase;                                                            \
 
         XL_FUCTION_IMPLEMENT_BODY()
 
