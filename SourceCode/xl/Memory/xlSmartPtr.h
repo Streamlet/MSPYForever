@@ -187,13 +187,13 @@ namespace xl
         }
 
         SharedPtr(T *pData) :
-        SmartPtrBase(pData)
+            SmartPtrBase(pData)
         {
 
         }
 
         SharedPtr(const SharedPtr &that) :
-        SmartPtrBase(that)
+            SmartPtrBase(that)
         {
 
         }
@@ -213,13 +213,13 @@ namespace xl
         }
 
         SharedArray(T *pData) :
-        SmartPtrBase(pData)
+            SmartPtrBase(pData)
         {
 
         }
 
         SharedArray(const SharedArray &that) :
-        SmartPtrBase(that)
+            SmartPtrBase(that)
         {
 
         }
