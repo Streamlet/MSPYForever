@@ -143,6 +143,16 @@ namespace xl
             return this->m_pData;
         }
 
+        const T &operator[](int i) const
+        {
+            return this->m_pData[i];
+        }
+
+        T &operator[](int i)
+        {
+            return this->m_pData[i];
+        }
+
     public:
         T *RawPointer()
         {
