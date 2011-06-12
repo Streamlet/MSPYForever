@@ -88,8 +88,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "String", "String", "{3001410B-F3F0-4387-9E64-3BE6078D1C7E}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\String\xlBase64.h = SourceCode\xl\String\xlBase64.h
+		SourceCode\xl\String\xlEncoding.h = SourceCode\xl\String\xlEncoding.h
 		SourceCode\xl\String\xlString.h = SourceCode\xl\String\xlString.h
-		SourceCode\xl\String\xlUTF8.h = SourceCode\xl\String\xlUTF8.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{C37FE0BD-5B78-4C92-87B3-D3CF499A5E0D}"

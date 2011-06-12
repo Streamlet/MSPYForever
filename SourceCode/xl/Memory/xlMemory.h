@@ -173,6 +173,32 @@ namespace xl
         {
             Set(&tVar, sizeof(T));
         }
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1600)
+
+        template <typename T>
+        static T &&ElementMove(T &&t)
+        {
+            return t;
+        }
+
+#else
+
+        template <typename T>
+        static T &ElementMove(T &t)
+        {
+            return t;
+        }
+
+#endif
+
+        template <typename T>
+        static void ElementSwap(T &t1, T &t2)
+        {
+            T t(ElementMove(t1));
+            t1 = ElementMove(t2);
+            t2 = ElementMove(t);
+        }
     };
 
 } // namespace xl

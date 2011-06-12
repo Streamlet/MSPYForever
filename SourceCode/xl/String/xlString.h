@@ -82,13 +82,22 @@ namespace xl
         Array<T> m_aData;
     };
 
-    typedef char    CharA;
-    typedef wchar_t CharW;
+    typedef char    Char8,  CharA;
+    typedef wchar_t Char16, CharW;
+    typedef int     Char32;
     typedef CharW   Char;
 
-    typedef StringT<CharA> StringA;
-    typedef StringT<CharW> StringW;
-    typedef StringW        String;
+    typedef StringT<Char8>  StringU8;
+    typedef StringT<Char16> StringU16;
+    typedef StringT<Char32> StringU32;
+    typedef StringT<CharA>  StringA;
+    typedef StringT<CharW>  StringW;
+
+#ifdef _UNICODE
+    typedef StringW         String;
+#else
+    typedef StringA         String;
+#endif
 
     template <typename T>
     inline StringT<T>::StringT()
@@ -312,7 +321,7 @@ namespace xl
         {
             if (this->m_aData[i] >= T('a') && this->m_aData[i] <= T('z'))
             {
-                strRet.m_aData[i] = m_aData[i] - ('a' - 'A');
+                strRet.m_aData[i] = m_aData[i] - (T('a') - T('A'));
             }
             else
             {
