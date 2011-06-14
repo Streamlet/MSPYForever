@@ -166,7 +166,6 @@ namespace xl
                         TranslateMessage(&msg);
                         DispatchMessage(&msg);
                     }
-
                 }
 
                 Sleep(0);
