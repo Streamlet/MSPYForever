@@ -31,7 +31,9 @@ namespace xl
         Socket() :
             m_bInitialized(false), m_hSocket(INVALID_SOCKET), m_nAddressFamily(AF_UNSPEC)
         {
+            Memory::Zero(m_addr);
 
+            Initialize();
         }
 
         ~Socket()
@@ -46,7 +48,7 @@ namespace xl
         static const SelectOption SO_WRITE    = 2;
         static const SelectOption SO_EXCEPT   = 4;
 
-    public:
+    protected:
         bool Initialize()
         {
             if (m_bInitialized)
@@ -108,12 +110,65 @@ namespace xl
             return true;
         }
 
+        bool Bind(const String &strAddress, WORD wPort)
+        {
+            SafeSharedArray<Char> szAddress = new Char[strAddress.Length() + 1];
+            Memory::Copy(szAddress.RawPointer(), strAddress.GetAddress(), (strAddress.Length() + 1) * sizeof(Char));
+
+            sockaddr_in &sin = (sockaddr_in &)m_addr;
+            int sinSize = sizeof(sin);
+            int nRes = WSAStringToAddress(szAddress.RawPointer(), m_nAddressFamily, NULL, (LPSOCKADDR)&sin, &sinSize);
+
+            if (nRes != 0)
+            {
+                return false;
+            }
+
+            sin.sin_port = htons(wPort);
+
+            nRes = bind(m_hSocket, (LPSOCKADDR)&sin, sizeof(sin));
+
+            if (nRes != 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Listen()
+        {
+            int nRes = listen(m_hSocket, SOMAXCONN);
+ 
+            if (nRes != 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Accept(Socket &socket)
+        {
+            SOCKET s = accept(m_hSocket, &socket.m_addr, NULL);
+
+            if (s == INVALID_SOCKET)
+            {
+                return false;
+            }
+
+            socket.m_hSocket = s;
+            socket.m_nAddressFamily = m_nAddressFamily;
+
+            return true;
+        }
+
         bool Connect(const String &strAddress, WORD wPort)
         {
             SafeSharedArray<Char> szAddress = new Char[strAddress.Length() + 1];
             Memory::Copy(szAddress.RawPointer(), strAddress.GetAddress(), (strAddress.Length() + 1) * sizeof(Char));
 
-            sockaddr_in sin = {};
+            sockaddr_in &sin = (sockaddr_in &)m_addr;
             int sinSize = sizeof(sin);
             int nRes = WSAStringToAddress(szAddress.RawPointer(), m_nAddressFamily, NULL, (LPSOCKADDR)&sin, &sinSize);
 
@@ -213,9 +268,10 @@ namespace xl
         }
 
     private:
-        bool m_bInitialized;
-        SOCKET m_hSocket;
-        int m_nAddressFamily;
+        bool     m_bInitialized;
+        SOCKET   m_hSocket;
+        int      m_nAddressFamily;
+        sockaddr m_addr;
     };
 
 } // namespace xl
