@@ -23,8 +23,7 @@ int main()
 {
     Socket s;
     
-    bool b = s.Initialize();
-    b = s.Open(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    bool b = s.Open(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
     ULONG ulValue = 1;
     b = s.IOControl(FIONBIO, &ulValue);
