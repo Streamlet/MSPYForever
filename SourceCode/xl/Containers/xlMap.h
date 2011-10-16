@@ -256,22 +256,22 @@ namespace xl
 //             $e.m_tData.m_nSize,
 //             "](",
 //             #tree(
-//                 head: $e.m_tData.m_pRoot,
+//                 head: $e.m_tData.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
 //                 size: $e.m_tData.m_nSize
-//             ) : $e.tValue,
+//             ) : $e.tData.tValue,
 //             ")"
 //         )
 //     )
 //     children (
 //         #(
 //             #tree(
-//                 head: $e.m_tData.m_pRoot,
+//                 head: $e.m_tData.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
 //                 size: $e.m_tData.m_nSize
-//             ) : $e.tValue
+//             ) : $e.tData.tValue
 //         )
 //     )
 // }

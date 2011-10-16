@@ -780,7 +780,7 @@ namespace xl
 //
 // For convenience of debugging, put the following code to the [AutoExpand] section of
 //     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
-//
+// 
 // ;------------------------------------------------------------------------------
 // ;  xl::RBTree
 // ;------------------------------------------------------------------------------
@@ -791,32 +791,22 @@ namespace xl
 //             $e.m_nSize,
 //             "](",
 //             #tree(
-//                 head: $e.m_pRoot,
+//                 head: $e.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
 //                 size: $e.m_nSize
-//             ) : $e.tValue,
+//             ) : $e.tData.tValue,
 //             ")"
 //         )
 //     )
 //     children (
 //         #(
 //             #tree(
-//                 head: $e.m_pRoot,
+//                 head: $e.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
 //                 size: $e.m_nSize
-//             ) : $e.tValue
-//         )
-//     )
-// }
-// xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
-//     preview (
-//         $e.m_pCurrent->tData.tValue
-//     )
-//     children (
-//         #(
-//             [ptr] : &$e.m_pCurrent->tData.tValue
+//             ) : $e.tData.tValue
 //         )
 //     )
 // }

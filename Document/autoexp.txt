@@ -72,6 +72,20 @@ xl::List<*>::Iterator|xl::List<*>::ReverseIterator{
 }
 
 ;------------------------------------------------------------------------------
+;  xl::BinTree
+;------------------------------------------------------------------------------
+xl::BinTree<*>::Iterator|xl::BinTree<*>::ReverseIterator{
+    preview (
+        $e.m_pCurrent->tData.tValue
+    )
+    children (
+        #(
+            [ptr] : &$e.m_pCurrent->tData.tValue
+        )
+    )
+}
+
+;------------------------------------------------------------------------------
 ;  xl::RBTree
 ;------------------------------------------------------------------------------
 xl::RBTree<*>{
@@ -81,32 +95,22 @@ xl::RBTree<*>{
             $e.m_nSize,
             "](",
             #tree(
-                head: $e.m_pRoot,
+                head: $e.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
                 size: $e.m_nSize
-            ) : $e.tValue,
+            ) : $e.tData.tValue,
             ")"
         )
     )
     children (
         #(
             #tree(
-                head: $e.m_pRoot,
+                head: $e.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
                 size: $e.m_nSize
-            ) : $e.tValue
-        )
-    )
-}
-xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
-    preview (
-        $e.m_pCurrent->tValue
-    )
-    children (
-        #(
-            [ptr] : &$e.m_pCurrent->tValue
+            ) : $e.tData.tValue
         )
     )
 }
@@ -121,22 +125,22 @@ xl::Set<*>{
             $e.m_tData.m_nSize,
             "](",
             #tree(
-                head: $e.m_tData.m_pRoot,
+                head: $e.m_tData.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
                 size: $e.m_tData.m_nSize
-            ) : $e.tValue,
+            ) : $e.tData.tValue,
             ")"
         )
     )
     children (
         #(
             #tree(
-                head: $e.m_tData.m_pRoot,
+                head: $e.m_tData.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
                 size: $e.m_tData.m_nSize
-            ) : $e.tValue
+            ) : $e.tData.tValue
         )
     )
 }
@@ -164,22 +168,22 @@ xl::Map<*>{
             $e.m_tData.m_nSize,
             "](",
             #tree(
-                head: $e.m_tData.m_pRoot,
+                head: $e.m_tData.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
                 size: $e.m_tData.m_nSize
-            ) : $e.tValue,
+            ) : $e.tData.tValue,
             ")"
         )
     )
     children (
         #(
             #tree(
-                head: $e.m_tData.m_pRoot,
+                head: $e.m_tData.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
                 size: $e.m_tData.m_nSize
-            ) : $e.tValue
+            ) : $e.tData.tValue
         )
     )
 }

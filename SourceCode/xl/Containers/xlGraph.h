@@ -19,6 +19,11 @@
 
 namespace xl
 {
+    template <typename T>
+    struct GraphNode
+    {
+
+    };
 
 } // namespace xl
 

@@ -33,7 +33,6 @@ namespace xl
         NodePtr pLeft;
         NodePtr pRight;
 
-
         BinTreeNode() : pParent(nullptr), pLeft(nullptr), pRight(nullptr)
         {
 
@@ -729,5 +728,24 @@ namespace xl
     };
 
 } // namespace xl
+
+//
+// For convenience of debugging, put the following code to the [AutoExpand] section of
+//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
+// 
+// ;------------------------------------------------------------------------------
+// ;  xl::BinTree
+// ;------------------------------------------------------------------------------
+// xl::BinTree<*>::Iterator|xl::BinTree<*>::ReverseIterator{
+//     preview (
+//         $e.m_pCurrent->tData.tValue
+//     )
+//     children (
+//         #(
+//             [ptr] : &$e.m_pCurrent->tData.tValue
+//         )
+//     )
+// }
+//
 
 #endif // #ifndef __XLBINTREE_H_6C3F6F71_DCAC_4B1D_9BAC_1333FB803DEE_INCLUDED__
