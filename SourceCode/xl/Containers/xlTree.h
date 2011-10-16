@@ -95,7 +95,12 @@ namespace xl
 
         bool operator != (const Tree &that) const
         {
-            return !(*this == that);
+            if (this == &that)
+            {
+                return false;
+            }
+
+            return IsSubTreeUnequal(this->m_pRoot, that->m_pRoot);
         }
 
     public:
@@ -156,6 +161,39 @@ namespace xl
             }
 
             return true;
+        }
+
+        static bool IsSubTreeUnequal(NodePtr pThisNode, NodePtr pThatNode)
+        {
+            if (pThisNode == pThatNode)
+            {
+                return false;
+            }
+
+            if (pThisNode == nullptr || pThatNode == nullptr)
+            {
+                return true;
+            }
+
+            if (pThisNode->arrChilds.Size() != pThatNode->arrChilds.Size())
+            {
+                return true;
+            }
+
+            if (pThisNode->tValue != pThatNode->tValue)
+            {
+                return true;
+            }
+
+            for (size_t i = 0; i < pThisNode->arrChilds.Size(); ++i)
+            {
+                if (IsSubTreeUnequal(pThisNode->arrChilds[i], pThatNode->arrChilds[i]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
     public:

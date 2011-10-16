@@ -129,7 +129,27 @@ namespace xl
     template <typename K, typename V>
     inline bool Map<K, V>::operator != (const Map<K, V> &that) const
     {
-        return !(*this == that);
+        if (this == &that)
+        {
+            return false;
+        }
+
+        if (this->Size() != that.Size())
+        {
+            return true;
+        }
+
+        for (typename RBTree<Pair<K, V>>::Iterator itThis = this->m_tRBTree.Begin(), itThat = that.m_tRBTree.Begin();
+            itThis != this->m_tRBTree.End() && itThat != that.m_tRBTree.End();
+            ++itThis, ++itThat)
+        {
+            if (itThis->Key != itThat->Key || itThis->Value != itThat->Value)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     template <typename K, typename V>

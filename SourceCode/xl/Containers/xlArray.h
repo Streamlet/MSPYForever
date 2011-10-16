@@ -237,7 +237,25 @@ namespace xl
     template <typename T>
     inline bool Array<T>::operator != (const Array<T> &that) const
     {
-        return !(*this == that);
+        if (this == &that)
+        {
+            return false;
+        }
+
+        if (this->m_nEof - this->m_nStart != that.m_nEof - that.m_nStart)
+        {
+            return true;
+        }
+
+        for (size_t i = 0; i < this->m_nEof - this->m_nStart; ++i)
+        {
+            if (this->m_pData[this->m_nStart + i] != that.m_pData[that.m_nStart + i])
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     template <typename T>
@@ -681,7 +699,7 @@ namespace xl
     template <typename T>
     inline bool Array<T>::Iterator::operator != (const typename Array<T>::Iterator &that) const
     {
-        return !(*this == that);
+        return (this->m_pCurrent != that.m_pCurrent);
     }
 
     template <typename T>

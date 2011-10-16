@@ -224,7 +224,33 @@ namespace xl
     template <typename T>
     inline bool List<T>::operator != (const List<T> &that) const
     {
-        return !(*this == that);
+        if (this == &that)
+        {
+            return false;
+        }
+
+        if (this->m_nSize != that.m_nSize)
+        {
+            return true;
+        }
+
+        for (typename List<T>::Node *pThis = this->m_pHead, *pThat = that.m_pHead; pThis != nullptr && pThat != nullptr; )
+        {
+            if (pThis->tValue != pThat->tValue)
+            {
+                return true;
+            }
+
+            pThis = pThis->pNext;
+            pThat = pThat->pNext;
+
+            if (pThis == this->m_pHead || pThat == that.m_pHead)
+            {
+                break;
+            }
+        }
+
+        return false;
     }
 
     template <typename T>
@@ -408,7 +434,7 @@ namespace xl
     template <typename T>
     inline bool List<T>::Iterator::operator != (const Iterator &that) const
     {
-        return !(*this == that);
+        return (this->m_pCurrent != that.m_pCurrent);
     }
 
     template <typename T>

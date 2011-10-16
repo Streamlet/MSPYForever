@@ -95,7 +95,12 @@ namespace xl
 
         bool operator != (const BinTree &that) const
         {
-            return !(*this == that);
+            if (this == &that)
+            {
+                return false;
+            }
+
+            return IsSubTreeUnequal(this->m_pRoot, that.m_pRoot);
         }
 
     public:
@@ -142,13 +147,29 @@ namespace xl
                 return false;
             }
             
-            if (!IsSubTreeEqual(pThisNode->pLeft, pThatNode->pLeft) ||
-                !IsSubTreeEqual(pThisNode->pRight, pThatNode->pRight))
+            return (IsSubTreeEqual(pThisNode->pLeft, pThatNode->pLeft) &&
+                    IsSubTreeEqual(pThisNode->pRight, pThatNode->pRight));
+        }
+
+        static bool IsSubTreeUnequal(NodePtr pThisNode, NodePtr pThatNode)
+        {
+            if (pThisNode == pThatNode)
             {
                 return false;
             }
 
-            return true;
+            if (pThisNode == nullptr || pThatNode == nullptr)
+            {
+                return true;
+            }
+
+            if (pThisNode->tValue != pThatNode->tValue)
+            {
+                return true;
+            }
+
+            return (IsSubTreeUnequal(pThisNode->pLeft, pThatNode->pLeft) ||
+                    IsSubTreeUnequal(pThisNode->pRight, pThatNode->pRight));
         }
 
         static NodePtr RightmostOf(NodePtr pRoot)

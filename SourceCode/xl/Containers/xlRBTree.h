@@ -59,6 +59,11 @@ namespace xl
             
             }
 
+            NodeData(const NodeData &that)
+            {
+                *this = that;
+            }
+
             NodeData &operator = (const NodeData &that)
             {
                 if (this == &that)
@@ -84,7 +89,12 @@ namespace xl
 
             bool operator != (const NodeData &that)
             {
-                return !(*this == that);
+                if (this == &that)
+                {
+                    return false;
+                }
+
+                return this->tValue != that.tValue;
             }
 
             bool operator < (const NodeData &that)
@@ -109,12 +119,22 @@ namespace xl
 
             bool operator <= (const NodeData &that)
             {
-                this !(*this > that)
+                if (this == &that)
+                {
+                    return true;
+                }
+
+                return this->tValue <= that.tValue;
             }
 
             bool operator >= (const NodeData &that)
             {
-                this !(*this < that)
+                if (this == &that)
+                {
+                    return true;
+                }
+
+                return this->tValue >= that.tValue;
             }
         };
 
@@ -162,7 +182,17 @@ namespace xl
 
         bool operator != (const RBTree &that) const
         {
-            return !(*this == that);
+            if (this == &that)
+            {
+                return false;
+            }
+
+            if (this->m_nSize != that.m_nSize)
+            {
+                return true;
+            }
+
+            return this->m_tBinTree != that.m_tBinTree;
         }
 
     public:

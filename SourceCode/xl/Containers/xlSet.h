@@ -128,7 +128,27 @@ namespace xl
     template <typename T>
     inline bool Set<T>::operator != (const Set<T> &that)
     {
-        return !(*this == that);
+        if (this == &that)
+        {
+            return false;
+        }
+
+        if (this->Size() != that.Size())
+        {
+            return true;
+        }
+
+        for (typename RBTree<T>::Iterator itThis = this->m_tRBTree.Begin(), itThat = that.m_tRBTree.Begin();
+            itThis != this->m_tRBTree.End() && itThat != that.m_tRBTree.End();
+            ++itThis, ++itThat)
+        {
+            if (*itThis != *itThat)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     template <typename T>
