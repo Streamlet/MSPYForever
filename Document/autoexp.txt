@@ -76,11 +76,11 @@ xl::List<*>::Iterator|xl::List<*>::ReverseIterator{
 ;------------------------------------------------------------------------------
 xl::BinTree<*>::Iterator|xl::BinTree<*>::ReverseIterator{
     preview (
-        $e.m_pCurrent->tData.tValue
+        $e.m_pCurrent->tValue.tValue
     )
     children (
         #(
-            [ptr] : &$e.m_pCurrent->tData.tValue
+            [ptr] : &$e.m_pCurrent->tValue.tValue
         )
     )
 }
@@ -99,7 +99,7 @@ xl::RBTree<*>{
                 left: pLeft,
                 right: pRight,
                 size: $e.m_nSize
-            ) : $e.tData.tValue,
+            ) : $e.tValue.tValue,
             ")"
         )
     )
@@ -110,7 +110,7 @@ xl::RBTree<*>{
                 left: pLeft,
                 right: pRight,
                 size: $e.m_nSize
-            ) : $e.tData.tValue
+            ) : $e.tValue.tValue
         )
     )
 }
@@ -122,25 +122,25 @@ xl::Set<*>{
     preview (
         #(
             "[",
-            $e.m_tData.m_nSize,
+            $e.m_tRBTree.m_nSize,
             "](",
             #tree(
-                head: $e.m_tData.m_tBinTree.m_pRoot,
+                head: $e.m_tRBTree.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
-                size: $e.m_tData.m_nSize
-            ) : $e.tData.tValue,
+                size: $e.m_tRBTree.m_nSize
+            ) : $e.tValue.tValue,
             ")"
         )
     )
     children (
         #(
             #tree(
-                head: $e.m_tData.m_tBinTree.m_pRoot,
+                head: $e.m_tRBTree.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
-                size: $e.m_tData.m_nSize
-            ) : $e.tData.tValue
+                size: $e.m_tRBTree.m_nSize
+            ) : $e.tValue.tValue
         )
     )
 }
@@ -165,25 +165,25 @@ xl::Map<*>{
     preview (
         #(
             "[",
-            $e.m_tData.m_nSize,
+            $e.m_tRBTree.m_nSize,
             "](",
             #tree(
-                head: $e.m_tData.m_tBinTree.m_pRoot,
+                head: $e.m_tRBTree.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
-                size: $e.m_tData.m_nSize
-            ) : $e.tData.tValue,
+                size: $e.m_tRBTree.m_nSize
+            ) : $e.tValue.tValue,
             ")"
         )
     )
     children (
         #(
             #tree(
-                head: $e.m_tData.m_tBinTree.m_pRoot,
+                head: $e.m_tRBTree.m_tBinTree.m_pRoot,
                 left: pLeft,
                 right: pRight,
-                size: $e.m_tData.m_nSize
-            ) : $e.tData.tValue
+                size: $e.m_tRBTree.m_nSize
+            ) : $e.tValue.tValue
         )
     )
 }

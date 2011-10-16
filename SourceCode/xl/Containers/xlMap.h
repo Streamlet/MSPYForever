@@ -43,7 +43,7 @@ namespace xl
         size_t Size() const;
 
     protected:
-        RBTree<Pair<K, V>> m_tData;
+        RBTree<Pair<K, V>> m_tRBTree;
 
     public:
         void Delete(const K &key);
@@ -78,7 +78,7 @@ namespace xl
     template <typename K, typename V>
     inline Map<K, V>::Map(const Map &that)
     {
-        this->m_tData = that.m_tData;
+        this->m_tRBTree = that.m_tRBTree;
     }
 
     template <typename K, typename V>
@@ -95,7 +95,7 @@ namespace xl
             return *this;
         }
 
-        this->m_tData = that.m_tData;
+        this->m_tRBTree = that.m_tRBTree;
 
         return *this;
     }
@@ -113,8 +113,8 @@ namespace xl
             return false;
         }
 
-        for (typename RBTree<Pair<K, V>>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
-            itThis != this->m_tData.End() && itThat != that.m_tData.End();
+        for (typename RBTree<Pair<K, V>>::Iterator itThis = this->m_tRBTree.Begin(), itThat = that.m_tRBTree.Begin();
+            itThis != this->m_tRBTree.End() && itThat != that.m_tRBTree.End();
             ++itThis, ++itThat)
         {
             if (itThis->Key != itThat->Key || itThis->Value != itThat->Value)
@@ -139,7 +139,7 @@ namespace xl
 
         if (it == End())
         {
-            it = m_tData.Insert(Pair<K, V>(key));
+            it = m_tRBTree.Insert(Pair<K, V>(key));
         }
 
         return it->Value;
@@ -163,13 +163,13 @@ namespace xl
     template <typename K, typename V>
     inline bool Map<K, V>::Empty() const
     {
-        return m_tData.Empty();
+        return m_tRBTree.Empty();
     }
 
     template <typename K, typename V>
     inline size_t Map<K, V>::Size() const
     {
-        return m_tData.Size();
+        return m_tRBTree.Size();
     }
 
     template <typename K, typename V>
@@ -181,7 +181,7 @@ namespace xl
     template <typename K, typename V>
     inline void Map<K, V>::Clear()
     {
-        m_tData.Clear();
+        m_tRBTree.Clear();
     }
 
     // Iterator
@@ -189,55 +189,55 @@ namespace xl
     template <typename K, typename V>
     inline typename Map<K, V>::Iterator Map<K, V>::Begin() const
     {
-        return m_tData.Begin();
+        return m_tRBTree.Begin();
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::Iterator Map<K, V>::End() const
     {
-        return m_tData.End();
+        return m_tRBTree.End();
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::ReverseIterator Map<K, V>::ReverseBegin() const
     {
-        return m_tData.ReverseBegin();
+        return m_tRBTree.ReverseBegin();
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::ReverseIterator Map<K, V>::ReverseEnd() const
     {
-        return m_tData.ReverseEnd();
+        return m_tRBTree.ReverseEnd();
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::Iterator Map<K, V>::Find(const K &key)
     {
-        return m_tData.Find(Pair<K, V>(key));
+        return m_tRBTree.Find(Pair<K, V>(key));
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::Iterator Map<K, V>::Insert(const K &key, const V &value)
     {
-        return m_tData.Insert(Pair<K, V>(key, value));
+        return m_tRBTree.Insert(Pair<K, V>(key, value));
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::Iterator Map<K, V>::Insert(const Pair<K, V> &pair)
     {
-        return m_tData.Insert(pair);
+        return m_tRBTree.Insert(pair);
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::Iterator Map<K, V>::Delete(const typename Map<K, V>::Iterator &itWhich)
     {
-        return m_tData.Delete(*itWhich);
+        return m_tRBTree.Delete(*itWhich);
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::ReverseIterator Map<K, V>::Delete(const typename Map<K, V>::ReverseIterator &itWhich)
     {
-        return m_tData.Delete(*itWhich);
+        return m_tRBTree.Delete(*itWhich);
     }
 
 };
@@ -253,25 +253,25 @@ namespace xl
 //     preview (
 //         #(
 //             "[",
-//             $e.m_tData.m_nSize,
+//             $e.m_tRBTree.m_nSize,
 //             "](",
 //             #tree(
-//                 head: $e.m_tData.m_tBinTree.m_pRoot,
+//                 head: $e.m_tRBTree.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
-//                 size: $e.m_tData.m_nSize
-//             ) : $e.tData.tValue,
+//                 size: $e.m_tRBTree.m_nSize
+//             ) : $e.tValue.tValue,
 //             ")"
 //         )
 //     )
 //     children (
 //         #(
 //             #tree(
-//                 head: $e.m_tData.m_tBinTree.m_pRoot,
+//                 head: $e.m_tRBTree.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
-//                 size: $e.m_tData.m_nSize
-//             ) : $e.tData.tValue
+//                 size: $e.m_tRBTree.m_nSize
+//             ) : $e.tValue.tValue
 //         )
 //     )
 // }

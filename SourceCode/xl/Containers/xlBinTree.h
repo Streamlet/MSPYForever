@@ -27,7 +27,7 @@ namespace xl
     {
         typedef BinTreeNode *NodePtr;
 
-        T tData;
+        T tValue;
 
         NodePtr pParent;
         NodePtr pLeft;
@@ -38,8 +38,8 @@ namespace xl
 
         }
 
-        BinTreeNode(const T &tData, NodePtr pParent = nullptr, NodePtr pLeft = nullptr, NodePtr pRight = nullptr) :
-            tData(tData), pParent(pParent), pLeft(pLeft), pRight(pRight)
+        BinTreeNode(const T &tValue, NodePtr pParent = nullptr, NodePtr pLeft = nullptr, NodePtr pRight = nullptr) :
+            tValue(tValue), pParent(pParent), pLeft(pLeft), pRight(pRight)
         {
 
         }
@@ -137,7 +137,7 @@ namespace xl
                 return false;
             }
 
-            if (pThisNode->tData != pThatNode->tData)
+            if (pThisNode->tValue != pThatNode->tValue)
             {
                 return false;
             }
@@ -229,7 +229,7 @@ namespace xl
                 return nullptr;
             }
 
-            NodePtr pNode = new NodeType(pSubTreeRoot->tData);
+            NodePtr pNode = new NodeType(pSubTreeRoot->tValue);
 
             if (pSubTreeRoot->pLeft != nullptr)
             {
@@ -544,22 +544,22 @@ namespace xl
         public:
             T &operator * ()
             {
-                return m_pCurrent->tData.tValue;
+                return m_pCurrent->tValue.tValue;
             }
 
             T *operator -> ()
             {
-                return &m_pCurrent->tData.tValue;
+                return &m_pCurrent->tValue.tValue;
             }
 
             operator T * ()
             {
-                return &m_pCurrent->tData.tValue;
+                return &m_pCurrent->tValue.tValue;
             }
 
             operator const T * () const
             {
-                return &m_pCurrent->tData.tValue;
+                return &m_pCurrent->tValue.tValue;
             }
 
         public:
@@ -738,11 +738,11 @@ namespace xl
 // ;------------------------------------------------------------------------------
 // xl::BinTree<*>::Iterator|xl::BinTree<*>::ReverseIterator{
 //     preview (
-//         $e.m_pCurrent->tData.tValue
+//         $e.m_pCurrent->tValue.tValue
 //     )
 //     children (
 //         #(
-//             [ptr] : &$e.m_pCurrent->tData.tValue
+//             [ptr] : &$e.m_pCurrent->tValue.tValue
 //         )
 //     )
 // }

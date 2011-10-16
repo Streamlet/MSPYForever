@@ -28,7 +28,7 @@ namespace xl
         typedef TreeNode *NodePtr;
         typedef Array<NodePtr>  NodePtrList;
 
-        T tData;
+        T tValue;
 
         NodePtr     pParent;
         NodePtrList arrChilds;
@@ -38,7 +38,7 @@ namespace xl
 
         }
 
-        TreeNode(const T &tData, NodePtr pParent = nullptr) : tData(tData), pParent(pParent)
+        TreeNode(const T &tValue, NodePtr pParent = nullptr) : tValue(tValue), pParent(pParent)
         {
 
         }
@@ -142,7 +142,7 @@ namespace xl
                 return false;
             }
 
-            if (pThisNode->tData != pThatNode->tData)
+            if (pThisNode->tValue != pThatNode->tValue)
             {
                 return false;
             }
@@ -166,7 +166,7 @@ namespace xl
                 return nullptr;
             }
 
-            NodePtr pNode = new Node(pSubTreeRoot->tData);
+            NodePtr pNode = new Node(pSubTreeRoot->tValue);
 
             for (auto it = pSubTreeRoot->arrChilds.Begin(); it != pSubTreeRoot->arrChilds.End(); ++it)
             {

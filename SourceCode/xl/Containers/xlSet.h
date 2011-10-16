@@ -36,7 +36,7 @@ namespace xl
         bool operator != (const Set<T> &that);
 
     protected:
-        RBTree<T> m_tData;
+        RBTree<T> m_tRBTree;
 
     public:
         bool Empty() const;
@@ -94,7 +94,7 @@ namespace xl
             return *this;
         }
 
-        this->m_tData = that.m_tData;
+        this->m_tRBTree = that.m_tRBTree;
 
         return *this;
     }
@@ -112,8 +112,8 @@ namespace xl
             return false;
         }
 
-        for (typename RBTree<T>::Iterator itThis = this->m_tData.Begin(), itThat = that.m_tData.Begin();
-            itThis != this->m_tData.End() && itThat != that.m_tData.End();
+        for (typename RBTree<T>::Iterator itThis = this->m_tRBTree.Begin(), itThat = that.m_tRBTree.Begin();
+            itThis != this->m_tRBTree.End() && itThat != that.m_tRBTree.End();
             ++itThis, ++itThat)
         {
             if (*itThis != *itThat)
@@ -134,87 +134,87 @@ namespace xl
     template <typename T>
     inline typename Set<T>::Iterator Set<T>::Begin() const
     {
-        return m_tData.Begin();
+        return m_tRBTree.Begin();
     }
 
     template <typename T>
     inline bool Set<T>::Empty() const
     {
-        return m_tData.Empty();
+        return m_tRBTree.Empty();
     }
 
     template <typename T>
     inline size_t Set<T>::Size() const
     {
-        return m_tData.Size();
+        return m_tRBTree.Size();
     }
 
     template <typename T>
     inline void Set<T>::Clear()
     {
-        m_tData.Clear();
+        m_tRBTree.Clear();
     }
 
     template <typename T>
     inline typename Set<T>::Iterator Set<T>::End() const
     {
-        return m_tData.End();
+        return m_tRBTree.End();
     }
 
     template <typename T>
     inline typename Set<T>::ReverseIterator Set<T>::ReverseBegin() const
     {
-        return m_tData.ReverseBegin();
+        return m_tRBTree.ReverseBegin();
     }
 
     template <typename T>
     inline typename Set<T>::ReverseIterator Set<T>::ReverseEnd() const
     {
-        return m_tData.ReverseEnd();
+        return m_tRBTree.ReverseEnd();
     }
 
     template <typename T>
     inline typename Set<T>::Iterator Set<T>::Find(const T &tValue)
     {
-        return m_tData.Find(tValue);
+        return m_tRBTree.Find(tValue);
     }
 
     template <typename T>
     inline typename Set<T>::Iterator Set<T>::FindMaxBelow(const T &tValue, bool bIncludeEqual /*= true*/)
     {
-        return m_tData.FindMaxBelow(tValue, bIncludeEqual);
+        return m_tRBTree.FindMaxBelow(tValue, bIncludeEqual);
     }
 
     template <typename T>
     inline typename Set<T>::Iterator Set<T>::FindMinAbove(const T &tValue, bool bIncludeEqual /*= true*/)
     {
-        return m_tData.FindMinAbove(tValue, bIncludeEqual);
+        return m_tRBTree.FindMinAbove(tValue, bIncludeEqual);
     }
 
 
     template <typename T>
     inline typename Set<T>::Iterator Set<T>::Insert(const T &tValue)
     {
-        return m_tData.Insert(tValue);
+        return m_tRBTree.Insert(tValue);
     }
 
     template <typename T>
     template <typename I>
     inline void Set<T>::Insert(const I &itFirstToInsert, const I &itAfterLastToInsert)
     {
-        m_tData.Insert(itFirstToInsert, itAfterLastToInsert);
+        m_tRBTree.Insert(itFirstToInsert, itAfterLastToInsert);
     }
 
     template <typename T>
     inline typename Set<T>::Iterator Set<T>::Delete(const Iterator &itWhich)
     {
-        return m_tData.Delete(itWhich);
+        return m_tRBTree.Delete(itWhich);
     }
 
     template <typename T>
     inline typename Set<T>::ReverseIterator Set<T>::Delete(const ReverseIterator &itWhich)
     {
-        return m_tData.Delete(itWhich);
+        return m_tRBTree.Delete(itWhich);
     }
 
 } // namespace xl
@@ -230,25 +230,25 @@ namespace xl
 //     preview (
 //         #(
 //             "[",
-//             $e.m_tData.m_nSize,
+//             $e.m_tRBTree.m_nSize,
 //             "](",
 //             #tree(
-//                 head: $e.m_tData.m_tBinTree.m_pRoot,
+//                 head: $e.m_tRBTree.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
-//                 size: $e.m_tData.m_nSize
-//             ) : $e.tData.tValue,
+//                 size: $e.m_tRBTree.m_nSize
+//             ) : $e.tValue.tValue,
 //             ")"
 //         )
 //     )
 //     children (
 //         #(
 //             #tree(
-//                 head: $e.m_tData.m_tBinTree.m_pRoot,
+//                 head: $e.m_tRBTree.m_tBinTree.m_pRoot,
 //                 left: pLeft,
 //                 right: pRight,
-//                 size: $e.m_tData.m_nSize
-//             ) : $e.tData.tValue
+//                 size: $e.m_tRBTree.m_nSize
+//             ) : $e.tValue.tValue
 //         )
 //     )
 // }
