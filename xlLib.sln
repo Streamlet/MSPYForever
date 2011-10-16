@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", 
 		SourceCode\xl\Containers\xlList.h = SourceCode\xl\Containers\xlList.h
 		SourceCode\xl\Containers\xlMap.h = SourceCode\xl\Containers\xlMap.h
 		SourceCode\xl\Containers\xlPair.h = SourceCode\xl\Containers\xlPair.h
+		SourceCode\xl\Containers\xlRBTree.h = SourceCode\xl\Containers\xlRBTree.h
 		SourceCode\xl\Containers\xlSet.h = SourceCode\xl\Containers\xlSet.h
 		SourceCode\xl\Containers\xlTree.h = SourceCode\xl\Containers\xlTree.h
 		SourceCode\xl\Containers\xlTuple.h = SourceCode\xl\Containers\xlTuple.h

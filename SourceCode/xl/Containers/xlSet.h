@@ -59,8 +59,8 @@ namespace xl
 
     public:
         Iterator Find(const T &tValue);
-        Iterator FindMaxBelowGiven(const T &tValue, bool bIncludeEqual = true);
-        Iterator FindMinAboveGiven(const T &tValue, bool bIncludeEqual = true);
+        Iterator FindMaxBelow(const T &tValue, bool bIncludeEqual = true);
+        Iterator FindMinAbove(const T &tValue, bool bIncludeEqual = true);
         Iterator Insert(const T &tValue);
         template <typename I>
         void Insert(const I &itFirstToInsert, const I &itAfterLastToInsert);
@@ -180,15 +180,15 @@ namespace xl
     }
 
     template <typename T>
-    inline typename Set<T>::Iterator Set<T>::FindMaxBelowGiven(const T &tValue, bool bIncludeEqual /*= true*/)
+    inline typename Set<T>::Iterator Set<T>::FindMaxBelow(const T &tValue, bool bIncludeEqual /*= true*/)
     {
-        return m_tData.FindMaxBelowGiven(tValue, bIncludeEqual);
+        return m_tData.FindMaxBelow(tValue, bIncludeEqual);
     }
 
     template <typename T>
-    inline typename Set<T>::Iterator Set<T>::FindMinAboveGiven(const T &tValue, bool bIncludeEqual /*= true*/)
+    inline typename Set<T>::Iterator Set<T>::FindMinAbove(const T &tValue, bool bIncludeEqual /*= true*/)
     {
-        return m_tData.FindMinAboveGiven(tValue, bIncludeEqual);
+        return m_tData.FindMinAbove(tValue, bIncludeEqual);
     }
 
 
