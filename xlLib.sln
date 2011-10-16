@@ -9,18 +9,19 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", "{FD3A4148-0987-4149-B459-5727872E3AA9}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Containers\xlArray.h = SourceCode\xl\Containers\xlArray.h
+		SourceCode\xl\Containers\xlBinTree.h = SourceCode\xl\Containers\xlBinTree.h
+		SourceCode\xl\Containers\xlGraph.h = SourceCode\xl\Containers\xlGraph.h
 		SourceCode\xl\Containers\xlList.h = SourceCode\xl\Containers\xlList.h
 		SourceCode\xl\Containers\xlMap.h = SourceCode\xl\Containers\xlMap.h
 		SourceCode\xl\Containers\xlPair.h = SourceCode\xl\Containers\xlPair.h
-		SourceCode\xl\Containers\xlRBTree.h = SourceCode\xl\Containers\xlRBTree.h
 		SourceCode\xl\Containers\xlSet.h = SourceCode\xl\Containers\xlSet.h
+		SourceCode\xl\Containers\xlTree.h = SourceCode\xl\Containers\xlTree.h
 		SourceCode\xl\Containers\xlTuple.h = SourceCode\xl\Containers\xlTuple.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Objects\xlBigInt.h = SourceCode\xl\Objects\xlBigInt.h
-		SourceCode\xl\Objects\xlRegExp.h = SourceCode\xl\Objects\xlRegExp.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{3CF5010F-D9AA-40DA-9823-D23D64A7BE33}"
@@ -89,6 +90,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "String", "String", "{300141
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\String\xlBase64.h = SourceCode\xl\String\xlBase64.h
 		SourceCode\xl\String\xlEncoding.h = SourceCode\xl\String\xlEncoding.h
+		SourceCode\xl\String\xlRegExp.h = SourceCode\xl\String\xlRegExp.h
 		SourceCode\xl\String\xlString.h = SourceCode\xl\String\xlString.h
 	EndProjectSection
 EndProject
@@ -129,6 +131,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{3B34
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32NetworkTest", "Projects\Win32NetworkTest\Win32NetworkTest.vcxproj", "{9D377F4D-EC3E-4730-877B-E63E9376B71E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parser", "Parser", "{43BE58E5-6828-40BC-BD88-7BB1ECEC469D}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Parser\xlStateMachine.h = SourceCode\xl\Parser\xlStateMachine.h
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -221,6 +228,7 @@ Global
 		{27631DF6-2FAF-4EDA-A7BB-FB989284C771} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{3001410B-F3F0-4387-9E64-3BE6078D1C7E} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{9274E5C4-72E6-4147-BB18-30853424D2D3} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
+		{43BE58E5-6828-40BC-BD88-7BB1ECEC469D} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
 		{C5DC26E9-5A2C-453C-993D-554D9D220DA1} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 		{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 		{8E12D1F8-E344-41C8-9FD9-2F93E874F24E} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}

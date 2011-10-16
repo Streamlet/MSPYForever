@@ -22,6 +22,7 @@
 namespace xl
 {
 
+#ifdef _DEBUG
 #define XL_ASSERT(expr)                 \
                                         \
     do                                  \
@@ -32,6 +33,9 @@ namespace xl
         }                               \
                                         \
     } while (false)
+#else
+    #define XL_ASSERT(expr)
+#endif
 
 } // namespace xl
 

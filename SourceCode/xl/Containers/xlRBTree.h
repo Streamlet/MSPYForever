@@ -17,7 +17,8 @@
 #define __XLTREE_H_6BB48AA6_133A_4E9F_944E_504B887B6980_INCLUDED__
 
 
-#include <xl/xlDef.h>
+#include <xl/Containers/xlBinTree.h>
+#include <xl/Memory/xlMemory.h>
 
 namespace xl
 {
@@ -25,1363 +26,754 @@ namespace xl
     class RBTree
     {
     public:
-        RBTree();
-        RBTree(const RBTree &that);
-        ~RBTree();
+        RBTree() : m_nSize(0)
+        {
+
+        }
+
+        RBTree(const RBTree &that) : m_nSize(0)
+        {
+            *this = that;
+        }
 
     protected:
 
         enum NodeColor
         {
-            Black,
-            Red
+            NC_BLACK,
+            NC_RED
         };
 
-        struct Node
+        struct NodeData
         {
             T tValue;
             NodeColor ncColor;
-            Node *pParent;
-            Node *pLeft;
-            Node *pRight;
             
-            Node() : ncColor(Black), pParent(nullptr), pLeft(nullptr), pRight(nullptr) { }
-            Node(const T &tValue, NodeColor ncColor = Black, Node *pParent = nullptr, Node *pLeft = nullptr, Node *pRight = nullptr)
-                : tValue(tValue), ncColor(ncColor), pParent(pParent), pLeft(pLeft), pRight(pRight) { }
+            NodeData() : ncColor(NC_BLACK)
+            {
+            
+            }
+
+            NodeData(const T &tValue, NodeColor ncColor = NC_BLACK) : tValue(tValue), ncColor(ncColor)
+            {
+            
+            }
+
+            NodeData &operator = (const NodeData &that)
+            {
+                if (this == &that)
+                {
+                    return *this;
+                }
+
+                this->tValue = that.tValue;
+                this->ncColor = that.ncColor;
+
+                return *this;
+            }
+
+            bool operator == (const NodeData &that)
+            {
+                if (this == &that)
+                {
+                    return true;
+                }
+
+                return this->tValue == that.tValue;
+            }
+
+            bool operator != (const NodeData &that)
+            {
+                return !(*this == that);
+            }
+
+            bool operator < (const NodeData &that)
+            {
+                if (this == &that)
+                {
+                    return false;
+                }
+
+                return this->tValue < that.tValue;
+            }
+
+            bool operator > (const NodeData &that)
+            {
+                if (this == &that)
+                {
+                    return false;
+                }
+
+                return this->tValue > that.tValue;
+            }
+
+            bool operator <= (const NodeData &that)
+            {
+                this !(*this > that)
+            }
+
+            bool operator >= (const NodeData &that)
+            {
+                this !(*this < that)
+            }
         };
 
-    protected:
-        Node *m_pRoot;
-        size_t m_nSize;
+        typedef BinTreeNode<NodeData> NodeType;
+        typedef BinTree<T, NodeType> InnerBinTree;
+        typedef typename InnerBinTree::NodePtr NodePtr;  
 
     public:
-        RBTree &operator = (const RBTree &that);
-        bool operator == (const RBTree &that) const;
-        bool operator != (const RBTree &that) const;
+        typedef typename InnerBinTree::Iterator Iterator;
+        typedef typename InnerBinTree::ReverseIterator ReverseIterator;
+
+    protected:
+        InnerBinTree m_tBinTree;
+        size_t       m_nSize;
 
     public:
-        bool Empty() const;
-        size_t Size() const;
-
-    public:
-        void Clear();
-
-    protected:
-        Node *RotateLeft(Node *pNode);
-        Node *RotateRight(Node *pNode);
-        void SwapNode(Node *pNode1, Node *pNode2);
-
-    protected:
-        void InsertFixup(Node *pNode);
-        void InsertFixupCase1(Node *pNode);
-        void InsertFixupCase2L(Node *pNode);
-        void InsertFixupCase2R(Node *pNode);
-        void InsertFixupCase3L(Node *pNode);
-        void InsertFixupCase3R(Node *pNode);
-        void InsertFixupCase4L(Node *pNode);
-        void InsertFixupCase4R(Node *pNode);
-        void DeleteFixup(Node *pNode, Node *pParent);
-        void DeleteFixupCase1L(Node *pNode, Node *pParent);
-        void DeleteFixupCase1R(Node *pNode, Node *pParent);
-        void DeleteFixupCase2L(Node *pNode, Node *pParent);
-        void DeleteFixupCase2R(Node *pNode, Node *pParent);
-        void DeleteFixupCase3L(Node *pNode, Node *pParent);
-        void DeleteFixupCase3R(Node *pNode, Node *pParent);
-        void DeleteFixupCase4L(Node *pNode, Node *pParent);
-        void DeleteFixupCase4R(Node *pNode, Node *pParent);
-        void DeleteFixupCase5L(Node *pNode, Node *pParent);
-        void DeleteFixupCase5R(Node *pNode, Node *pParent);
-
-    protected:
-        static Node *FindInSubTree(const T &tValue, Node *pRoot);
-        static Node *FindMaxInSubTree(Node *pRoot);
-        static Node *FindMinInSubTree(Node *pRoot);
-        static Node *FindMaxBelowGiven(const T &tValue, Node *pRoot, bool bIncludeEqual = true);
-        static Node *FindMinAboveGiven(const T &tValue, Node *pRoot, bool bIncludeEqual = true);
-        static bool IsSubTreeEqual(Node *pThisNode, Node *pThatNode);
-        static Node *FindPrev(Node *pNode);
-        static Node *FindNext(Node *pNode);
-
-    public:
-        class Iterator;
-        class ReverseIterator;
-
-    protected:
-        friend class Iterator;
-        friend class ReverseIterator;
-
-    protected:
-        void CopySubTree(Node *&pDestNode, Node *pSrcNode, Node *pParent = nullptr);
-        Node *InsertToSubTree(const T &tValue, Node *pRoot);
-        void DeleteSubTree(Node *pNode);
-        void Delete(Node *pNode);
-        Node *InsertValue(const T &tValue);
-
-    public:
-        void Delete(const T &tValue);
-
-    protected:
-        void Release();
-
-    // Iterator
-
-    public:
-        class Iterator
+        RBTree &operator = (const RBTree &that)
         {
-        public:
-            Iterator();
-            Iterator(const Iterator &that);
+            if (this == &that)
+            {
+                return *this;
+            }
 
-        public:
-            typedef T ValueType;
+            this->m_tBinTree = that.m_tBinTree;
+            this->m_nSize    = that.m_nSize;
 
-        protected:
-            Iterator(Node *pCurrent);
-            Iterator(Node *pCurrent, Node *pHead);
-            friend class RBTree;
-
-        protected:
-            Node *m_pCurrent;
-            Node *m_pHead;
-
-        public:
-            T &operator * ();
-            T *operator -> ();
-            operator T * ();
-            operator const T * () const;
-
-        public:
-            Iterator &operator = (const Iterator &that);
-            bool operator == (const Iterator &that) const;
-            bool operator != (const Iterator &that) const;
-
-        public:
-            Iterator &operator ++ ();
-            Iterator operator ++ (int);
-            Iterator &operator -- ();
-            Iterator operator -- (int);
-        };
-
-        class ReverseIterator : public Iterator
-        {
-        public:
-            ReverseIterator();
-            ReverseIterator(const Iterator &that);
-
-        protected:
-            ReverseIterator(Node *pCurrent);
-            ReverseIterator(Node *pCurrent, Node *pHead);
-            friend class RBTree;
-
-        public:
-            ReverseIterator &operator ++ ();
-            ReverseIterator operator ++ (int);
-            ReverseIterator &operator -- ();
-            ReverseIterator operator -- (int);
-        };
-
-    public:
-        Iterator Begin() const;
-        Iterator End() const;
-        ReverseIterator ReverseBegin() const;
-        ReverseIterator ReverseEnd() const;
-
-    public:
-        Iterator Find(const T &tValue) const;
-        Iterator FindMaxBelowGiven(const T &tValue, bool bIncludeEqual = true) const;
-        Iterator FindMinAboveGiven(const T &tValue, bool bIncludeEqual = true) const;
-        Iterator Insert(const T &tValue);
-        template <typename I>
-        void Insert(const I &itFirstToInsert, const I &itAfterLastToInsert);
-        Iterator Delete(const Iterator &itWhich);
-        ReverseIterator Delete(const ReverseIterator &itWhich);
-    };
-
-    template <typename T>
-    inline RBTree<T>::RBTree()
-        : m_pRoot(nullptr), m_nSize(0)
-    {
-
-    }
-
-    template <typename T>
-    inline RBTree<T>::RBTree(const RBTree &that)
-        : m_pRoot(nullptr), m_nSize(0)
-    {
-        *this = that;
-    }
-
-    template <typename T>
-    inline RBTree<T>::~RBTree()
-    {
-        Release();
-    }
-
-    template <typename T>
-    inline RBTree<T> &RBTree<T>::operator = (const RBTree<T> &that)
-    {
-        if (this == &that)
-        {
             return *this;
+
         }
 
-        Release();
-        CopySubTree(this->m_pRoot, that.m_pRoot);
-        this->m_nSize = that.m_nSize;
-
-        return *this;
-    }
-
-    template <typename T>
-    inline bool RBTree<T>::operator == (const RBTree<T> &that) const
-    {
-        if (this == &that)
+        bool operator == (const RBTree &that) const
         {
-            return true;
+            if (this == &that)
+            {
+                return true;
+            }
+
+            if (this->m_nSize != that.m_nSize)
+            {
+                return false;
+            }
+
+            return this->m_tBinTree == that.m_tBinTree;
         }
 
-        return IsSubTreeEqual(this->m_pRoot, that.m_pRoot);
-    }
-    
-    template <typename T>
-    inline bool RBTree<T>::operator != (const RBTree<T> &that) const
-    {
-        return !(*this == that);
-    }
-
-    template <typename T>
-    inline bool RBTree<T>::Empty() const
-    {
-        return m_nSize == 0;
-    }
-
-    template <typename T>
-    inline size_t RBTree<T>::Size() const
-    {
-        return m_nSize;
-    }
-
-    template <typename T>
-    inline void RBTree<T>::Clear()
-    {
-        Release();
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::RotateLeft(typename RBTree<T>::Node *pNode)
-    {
-        if (pNode == nullptr || pNode->pRight == nullptr)
+        bool operator != (const RBTree &that) const
         {
-            return pNode;
+            return !(*this == that);
         }
 
-        typename RBTree<T>::Node *pNewNode = pNode->pRight;
-
-        if (pNode->pParent == nullptr)
+    public:
+        bool Empty() const
         {
-            m_pRoot = pNewNode;
+            return m_nSize == 0;
         }
-        else
+
+        size_t Size() const
+        {
+            return m_nSize;
+        }
+
+    public:
+        void Clear()
+        {
+            return m_tBinTree.Clear();
+            m_nSize = 0;
+        }
+
+    protected:
+        void SwapNode(NodePtr pNode1, NodePtr pNode2)
+        {
+            m_tBinTree.SwapNode(pNode1, pNode2);
+            Memory::ElementSwap(pNode1->tData.ncColor, pNode2->tData.ncColor)
+        }
+
+    protected:
+        // All cases
+        void InsertFixup(NodePtr pNode)
+        {
+            // Is root
+            if (pNode->pParent == nullptr)
+            {
+                pNode->tData.ncColor = NC_BLACK;
+            }
+            else
+            {
+                InsertFixupCase1(pNode);
+            }
+        }
+
+        // Not root
+        void InsertFixupCase1(NodePtr pNode)
+        {
+            // Parent is black
+            if (pNode->pParent->tData.ncColor == NC_BLACK)
+            {
+                return;
+            }
+            else
+            {
+                if (pNode->pParent == pNode->pParent->pParent->pLeft)
+                {
+                    InsertFixupCase2L(pNode);
+                }
+                else
+                {
+                    InsertFixupCase2R(pNode);
+                }
+            }
+        }
+
+        // Not root, Parent is red
+        void InsertFixupCase2L(NodePtr pNode)
+        {
+            NodePtr pGrandParent = pNode->pParent->pParent;
+
+            // Uncle is red
+            if (pGrandParent->pRight != nullptr && pGrandParent->pRight->tData.ncColor == NC_RED)
+            {
+                pGrandParent->tData.ncColor = NC_RED;
+                pGrandParent->pLeft->tData.ncColor = NC_BLACK;
+                pGrandParent->pRight->tData.ncColor = NC_BLACK;
+
+                InsertFixup(pGrandParent);
+            }
+            else
+            {
+                InsertFixupCase3L(pNode);
+            }
+
+        }
+
+        void InsertFixupCase2R(NodePtr pNode)
+        {
+            NodePtr pGrandParent = pNode->pParent->pParent;
+
+            if (pGrandParent->pLeft != nullptr && pGrandParent->pLeft->tData.ncColor == NC_RED)
+            {
+                pGrandParent->tData.ncColor = NC_RED;
+                pGrandParent->pRight->tData.ncColor = NC_BLACK;
+                pGrandParent->pLeft->tData.ncColor = NC_BLACK;
+
+                InsertFixup(pGrandParent);
+            }
+            else
+            {
+                InsertFixupCase3R(pNode);
+            }
+        }
+
+        // Not root, Parent is red, Uncle is black
+        void InsertFixupCase3L(NodePtr pNode)
+        {
+            // New node is Parent's r-child
+            if (pNode == pNode->pParent->pRight)
+            {
+                m_tBinTree.RotateLeft(pNode->pParent);
+                InsertFixupCase4L(pNode->pLeft);
+            }
+            else
+            {
+                InsertFixupCase4L(pNode);
+            }
+        }
+
+        void InsertFixupCase3R(NodePtr pNode)
         {
             if (pNode == pNode->pParent->pLeft)
             {
-                pNode->pParent->pLeft = pNewNode;
+                m_tBinTree.RotateRight(pNode->pParent);
+                InsertFixupCase4R(pNode->pRight);
             }
             else
             {
-                pNode->pParent->pRight = pNewNode;
+                InsertFixupCase4R(pNode);
             }
         }
 
-        pNewNode->pParent = pNode->pParent;
-        
-        pNode->pRight = pNewNode->pLeft;
-
-        if (pNewNode->pLeft != nullptr)
+        // Not root, Parent is red, Uncle is black, New node is Parent's l-child
+        void InsertFixupCase4L(NodePtr pNode)
         {
-            pNewNode->pLeft->pParent = pNode;
-        }
-        
-        pNode->pParent = pNewNode;
-        pNewNode->pLeft = pNode;
-
-        return pNewNode;
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::RotateRight(typename RBTree<T>::Node *pNode)
-    {
-        if (pNode == nullptr || pNode->pLeft == nullptr)
-        {
-            return pNode;
+            m_tBinTree.RotateRight(pNode->pParent->pParent);
+            pNode->pParent->tData.ncColor = NC_BLACK;
+            pNode->pParent->pRight->tData.ncColor = NC_RED;
         }
 
-        typename RBTree<T>::Node *pNewNode = pNode->pLeft;
-
-        if (pNode->pParent == nullptr)
+        void InsertFixupCase4R(NodePtr pNode)
         {
-            m_pRoot = pNewNode;
+            m_tBinTree.RotateLeft(pNode->pParent->pParent);
+            pNode->pParent->tData.ncColor = NC_BLACK;
+            pNode->pParent->pLeft->tData.ncColor = NC_RED;
         }
-        else
+
+        // All cases
+        void DeleteFixup(NodePtr pNode, NodePtr pParent)
         {
-            if (pNode == pNode->pParent->pLeft)
+            // Is root
+            if (pParent == nullptr)
             {
-                pNode->pParent->pLeft = pNewNode;
+                return;
+            }
+
+            if (pNode == pParent->pLeft)
+            {
+                if (pParent->pRight == nullptr)
+                {
+                    DeleteFixup(pParent, pParent->pParent);
+                }
+                else
+                {
+                    DeleteFixupCase1L(pNode, pParent);
+                }
             }
             else
             {
-                pNode->pParent->pRight = pNewNode;
+                if (pParent->pLeft == nullptr)
+                {
+                    DeleteFixup(pParent, pParent->pParent);
+                }
+                else
+                {
+                    DeleteFixupCase1R(pNode, pParent);
+                }
             }
         }
 
-        pNewNode->pParent = pNode->pParent;
-
-        pNode->pLeft = pNewNode->pRight;
-
-        if (pNewNode->pRight != nullptr)
+        // Not root
+        void DeleteFixupCase1L(NodePtr pNode, NodePtr pParent)
         {
-            pNewNode->pRight->pParent = pNode;
-        }
-
-        pNode->pParent = pNewNode;
-        pNewNode->pRight = pNode;
-
-        return pNewNode;
-    }
-
-    template <typename T>
-    void RBTree<T>::SwapNode(typename RBTree<T>::Node *pNode1, typename RBTree<T>::Node *pNode2)
-    {
-        if (pNode1->pLeft == pNode2)
-        {
-            pNode1->pLeft = pNode1;
-            pNode2->pParent = pNode2;
-        }
-
-        if (pNode1->pRight == pNode2)
-        {
-            pNode1->pRight = pNode1;
-            pNode2->pParent = pNode2;
-        }
-
-        if (pNode2->pLeft == pNode1)
-        {
-            pNode2->pLeft = pNode2;
-            pNode1->pParent = pNode2;
-        }
-
-        if (pNode2->pRight == pNode1)
-        {
-            pNode2->pRight = pNode2;
-            pNode1->pParent = pNode1;
-        }
-
-        typename RBTree<T>::Node *pParent1 = pNode1->pParent, *pLeft1 = pNode1->pLeft, *pRight1 = pNode1->pRight;
-        typename RBTree<T>::Node *pParent2 = pNode2->pParent, *pLeft2 = pNode2->pLeft, *pRight2 = pNode2->pRight;
-
-        typename RBTree<T>::Node **ppParent1ToNode1 = nullptr, **ppParent2ToNode2 = nullptr;
-
-        if (pParent1 == nullptr)
-        {
-            m_pRoot = pNode2;
-        }
-        else
-        {
-            if (pNode1 == pParent1->pLeft)
+            // Sibling is red
+            if (pParent->pRight->tData.ncColor == NC_RED)
             {
-                ppParent1ToNode1 = &pParent1->pLeft;
+                m_tBinTree.RotateLeft(pParent);
+                pParent->tData.ncColor = NC_RED;
+                pParent->pParent->tData.ncColor = NC_BLACK;
             }
-            else
-            {
-                ppParent1ToNode1 = &pParent1->pRight;
-            }
-        }
-
-        if (pParent2 == nullptr)
-        {
-            m_pRoot = pNode1;
-        }
-        else
-        {
-            if (pNode2 == pParent2->pLeft)
-            {
-                ppParent2ToNode2 = &pParent2->pLeft;
-            }
-            else
-            {
-                ppParent2ToNode2 = &pParent2->pRight;
-            }
-        }
-
-        if (ppParent1ToNode1 != nullptr)
-        {
-            *ppParent1ToNode1 = pNode2;
-        }
-
-        if (ppParent2ToNode2 != nullptr)
-        {
-            *ppParent2ToNode2 = pNode1;
-        }
-
-        pNode1->pParent = pParent2;
-        pNode2->pParent = pParent1;
-
-        pNode1->pLeft = pLeft2;
-        pNode1->pRight = pRight2;
-
-        pNode2->pLeft = pLeft1;
-        pNode2->pRight = pRight1;
-
-        if (pLeft1 != nullptr)
-        {
-            pLeft1->pParent = pNode2;
-        }
-
-        if (pRight1 != nullptr)
-        {
-            pRight1->pParent = pNode2;
-        }
-
-        if (pLeft2 != nullptr)
-        {
-            pLeft2->pParent = pNode1;
-        }
-
-        if (pRight2 != nullptr)
-        {
-            pRight2->pParent = pNode1;
-        }
-
-        NodeColor ncColor = pNode1->ncColor;
-        pNode1->ncColor = pNode2->ncColor;
-        pNode2->ncColor = ncColor;
-    }
-
-
-    // All cases
-    template <typename T>
-    void RBTree<T>::InsertFixup(typename RBTree<T>::Node *pNode)
-    {
-        // Is root
-        if (pNode->pParent == nullptr)
-        {
-            pNode->ncColor = Black;
-        }
-        else
-        {
-            InsertFixupCase1(pNode);
-        }
-    }
-
-    // Not root
-    template <typename T>
-    void RBTree<T>::InsertFixupCase1(typename RBTree<T>::Node *pNode)
-    {
-        // Parent is black
-        if (pNode->pParent->ncColor == Black)
-        {
-            return;
-        }
-        else
-        {
-            if (pNode->pParent == pNode->pParent->pParent->pLeft)
-            {
-                InsertFixupCase2L(pNode);
-            }
-            else
-            {
-                InsertFixupCase2R(pNode);
-            }
-        }
-    }
-
-    // Not root, Parent is red
-    template <typename T>
-    void RBTree<T>::InsertFixupCase2L(typename RBTree<T>::Node *pNode)
-    {
-        typename RBTree<T>::Node *pGrandParent = pNode->pParent->pParent;
-
-        // Uncle is red
-        if (pGrandParent->pRight != nullptr && pGrandParent->pRight->ncColor == Red)
-        {
-            pGrandParent->ncColor = Red;
-            pGrandParent->pLeft->ncColor = Black;
-            pGrandParent->pRight->ncColor = Black;
-
-            InsertFixup(pGrandParent);
-        }
-        else
-        {
-            InsertFixupCase3L(pNode);
-        }
-    }
-
-    template <typename T>
-    void RBTree<T>::InsertFixupCase2R(typename RBTree<T>::Node *pNode)
-    {
-        typename RBTree<T>::Node *pGrandParent = pNode->pParent->pParent;
-
-        if (pGrandParent->pLeft != nullptr && pGrandParent->pLeft->ncColor == Red)
-        {
-            pGrandParent->ncColor = Red;
-            pGrandParent->pRight->ncColor = Black;
-            pGrandParent->pLeft->ncColor = Black;
-
-            InsertFixup(pGrandParent);
-        }
-        else
-        {
-            InsertFixupCase3R(pNode);
-        }
-    }
-
-    // Not root, Parent is red, Uncle is black
-    template <typename T>
-    void RBTree<T>::InsertFixupCase3L(typename RBTree<T>::Node *pNode)
-    {
-        // New node is Parent's r-child
-        if (pNode == pNode->pParent->pRight)
-        {
-            RotateLeft(pNode->pParent);
-            InsertFixupCase4L(pNode->pLeft);
-        }
-        else
-        {
-            InsertFixupCase4L(pNode);
-        }
-
-    }
-
-    template <typename T>
-    void RBTree<T>::InsertFixupCase3R(typename RBTree<T>::Node *pNode)
-    {
-        if (pNode == pNode->pParent->pLeft)
-        {
-            RotateRight(pNode->pParent);
-            InsertFixupCase4R(pNode->pRight);
-        }
-        else
-        {
-            InsertFixupCase4R(pNode);
-        }
-
-    }
-
-    // Not root, Parent is red, Uncle is black, New node is Parent's l-child
-    template <typename T>
-    void RBTree<T>::InsertFixupCase4L(typename RBTree<T>::Node *pNode)
-    {
-        RotateRight(pNode->pParent->pParent);
-        pNode->pParent->ncColor = Black;
-        pNode->pParent->pRight->ncColor = Red;
-    }
-
-    template <typename T>
-    void RBTree<T>::InsertFixupCase4R(typename RBTree<T>::Node *pNode)
-    {
-        RotateLeft(pNode->pParent->pParent);
-        pNode->pParent->ncColor = Black;
-        pNode->pParent->pLeft->ncColor = Red;
-    }
-
-    // All cases
-    template <typename T>
-    void RBTree<T>::DeleteFixup(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        // Is root
-        if (pParent == nullptr)
-        {
-            return;
-        }
-
-        if (pNode == pParent->pLeft)
-        {
-            if (pParent->pRight == nullptr)
-            {
-                DeleteFixup(pParent, pParent->pParent);
-            }
-            else
-            {
-                DeleteFixupCase1L(pNode, pParent);
-            }
-        }
-        else
-        {
-            if (pParent->pLeft == nullptr)
-            {
-                DeleteFixup(pParent, pParent->pParent);
-            }
-            else
-            {
-                DeleteFixupCase1R(pNode, pParent);
-            }
-        }
-    }
-
-    // Not root
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase1L(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        // Sibling is red
-        if (pParent->pRight->ncColor == Red)
-        {
-            RotateLeft(pParent);
-            pParent->ncColor = Red;
-            pParent->pParent->ncColor = Black;
-        }
-
-        DeleteFixupCase2L(pNode, pParent);
-    }
-
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase1R(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        if (pParent->pLeft->ncColor == Red)
-        {
-            RotateRight(pParent);
-            pParent->ncColor = Red;
-            pParent->pParent->ncColor = Black;
-        }
-
-        DeleteFixupCase2R(pNode, pParent);
-    }
-
-    // Not root, Sibling is black
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase2L(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        typename RBTree<T>::Node *pSibling = pParent->pRight;
-
-        // Sibling's r-child is red
-        if (pSibling->pRight != nullptr && pSibling->pRight->ncColor == Red)
-        {
-            RotateLeft(pParent);
-            pSibling->pRight->ncColor = Black;
-            NodeColor ncColor = pParent->ncColor;
-            pParent->ncColor = pSibling->ncColor;
-            pSibling->ncColor = ncColor;
-        }
-        else
-        {
-            DeleteFixupCase3L(pNode, pParent);
-        }
-    }
-
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase2R(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        typename RBTree<T>::Node *pSibling = pParent->pLeft;
-
-        if (pSibling->pLeft != nullptr && pSibling->pLeft->ncColor == Red)
-        {
-            RotateRight(pParent);
-            pSibling->pLeft->ncColor = Black;
-            NodeColor ncColor = pParent->ncColor;
-            pParent->ncColor = pSibling->ncColor;
-            pSibling->ncColor = ncColor;
-        }
-        else
-        {
-            DeleteFixupCase3R(pNode, pParent);
-        }
-    }
-
-    // Not root, Sibling is black, Sibling's r-child is black
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase3L(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        typename RBTree<T>::Node *pSibling = pParent->pRight;
-
-        // Sibling's l-child is red
-        if (pSibling->pLeft != nullptr && pSibling->pLeft->ncColor == Red)
-        {
-            RotateRight(pSibling);
-            pSibling->pLeft->ncColor = Black;
-            pSibling->ncColor = Red;
 
             DeleteFixupCase2L(pNode, pParent);
         }
-        else
-        {
-            DeleteFixupCase4L(pNode, pParent);
-        }
-    }
 
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase3R(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        typename RBTree<T>::Node *pSibling = pParent->pLeft;
-
-        if (pSibling->pRight != nullptr && pSibling->pRight->ncColor == Red)
+        void DeleteFixupCase1R(NodePtr pNode, NodePtr pParent)
         {
-            RotateLeft(pSibling);
-            pSibling->pRight->ncColor = Black;
-            pSibling->ncColor = Red;
+            if (pParent->pLeft->tData.ncColor == NC_RED)
+            {
+                m_tBinTree.RotateRight(pParent);
+                pParent->tData.ncColor = NC_RED;
+                pParent->pParent->tData.ncColor = NC_BLACK;
+            }
 
             DeleteFixupCase2R(pNode, pParent);
         }
-        else
+
+        // Not root, Sibling is black
+        void DeleteFixupCase2L(NodePtr pNode, NodePtr pParent)
         {
-            DeleteFixupCase4R(pNode, pParent);
-        }
-    }
+            NodePtr pSibling = pParent->pRight;
 
-    // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase4L(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        // Parent is red
-        if (pParent->ncColor == Red)
-        {
-            pParent->ncColor = Black;
-            pParent->pRight->ncColor = Red;
-        }
-        else
-        {
-            DeleteFixupCase5L(pNode, pParent);
-        }
-    }
-
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase4R(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        if (pParent->ncColor == Red)
-        {
-            pParent->ncColor = Black;
-            pParent->pLeft->ncColor = Red;
-        }
-        else
-        {
-            DeleteFixupCase5R(pNode, pParent);
-        }
-    }
-
-    // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black, Parent is black
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase5L(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        pParent->pRight->ncColor = Red;
-
-        DeleteFixup(pParent, pParent->pParent);
-    }
-
-    template <typename T>
-    void RBTree<T>::DeleteFixupCase5R(typename RBTree<T>::Node *pNode, typename RBTree<T>::Node *pParent)
-    {
-        pParent->pLeft->ncColor = Red;
-
-        DeleteFixup(pParent, pParent->pParent);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindInSubTree(const T &tValue, typename RBTree<T>::Node *pRoot)
-    {
-        if (pRoot == nullptr || tValue == pRoot->tValue)
-        {
-            return pRoot;
+            // Sibling's r-child is red
+            if (pSibling->pRight != nullptr && pSibling->pRight->tData.ncColor == NC_RED)
+            {
+                m_tBinTree.RotateLeft(pParent);
+                pSibling->pRight->tData.ncColor = NC_BLACK;
+                Memory::ElementSwap(pParent->tData.ncColor, pSibling->tData.ncColor);
+            }
+            else
+            {
+                DeleteFixupCase3L(pNode, pParent);
+            }
         }
 
-        return FindInSubTree(tValue, tValue < pRoot->tValue ? pRoot->pLeft : pRoot->pRight);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindMaxInSubTree(typename RBTree<T>::Node *pRoot)
-    {
-        if (pRoot == nullptr || pRoot->pRight == nullptr)
+        void DeleteFixupCase2R(NodePtr pNode, NodePtr pParent)
         {
-            return pRoot;
+            NodePtr pSibling = pParent->pLeft;
+
+            if (pSibling->pLeft != nullptr && pSibling->pLeft->tData.ncColor == NC_RED)
+            {
+                m_tBinTree.RotateRight(pParent);
+                pSibling->pLeft->tData.ncColor = NC_BLACK;
+                Memory::ElementSwap(pParent->tData.ncColor, pSibling->tData.ncColor);
+            }
+            else
+            {
+                DeleteFixupCase3R(pNode, pParent);
+            }
         }
 
-        return FindMaxInSubTree(pRoot->pRight);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindMinInSubTree(typename RBTree<T>::Node *pRoot)
-    {
-        if (pRoot == nullptr || pRoot->pLeft == nullptr)
+        // Not root, Sibling is black, Sibling's r-child is black
+        void DeleteFixupCase3L(NodePtr pNode, NodePtr pParent)
         {
-            return pRoot;
+            NodePtr pSibling = pParent->pRight;
+
+            // Sibling's l-child is red
+            if (pSibling->pLeft != nullptr && pSibling->pLeft->tData.ncColor == NC_RED)
+            {
+                m_tBinTree.RotateRight(pSibling);
+                pSibling->pLeft->tData.ncColor = NC_BLACK;
+                pSibling->tData.ncColor = NC_RED;
+
+                DeleteFixupCase2L(pNode, pParent);
+            }
+            else
+            {
+                DeleteFixupCase4L(pNode, pParent);
+            }
         }
 
-        return FindMinInSubTree(pRoot->pLeft);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindMaxBelowGiven(const T &tValue, typename RBTree<T>::Node *pRoot, bool bIncludeEqual /*= true*/)
-    {
-        if (pRoot == nullptr)
+        void DeleteFixupCase3R(NodePtr pNode, NodePtr pParent)
         {
-            return nullptr;
+            NodePtr pSibling = pParent->pLeft;
+
+            if (pSibling->pRight != nullptr && pSibling->pRight->tData.ncColor == NC_RED)
+            {
+                m_tBinTree.RotateLeft(pSibling);
+                pSibling->pRight->tData.ncColor = NC_BLACK;
+                pSibling->tData.ncColor = NC_RED;
+
+                DeleteFixupCase2R(pNode, pParent);
+            }
+            else
+            {
+                DeleteFixupCase4R(pNode, pParent);
+            }
         }
 
-        if (bIncludeEqual && pRoot->tValue == tValue)
+        // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black
+        void DeleteFixupCase4L(NodePtr pNode, NodePtr pParent)
         {
-            return pRoot;
+            // Parent is red
+            if (pParent->tData.ncColor == NC_RED)
+            {
+                pParent->tData.ncColor = NC_BLACK;
+                pParent->pRight->tData.ncColor = NC_RED;
+            }
+            else
+            {
+                DeleteFixupCase5L(pNode, pParent);
+            }
+
         }
 
-        if (pRoot->tValue < tValue)
+        void DeleteFixupCase4R(NodePtr pNode, NodePtr pParent)
         {
-            if (pRoot->pRight == nullptr || tValue < pRoot->pRight->tValue)
+            if (pParent->tData.ncColor == NC_RED)
+            {
+                pParent->tData.ncColor = NC_BLACK;
+                pParent->pLeft->tData.ncColor = NC_RED;
+            }
+            else
+            {
+                DeleteFixupCase5R(pNode, pParent);
+            }
+        }
+
+        // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black, Parent is black
+        void DeleteFixupCase5L(NodePtr pNode, NodePtr pParent)
+        {
+            pParent->pRight->tData.ncColor = NC_RED;
+
+            DeleteFixup(pParent, pParent->pParent);
+        }
+
+        void DeleteFixupCase5R(NodePtr pNode, NodePtr pParent)
+        {
+            pParent->pLeft->tData.ncColor = NC_RED;
+
+            DeleteFixup(pParent, pParent->pParent);
+        }
+
+    protected:
+        NodePtr Find(const T &tValue, NodePtr pRoot) const
+        {
+            if (pRoot == nullptr)
             {
                 return pRoot;
             }
-            else
-            {
-                return FindMaxBelowGiven(tValue, pRoot->pLeft);
-            }
-        }
-        else
-        {
-            return FindMaxBelowGiven(tValue, pRoot->pLeft);
-        }
-    }
 
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindMinAboveGiven(const T &tValue, typename RBTree<T>::Node *pRoot, bool bIncludeEqual /*= true*/)
-    {
-        if (pRoot == nullptr)
-        {
-            return nullptr;
-        }
-
-        if (bIncludeEqual && pRoot->tValue == tValue)
-        {
-            return pRoot;
-        }
-
-        if (tValue < pRoot->tValue)
-        {
-            if (pRoot->pLeft == nullptr || pRoot->pLeft->tValue < tValue)
+            if (pRoot->tData.tValue == tValue)
             {
                 return pRoot;
             }
-            else
+
+            return Find(tValue, tValue < pRoot->tData.tValue ? pRoot->pLeft : pRoot->pRight);
+        }
+
+        NodePtr FindMaxBelow(const T &tValue, NodePtr pRoot, bool bIncludeEqual = true) const
+        {
+            if (pRoot == nullptr)
             {
-                return FindMinAboveGiven(tValue, pRoot->pLeft);
-            }
-        }
-        else
-        {
-            return FindMaxBelowGiven(tValue, pRoot->pLeft);
-        }
-    }
-
-    template <typename T>
-    bool RBTree<T>::IsSubTreeEqual(typename RBTree<T>::Node *pThisNode, typename RBTree<T>::Node *pThatNode)
-    {
-        if (pThisNode == pThatNode)
-        {
-            return true;
-        }
-
-        if (pThisNode == nullptr || pThatNode == nullptr)
-        {
-            return false;
-        }
-
-        if (pThisNode->tValue != pThatNode->tValue)
-        {
-            return false;
-        }
-
-        return IsSubTreeEqual(pThisNode->pLeft, pThatNode->pLeft) && IsSubTreeEqual(pThisNode->pRight, pThatNode->pRight);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindPrev(typename RBTree<T>::Node *pNode)
-    {
-        if (pNode == nullptr)
-        {
-            return nullptr;
-        }
-
-        if (pNode->pLeft != nullptr)
-        {
-            return FindMaxInSubTree(pNode->pLeft);
-        }
-        else if (pNode->pParent == nullptr)
-        {
-            return nullptr;
-        }
-        else
-        {
-            while (pNode->pParent != nullptr && pNode == pNode->pParent->pLeft)
-            {
-                pNode = pNode->pParent;
+                return nullptr;
             }
 
-            return pNode->pParent;
-        }
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::FindNext(typename RBTree<T>::Node *pNode)
-    {
-        if (pNode == nullptr)
-        {
-            return nullptr;
-        }
-
-        if (pNode->pRight != nullptr)
-        {
-            return FindMinInSubTree(pNode->pRight);
-        }
-        else if (pNode->pParent == nullptr)
-        {
-            return nullptr;
-        }
-        else
-        {
-            while (pNode->pParent != nullptr && pNode == pNode->pParent->pRight)
+            if (bIncludeEqual && pRoot->tData.tValue == tValue)
             {
-                pNode = pNode->pParent;
+                return pRoot;
             }
 
-            return pNode->pParent;
-        }
-    }
-
-    template <typename T>
-    void RBTree<T>::CopySubTree(typename RBTree<T>::Node *&pDestNode, typename RBTree<T>::Node *pSrcNode, typename RBTree<T>::Node *pParent /*= nullptr*/)
-    {
-        if (pSrcNode == nullptr)
-        {
-            return;
-        }
-
-        if (pDestNode != nullptr)
-        {
-            DeleteSubTree(pDestNode);
-        }
-
-        pDestNode = new Node(pSrcNode->tValue, pSrcNode->ncColor, pParent, nullptr, nullptr);
-
-        CopySubTree(pDestNode->pLeft, pSrcNode->pLeft, pDestNode);
-        CopySubTree(pDestNode->pRight, pSrcNode->pRight, pDestNode);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::InsertToSubTree(const T &tValue, typename RBTree<T>::Node *pRoot)
-    {
-        if (tValue == pRoot->tValue)
-        {
-            pRoot->tValue = tValue;
-            return nullptr;
-        }
-
-        RBTree::Node *&pNext = tValue < pRoot->tValue ? pRoot->pLeft : pRoot->pRight;
-
-        if (pNext == nullptr)
-        {
-            pNext = new RBTree::Node(tValue, Red, pRoot);
-            ++m_nSize;
-            return pNext;
-        }
-
-        return InsertToSubTree(tValue, pNext);
-    }
-
-    template <typename T>
-    void RBTree<T>::DeleteSubTree(typename RBTree<T>::Node *pNode)
-    {
-        if (pNode == nullptr)
-        {
-            return;
-        }
-
-        DeleteSubTree(pNode->pLeft);
-        DeleteSubTree(pNode->pRight);
-
-        delete pNode;
-    }
-
-    template <typename T>
-    void RBTree<T>::Delete(typename RBTree<T>::Node *pNode)
-    {
-        if (pNode == nullptr)
-        {
-            return nullptr;
-        }
-
-        typename RBTree<T>::Node *pNewNode = FindMaxInSubTree(pNode->pLeft);
-
-        if (pNode->pLeft != nullptr && pNode->pRight != nullptr)
-        {
-            SwapNode(pNode, pNewNode);
-
-            pNewNode = FindMaxInSubTree(pNode->pLeft);
-        }
-
-        pNewNode = (pNode->pLeft != nullptr ? pNode->pLeft : pNode->pRight);
-
-        if(pNode->pParent == nullptr)
-        {
-            m_pRoot = pNewNode;
-        }
-        else
-        {
-            if (pNode == pNode->pParent->pLeft)
+            if (pRoot->tData.tValue < tValue)
             {
-                pNode->pParent->pLeft = pNewNode;
+                if (pRoot->pRight == nullptr || tValue < pRoot->pRight->tData.tValue)
+                {
+                    return pRoot;
+                }
+                else
+                {
+                    return FindMaxBelow(tValue, pRoot->pLeft);
+                }
             }
             else
             {
-                pNode->pParent->pRight = pNewNode;
+                return FindMaxBelow(tValue, pRoot->pLeft);
             }
         }
 
-        if (pNewNode != nullptr)
+        NodePtr FindMinAbove(const T &tValue, NodePtr pRoot, bool bIncludeEqual = true) const 
         {
-            if (pNewNode == pNewNode->pParent->pLeft)
+            if (pRoot == nullptr)
             {
-                pNewNode->pParent->pLeft = nullptr;
+                return nullptr;
+            }
+
+            if (bIncludeEqual && pRoot->tData.tValue == tValue)
+            {
+                return pRoot;
+            }
+
+            if (tValue < pRoot->tData.tValue)
+            {
+                if (pRoot->pLeft == nullptr || pRoot->pLeft->tData.tValue < tValue)
+                {
+                    return pRoot;
+                }
+                else
+                {
+                    return FindMinAbove(tValue, pRoot->pLeft);
+                }
             }
             else
             {
-                pNewNode->pParent->pRight = pNewNode;
+                return FindMaxBelow(tValue, pRoot->pLeft);
             }
+        }
 
-            pNewNode->pParent = pNode->pParent;
+    protected:
+        friend Iterator;
+        friend ReverseIterator;
 
-            if (pNewNode != pNode->pLeft)
+    protected:
+        void DeleteNode(NodePtr pNode)
+        {
+            if (pNode == nullptr)
             {
-                pNewNode->pLeft = pNode->pLeft;
+                return nullptr;
             }
 
-            if (pNewNode != pNode->pRight)
+            NodePtr pNewNode = BinTree::RightmostOf(pNode->pLeft);
+
+            if (pNode->pLeft != nullptr && pNode->pRight != nullptr)
             {
-                pNewNode->pRight = pNode->pRight;
+                SwapNode(pNode, pNewNode);
+
+                pNewNode = BinTree::RightmostOf(pNode->pLeft);
+            }
+
+            pNewNode = (pNode->pLeft != nullptr ? pNode->pLeft : pNode->pRight);
+
+            if(pNode->pParent == nullptr)
+            {
+                m_pRoot = pNewNode;
+            }
+            else
+            {
+                if (pNode == pNode->pParent->pLeft)
+                {
+                    pNode->pParent->pLeft = pNewNode;
+                }
+                else
+                {
+                    pNode->pParent->pRight = pNewNode;
+                }
+            }
+
+            if (pNewNode != nullptr)
+            {
+                if (pNewNode == pNewNode->pParent->pLeft)
+                {
+                    pNewNode->pParent->pLeft = nullptr;
+                }
+                else
+                {
+                    pNewNode->pParent->pRight = pNewNode;
+                }
+
+                pNewNode->pParent = pNode->pParent;
+
+                if (pNewNode != pNode->pLeft)
+                {
+                    pNewNode->pLeft = pNode->pLeft;
+                }
+
+                if (pNewNode != pNode->pRight)
+                {
+                    pNewNode->pRight = pNode->pRight;
+                }
+            }
+
+            NodeColor ncColor = pNode->tData.ncColor;
+            NodePtr pParent = pNode->pParent;
+
+            delete pNode;
+            --m_nSize;
+
+            if (ncColor == NC_RED)
+            {
+                return;
+            }
+
+            if (pNewNode != nullptr && pNewNode->tData.ncColor == NC_RED)
+            {
+                pNewNode->tData.ncColor = NC_BLACK;
+                return;
+            }
+
+            DeleteFixup(pNewNode, pNewNode == nullptr ? pParent : pNewNode->pParent);
+        }
+
+        NodePtr InsertValue(const T &tValue, NodePtr pRoot = nullptr)
+        {
+            if (pRoot == nullptr)
+            {
+                pRoot = m_tBinTree.Root();
+            }
+
+            if (pRoot == nullptr)
+            {
+                m_tBinTree.SetRoot(new NodeType(NodeData(tValue)));
+                ++m_nSize;
+                return m_tBinTree.Root();
+            }
+
+            if (tValue == pRoot->tData.tValue)
+            {
+                pRoot->tData.tValue = tValue;
+                return nullptr;
+            }
+
+            if (tValue < pRoot->tData.tValue)
+            {
+                if (pRoot->pLeft == nullptr)
+                {
+                    NodePtr pNode = m_tBinTree.SetLeftSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
+
+                    ++m_nSize;
+
+                    InsertFixup(pNode);
+
+                    return pNode;
+                }
+
+                return InsertValue(tValue, pRoot->pLeft);
+            }
+            else
+            {
+                if (pRoot->pRight == nullptr)
+                {
+                    NodePtr pNode = m_tBinTree.SetRightSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
+
+                    ++m_nSize;
+
+                    InsertFixup(pNode);
+
+                    return pNode;
+                }
+
+                return InsertValue(tValue, pRoot->pRight);
             }
         }
 
-        NodeColor ncColor = pNode->ncColor;
-        typename RBTree<T>::Node *pParent = pNode->pParent;
-
-        delete pNode;
-        --m_nSize;
-
-        if (ncColor == Red)
+    public:
+        void Delete(const T &tValue)
         {
-            return;
+            NodePtr pNode = Find(tValue, m_pRoot);
+
+            if (pNode != nullptr)
+            {
+                Delete(pNode);
+            }
         }
 
-        if (pNewNode != nullptr && pNewNode->ncColor == Red)
+    public:
+        Iterator Find(const T &tValue) const
         {
-            pNewNode->ncColor = Black;
-
-            return;
+            return m_tBinTree.GetIterator(Find(tValue, m_tBinTree.Root()));
         }
 
-        DeleteFixup(pNewNode, pNewNode == nullptr ? pParent : pNewNode->pParent);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Node *RBTree<T>::InsertValue(const T &tValue)
-    {
-        if (m_pRoot == nullptr)
+        Iterator FindMaxBelow(const T &tValue, bool bIncludeEqual = true) const
         {
-            m_pRoot = new RBTree::Node(tValue);
-            ++m_nSize;
-            return m_pRoot;
+            return m_tBinTree.GetIterator(FindMaxBelow(tValue, m_tBinTree.Root(), bIncludeEqual));
         }
 
-        typename RBTree<T>::Node *pNode = InsertToSubTree(tValue, m_pRoot);
-
-        if (pNode != nullptr)
+        Iterator FindMinAbove(const T &tValue, bool bIncludeEqual = true) const
         {
-            InsertFixup(pNode);
+            return m_tBinTree.GetIterator(FindMinAbove(tValue, m_tBinTree.Root(), bIncludeEqual));
         }
 
-        return pNode;
-    }
-
-    template <typename T>
-    inline void RBTree<T>::Delete(const T &tValue)
-    {
-        typename RBTree<T>::Node *pNode = FindInSubTree(tValue, m_pRoot);
-
-        if (pNode != nullptr)
+    public:
+        Iterator Begin() const
         {
-            Delete(pNode);
-        }
-    }
-
-
-    template <typename T>
-    inline void RBTree<T>::Release()
-    {
-        DeleteSubTree(m_pRoot);
-
-        m_pRoot = nullptr;
-        m_nSize = 0;
-    }
-
-    // Iterator
-
-    template <typename T>
-    inline RBTree<T>::Iterator::Iterator()
-        : m_pCurrent(nullptr), m_pHead(nullptr)
-    {
-
-    }
-    template <typename T>
-    inline RBTree<T>::Iterator::Iterator(const typename RBTree<T>::Iterator &that)
-        : m_pCurrent(nullptr), m_pHead(nullptr)
-    {
-        *this = that;
-    }
-
-    template <typename T>
-    inline RBTree<T>::Iterator::Iterator(typename RBTree<T>::Node *pCurrent)
-        : m_pCurrent(pCurrent), m_pHead(nullptr)
-    {
-
-    }
-    template <typename T>
-    inline RBTree<T>::Iterator::Iterator(typename RBTree<T>::Node *pCurrent, typename RBTree<T>::Node *pHead)
-        : m_pCurrent(pCurrent), m_pHead(pHead)
-    {
-
-    }
-
-    template <typename T>
-    inline T &RBTree<T>::Iterator::operator * ()
-    {
-        return m_pCurrent->tValue;
-    }
-
-    template <typename T>
-    inline T *RBTree<T>::Iterator::operator -> ()
-    {
-        return &m_pCurrent->tValue;
-    }
-
-    template <typename T>
-    inline RBTree<T>::Iterator::operator T * ()
-    {
-        return &m_pCurrent->tValue;
-    }
-
-    template <typename T>
-    inline RBTree<T>::Iterator::operator const T * () const
-    {
-        return &m_pCurrent->tValue;
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator &RBTree<T>::Iterator::operator = (const typename RBTree<T>::Iterator &that)
-    {
-        if (this == &that)
-        {
-            return *this;
+            return m_tBinTree.Begin();
         }
 
-        this->m_pCurrent = that.m_pCurrent;
-        this->m_pHead = that.m_pHead;
-
-        return *this;
-    }
-    
-    template <typename T>
-    inline bool RBTree<T>::Iterator::operator == (const typename RBTree<T>::Iterator &that) const
-    {
-        return (this->m_pCurrent == that.m_pCurrent);
-    }
-
-    template <typename T>
-    inline bool RBTree<T>::Iterator::operator != (const typename RBTree<T>::Iterator &that) const
-    {
-        return !(*this == that);
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator &RBTree<T>::Iterator::operator ++ ()
-    {
-        m_pCurrent = RBTree<T>::FindNext(m_pCurrent);
-
-        return *this;
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::Iterator::operator ++ (int)
-    {
-        typename RBTree<T>::Iterator itRet = *this;
-
-        ++*this;
-
-        return itRet;
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator &RBTree<T>::Iterator::operator -- ()
-    {
-        if (m_pCurrent == nullptr)
+        Iterator End() const
         {
-            return typename RBTree<T>::ReverseIterator(RBTree<T>::FindMaxInSubTree(m_pRoot), m_pHead);
-        }
-        else
-        {
-            m_pCurrent = RBTree<T>::FindNext(m_pCurrent);
-        }
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::Iterator::operator -- (int)
-    {
-        typename RBTree<T>::Iterator itRet = *this;
-
-        --*this;
-
-        return itRet;
-    }
-
-    template <typename T>
-    inline RBTree<T>::ReverseIterator::ReverseIterator()
-        : Iterator()
-    {
-
-    }
-    template <typename T>
-    inline RBTree<T>::ReverseIterator::ReverseIterator(const typename RBTree<T>::Iterator &that)
-        : Iterator(that)
-    {
-
-    }
-
-    template <typename T>
-    inline RBTree<T>::ReverseIterator::ReverseIterator(typename RBTree<T>::Node *pCurrent)
-        : Iterator(pCurrent)
-    {
-
-    }
-
-    template <typename T>
-    inline RBTree<T>::ReverseIterator::ReverseIterator(typename RBTree<T>::Node *pCurrent, typename RBTree<T>::Node *pHead)
-        : Iterator(pCurrent, pHead)
-    {
-
-    }
-
-    template <typename T>
-    typename RBTree<T>::ReverseIterator &RBTree<T>::ReverseIterator::operator ++ ()
-    {
-        this->m_pCurrent = RBTree<T>::FindPrev(this->m_pCurrent);
-
-        return *this;
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::ReverseIterator RBTree<T>::ReverseIterator::operator ++ (int)
-    {
-        typename RBTree<T>::ReverseIterator itRet = *this;
-
-        ++*this;
-
-        return itRet;
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::ReverseIterator &RBTree<T>::ReverseIterator::operator -- ()
-    {
-        if (this->m_pCurrent == nullptr)
-        {
-            return typename RBTree<T>::ReverseIterator(RBTree<T>::FindMinInSubTree(m_pRoot), this->m_pHead);
-        }
-        else
-        {
-            this->m_pCurrent = RBTree<T>::FindNext(this->m_pCurrent);
+            return m_tBinTree.End();
         }
 
-        return *this;
-    }
-    
-    template <typename T>
-    inline typename RBTree<T>::ReverseIterator RBTree<T>::ReverseIterator::operator -- (int)
-    {
-        typename RBTree<T>::ReverseIterator itRet = *this;
-
-        --*this;
-
-        return itRet;
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::Begin() const
-    {
-        return typename RBTree<T>::Iterator(FindMinInSubTree(m_pRoot), m_pRoot);
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::End() const
-    {
-        return typename RBTree<T>::Iterator(nullptr, m_pRoot);
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::ReverseIterator RBTree<T>::ReverseBegin() const
-    {
-        return typename RBTree<T>::ReverseIterator(FindMaxInSubTree(m_pRoot), m_pRoot);
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::ReverseIterator RBTree<T>::ReverseEnd() const
-    {
-        return typename RBTree<T>::ReverseIterator(nullptr, m_pRoot);
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::Find(const T &tValue) const
-    {
-        return typename RBTree<T>::Iterator(FindInSubTree(tValue, m_pRoot), m_pRoot);
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::FindMaxBelowGiven(const T &tValue, bool bIncludeEqual /*= true*/) const
-    {
-        return typename RBTree<T>::Iterator(FindMaxBelowGiven(tValue, m_pRoot, bIncludeEqual), m_pRoot);
-    }
-
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::FindMinAboveGiven(const T &tValue, bool bIncludeEqual /*= true*/) const
-    {
-        return typename RBTree<T>::Iterator(FindMinAboveGiven(tValue, m_pRoot, bIncludeEqual), m_pRoot);
-    }
-
-    template <typename T>
-    typename RBTree<T>::Iterator RBTree<T>::Insert(const T &tValue)
-    {
-        return typename RBTree<T>::Iterator(InsertValue(tValue), m_pRoot);
-    }
-
-    template <typename T>
-    template <typename I>
-    void RBTree<T>::Insert(const I &itFirstToInsert, const I &itAfterLastToInsert)
-    {
-        for (I it = itFirstToInsert; it != itAfterLastToInsert; ++it)
+        ReverseIterator ReverseBegin() const
         {
-            Insert(*it);
+            return m_tBinTree.ReverseBegin();
         }
-    }
 
-    template <typename T>
-    inline typename RBTree<T>::Iterator RBTree<T>::Delete(const typename RBTree<T>::Iterator &itWhich)
-    {
-        typename RBTree<T>::Node *pNext = FindNext(itWhich.m_pCurrent);
-        
-        Delete(itWhich.m_pCurrent);
+        ReverseIterator ReverseEnd() const
+        {
+            return m_tBinTree.ReverseEnd();
+        }
 
-        return typename RBTree<T>::Iterator(pNext, m_pRoot);
-    }
+    public:
+        Iterator Insert(const T &tValue)
+        {
+            return m_tBinTree.GetIterator(InsertValue(tValue));
+        }
 
-    template <typename T>
-    inline typename RBTree<T>::ReverseIterator RBTree<T>::Delete(const typename RBTree<T>::ReverseIterator &itWhich)
-    {
-        typename RBTree<T>::Node *pPrev = FindPrev(itWhich.m_pCurrent);
+        template <typename I>
+        void Insert(const I &itFirstToInsert, const I &itAfterLastToInsert)
+        {
+            for (I it = itFirstToInsert; it != itAfterLastToInsert; ++it)
+            {
+                Insert(*it);
+            }
+        }
 
-        Delete(itWhich.m_pCurrent);
+        Iterator Delete(const Iterator &itWhich)
+        {
+            NodePtr pNext = NextOf(itWhich.m_pCurrent);
 
-        return typename RBTree<T>::Iterator(pPrev, m_pRoot);
-    }
+            Delete(itWhich.m_pCurrent);
+
+            return m_tBinTree.GetIterator(pNext);
+
+        }
+
+        ReverseIterator Delete(const ReverseIterator &itWhich)
+        {
+            NodePtr pPrev = PreviousOf(itWhich.m_pCurrent);
+
+            Delete(itWhich.m_pCurrent);
+
+            return m_tBinTree.GetIterator(pPrev);
+        }
+    };
 
 } // namespace xl
 
@@ -1420,11 +812,11 @@ namespace xl
 // }
 // xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
 //     preview (
-//         $e.m_pCurrent->tValue
+//         $e.m_pCurrent->tData.tValue
 //     )
 //     children (
 //         #(
-//             [ptr] : &$e.m_pCurrent->tValue
+//             [ptr] : &$e.m_pCurrent->tData.tValue
 //         )
 //     )
 // }
