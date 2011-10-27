@@ -20,6 +20,7 @@
 #include <xl/xlDef.h>
 #include <xl/Containers/xlArray.h>
 #include <xl/Containers/xlSet.h>
+#include <xl/Containers/xlMap.h>
 
 namespace xl
 {
@@ -44,7 +45,7 @@ namespace xl
 
         }
 
-        GraphNode(const T &tValue) : tValue(tValue)
+        GraphNode(const NodeData &tValue) : tValue(tValue)
         {
 
         }
@@ -144,13 +145,13 @@ namespace xl
 
         }
 
-        GraphEdge(const T &tValue, NodeType *pPrevious, NodeType *pNext = nullptr) :
-        tValue(tValue), pPrevious(pPrevious), pNext(pNext)
+        GraphEdge(const EdgeData &tValue, NodeType *pPrevious = nullptr, NodeType *pNext = nullptr) :
+            tValue(tValue), pPrevious(pPrevious), pNext(pNext)
         {
 
         }
 
-        GraphEdge(const GraphEdge &that), pPrevious(nullptr), pNext(nullptr)
+        GraphEdge(const GraphEdge &that) : pPrevious(nullptr), pNext(nullptr)
         {
             *this = that;
         }
@@ -241,40 +242,257 @@ namespace xl
 
         Graph(const Graph &that)
         {
-
+            *this = that;
         }
 
         ~Graph()
         {
-
+            Release();
         }
 
     public:
         Graph &operator = (const Graph &that)
         {
+            if (this == &that)
+            {
+                return *this;
+            }
 
+            Release();
+
+            Map<NodePtr, NodePtr> mapNodes;
+
+            for (auto it = that.m_setNodes.Begin(); it != that.m_setNodes.End(); ++it)
+            {
+                NodePtr pOldNode = *it;
+                NodePtr pNewNode = new NodeType(pOldNode->tValue);
+                pNewNode->arrPrevious = pOldNode->arrPrevious;
+                pNewNode->arrNext = pOldNode->arrNext;
+                this->m_setNodes.Insert(pNewNode);
+                mapNodes.Insert(pNewNode, pOldNode);
+            }
+
+            Map<EdgePtr, EdgePtr> mapEdges;
+
+            for (auto it = that.m_setEdges.Begin(); it != that.m_setEdges.End(); ++it)
+            {
+                EdgePtr pOldEdge = *it;
+                EdgePtr pNewEdge = new EdgeType(pOldNode->tValue);
+                pNewEdge->pPrevious = pOldEdge->pPrevious;
+                pNewEdge->pNext = pOldEdge->pNext;
+                this->m_setEdges.Insert(pNewNode);
+                mapEdges.Insert(pNewNode, pOldEdge);
+            }
+
+            for (auto it = this->m_setNodes.Begin(); it != this->m_setNodes.End(); ++it)
+            {
+                NodePtr pNode = *it;
+                
+                for (auto itPrevious = pNode->arrPrevious.Begin(); itPrevious != pNode->arrPrevious.End(); ++itPrevious)
+                {
+                    *itPrevious = mapEdges[*itPrevious];
+                }
+
+                for (auto itNext = pNode->arrNext.Begin(); itNext != pNode->arrNext.End(); ++itNext)
+                {
+                    *itNext = mapEdges[*itNext];
+                }
+            }
+
+            for (auto it = this->m_setEdges.Begin(); it != this->m_setEdges.End(); ++it)
+            {
+                EdgePtr pEdge = *it;
+
+                pEdge->pPrevious = mapNodes[pEdge->pPrevious];
+                pEdge->pNext = mapNodes[pEdge->pNext];
+            }
+
+            return *this;
         }
 
-        bool operator == (const Graph &that)
-        {
-
-        }
-
-        bool operator != (const Graph &that)
-        {
-
-        }
-
-    private:
+    public:
         typedef GraphNode<NodeData, EdgeData> NodeType;
-        typedef GraphEdge<EdgeType, NodeType> EdgeType;
+        typedef GraphEdge<EdgeData, NodeData> EdgeType;
         typedef NodeType *NodePtr;
         typedef EdgeType *EdgePtr;
+        typedef Set<NodePtr> NodeSet;
+        typedef Set<EdgePtr> EdgeSet;
+
+    public:
+        bool AddNode(NodePtr pNode)
+        {
+            if (pNode == nullptr)
+            {
+                return false;
+            }
+
+            if (m_setNodes.Find(pNode) != m_setNodes.End())
+            {
+                return false;
+            }
+
+            m_setNodes.Insert(pNode);
+
+            return true;
+        }
+
+        bool AddEdge(EdgePtr pEdge, NodePtr pFromNode = nullptr, NodePtr pToNode = nullptr)
+        {
+            if (pEdge == nullptr)
+            {
+                return false;
+            }
+
+            if (m_setEdges.Find(pEdge) != m_setEdges.End())
+            {
+                return false;
+            }
+
+            pEdge->pPrevious = pFromNode;
+            pEdge->pNext = pToNode;
+
+            if (pFromNode != nullptr)
+            {
+                pFromNode->arrNext.PushBack(pEdge);
+            }
+
+            if (pToNode != nullptr)
+            {
+                pToNode->arrPrevious.PushBack(pEdge);
+            }
+
+            m_setEdges.Insert(pEdge);
+
+            return true;
+        }
+
+        bool DeleteNode(NodePtr pNode)
+        {
+            auto itNode = m_setNodes.Find(pNode);
+
+            if (itNode == m_setNodes.End())
+            {
+                return false;
+            }
+
+            for (auto itEdge = pNode->arrPrevious.Begin(); itEdge != pNode->arrPrevious.End(); ++itEdge)
+            {
+                EdgePtr pEdge = *itEdge;
+
+                if (pEdge->pPrevious != nullptr)
+                {
+                    NodePtr pNode = pEdge->pPrevious;
+
+                    for (auto it = pNode->arrNext.Begin(); it != pNode->arrNext.End(); ++it)
+                    {
+                        if (*it == pEdge)
+                        {
+                            pNode->arrNext.Delete(it);
+                            break;
+                        }
+                    }
+                }
+
+                delete pEdge;
+            }
+
+            for (auto itEdge = pNode->arrNext.Begin(); itEdge != pNode->arrNext.End(); ++itEdge)
+            {
+                EdgePtr pEdge = *itEdge;
+
+                if (pEdge->pNext != nullptr)
+                {
+                    NodePtr pNode = pEdge->pNext;
+
+                    for (auto it = pNode->arrPrevious.Begin(); it != pNode->arrPrevious.End(); ++it)
+                    {
+                        if (*it == pEdge)
+                        {
+                            pNode->arrPrevious.Delete(it);
+                            break;
+                        }
+                    }
+                }
+
+                delete pEdge;
+            }
+
+            m_setNodes.Delete(itNode);
+            delete pNode;
+
+            return true;
+        }
+
+        bool DeleteEdge(EdgePtr pEdge)
+        {
+            auto itEdge = m_setEdges.Find(pEdge);
+
+            if (itEdge == m_setEdges.End())
+            {
+                return false;
+            }
+
+            if (pEdge->pPrevious != nullptr)
+            {
+                NodePtr pNode = pEdge->pPrevious;
+
+                for (auto it = pNode->arrNext.Begin(); it != pNode->arrNext.End(); ++it)
+                {
+                    if (*it == pEdge)
+                    {
+                        pNode->arrNext.Delete(it);
+                        break;
+                    }
+                }
+            }
+
+            if (pEdge->pNext != nullptr)
+            {
+                NodePtr pNode = pEdge->pNext;
+
+                for (auto it = pNode->arrPrevious.Begin(); it != pNode->arrPrevious.End(); ++it)
+                {
+                    if (*it == pEdge)
+                    {
+                        pNode->arrPrevious.Delete(it);
+                        break;
+                    }
+                }
+            }
+
+            m_setEdges.Delete(itEdge);
+            delete pEdge;
+
+            return true;
+        }
+
+        const NodeSet &GetNodes()
+        {
+            return m_setNodes;
+        }
+
+        const EdgeSet &GetEdges()
+        {
+            return m_setEdges;
+        }
 
     private:
-        Set<NodePtr> m_setNodes;
-        Set<EdgePtr> m_setEdges;
+        void Release()
+        {
+            for (auto it = m_setNodes.Begin(); it != m_setNodes.End(); ++it)
+            {
+                delete *it;
+            }
 
+            for (auto it = m_setEdges.Begin(); it != m_setEdges.End(); ++it)
+            {
+                delete *it;
+            }
+        }
+
+    private:
+        NodeSet m_setNodes;
+        EdgeSet m_setEdges;
     };
 
 
