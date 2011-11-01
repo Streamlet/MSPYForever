@@ -218,7 +218,6 @@ namespace xl
 
             if (nRes == 0 || nRes == SOCKET_ERROR)
             {
-                int nError = WSAGetLastError();
                 return soResult;
             }
 

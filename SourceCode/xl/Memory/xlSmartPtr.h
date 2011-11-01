@@ -18,7 +18,6 @@
 
 
 #include <xl/xlDef.h>
-#include <xl/Meta/xlTypeTraits.h>
 
 namespace xl
 {
