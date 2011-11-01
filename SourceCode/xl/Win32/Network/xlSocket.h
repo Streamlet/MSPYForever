@@ -208,7 +208,7 @@ namespace xl
             FD_SET(m_hSocket, &fsExcept);
 
             timeval timeout = { (long)dwTimeout / 1000, (long)dwTimeout % 1000 };
-            int nRes = select(m_hSocket + 1,
+            int nRes = select((int)m_hSocket + 1,
                               (so & SO_READ) != 0 ? &fsRead : NULL,
                               (so & SO_WRITE) != 0 ? &fsWrite : NULL,
                               (so & SO_EXCEPT) != 0 ? &fsExcept : NULL,
