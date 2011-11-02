@@ -142,10 +142,6 @@ namespace xl
         typedef BinTree<T, NodeType> InnerBinTree;
         typedef typename InnerBinTree::NodePtr NodePtr;  
 
-    public:
-        typedef typename InnerBinTree::Iterator Iterator;
-        typedef typename InnerBinTree::ReverseIterator ReverseIterator;
-
     protected:
         InnerBinTree m_tBinTree;
         size_t       m_nSize;
@@ -217,7 +213,7 @@ namespace xl
         void SwapNode(NodePtr pNode1, NodePtr pNode2)
         {
             m_tBinTree.SwapNode(pNode1, pNode2);
-            Memory::ElementSwap(pNode1->tValue.ncColor, pNode2->tValue.ncColor)
+            Memory::ElementSwap(pNode1->tValue.ncColor, pNode2->tValue.ncColor);
         }
 
     protected:
@@ -588,31 +584,27 @@ namespace xl
         }
 
     protected:
-        friend Iterator;
-        friend ReverseIterator;
-
-    protected:
         void DeleteNode(NodePtr pNode)
         {
             if (pNode == nullptr)
             {
-                return nullptr;
+                return;
             }
 
-            NodePtr pNewNode = BinTree::RightmostOf(pNode->pLeft);
+            NodePtr pNewNode = InnerBinTree::RightmostOf(pNode->pLeft);
 
             if (pNode->pLeft != nullptr && pNode->pRight != nullptr)
             {
                 SwapNode(pNode, pNewNode);
 
-                pNewNode = BinTree::RightmostOf(pNode->pLeft);
+                pNewNode = InnerBinTree::RightmostOf(pNode->pLeft);
             }
 
             pNewNode = (pNode->pLeft != nullptr ? pNode->pLeft : pNode->pRight);
 
             if(pNode->pParent == nullptr)
             {
-                m_pRoot = pNewNode;
+                m_tBinTree.SetRoot(pNewNode);
             }
             else
             {
@@ -729,9 +721,83 @@ namespace xl
 
             if (pNode != nullptr)
             {
-                Delete(pNode);
+                DeleteNode(pNode);
             }
         }
+
+
+    // Iterator
+
+    public:
+        class Iterator : public InnerBinTree::Iterator
+        {
+        public:
+            Iterator() : InnerBinTree::Iterator()
+            {
+
+            }
+
+            Iterator(const Iterator &that) : InnerBinTree::Iterator()
+            {
+                *this = that;
+            }
+
+            Iterator(const typename InnerBinTree::Iterator &that) : InnerBinTree::Iterator(that)
+            {
+
+            }
+
+        protected:
+            Iterator(NodePtr pCurrent) : InnerBinTree::Iterator(m_pCurrent)
+            {
+
+            }
+
+            Iterator(NodePtr pCurrent, NodePtr pHead) : InnerBinTree::Iterator(pCurrent, pHead)
+            {
+
+            }
+
+        protected:
+            friend class RBTree;
+        };
+
+        class ReverseIterator : public InnerBinTree::ReverseIterator
+        {
+        public:
+            ReverseIterator() : InnerBinTree::ReverseIterator()
+            {
+
+            }
+
+            ReverseIterator(const ReverseIterator &that) : InnerBinTree::ReverseIterator()
+            {
+                *this = that;
+            }
+
+            ReverseIterator(const typename InnerBinTree::ReverseIterator &that) : InnerBinTree::ReverseIterator(that)
+            {
+
+            }
+
+        protected:
+            ReverseIterator(NodePtr pCurrent) : InnerBinTree::ReverseIterator(pCurrent)
+            {
+
+            }
+
+            ReverseIterator(NodePtr pCurrent, NodePtr pHead) : InnerBinTree::ReverseIterator(pCurrent, pHead)
+            {
+
+            }
+
+        protected:
+            friend class RBTree;
+        };
+
+    protected:
+        friend Iterator;
+        friend ReverseIterator;
 
     public:
         Iterator Find(const T &tValue) const
@@ -787,9 +853,9 @@ namespace xl
 
         Iterator Delete(const Iterator &itWhich)
         {
-            NodePtr pNext = NextOf(itWhich.m_pCurrent);
+            NodePtr pNext = m_tBinTree.NextOf(itWhich.m_pCurrent);
 
-            Delete(itWhich.m_pCurrent);
+            DeleteNode(itWhich.m_pCurrent);
 
             return m_tBinTree.GetIterator(pNext);
 
@@ -797,11 +863,11 @@ namespace xl
 
         ReverseIterator Delete(const ReverseIterator &itWhich)
         {
-            NodePtr pPrev = PreviousOf(itWhich.m_pCurrent);
+            NodePtr pPrev = m_tBinTree.PreviousOf(itWhich.m_pCurrent);
 
-            Delete(itWhich.m_pCurrent);
+            DeleteNode(itWhich.m_pCurrent);
 
-            return m_tBinTree.GetIterator(pPrev);
+            return m_tBinTree.GetReverseIterator(pPrev);
         }
     };
 
@@ -837,6 +903,16 @@ namespace xl
 //                 right: pRight,
 //                 size: $e.m_nSize
 //             ) : $e.tValue.tValue
+//         )
+//     )
+// }
+// xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
+//     preview (
+//         $e.m_pCurrent->tValue.tValue
+//     )
+//     children (
+//         #(
+//             [ptr] : &$e.m_pCurrent->tValue.tValue
 //         )
 //     )
 // }

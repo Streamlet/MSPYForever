@@ -122,8 +122,6 @@ namespace xl
 
         NodePtr SetRoot(NodePtr pNode)
         {
-            Clear();
-
             m_pRoot = pNode;
 
             return m_pRoot;
@@ -654,7 +652,7 @@ namespace xl
 
             }
 
-            ReverseIterator(const Iterator &that) : Iterator(that)
+            ReverseIterator(const ReverseIterator &that) : Iterator()
             {
                 *this = that;
             }

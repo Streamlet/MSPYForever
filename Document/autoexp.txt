@@ -114,6 +114,16 @@ xl::RBTree<*>{
         )
     )
 }
+xl::RBTree<*>::Iterator|xl::BinTree<*>::ReverseIterator{
+    preview (
+        $e.m_pCurrent->tValue.tValue
+    )
+    children (
+        #(
+            [ptr] : &$e.m_pCurrent->tValue.tValue
+        )
+    )
+}
 
 ;------------------------------------------------------------------------------
 ;  xl::Set
@@ -141,6 +151,16 @@ xl::Set<*>{
                 right: pRight,
                 size: $e.m_tRBTree.m_nSize
             ) : $e.tValue.tValue
+        )
+    )
+}
+xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
+    preview (
+        $e.m_pCurrent->tValue.tValue
+    )
+    children (
+        #(
+            [ptr] : &$e.m_pCurrent->tValue.tValue
         )
     )
 }
