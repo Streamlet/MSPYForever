@@ -319,11 +319,11 @@ namespace xl
         typedef Set<EdgePtr> EdgeSet;
 
     public:
-        bool AddNode(NodePtr pNode)
+        NodePtr AddNode(NodePtr pNode)
         {
             if (pNode == nullptr)
             {
-                return false;
+                return nullptr;
             }
 
             if (m_setNodes.Find(pNode) != m_setNodes.End())
@@ -333,19 +333,19 @@ namespace xl
 
             m_setNodes.Insert(pNode);
 
-            return true;
+            return pNode;
         }
 
-        bool AddEdge(EdgePtr pEdge, NodePtr pFromNode = nullptr, NodePtr pToNode = nullptr)
+        EdgePtr AddEdge(EdgePtr pEdge, NodePtr pFromNode = nullptr, NodePtr pToNode = nullptr)
         {
             if (pEdge == nullptr)
             {
-                return false;
+                return nullptr;
             }
 
             if (m_setEdges.Find(pEdge) != m_setEdges.End())
             {
-                return false;
+                return nullptr;
             }
 
             pEdge->pPrevious = pFromNode;
@@ -363,16 +363,16 @@ namespace xl
 
             m_setEdges.Insert(pEdge);
 
-            return true;
+            return pEdge;
         }
 
-        bool DeleteNode(NodePtr pNode)
+        void DeleteNode(NodePtr pNode)
         {
             auto itNode = m_setNodes.Find(pNode);
 
             if (itNode == m_setNodes.End())
             {
-                return false;
+                return;
             }
 
             for (auto itEdge = pNode->arrPrevious.Begin(); itEdge != pNode->arrPrevious.End(); ++itEdge)
@@ -419,17 +419,15 @@ namespace xl
 
             m_setNodes.Delete(itNode);
             delete pNode;
-
-            return true;
         }
 
-        bool DeleteEdge(EdgePtr pEdge)
+        void DeleteEdge(EdgePtr pEdge)
         {
             auto itEdge = m_setEdges.Find(pEdge);
 
             if (itEdge == m_setEdges.End())
             {
-                return false;
+                return;
             }
 
             if (pEdge->pPrevious != nullptr)
@@ -462,8 +460,6 @@ namespace xl
 
             m_setEdges.Delete(itEdge);
             delete pEdge;
-
-            return true;
         }
 
         const NodeSet &GetNodes()
