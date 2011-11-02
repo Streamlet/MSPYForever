@@ -45,6 +45,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Threads", "Threads", "{C5DC26E9-5A2C-453C-993D-554D9D220DA1}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Win32\Threads\xlCriticalSection.h = SourceCode\xl\Win32\Threads\xlCriticalSection.h
+		SourceCode\xl\Win32\Threads\xlThread.h = SourceCode\xl\Win32\Threads\xlThread.h
+		SourceCode\xl\Win32\Threads\xlThreadPool.h = SourceCode\xl\Win32\Threads\xlThreadPool.h
 		SourceCode\xl\Win32\Threads\xlTls.h = SourceCode\xl\Win32\Threads\xlTls.h
 	EndProjectSection
 EndProject
@@ -136,6 +138,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parser", "Parser", "{43BE58E5-6828-40BC-BD88-7BB1ECEC469D}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Parser\xlStateMachine.h = SourceCode\xl\Parser\xlStateMachine.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{F762A194-5340-4B26-B63C-F3AEABE24562}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\Messaging\xlMessageBus.h = SourceCode\xl\Win32\Messaging\xlMessageBus.h
 	EndProjectSection
 EndProject
 Global
@@ -234,6 +241,7 @@ Global
 		{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 		{8E12D1F8-E344-41C8-9FD9-2F93E874F24E} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 		{3B34D6A7-961D-432B-A284-A5FCA54ADB7B} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
+		{F762A194-5340-4B26-B63C-F3AEABE24562} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
 		{538AE18F-F369-4B89-B8E0-DBD5EDA379F1} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
 		{F057D34A-2199-48ED-B2AC-9A1A6B12BDF7} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
 		{8E218C86-AF3F-4DE0-AE39-F43BEA91AC54} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}

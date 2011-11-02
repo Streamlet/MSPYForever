@@ -46,6 +46,16 @@ namespace xl
             LeaveCriticalSection(&m_CriticalSection);
         }
 
+        bool TryLock()
+        {
+            if (!TryEnterCriticalSection(&m_CriticalSection))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     private:
         CRITICAL_SECTION m_CriticalSection;
     };
