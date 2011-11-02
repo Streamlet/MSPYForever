@@ -251,7 +251,6 @@ namespace xl
         {
             DWORD dwRetCode = 0;
 
-                TaskInfo task;
             while (true)
             {
                 enum ThreadPoolEvents
@@ -271,6 +270,7 @@ namespace xl
 
                 m_csTaskLocker.Lock();
 
+                TaskInfo task;
 
                 if (!m_setTasks.Empty())
                 {
