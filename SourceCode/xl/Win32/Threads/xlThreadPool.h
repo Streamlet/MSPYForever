@@ -20,6 +20,7 @@
 #include <xl/Meta/xlUtility.h>
 #include <xl/Meta/xlFunction.h>
 #include <xl/Containers/xlArray.h>
+#include <xl/Containers/xlSet.h>
 #include <xl/Win32/Threads/xlCriticalSection.h>
 #include <xl/Win32/Threads/xlThread.h>
 
@@ -81,7 +82,7 @@ namespace xl
                 it->Close();
             }
 
-            m_arrTasks.Clear();
+            m_setTasks.Clear();
             m_arrThreads.Clear();
 
             if (m_hEvent != NULL)
@@ -94,17 +95,21 @@ namespace xl
     private:
         struct TaskInfo
         {
-            ThreadPoolTask fnTask;
-            LPVOID lpParam;
+            static UINT ms_nCount;
 
-            TaskInfo(ThreadPoolTask fnTask = NullThreadPoolTask, LPVOID lpParam = nullptr) :
-                fnTask(fnTask), lpParam(lpParam)
+            ThreadPoolTask fnTask;
+            LPVOID         lpParam;
+            int    nPriority;
+            UINT   nCount;
+
+            TaskInfo(ThreadPoolTask fnTask = NullThreadPoolTask, LPVOID lpParam = nullptr, int nPriority = 0) :
+                fnTask(fnTask), lpParam(lpParam), nPriority(nPriority), nCount(++ms_nCount)
             {
 
             }
 
             TaskInfo(const TaskInfo &that) :
-                fnTask(NullThreadPoolTask), lpParam(nullptr)
+                fnTask(NullThreadPoolTask), lpParam(nullptr), nPriority(that.nPriority), nCount(++ms_nCount)
             {
                 *this = that;
             }
@@ -116,15 +121,116 @@ namespace xl
                     return *this;
                 }
 
-                this->fnTask  = that.fnTask;
-                this->lpParam = that.lpParam;
+                this->fnTask    = that.fnTask;
+                this->lpParam   = that.lpParam;
+                this->nPriority = that.nPriority;
 
                 return *this;
+            }
+
+            bool operator == (const TaskInfo &that) const
+            {
+                if (this == &that)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            bool operator != (const TaskInfo &that) const
+            {
+                if (this == &that)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            bool operator < (const TaskInfo &that) const
+            {
+                if (this == &that)
+                {
+                    return false;
+                }
+
+                if (this->nPriority < that.nPriority)
+                {
+                    return true;
+                }
+
+                if (this->nCount < that.nCount)
+                {
+                    return true;
+                }
+                
+                return false;
+            }
+
+            bool operator > (const TaskInfo &that) const
+            {
+                if (this == &that)
+                {
+                    return false;
+                }
+
+                if (this->nPriority > that.nPriority)
+                {
+                    return true;
+                }
+
+                if (this->nCount > that.nCount)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            bool operator <= (const TaskInfo &that) const
+            {
+                if (this == &that)
+                {
+                    return true;
+                }
+
+                if (this->nPriority < that.nPriority)
+                {
+                    return true;
+                }
+
+                if (this->nCount < that.nCount)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            bool operator >= (const TaskInfo &that) const
+            {
+                if (this == &that)
+                {
+                    return true;
+                }
+
+                if (this->nPriority > that.nPriority)
+                {
+                    return true;
+                }
+
+                if (this->nCount > that.nCount)
+                {
+                    return true;
+                }
+
+                return false;
             }
         };
 
     public:
-        bool AddTask(ThreadPoolTask fnTask, LPVOID lpParam)
+        bool AddTask(ThreadPoolTask fnTask, LPVOID lpParam, int nPriority = 0)
         {
             if (m_hEvent == NULL)
             {
@@ -132,7 +238,7 @@ namespace xl
             }
 
             m_csTaskLocker.Lock();
-            m_arrTasks.PushBack(TaskInfo(fnTask, lpParam));
+            m_setTasks.Insert(TaskInfo(fnTask, lpParam, nPriority));
             m_csTaskLocker.UnLock();
 
             SetEvent(m_hEvent);
@@ -145,6 +251,7 @@ namespace xl
         {
             DWORD dwRetCode = 0;
 
+                TaskInfo task;
             while (true)
             {
                 enum ThreadPoolEvents
@@ -164,14 +271,14 @@ namespace xl
 
                 m_csTaskLocker.Lock();
 
-                TaskInfo task;
 
-                if (!m_arrTasks.Empty())
+                if (!m_setTasks.Empty())
                 {
-                    task = m_arrTasks[0];
-                    m_arrTasks.PopFront();
+                    auto it = m_setTasks.ReverseBegin();
+                    task = *it;
+                    m_setTasks.Delete(it);
 
-                    if (m_arrTasks.Empty())
+                    if (m_setTasks.Empty())
                     {
                         ResetEvent(m_hEvent);
                     }
@@ -192,10 +299,12 @@ namespace xl
 
     private:
         Array<Thread>   m_arrThreads;
-        Array<TaskInfo> m_arrTasks;
+        Set<TaskInfo>   m_setTasks;
         CriticalSection m_csTaskLocker;
         HANDLE          m_hEvent;
     };
+
+    __declspec(selectany) UINT ThreadPool::TaskInfo::ms_nCount = 0;
 
 } // namespace xl
 
