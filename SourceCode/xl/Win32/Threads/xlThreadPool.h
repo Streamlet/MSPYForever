@@ -99,17 +99,18 @@ namespace xl
 
             ThreadPoolTask fnTask;
             LPVOID         lpParam;
+            HANDLE         hComplete;
             int    nPriority;
             UINT   nCount;
 
-            TaskInfo(ThreadPoolTask fnTask = NullThreadPoolTask, LPVOID lpParam = nullptr, int nPriority = 0) :
-                fnTask(fnTask), lpParam(lpParam), nPriority(nPriority), nCount(++ms_nCount)
+            TaskInfo(ThreadPoolTask fnTask = NullThreadPoolTask, LPVOID lpParam = nullptr, HANDLE hComplete = NULL, int nPriority = 0) :
+                fnTask(fnTask), lpParam(lpParam), hComplete(hComplete), nPriority(nPriority), nCount(++ms_nCount)
             {
 
             }
 
             TaskInfo(const TaskInfo &that) :
-                fnTask(NullThreadPoolTask), lpParam(nullptr), nPriority(that.nPriority), nCount(++ms_nCount)
+                fnTask(NullThreadPoolTask), lpParam(nullptr), hComplete(NULL), nPriority(that.nPriority), nCount(++ms_nCount)
             {
                 *this = that;
             }
@@ -123,6 +124,7 @@ namespace xl
 
                 this->fnTask    = that.fnTask;
                 this->lpParam   = that.lpParam;
+                this->hComplete = that.hComplete;
                 this->nPriority = that.nPriority;
 
                 return *this;
@@ -155,7 +157,7 @@ namespace xl
                     return false;
                 }
 
-                if (this->nPriority < that.nPriority)
+                if (this->nPriority > that.nPriority)
                 {
                     return true;
                 }
@@ -175,7 +177,7 @@ namespace xl
                     return false;
                 }
 
-                if (this->nPriority > that.nPriority)
+                if (this->nPriority < that.nPriority)
                 {
                     return true;
                 }
@@ -195,7 +197,7 @@ namespace xl
                     return true;
                 }
 
-                if (this->nPriority < that.nPriority)
+                if (this->nPriority > that.nPriority)
                 {
                     return true;
                 }
@@ -215,7 +217,7 @@ namespace xl
                     return true;
                 }
 
-                if (this->nPriority > that.nPriority)
+                if (this->nPriority < that.nPriority)
                 {
                     return true;
                 }
@@ -230,7 +232,7 @@ namespace xl
         };
 
     public:
-        bool AddTask(ThreadPoolTask fnTask, LPVOID lpParam, int nPriority = 0)
+        bool AddTask(ThreadPoolTask fnTask, LPVOID lpParam, int nPriority = 0, HANDLE hCompleteEvent = NULL)
         {
             if (m_hEvent == NULL)
             {
@@ -238,7 +240,7 @@ namespace xl
             }
 
             m_csTaskLocker.Lock();
-            m_setTasks.Insert(TaskInfo(fnTask, lpParam, nPriority));
+            m_setTasks.Insert(TaskInfo(fnTask, lpParam, hCompleteEvent, nPriority));
             m_csTaskLocker.UnLock();
 
             SetEvent(m_hEvent);
@@ -274,7 +276,7 @@ namespace xl
 
                 if (!m_setTasks.Empty())
                 {
-                    auto it = m_setTasks.ReverseBegin();
+                    auto it = m_setTasks.Begin();
                     task = *it;
                     m_setTasks.Delete(it);
 
@@ -286,7 +288,17 @@ namespace xl
 
                 m_csTaskLocker.UnLock();
 
+                if (task.hComplete != NULL)
+                {
+                    ResetEvent(task.hComplete);
+                }
+
                 dwRetCode = task.fnTask(hQuit, task.lpParam);
+
+                if (task.hComplete != NULL)
+                {
+                    SetEvent(task.hComplete);
+                }
             }
 
             return dwRetCode;
