@@ -31,7 +31,7 @@ namespace xl
     class ThreadPool : public NonCopyable
     {
     public:
-        ThreadPool() : m_hEvent(NULL)
+        ThreadPool() : m_bCreated(false), m_hEvent(NULL)
         {
 
         }
@@ -44,6 +44,13 @@ namespace xl
     public:
         bool Create(UINT nThreadCount)
         {
+            if (m_bCreated)
+            {
+                return true;
+            }
+
+            Destroy();
+
             m_hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 
             if (m_hEvent == NULL)
@@ -62,10 +69,11 @@ namespace xl
             {
                 if (!it->Create(ThreadCallback(this, &ThreadPool::ThreadProc), nullptr))
                 {
-                    Destroy();
                     return false;
                 }
             }
+
+            m_bCreated = true;
 
             return true;
         }
@@ -90,27 +98,40 @@ namespace xl
                 CloseHandle(m_hEvent);
                 m_hEvent = NULL;
             }
+
+            m_bCreated = false;
         }
 
     private:
         struct TaskInfo
         {
-            static UINT ms_nCount;
+            static UINT ms_nNextTaskInfoId;
 
             ThreadPoolTask fnTask;
             LPVOID         lpParam;
+            int            nPriority;
             HANDLE         hComplete;
-            int    nPriority;
-            UINT   nCount;
+            UINT           nTaskInfoId;
 
-            TaskInfo(ThreadPoolTask fnTask = NullThreadPoolTask, LPVOID lpParam = nullptr, HANDLE hComplete = NULL, int nPriority = 0) :
-                fnTask(fnTask), lpParam(lpParam), hComplete(hComplete), nPriority(nPriority), nCount(++ms_nCount)
+            TaskInfo(ThreadPoolTask fnTask = NullThreadPoolTask,
+                     LPVOID lpParam = nullptr,
+                     int nPriority = 0,
+                     HANDLE hComplete = NULL) :
+                fnTask(fnTask),
+                lpParam(lpParam),
+                nPriority(nPriority),
+                hComplete(hComplete),
+                nTaskInfoId(ms_nNextTaskInfoId++)
             {
 
             }
 
             TaskInfo(const TaskInfo &that) :
-                fnTask(NullThreadPoolTask), lpParam(nullptr), hComplete(NULL), nPriority(that.nPriority), nCount(++ms_nCount)
+                fnTask(NullThreadPoolTask),
+                hComplete(NULL),
+                lpParam(nullptr),
+                nPriority(that.nPriority),
+                nTaskInfoId(ms_nNextTaskInfoId++)
             {
                 *this = that;
             }
@@ -162,7 +183,7 @@ namespace xl
                     return true;
                 }
 
-                if (this->nCount < that.nCount)
+                if (this->nTaskInfoId < that.nTaskInfoId)
                 {
                     return true;
                 }
@@ -182,7 +203,7 @@ namespace xl
                     return true;
                 }
 
-                if (this->nCount > that.nCount)
+                if (this->nTaskInfoId > that.nTaskInfoId)
                 {
                     return true;
                 }
@@ -202,7 +223,7 @@ namespace xl
                     return true;
                 }
 
-                if (this->nCount < that.nCount)
+                if (this->nTaskInfoId < that.nTaskInfoId)
                 {
                     return true;
                 }
@@ -222,7 +243,7 @@ namespace xl
                     return true;
                 }
 
-                if (this->nCount > that.nCount)
+                if (this->nTaskInfoId > that.nTaskInfoId)
                 {
                     return true;
                 }
@@ -234,18 +255,51 @@ namespace xl
     public:
         bool AddTask(ThreadPoolTask fnTask, LPVOID lpParam, int nPriority = 0, HANDLE hCompleteEvent = NULL)
         {
-            if (m_hEvent == NULL)
+            if (!m_bCreated)
             {
                 return false;
             }
 
             m_csTaskLocker.Lock();
-            m_setTasks.Insert(TaskInfo(fnTask, lpParam, hCompleteEvent, nPriority));
+            m_setTasks.Insert(TaskInfo(fnTask, lpParam, nPriority, hCompleteEvent));
             m_csTaskLocker.UnLock();
 
             SetEvent(m_hEvent);
 
             return true;
+        }
+
+        bool RemoveTask(ThreadPoolTask fnTask, LPVOID lpParam, int nPriority = 0, HANDLE hCompleteEvent = NULL)
+        {
+            if (!m_bCreated)
+            {
+                return false;
+            }
+
+            bool bFound = false;
+
+            m_csTaskLocker.Lock();
+
+            for (auto it = m_setTasks.Begin(); it != m_setTasks.End(); )
+            {
+                if (it->fnTask == fnTask
+                    && it->lpParam == lpParam
+                    && it->nPriority == nPriority
+                    && it->hComplete == hCompleteEvent)
+                {
+                    bFound = true;
+
+                    it = m_setTasks.Delete(it);
+                }
+                else
+                {
+                    ++it;
+                }
+            }
+
+            m_csTaskLocker.UnLock();
+
+            return bFound;
         }
 
     private:
@@ -314,9 +368,10 @@ namespace xl
         Set<TaskInfo>   m_setTasks;
         CriticalSection m_csTaskLocker;
         HANDLE          m_hEvent;
+        bool            m_bCreated;
     };
 
-    __declspec(selectany) UINT ThreadPool::TaskInfo::ms_nCount = 0;
+    __declspec(selectany) UINT ThreadPool::TaskInfo::ms_nNextTaskInfoId = 0;
 
 } // namespace xl
 
