@@ -332,12 +332,12 @@ namespace xl
             return *this;                                                                                       \
         }                                                                                                       \
                                                                                                                 \
-        bool operator == (const Function &that)                                                                 \
+        bool operator == (const Function &that) const                                                           \
         {                                                                                                       \
             return this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());                           \
         }                                                                                                       \
                                                                                                                 \
-        bool operator != (const Function &that)                                                                 \
+        bool operator != (const Function &that) const                                                           \
         {                                                                                                       \
             return !this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());                          \
         }                                                                                                       \
