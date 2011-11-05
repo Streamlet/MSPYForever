@@ -30,7 +30,7 @@ namespace xl
     class ThreadPool : public NonCopyable
     {
     public:
-        typedef xl::Function<void (HANDLE, ParamType)> TaskType;
+        typedef Function<void (HANDLE, ParamType)> TaskType;
 
     public:
         ThreadPool() : m_bCreated(false), m_hEvent(NULL)

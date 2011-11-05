@@ -29,7 +29,7 @@ namespace xl
     class Thread : public NonCopyable
     {
     public:
-        typedef xl::Function<DWORD (HANDLE, ParamType)> ProcType;
+        typedef Function<DWORD (HANDLE, ParamType)> ProcType;
 
     public:
         Thread() : m_hEventQuit(NULL), m_hThread(NULL), m_bCreated(false), m_param()

@@ -33,7 +33,7 @@ namespace xl
     class MessageBus : public NonCopyable
     {
     public:
-        typedef xl::Function<void (HANDLE, MsgType, ParamType)> HandlerType;
+        typedef Function<void (HANDLE, MsgType, ParamType)> HandlerType;
 
     public:
         MessageBus() : m_bStarted(false)
@@ -56,7 +56,7 @@ namespace xl
 
             Stop();
 
-            if (!m_tpTaskDispatcher.Create(nThreadCount))
+            if (!m_tpTaskDispatcher.Create())
             {
                 return false;
             }
