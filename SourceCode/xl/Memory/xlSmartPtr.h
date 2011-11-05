@@ -153,7 +153,7 @@ namespace xl
         }
 
     public:
-        T *RawPointer()
+        T *RawPointer() const
         {
             return this->m_pData;
         }
@@ -206,7 +206,6 @@ namespace xl
         {
 
         }
-
     };
 
     template <typename T>

@@ -47,8 +47,9 @@ namespace xl
     class FunctionBase<R, XL_TYPELIST_0()>
     {
     public:
-        virtual FunctionBase *Clone() const = 0;
-        virtual R Invoke()                  = 0;
+        virtual FunctionBase *Clone() const        = 0;
+        virtual R Invoke()                         = 0;
+        virtual bool IsEqual(FunctionBase *) const = 0;
         virtual ~FunctionBase() {}
     };
 
@@ -60,6 +61,7 @@ namespace xl
     public:                                                                                         \
         virtual FunctionBase *Clone() const             = 0;                                        \
         virtual R Invoke(XL_FUNCTION_TYPENAME_LIST(n))  = 0;                                        \
+        virtual bool IsEqual(FunctionBase *) const      = 0;                                        \
         virtual ~FunctionBase() {}                                                                  \
     };                                                                                              \
 
@@ -68,7 +70,7 @@ namespace xl
     XL_FUNCTION_FUNCTORBASE(XL_FUNCTION_DEFINE_MAX)
 
     template <typename R, typename P, typename F>
-    class FunctionHandler : public FunctionBase<R, P>
+    class FunctionPointerHandler : public FunctionBase<R, P>
     {
     private:
         typedef R ReturnType;
@@ -76,39 +78,127 @@ namespace xl
         typedef F FunctionType;
 
     public:
-        FunctionHandler(const FunctionType &fnFunction)
-            : m_fnFunction(fnFunction)
+        FunctionPointerHandler(const FunctionType &fnFunctionPointer)
+            : m_fnFunctionPointer(fnFunctionPointer)
         {
 
         }
 
     private:
-        FunctionType m_fnFunction;
+        FunctionType m_fnFunctionPointer;
 
     public:
         FunctionBase *Clone() const
         {
-            return new FunctionHandler(m_fnFunction);
+            return new FunctionPointerHandler(m_fnFunctionPointer);
         }
 
         ReturnType Invoke()
         {
-            return m_fnFunction();
+            return m_fnFunctionPointer();
         }
 
-#define XL_FUNCTION_FUNCTION_INVOKE_PATTERN(n)                          \
+        bool IsEqual(FunctionBase *pfn) const
+        {
+            if (pfn == nullptr)
+            {
+                return false;
+            }
+
+            if (this == pfn)
+            {
+                return true;
+            }
+
+            FunctionPointerHandler *pfnFunctionHandler = dynamic_cast<FunctionPointerHandler *>(pfn);
+
+            if (pfnFunctionHandler == nullptr)
+            {
+                return false;
+            }
+
+            if (pfnFunctionHandler->m_fnFunctionPointer == m_fnFunctionPointer)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+#define XL_FUNCTION_FUNCTIONPOINTER_INVOKE_PATTERN(n)                   \
                                                                         \
         typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type      \
                 XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                   \
                                                                         \
         ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))             \
         {                                                               \
-            return m_fnFunction(XL_FUNCTION_VARIABLE_LIST(n));          \
+            return m_fnFunctionPointer(XL_FUNCTION_VARIABLE_LIST(n));   \
         }                                                               \
 
-#define XL_FUNCTION_FUNCTION_INVOKE(n)  XL_REPY(XL_FUNCTION_FUNCTION_INVOKE_PATTERN, n, XL_NIL)
+#define XL_FUNCTION_FUNCTIONPOINTER_INVOKE(n)  XL_REPY(XL_FUNCTION_FUNCTIONPOINTER_INVOKE_PATTERN, n, XL_NIL)
 
-        XL_FUNCTION_FUNCTION_INVOKE(XL_FUNCTION_DEFINE_MAX)
+        XL_FUNCTION_FUNCTIONPOINTER_INVOKE(XL_FUNCTION_DEFINE_MAX)
+    };
+
+    template <typename R, typename P, typename F>
+    class FunctorHandler : public FunctionBase<R, P>
+    {
+    private:
+        typedef R ReturnType;
+        typedef P ParamList;
+        typedef F FunctionType;
+
+    public:
+        FunctorHandler(const FunctionType &fnFunctor)
+            : m_fnFunctor(fnFunctor)
+        {
+
+        }
+
+    private:
+        FunctionType m_fnFunctor;
+
+    public:
+        FunctionBase *Clone() const
+        {
+            return new FunctorHandler(m_fnFunctor);
+        }
+
+        ReturnType Invoke()
+        {
+            return m_fnFunctor();
+        }
+
+        bool IsEqual(FunctionBase *pfn) const
+        {
+            if (pfn == nullptr)
+            {
+                return false;
+            }
+
+            if (this == pfn)
+            {
+                return true;
+            }
+
+            // Functors are always unequal.
+
+            return false;
+        }
+
+#define XL_FUNCTION_FUNCTOR_INVOKE_PATTERN(n)                           \
+                                                                        \
+        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type      \
+                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                   \
+                                                                        \
+        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))             \
+        {                                                               \
+            return m_fnFunctor(XL_FUNCTION_VARIABLE_LIST(n));           \
+        }                                                               \
+
+#define XL_FUNCTION_FUNCTOR_INVOKE(n)  XL_REPY(XL_FUNCTION_FUNCTOR_INVOKE_PATTERN, n, XL_NIL)
+
+        XL_FUNCTION_FUNCTOR_INVOKE(XL_FUNCTION_DEFINE_MAX)
     };
 
     template <typename R, typename P, typename T, typename F>
@@ -140,6 +230,34 @@ namespace xl
         ReturnType Invoke()
         {
             return (m_pObject->*m_fnFunction)();
+        }
+
+        bool IsEqual(FunctionBase *pfn) const
+        {
+            if (pfn == nullptr)
+            {
+                return false;
+            }
+
+            if (this == pfn)
+            {
+                return true;
+            }
+
+            MemberFunctionHandler *pfnMemberFunctionHandler = dynamic_cast<MemberFunctionHandler *>(pfn);
+
+            if (pfnMemberFunctionHandler == nullptr)
+            {
+                return false;
+            }
+
+            if (pfnMemberFunctionHandler->m_pObject == m_pObject
+                && pfnMemberFunctionHandler->m_fnFunction == m_fnFunction)
+            {
+                return true;
+            }
+
+            return false;
         }
 
 #define XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN(n)                            \
@@ -187,8 +305,15 @@ namespace xl
                                                                                                                 \
     public:                                                                                                     \
         template <typename F>                                                                                   \
-        Function(F fnFunction)                                                                                  \
-            : m_pFunctionBase(new FunctionHandler<ReturnType, ParamList, F>(fnFunction))                        \
+        Function(F *pFunctionPointer)                                                                           \
+            : m_pFunctionBase(new FunctionPointerHandler<ReturnType, ParamList, F *>(pFunctionPointer))         \
+        {                                                                                                       \
+                                                                                                                \
+        }                                                                                                       \
+                                                                                                                \
+        template <typename F>                                                                                   \
+        Function(F fnFunctor)                                                                                   \
+            : m_pFunctionBase(new FunctorHandler<ReturnType, ParamList, F>(fnFunctor))                          \
         {                                                                                                       \
                                                                                                                 \
         }                                                                                                       \
@@ -205,6 +330,16 @@ namespace xl
         {                                                                                                       \
             this->m_pFunctionBase = that.m_pFunctionBase->Clone();                                              \
             return *this;                                                                                       \
+        }                                                                                                       \
+                                                                                                                \
+        bool operator == (const Function &that)                                                                 \
+        {                                                                                                       \
+            return this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());                           \
+        }                                                                                                       \
+                                                                                                                \
+        bool operator != (const Function &that)                                                                 \
+        {                                                                                                       \
+            return !this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());                          \
         }                                                                                                       \
                                                                                                                 \
     private:                                                                                                    \
