@@ -213,7 +213,7 @@ namespace xl
         }
 
     private:
-        static void NullMessageBusHandler(HANDLE, MsgType, ParamType)
+        static void NullMessageBusHandler(HANDLE hQuit, MsgType message, ParamType param)
         {
 
         }
