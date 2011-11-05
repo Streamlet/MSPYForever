@@ -26,10 +26,12 @@
 
 namespace xl
 {
-    typedef xl::Function<DWORD (HANDLE, LPVOID)> ThreadPoolTask;
-
+    template <typename ParamType = LPVOID>
     class ThreadPool : public NonCopyable
     {
+    public:
+        typedef xl::Function<void (HANDLE, ParamType)> TaskType;
+
     public:
         ThreadPool() : m_bCreated(false), m_hEvent(NULL)
         {
@@ -42,7 +44,7 @@ namespace xl
         }
 
     public:
-        bool Create(UINT nThreadCount)
+        bool Create(UINT nThreadCount = 4)
         {
             if (m_bCreated)
             {
@@ -67,7 +69,7 @@ namespace xl
 
             for (auto it = m_arrThreads.Begin(); it != m_arrThreads.End(); ++it)
             {
-                if (!it->Create(ThreadCallback(this, &ThreadPool::ThreadProc), nullptr))
+                if (!it->Create(Thread<>::ProcType(this, &ThreadPool::ThreadProc), nullptr))
                 {
                     return false;
                 }
@@ -87,7 +89,7 @@ namespace xl
 
             for (auto it = m_arrThreads.Begin(); it != m_arrThreads.End(); ++it)
             {
-                it->Close();
+                it->Destroy();
             }
 
             m_setTasks.Clear();
@@ -107,18 +109,18 @@ namespace xl
         {
             static UINT ms_nNextTaskInfoId;
 
-            ThreadPoolTask fnTask;
-            LPVOID         lpParam;
-            int            nPriority;
-            HANDLE         hComplete;
-            UINT           nTaskInfoId;
+            TaskType  fnTask;
+            ParamType param;
+            int       nPriority;
+            HANDLE    hComplete;
+            UINT      nTaskInfoId;
 
-            TaskInfo(ThreadPoolTask fnTask = NullThreadPoolTask,
-                     LPVOID lpParam = nullptr,
+            TaskInfo(TaskType fnTask = NullThreadPoolTask,
+                     ParamType param = ParamType(),
                      int nPriority = 0,
                      HANDLE hComplete = NULL) :
                 fnTask(fnTask),
-                lpParam(lpParam),
+                param(param),
                 nPriority(nPriority),
                 hComplete(hComplete),
                 nTaskInfoId(ms_nNextTaskInfoId++)
@@ -129,7 +131,7 @@ namespace xl
             TaskInfo(const TaskInfo &that) :
                 fnTask(NullThreadPoolTask),
                 hComplete(NULL),
-                lpParam(nullptr),
+                param(),
                 nPriority(that.nPriority),
                 nTaskInfoId(ms_nNextTaskInfoId++)
             {
@@ -144,7 +146,7 @@ namespace xl
                 }
 
                 this->fnTask    = that.fnTask;
-                this->lpParam   = that.lpParam;
+                this->param     = that.param;
                 this->hComplete = that.hComplete;
                 this->nPriority = that.nPriority;
 
@@ -253,7 +255,7 @@ namespace xl
         };
 
     public:
-        bool AddTask(ThreadPoolTask fnTask, LPVOID lpParam, int nPriority = 0, HANDLE hCompleteEvent = NULL)
+        bool AddTask(TaskType fnTask, ParamType param, int nPriority = 0, HANDLE hCompleteEvent = NULL)
         {
             if (!m_bCreated)
             {
@@ -261,7 +263,7 @@ namespace xl
             }
 
             m_csTaskLocker.Lock();
-            m_setTasks.Insert(TaskInfo(fnTask, lpParam, nPriority, hCompleteEvent));
+            m_setTasks.Insert(TaskInfo(fnTask, param, nPriority, hCompleteEvent));
             m_csTaskLocker.UnLock();
 
             SetEvent(m_hEvent);
@@ -269,7 +271,7 @@ namespace xl
             return true;
         }
 
-        bool RemoveTask(ThreadPoolTask fnTask, LPVOID lpParam, int nPriority = 0, HANDLE hCompleteEvent = NULL)
+        bool RemoveTask(TaskType fnTask, ParamType param, int nPriority = 0, HANDLE hCompleteEvent = NULL)
         {
             if (!m_bCreated)
             {
@@ -283,7 +285,7 @@ namespace xl
             for (auto it = m_setTasks.Begin(); it != m_setTasks.End(); )
             {
                 if (it->fnTask == fnTask
-                    && it->lpParam == lpParam
+                    && it->param == param
                     && it->nPriority == nPriority
                     && it->hComplete == hCompleteEvent)
                 {
@@ -305,8 +307,6 @@ namespace xl
     private:
         DWORD ThreadProc(HANDLE hQuit, LPVOID lpParam)
         {
-            DWORD dwRetCode = 0;
-
             while (true)
             {
                 enum ThreadPoolEvents
@@ -347,7 +347,7 @@ namespace xl
                     ResetEvent(task.hComplete);
                 }
 
-                dwRetCode = task.fnTask(hQuit, task.lpParam);
+                task.fnTask(hQuit, task.param);
 
                 if (task.hComplete != NULL)
                 {
@@ -355,23 +355,24 @@ namespace xl
                 }
             }
 
-            return dwRetCode;
-        }
-
-        static DWORD NullThreadPoolTask(HANDLE hQuit, LPVOID lpParam)
-        {
             return 0;
         }
 
+        static void NullThreadPoolTask(HANDLE hQuit, ParamType param)
+        {
+
+        }
+
     private:
-        Array<Thread>   m_arrThreads;
+        Array<Thread<>> m_arrThreads;
         Set<TaskInfo>   m_setTasks;
         CriticalSection m_csTaskLocker;
         HANDLE          m_hEvent;
         bool            m_bCreated;
     };
 
-    __declspec(selectany) UINT ThreadPool::TaskInfo::ms_nNextTaskInfoId = 0;
+    template <typename ParamType>
+    __declspec(selectany) UINT ThreadPool<ParamType>::TaskInfo::ms_nNextTaskInfoId = 0;
 
 } // namespace xl
 

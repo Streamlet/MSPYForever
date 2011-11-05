@@ -25,28 +25,32 @@
 
 namespace xl
 {
-    typedef xl::Function<DWORD (HANDLE, LPVOID)> ThreadCallback;
-
+    template <typename ParamType = LPVOID>
     class Thread : public NonCopyable
     {
     public:
-        Thread() : m_hEventQuit(NULL), m_hThread(NULL), m_lpParam(nullptr)
+        typedef xl::Function<DWORD (HANDLE, ParamType)> ProcType;
+
+    public:
+        Thread() : m_hEventQuit(NULL), m_hThread(NULL), m_bCreated(false), m_param()
         {
 
         }
 
         ~Thread()
         {
-            Close();
+            Destroy();
         }
 
     public:
-        bool Create(ThreadCallback fnThreadCallback, LPVOID lpParam)
+        bool Create(ProcType fnThreadProc, ParamType param)
         {
-            if (m_hEventQuit != NULL)
+            if (m_bCreated)
             {
-                return false;
+                return true;
             }
+
+            Destroy();
 
             m_hEventQuit = CreateEvent(NULL, TRUE, FALSE, NULL);
 
@@ -55,37 +59,30 @@ namespace xl
                 return false;
             }
 
-            m_hThread = (HANDLE)_beginthreadex(NULL, 0, StaticThreadProc, this, CREATE_SUSPENDED, NULL);
+            m_fnThreadProc = fnThreadProc;
+            m_param        = param;
+
+            m_hThread = (HANDLE)_beginthreadex(NULL, 0, StaticThreadProc, this, 0, NULL);
 
             if (m_hThread == NULL)
             {
-                CloseHandle(m_hEventQuit);
-                m_hEventQuit = NULL;
-
                 return false;
             }
-
-            m_fnThread = fnThreadCallback;
-            m_lpParam = lpParam;
-
-            ResumeThread(m_hThread);
 
             return true;
         }
 
         void NotifyStop()
         {
-            if (m_hEventQuit == NULL)
+            if (m_bCreated)
             {
-                return;
+                SetEvent(m_hEventQuit);
             }
-
-            SetEvent(m_hEventQuit);
         }
 
         bool Wait(DWORD dwTimeout = INFINITE)
         {
-            if (m_hEventQuit == NULL)
+            if (!m_bCreated)
             {
                 return true;
             }
@@ -98,8 +95,10 @@ namespace xl
             return true;
         }
 
-        void Close()
+        void Destroy()
         {
+            NotifyStop();
+
             if (!Wait())
             {
                 return;
@@ -108,10 +107,11 @@ namespace xl
             CloseHandle(m_hThread);
             CloseHandle(m_hEventQuit);
 
-            m_fnThread = ThreadCallback(NullThreadProc);
-            m_lpParam = nullptr;
-            m_hThread = NULL;
-            m_hEventQuit = NULL;
+            m_fnThreadProc = NullThreadProc;
+            m_param        = nullptr;
+            m_hThread      = NULL;
+            m_hEventQuit   = NULL;
+            m_bCreated     = false;
         }
 
     private:
@@ -122,19 +122,20 @@ namespace xl
 
         DWORD ThreadProc()
         {
-            return m_fnThread(m_hEventQuit, m_lpParam);
+            return m_fnThreadProc(m_hEventQuit, m_param);
         }
 
-        static DWORD NullThreadProc(HANDLE hQuit, LPVOID lpParam)
+        static DWORD NullThreadProc(HANDLE hQuit, ParamType param)
         {
             return 0;
         }
 
     private:
-        HANDLE m_hEventQuit;
-        HANDLE m_hThread;
-        ThreadCallback m_fnThread;
-        LPVOID m_lpParam;
+        HANDLE    m_hEventQuit;
+        HANDLE    m_hThread;
+        bool      m_bCreated;
+        ProcType  m_fnThreadProc;
+        ParamType m_param;
     };
 
 } // namespace xl
