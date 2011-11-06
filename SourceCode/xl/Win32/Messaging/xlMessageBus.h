@@ -150,7 +150,7 @@ namespace xl
 
             if (itHandlers != m_mapHandlers.End())
             {
-                for (auto it = itHandlers->Value.Begin(); ir != itHandlers->Value.End(); )
+                for (auto it = itHandlers->Value.Begin(); it != itHandlers->Value.End(); )
                 {
                     if (*it == fnMessageHandler)
                     {
