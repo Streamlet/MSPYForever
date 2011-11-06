@@ -127,7 +127,7 @@ namespace xl
         HFONT m_hFontMessage;
         
     private:
-        static CommCtrlInitializer ms_cci;
+        CommCtrlInitializer ms_cci;
 
     public: // Attributes
 
@@ -873,8 +873,6 @@ namespace xl
             return ::SetDlgItemText(m_hWnd, nID, lpszString);
         }
     };
-
-    __declspec(selectany) CommCtrlInitializer  Window::ms_cci;
 
 } // namespace xl
 

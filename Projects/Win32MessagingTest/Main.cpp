@@ -152,6 +152,11 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
             nLeft = START;
         }
 
+        if (nTop + HEIGHT > nScreenHeight)
+        {
+            break;
+        }
+
         pWindows[i].Create(nLeft, nTop, WIDTH, HEIGHT);
         pWindows[i].SetWindowText(_T("Messaging Test Window"));
         pWindows[i].ShowWindow();
