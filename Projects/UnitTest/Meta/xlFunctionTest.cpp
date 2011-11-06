@@ -144,4 +144,34 @@ namespace
         XL_TEST_ASSERT(int1_functor(0) == 2);
         XL_TEST_ASSERT(int1_memfun(0) == 3);
     }
+
+    XL_TEST_CASE()
+    {
+        Function<void ()>    void0_fun(&voidfun0);
+        Function<void ()>    void0_fun_(voidfun0);
+        Function<void ()>    void0_functor(voidfunctor0);
+        Function<void ()>    void0_memfun(&test, &Test::voidmem0);
+
+        XL_TEST_ASSERT(void0_fun == void0_fun);
+        XL_TEST_ASSERT(void0_fun_ == void0_fun_);
+        XL_TEST_ASSERT(void0_functor == void0_functor);
+        XL_TEST_ASSERT(void0_memfun == void0_memfun);
+
+        XL_TEST_ASSERT(void0_fun == void0_fun_);
+        XL_TEST_ASSERT(void0_fun != void0_functor);
+        XL_TEST_ASSERT(void0_fun != void0_memfun);
+        XL_TEST_ASSERT(void0_fun_ != void0_functor);
+        XL_TEST_ASSERT(void0_fun_ != void0_memfun);
+        XL_TEST_ASSERT(void0_functor != void0_memfun);
+
+        Function<void ()>    void0_fun1(&voidfun0);
+        Function<void ()>    void0_fun_1(voidfun0);
+        Function<void ()>    void0_functor1(voidfunctor0);
+        Function<void ()>    void0_memfun1(&test, &Test::voidmem0);
+
+        XL_TEST_ASSERT(void0_fun == void0_fun1);
+        XL_TEST_ASSERT(void0_fun_ == void0_fun_1);
+        XL_TEST_ASSERT(void0_functor != void0_functor1);
+        XL_TEST_ASSERT(void0_memfun == void0_memfun1);
+    }
 }
