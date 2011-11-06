@@ -61,7 +61,7 @@ private:
 private:
     LRESULT OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
     {
-        InterlockedIncrement(&g_nWindows);
+        ++g_nWindows;
 
         m_editText.Create(ID_EDIT_TEXT,   this, 10,  10,  200, 120, WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL | ES_AUTOHSCROLL | ES_MULTILINE | ES_READONLY);
         m_editInput.Create(ID_EDIT_INPUT,  this, 10,  140, 120, 20);
@@ -85,7 +85,7 @@ private:
         g_msgbus.Unregister(ID_MSGBUS_QUIT,  MsgBus::HandlerType(this, &DemoWindow::OnMessageQuit));
         g_msgbus.Unregister(ID_MSGBUS_TEXT_COMING,  MsgBus::HandlerType(this, &DemoWindow::OnMessageTextComing));
 
-        if (InterlockedDecrement(&g_nWindows) == 0)
+        if (--g_nWindows == 0)
         {
             PostQuitMessage(0);
         }
