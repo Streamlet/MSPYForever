@@ -75,11 +75,37 @@ namespace xl
         {
             m_tpTaskDispatcher.Destroy();
             m_tpTaskExecuter.Destroy();
+
+            m_csHandlersLocker.Lock();
+
+            for (auto itMsg = m_mapHandlers.Begin(); itMsg != m_mapHandlers.End(); ++itMsg)
+            {
+                for (auto itHandler = itMsg->Value.Begin(); itHandler != itMsg->Value.End(); ++itHandler)
+                {
+                    CloseHandle(itHandler->hEvent);
+                }
+            }
+
             m_mapHandlers.Clear();
+
+            m_csHandlersLocker.UnLock();
+
             m_bStarted = false;
         }
 
     private:
+        struct HandlerInfo
+        {
+            HandlerType fnHandler;
+            HANDLE hEvent;
+
+            HandlerInfo(HandlerType fnHandler = NullMessageBusHandler, HANDLE hEvent = NULL) :
+                fnHandler(fnHandler), hEvent(hEvent)
+            {
+
+            }
+        };
+
         struct MessageInfo
         {
             MsgType   message;
@@ -95,11 +121,11 @@ namespace xl
 
         struct TaskInfo
         {
-            HandlerType handler;
+            HandlerInfo handler;
             MsgType     message;
             ParamType   param;
 
-            TaskInfo(HandlerType handler, MsgType message = MsgType(), ParamType param = ParamType()):
+            TaskInfo(HandlerInfo handler, MsgType message = MsgType(), ParamType param = ParamType()):
                 handler(handler), message(message), param(param)
             {
 
@@ -110,8 +136,8 @@ namespace xl
         typedef SafeSharedPtr<TaskInfo> ExecuterThreadPoolParamType;
         typedef ThreadPool<DispatcherThreadPoolParamType> DispatcherThreadPoolType;
         typedef ThreadPool<ExecuterThreadPoolParamType> ExecuterThreadPoolType;
-        typedef Array<HandlerType> HandlerList;
-        typedef Map<MsgType, HandlerList>   HandlerMap;
+        typedef Array<HandlerInfo> HandlerList;
+        typedef Map<MsgType, HandlerList> HandlerMap;
 
     private:
         DispatcherThreadPoolType m_tpTaskDispatcher;
@@ -128,14 +154,21 @@ namespace xl
                 return false;
             }
 
+            HANDLE hEvent = CreateEvent(NULL, TRUE, TRUE, NULL);
+
+            if (hEvent == NULL)
+            {
+                return false;
+            }
+
             m_csHandlersLocker.Lock();
-            m_mapHandlers[nMessageId].PushBack(fnMessageHandler);
+            m_mapHandlers[nMessageId].PushBack(HandlerInfo(fnMessageHandler, hEvent));
             m_csHandlersLocker.UnLock();
 
             return true;
         }
 
-        bool Unregister(MsgType nMessageId, HandlerType fnMessageHandler)
+        bool Unregister(MsgType nMessageId, HandlerType fnMessageHandler, bool bWait = true)
         {
             if (!m_bStarted)
             {
@@ -143,6 +176,7 @@ namespace xl
             }
 
             bool bFound = false;
+            HANDLE hEvent = NULL;
 
             m_csHandlersLocker.Lock();
 
@@ -152,8 +186,9 @@ namespace xl
             {
                 for (auto it = itHandlers->Value.Begin(); it != itHandlers->Value.End(); )
                 {
-                    if (*it == fnMessageHandler)
+                    if (it->fnHandler == fnMessageHandler)
                     {
+                        hEvent = it->hEvent;
                         it = itHandlers->Value.Delete(it);
                     }
                     else
@@ -164,6 +199,16 @@ namespace xl
             }
 
             m_csHandlersLocker.UnLock();
+
+            if (hEvent != NULL)
+            {
+                if (bWait)
+                {
+                    WaitForSingleObject(hEvent, INFINITE);
+                }
+
+                CloseHandle(hEvent);
+            }
 
             return bFound;
         }
@@ -203,13 +248,14 @@ namespace xl
             {
                 m_tpTaskExecuter.AddTask(ExecuterThreadPoolType::TaskType(this, &MessageBus::Execute),
                                          ExecuterThreadPoolParamType(new TaskInfo(*it, param->message, param->param)),
-                                         param->nPriority);
+                                         param->nPriority,
+                                         it->hEvent);
             }
         }
 
         void Execute(HANDLE hQuit, ExecuterThreadPoolParamType param)
         {
-            param->handler(hQuit, param->message, param->param);
+            param->handler.fnHandler(hQuit, param->message, param->param);
         }
 
     private:

@@ -82,6 +82,8 @@ namespace xl
 
         void Destroy()
         {
+            m_csTaskLocker.Lock();
+
             for (auto it = m_arrThreads.Begin(); it != m_arrThreads.End(); ++it)
             {
                 it->NotifyStop();
@@ -94,6 +96,8 @@ namespace xl
 
             m_setTasks.Clear();
             m_arrThreads.Clear();
+
+            m_csTaskLocker.UnLock();
 
             if (m_hEvent != NULL)
             {

@@ -118,7 +118,7 @@ private:
 
     void OnMessageQuit(HANDLE hQuit, UINT nMessageId, StringPtr pMsgParam)
     {
-        SendMessage(WM_CLOSE, 0, 0);
+        PostMessage(WM_CLOSE, 0, 0);
     }
 };
 
