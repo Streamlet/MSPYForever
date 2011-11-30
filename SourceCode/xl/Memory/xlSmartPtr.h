@@ -80,7 +80,10 @@ namespace xl
         SmartPtr(T *pData) :
             m_pData(pData), m_pRefCounter(nullptr)
         {
-            AddRef();
+            if (m_pData != nullptr)
+            {
+                AddRef();
+            }
         }
 
         SmartPtr(const SmartPtr &that) :
@@ -88,18 +91,23 @@ namespace xl
         {
             this->m_pData = that.m_pData;
             this->m_pRefCounter = that.m_pRefCounter;
-            this->AddRef();
+            
+            AddRef();
         }
 
         SmartPtr &operator=(const SmartPtr &that)
         {
             if (this != &that && this->m_pData != that.m_pData)
             {
-                this->Release();
+                Release();
 
                 this->m_pData = that.m_pData;
                 this->m_pRefCounter = that.m_pRefCounter;
-                this->AddRef();    
+                
+                if (m_pData != nullptr)
+                {
+                    AddRef();    
+                }
             }
 
             return *this;
