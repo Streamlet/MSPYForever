@@ -27,15 +27,15 @@ namespace xl
         Memory();
 
     public:
-        static bool IsEqual(void *pMemory1, void *pMemory2, size_t cbSize)
+        static bool IsEqual(const void *pMemory1, const void *pMemory2, size_t cbSize)
         {
             if (pMemory1 == nullptr || pMemory2 == nullptr || cbSize == 0)
             {
                 return pMemory1 == pMemory2;
             }
 
-            unsigned int *pUInt1 = (unsigned int *)pMemory1;
-            unsigned int *pUInt2 = (unsigned int *)pMemory2;
+            const unsigned int *pUInt1 = (const unsigned int *)pMemory1;
+            const unsigned int *pUInt2 = (const unsigned int *)pMemory2;
 
             while (cbSize >= 4)
             {
@@ -47,8 +47,8 @@ namespace xl
                 cbSize -= 4;
             }
 
-            unsigned char *pUChar1 = (unsigned char *)pUInt1;
-            unsigned char *pUChar2 = (unsigned char *)pUInt2;
+            const unsigned char *pUChar1 = (const unsigned char *)pUInt1;
+            const unsigned char *pUChar2 = (const unsigned char *)pUInt2;
 
             while (cbSize > 0)
             {
