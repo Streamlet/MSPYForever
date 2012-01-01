@@ -251,13 +251,13 @@ namespace xl
     template <typename K, typename V>
     inline typename Map<K, V>::Iterator Map<K, V>::Delete(const typename Map<K, V>::Iterator &itWhich)
     {
-        return m_tRBTree.Delete(*itWhich);
+        return m_tRBTree.Delete(itWhich);
     }
 
     template <typename K, typename V>
     inline typename Map<K, V>::ReverseIterator Map<K, V>::Delete(const typename Map<K, V>::ReverseIterator &itWhich)
     {
-        return m_tRBTree.Delete(*itWhich);
+        return m_tRBTree.Delete(itWhich);
     }
 
 };
