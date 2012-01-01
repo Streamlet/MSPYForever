@@ -994,10 +994,11 @@ namespace xl
 
     public: // single-selection only
 
-        BOOL SelectItem(int nIndex)
+        BOOL SelectItem(int nIndex, BOOL bSelected = TRUE)
         {
-            BOOL bRet = SetItemState(nIndex, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
-            
+            UINT nState = bSelected ? (LVIS_SELECTED | LVIS_FOCUSED) : 0;
+            BOOL bRet = SetItemState(nIndex, nState, LVIS_SELECTED | LVIS_FOCUSED);
+
             if(bRet)
             {
                 bRet = EnsureVisible(nIndex, FALSE);
