@@ -460,7 +460,7 @@ namespace xl
 
         ++*this;
 
-        return *itRet;
+        return itRet;
     }
 
     template <typename T>
@@ -491,7 +491,7 @@ namespace xl
 
         --*this;
 
-        return *itRet;
+        return itRet;
     }
 
     template <typename T>
