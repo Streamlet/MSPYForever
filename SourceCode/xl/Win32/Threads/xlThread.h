@@ -108,7 +108,7 @@ namespace xl
             CloseHandle(m_hEventQuit);
 
             m_fnThreadProc = NullThreadProc;
-            m_param        = nullptr;
+            m_param        = ParamType();
             m_hThread      = NULL;
             m_hEventQuit   = NULL;
             m_bCreated     = false;
