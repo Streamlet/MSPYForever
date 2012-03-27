@@ -56,7 +56,7 @@ namespace xl
 #define XL_FUNCTION_FUNCTORBASE_PATTERN(n)                                                          \
                                                                                                     \
     template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n)>                                          \
-    class FunctionBase<R, XL_EVAL(XL_CONN(XL_TYPELIST_, XL_INC(n)), XL_FUNCTION_TYPENAME_LIST(n))>  \
+    class FunctionBase<R, XL_EVAL(XL_CONN(XL_TYPELIST_, n), XL_FUNCTION_TYPENAME_LIST(n))>          \
     {                                                                                               \
     public:                                                                                         \
         virtual FunctionBase *Clone() const             = 0;                                        \
@@ -125,15 +125,15 @@ namespace xl
             return false;
         }
 
-#define XL_FUNCTION_FUNCTIONPOINTER_INVOKE_PATTERN(n)                   \
-                                                                        \
-        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type      \
-                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                   \
-                                                                        \
-        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))             \
-        {                                                               \
-            return m_fnFunctionPointer(XL_FUNCTION_VARIABLE_LIST(n));   \
-        }                                                               \
+#define XL_FUNCTION_FUNCTIONPOINTER_INVOKE_PATTERN(n)                       \
+                                                                            \
+        typedef typename TLTypeAtNS<ParamList, XL_DEC(n), EmptyType>::Type  \
+                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                       \
+                                                                            \
+        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))                 \
+        {                                                                   \
+            return m_fnFunctionPointer(XL_FUNCTION_VARIABLE_LIST(n));       \
+        }                                                                   \
 
 #define XL_FUNCTION_FUNCTIONPOINTER_INVOKE(n)  XL_REPY(XL_FUNCTION_FUNCTIONPOINTER_INVOKE_PATTERN, n, XL_NIL)
 
@@ -186,15 +186,15 @@ namespace xl
             return false;
         }
 
-#define XL_FUNCTION_FUNCTOR_INVOKE_PATTERN(n)                           \
-                                                                        \
-        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type      \
-                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                   \
-                                                                        \
-        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))             \
-        {                                                               \
-            return m_fnFunctor(XL_FUNCTION_VARIABLE_LIST(n));           \
-        }                                                               \
+#define XL_FUNCTION_FUNCTOR_INVOKE_PATTERN(n)                               \
+                                                                            \
+        typedef typename TLTypeAtNS<ParamList, XL_DEC(n), EmptyType>::Type  \
+                XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                       \
+                                                                            \
+        ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))                 \
+        {                                                                   \
+            return m_fnFunctor(XL_FUNCTION_VARIABLE_LIST(n));               \
+        }                                                                   \
 
 #define XL_FUNCTION_FUNCTOR_INVOKE(n)  XL_REPY(XL_FUNCTION_FUNCTOR_INVOKE_PATTERN, n, XL_NIL)
 
@@ -262,7 +262,7 @@ namespace xl
 
 #define XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN(n)                            \
                                                                                 \
-        typedef typename TLTypeAtNS<ParamList, n, EmptyType>::Type              \
+        typedef typename TLTypeAtNS<ParamList, XL_DEC(n), EmptyType>::Type      \
                 XL_FUNCTION_TYPENAME_LIST_PATTERN(n);                           \
                                                                                 \
         ReturnType Invoke(XL_FUNCTION_TYPENAME_VARIABLE(n))                     \

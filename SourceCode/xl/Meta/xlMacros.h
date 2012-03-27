@@ -352,8 +352,7 @@ namespace xl
 #define XL_IF_C_F(t, e) e
 #define XL_IF(c, t, e)  XL_CONN(XL_IF_C_, XL_TO_BOOL(c))(t, e)
 
-#define XL_REP_0(m, d)  m(0)
-#define XL_REP_1(m, d)  XL_REP_0(m, d)  d m(1)
+#define XL_REP_1(m, d)  m(1)
 #define XL_REP_2(m, d)  XL_REP_1(m, d)  d m(2)
 #define XL_REP_3(m, d)  XL_REP_2(m, d)  d m(3)
 #define XL_REP_4(m, d)  XL_REP_3(m, d)  d m(4)
@@ -453,8 +452,7 @@ namespace xl
 #define XL_REP_98(m, d) XL_REP_97(m, d) d m(98)
 #define XL_REP_99(m, d) XL_REP_98(m, d) d m(99)
 
-#define XL_REPX_0(m, d)  m(0)
-#define XL_REPX_1(m, d)  XL_REPX_0(m, d)  d m(1)
+#define XL_REPX_1(m, d)  m(1)
 #define XL_REPX_2(m, d)  XL_REPX_1(m, d)  d m(2)
 #define XL_REPX_3(m, d)  XL_REPX_2(m, d)  d m(3)
 #define XL_REPX_4(m, d)  XL_REPX_3(m, d)  d m(4)
@@ -554,8 +552,7 @@ namespace xl
 #define XL_REPX_98(m, d) XL_REPX_97(m, d) d m(98)
 #define XL_REPX_99(m, d) XL_REPX_98(m, d) d m(99)
 
-#define XL_REPY_0(m, d)  m(0)
-#define XL_REPY_1(m, d)  XL_REPY_0(m, d)  d m(1)
+#define XL_REPY_1(m, d)  m(1)
 #define XL_REPY_2(m, d)  XL_REPY_1(m, d)  d m(2)
 #define XL_REPY_3(m, d)  XL_REPY_2(m, d)  d m(3)
 #define XL_REPY_4(m, d)  XL_REPY_3(m, d)  d m(4)
@@ -655,8 +652,7 @@ namespace xl
 #define XL_REPY_98(m, d) XL_REPY_97(m, d) d m(98)
 #define XL_REPY_99(m, d) XL_REPY_98(m, d) d m(99)
 
-#define XL_REPZ_0(m, d)  m(0)
-#define XL_REPZ_1(m, d)  XL_REPZ_0(m, d)  d m(1)
+#define XL_REPZ_1(m, d)  m(1)
 #define XL_REPZ_2(m, d)  XL_REPZ_1(m, d)  d m(2)
 #define XL_REPZ_3(m, d)  XL_REPZ_2(m, d)  d m(3)
 #define XL_REPZ_4(m, d)  XL_REPZ_3(m, d)  d m(4)
