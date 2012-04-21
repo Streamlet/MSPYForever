@@ -72,7 +72,7 @@ namespace xl
     template <typename R, typename P, typename F>
     class FunctionPointerHandler : public FunctionBase<R, P>
     {
-    private:
+    public:
         typedef R ReturnType;
         typedef P ParamList;
         typedef F FunctionType;
@@ -143,7 +143,7 @@ namespace xl
     template <typename R, typename P, typename F>
     class FunctorHandler : public FunctionBase<R, P>
     {
-    private:
+    public:
         typedef R ReturnType;
         typedef P ParamList;
         typedef F FunctionType;
@@ -204,7 +204,7 @@ namespace xl
     template <typename R, typename P, typename T, typename F>
     class MemberFunctionHandler : public FunctionBase<R, P>
     {
-    private:
+    public:
         typedef R ReturnType;
         typedef P ParamList;
         typedef T ClassPtrType;
@@ -281,12 +281,12 @@ namespace xl
     template <typename R>
     class Function<R ()>
     {
-    private:
+    public:
         typedef typename MakeTypeList<>::Type ParamList;
 
 #define XL_FUCTION_IMPLEMENT_BODY()                                                                             \
                                                                                                                 \
-    private:                                                                                                    \
+    public:                                                                                                     \
         typedef R                                   ReturnType;                                                 \
         typedef FunctionBase<ReturnType, ParamList> FunctionBaseType;                                           \
                                                                                                                 \
