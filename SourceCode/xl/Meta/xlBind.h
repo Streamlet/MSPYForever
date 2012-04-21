@@ -327,6 +327,12 @@ namespace xl
     };
 
 
+    template <typename S>
+    BindT<S, BindList<>> Bind(Function<S> f)
+    {
+        return BindT<S, BindList<>>(Function<S>(f), BindList<>());
+    }
+
 //     template <typename R>
 //     BindT<R(), BindList<>> Bind(R (*f)())
 //     {
@@ -364,6 +370,18 @@ namespace xl
     XL_BIND_MEMBER_FUNCTION_PARAM_0(__fastcall)
     
 
+//     template <typename S, typename A1>
+//     BindT<S,
+//           BindList<XL_TYPELIST_1(A1)>>
+//     Bind(Function<S> f, A1 a1)
+//     {
+//         return BindT<S,
+//                      BindList<XL_TYPELIST_1(A1)>>(
+//                    f,
+//                    BindList<XL_TYPELIST_1(A1)>(
+//                        a1));
+//     }
+// 
 //     template <typename R, typename B1, typename A1>
 //     BindT<R (B1),
 //           BindList<XL_TYPELIST_1(A1)>>
@@ -387,6 +405,20 @@ namespace xl
 //                    BindList<XL_TYPELIST_1(A1)>(
 //                        a1));
 //     }
+
+#define XL_BIND_FUNCTOR_PARAM(n)                                                                \
+                                                                                                \
+    template <typename S, XL_BIND_TYPENAME_DECLARE(n)>                                          \
+    BindT<S,                                                                                    \
+          BindList<XL_EVAL(XL_CONN(XL_TYPELIST_, n), XL_BIND_TYPENAME_LIST(n))>>                \
+    Bind(Function<S> f, XL_BIND_TYPENAME_VARIABLE(n))                                           \
+    {                                                                                           \
+        return BindT<S,                                                                         \
+                     BindList<XL_EVAL(XL_CONN(XL_TYPELIST_, n), XL_BIND_TYPENAME_LIST(n))>>(    \
+                   f,                                                                           \
+                   BindList<XL_EVAL(XL_CONN(XL_TYPELIST_, n), XL_BIND_TYPENAME_LIST(n))>(       \
+                       XL_BIND_VARIABLE_LIST(n)));                                              \
+    }
 
 #define XL_BIND_FUNCTION_PARAM(n, cc)                                                           \
                                                                                                 \
@@ -416,6 +448,7 @@ namespace xl
                        XL_BIND_VARIABLE_LIST(n)));                                                  \
     }
 
+//     XL_BIND_FUNCTOR_PARAM(1)
 //     XL_BIND_FUNCTION_PARAM(1, __cdecl)
 //     XL_BIND_FUNCTION_PARAM(1, __stdcall)
 //     XL_BIND_FUNCTION_PARAM(1, __fastcall)
@@ -423,6 +456,7 @@ namespace xl
 //     XL_BIND_MEMBER_FUNCTION_PARAM(1, __cdecl)
 //     XL_BIND_MEMBER_FUNCTION_PARAM(1, __stdcall)
 //     XL_BIND_MEMBER_FUNCTION_PARAM(1, __fastcall)
+//     XL_BIND_FUNCTOR_PARAM(2)
 //     XL_BIND_FUNCTION_PARAM(2, __cdecl)
 //     XL_BIND_FUNCTION_PARAM(2, __stdcall)
 //     XL_BIND_FUNCTION_PARAM(2, __fastcall)
@@ -433,6 +467,7 @@ namespace xl
 
 #define XL_BIND_PARAM_PATTERN(n)                    \
                                                     \
+    XL_BIND_FUNCTOR_PARAM(n)                        \
     XL_BIND_FUNCTION_PARAM(n, __cdecl)              \
     XL_BIND_FUNCTION_PARAM(n, __stdcall)            \
     XL_BIND_FUNCTION_PARAM(n, __fastcall)           \
