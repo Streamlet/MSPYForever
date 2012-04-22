@@ -84,5 +84,8 @@
     <ClCompile Include="String\xlEncodingTest.cpp">
       <Filter>Source Files\String</Filter>
     </ClCompile>
+    <ClCompile Include="Meta\xlBindTest.cpp">
+      <Filter>Source Files\Meta</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
