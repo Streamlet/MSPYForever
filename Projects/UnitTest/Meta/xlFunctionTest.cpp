@@ -16,7 +16,6 @@
 
 #include <xl/Test/xlUnitTest.h>
 #include <xl/Meta/xlFunction.h>
-#include <stdio.h>
 
 namespace
 {

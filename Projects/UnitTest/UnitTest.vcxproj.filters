@@ -87,5 +87,8 @@
     <ClCompile Include="Meta\xlBindTest.cpp">
       <Filter>Source Files\Meta</Filter>
     </ClCompile>
+    <ClCompile Include="Meta\xlScopedExitTest.cpp">
+      <Filter>Source Files\Meta</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
