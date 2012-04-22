@@ -22,156 +22,463 @@ namespace
 {
     using namespace xl;
 
-    void voidfun0()
+    void __cdecl voidcdecl0()
     {
-        printf("%s invoked\n", __FUNCTION__);
+
     }
 
-    void voidfun1(int)
+    void __cdecl voidcdecl1(int a)
     {
-        printf("%s invoked\n", __FUNCTION__);
+
     }
 
-    int intfun0()
+    void __cdecl voidcdecl2(int a, int b)
     {
-        printf("%s invoked\n", __FUNCTION__);
-        return -1;
+
     }
 
-    int intfun1(int n)
+    void __cdecl voidcdecl3(int a, int b, int c)
     {
-        printf("%s invoked\n", __FUNCTION__);
-        return n + 1;
+
     }
 
-    struct _voidfunctor0
+    void __stdcall voidstdcall0()
+    {
+
+    }
+
+    void __stdcall voidstdcall1(int a)
+    {
+
+    }
+
+    void __stdcall voidstdcall2(int a, int b)
+    {
+
+    }
+
+    void __stdcall voidstdcall3(int a, int b, int c)
+    {
+
+    }
+
+    void __fastcall voidfastcall0()
+    {
+
+    }
+
+    void __fastcall voidfastcall1(int a)
+    {
+
+    }
+
+    void __fastcall voidfastcall2(int a, int b)
+    {
+
+    }
+
+    void __fastcall voidfastcall3(int a, int b, int c)
+    {
+
+    }
+
+    int __cdecl cdecl0()
+    {
+        return 0;
+    }
+
+    int __cdecl cdecl1(int a)
+    {
+        return a;
+    }
+
+    int __cdecl cdecl2(int a, int b)
+    {
+        return a * 10 + b;
+    }
+
+    int __cdecl cdecl3(int a, int b, int c)
+    {
+        return a * 100 + b * 10 + c;
+    }
+
+    int __stdcall stdcall0()
+    {
+        return 0;
+    }
+
+    int __stdcall stdcall1(int a)
+    {
+        return a;
+    }
+
+    int __stdcall stdcall2(int a, int b)
+    {
+        return a * 10 + b;
+    }
+
+    int __stdcall stdcall3(int a, int b, int c)
+    {
+        return a * 100 + b * 10 + c;
+    }
+
+    int __fastcall fastcall0()
+    {
+        return 0;
+    }
+
+    int __fastcall fastcall1(int a)
+    {
+        return a;
+    }
+
+    int __fastcall fastcall2(int a, int b)
+    {
+        return a * 10 + b;
+    }
+
+    int __fastcall fastcall3(int a, int b, int c)
+    {
+        return a * 100 + b * 10 + c;
+    }
+
+    struct S
+    {
+        void __cdecl voidcdecl0()
+        {
+
+        }
+
+        void __cdecl voidcdecl1(int a)
+        {
+
+        }
+
+        void __cdecl voidcdecl2(int a, int b)
+        {
+
+        }
+
+        void __cdecl voidcdecl3(int a, int b, int c)
+        {
+
+        }
+
+        void __stdcall voidstdcall0()
+        {
+
+        }
+
+        void __stdcall voidstdcall1(int a)
+        {
+
+        }
+
+        void __stdcall voidstdcall2(int a, int b)
+        {
+
+        }
+
+        void __stdcall voidstdcall3(int a, int b, int c)
+        {
+
+        }
+
+        void __fastcall voidfastcall0()
+        {
+
+        }
+
+        void __fastcall voidfastcall1(int a)
+        {
+
+        }
+
+        void __fastcall voidfastcall2(int a, int b)
+        {
+
+        }
+
+        void __fastcall voidfastcall3(int a, int b, int c)
+        {
+
+        }
+
+        void __thiscall voidthiscall0()
+        {
+
+        }
+
+        void __thiscall voidthiscall1(int a)
+        {
+
+        }
+
+        void __thiscall voidthiscall2(int a, int b)
+        {
+
+        }
+
+        void __thiscall voidthiscall3(int a, int b, int c)
+        {
+
+        }
+
+        int __cdecl cdecl0()
+        {
+            return 0;
+        }
+
+        int __cdecl cdecl1(int a)
+        {
+            return a;
+        }
+
+        int __cdecl cdecl2(int a, int b)
+        {
+            return a * 10 + b;
+        }
+
+        int __cdecl cdecl3(int a, int b, int c)
+        {
+            return a * 100 + b * 10 + c;
+        }
+
+        int __stdcall stdcall0()
+        {
+            return 0;
+        }
+
+        int __stdcall stdcall1(int a)
+        {
+            return a;
+        }
+
+        int __stdcall stdcall2(int a, int b)
+        {
+            return a * 10 + b;
+        }
+
+        int __stdcall stdcall3(int a, int b, int c)
+        {
+            return a * 100 + b * 10 + c;
+        }
+
+        int __fastcall fastcall0()
+        {
+            return 0;
+        }
+
+        int __fastcall fastcall1(int a)
+        {
+            return a;
+        }
+
+        int __fastcall fastcall2(int a, int b)
+        {
+            return a * 10 + b;
+        }
+
+        int __fastcall fastcall3(int a, int b, int c)
+        {
+            return a * 100 + b * 10 + c;
+        }
+
+        int __thiscall thiscall0()
+        {
+            return 0;
+        }
+
+        int __thiscall thiscall1(int a)
+        {
+            return a;
+        }
+
+        int __thiscall thiscall2(int a, int b)
+        {
+            return a * 10 + b;
+        }
+
+        int __thiscall thiscall3(int a, int b, int c)
+        {
+            return a * 100 + b * 10 + c;
+        }
+
+    } s;
+
+    struct VOIDF
     {
         void operator()()
         {
-            printf("%s invoked\n", __FUNCTION__);
+
         }
 
-    } voidfunctor0;
-
-    struct _voidfunctor1
-    {
-        void operator()(int)
+        void operator()(int a)
         {
-            printf("%s invoked\n", __FUNCTION__);
+
         }
 
-    } voidfunctor1;
+        void operator()(int a, int b)
+        {
 
-    struct _intfunctor0
+        }
+
+        void operator()(int a, int b, int c)
+        {
+
+        }
+
+    } voidf;
+
+    struct F
     {
         int operator()()
         {
-            printf("%s invoked\n", __FUNCTION__);
-            return -2;
+            return 0;
         }
 
-    } intfunctor0;
-
-    struct _intfunctor1
-    {
-        int operator()(int n)
+        int operator()(int a)
         {
-            printf("%s invoked\n", __FUNCTION__);
-            return n + 2;
+            return a;
         }
 
-    } intfunctor1;
-
-    struct Test
-    {
-        void voidmem0()
+        int operator()(int a, int b)
         {
-            printf("%s invoked\n", __FUNCTION__);
+            return a * 10 + b;
         }
 
-        void voidmem1(int)
+        int operator()(int a, int b, int c)
         {
-            printf("%s invoked\n", __FUNCTION__);
+            return a * 100 + b * 10 + c;
         }
 
-        int intmem0()
-        {
-            printf("%s invoked\n", __FUNCTION__);
-            return -3;
-        }
-
-        int intmem1(int n)
-        {
-            printf("%s invoked\n", __FUNCTION__);
-            return n + 3;
-        }
-
-    } test;
+    } f;
 
     XL_TEST_CASE()
     {
-        Function<void ()>    void0_fun(&voidfun0);
-        Function<void ()>    void0_fun_(voidfun0);
-        Function<void ()>    void0_functor(voidfunctor0);
-        Function<void ()>    void0_memfun(&test, &Test::voidmem0);
-        Function<void (int)> void1_fun(&voidfun1);
-        Function<void (int)> void1_fun_(voidfun1);
-        Function<void (int)> void1_functor(voidfunctor1);
-        Function<void (int)> void1_memfun(&test, &Test::voidmem1);
-        Function<int  ()>    int0_fun(&intfun0);
-        Function<int  ()>    int0_fun_(intfun0);
-        Function<int  ()>    int0_functor(intfunctor0);
-        Function<int  ()>    int0_memfun(&test, &Test::intmem0);
-        Function<int  (int)> int1_fun(&intfun1);
-        Function<int  (int)> int1_fun_(intfun1);
-        Function<int  (int)> int1_functor(intfunctor1);
-        Function<int  (int)> int1_memfun(&test, &Test::intmem1);
-
-        void0_fun();
-        void0_fun_();
-        void0_functor();
-        void0_memfun();
-        void1_fun(0);
-        void1_fun_(0);
-        void1_functor(0);
-        void1_memfun(0);
-        XL_TEST_ASSERT(int0_fun() == -1);
-        XL_TEST_ASSERT(int0_fun_() == -1);
-        XL_TEST_ASSERT(int0_functor() == -2);
-        XL_TEST_ASSERT(int0_memfun() == -3);
-        XL_TEST_ASSERT(int1_fun(0) == 1);
-        XL_TEST_ASSERT(int1_fun_(0) == 1);
-        XL_TEST_ASSERT(int1_functor(0) == 2);
-        XL_TEST_ASSERT(int1_memfun(0) == 3);
+        Function<void ()>             void0(voidcdecl0);
+        Function<void (int)>          void1(voidcdecl1);
+        Function<void (int, int)>     void2(voidcdecl2);
+        Function<void (int, int, int)>void3(voidcdecl3);
     }
 
     XL_TEST_CASE()
     {
-        Function<void ()>    void0_fun(&voidfun0);
-        Function<void ()>    void0_fun_(voidfun0);
-        Function<void ()>    void0_functor(voidfunctor0);
-        Function<void ()>    void0_memfun(&test, &Test::voidmem0);
+        Function<void ()>             void0(voidstdcall0);
+        Function<void (int)>          void1(voidstdcall1);
+        Function<void (int, int)>     void2(voidstdcall2);
+        Function<void (int, int, int)>void3(voidstdcall3);
+    }
 
-        XL_TEST_ASSERT(void0_fun == void0_fun);
-        XL_TEST_ASSERT(void0_fun_ == void0_fun_);
-        XL_TEST_ASSERT(void0_functor == void0_functor);
-        XL_TEST_ASSERT(void0_memfun == void0_memfun);
+    XL_TEST_CASE()
+    {
+        Function<void ()>             void0(voidfastcall0);
+        Function<void (int)>          void1(voidfastcall1);
+        Function<void (int, int)>     void2(voidfastcall2);
+        Function<void (int, int, int)>void3(voidfastcall3);
+    }
 
-        XL_TEST_ASSERT(void0_fun == void0_fun_);
-        XL_TEST_ASSERT(void0_fun != void0_functor);
-        XL_TEST_ASSERT(void0_fun != void0_memfun);
-        XL_TEST_ASSERT(void0_fun_ != void0_functor);
-        XL_TEST_ASSERT(void0_fun_ != void0_memfun);
-        XL_TEST_ASSERT(void0_functor != void0_memfun);
+    XL_TEST_CASE()
+    {
+        Function<void ()>             void0(&s, &S::voidcdecl0);
+        Function<void (int)>          void1(&s, &S::voidcdecl1);
+        Function<void (int, int)>     void2(&s, &S::voidcdecl2);
+        Function<void (int, int, int)>void3(&s, &S::voidcdecl3);
+    }
 
-        Function<void ()>    void0_fun1(&voidfun0);
-        Function<void ()>    void0_fun_1(voidfun0);
-        Function<void ()>    void0_functor1(voidfunctor0);
-        Function<void ()>    void0_memfun1(&test, &Test::voidmem0);
+    XL_TEST_CASE()
+    {
+        Function<void ()>             void0(&s, &S::voidstdcall0);
+        Function<void (int)>          void1(&s, &S::voidstdcall1);
+        Function<void (int, int)>     void2(&s, &S::voidstdcall2);
+        Function<void (int, int, int)>void3(&s, &S::voidstdcall3);
+    }
 
-        XL_TEST_ASSERT(void0_fun == void0_fun1);
-        XL_TEST_ASSERT(void0_fun_ == void0_fun_1);
-        XL_TEST_ASSERT(void0_functor != void0_functor1);
-        XL_TEST_ASSERT(void0_memfun == void0_memfun1);
+    XL_TEST_CASE()
+    {
+        Function<void ()>             void0(&s, &S::voidfastcall0);
+        Function<void (int)>          void1(&s, &S::voidfastcall1);
+        Function<void (int, int)>     void2(&s, &S::voidfastcall2);
+        Function<void (int, int, int)>void3(&s, &S::voidfastcall3);
+    }
+
+    XL_TEST_CASE()
+    {
+        Function<void ()>             void0(&s, &S::voidthiscall0);
+        Function<void (int)>          void1(&s, &S::voidthiscall1);
+        Function<void (int, int)>     void2(&s, &S::voidthiscall2);
+        Function<void (int, int, int)>void3(&s, &S::voidthiscall3);
+    }
+
+    XL_TEST_CASE()
+    {
+        Function<void ()>             void0(voidf);
+        Function<void (int)>          void1(voidf);
+        Function<void (int, int)>     void2(voidf);
+        Function<void (int, int, int)>void3(voidf);
+    }
+    
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (cdecl0)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (cdecl1)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (cdecl2)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(cdecl3)(1, 2, 3) == 123);
+    }
+
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (stdcall0)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (stdcall1)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (stdcall2)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(stdcall3)(1, 2, 3) == 123);
+    }
+
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (fastcall0)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (fastcall1)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (fastcall2)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(fastcall3)(1, 2, 3) == 123);
+    }
+
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (&s, &S::cdecl0)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (&s, &S::cdecl1)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (&s, &S::cdecl2)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(&s, &S::cdecl3)(1, 2, 3) == 123);
+    }
+
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (&s, &S::stdcall0)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (&s, &S::stdcall1)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (&s, &S::stdcall2)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(&s, &S::stdcall3)(1, 2, 3) == 123);
+    }
+
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (&s, &S::fastcall0)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (&s, &S::fastcall1)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (&s, &S::fastcall2)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(&s, &S::fastcall3)(1, 2, 3) == 123);
+    }
+
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (&s, &S::thiscall0)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (&s, &S::thiscall1)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (&s, &S::thiscall2)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(&s, &S::thiscall3)(1, 2, 3) == 123);
+    }
+
+    XL_TEST_CASE()
+    {
+        XL_TEST_ASSERT(Function<int ()>             (f)() == 0);
+        XL_TEST_ASSERT(Function<int (int)>          (f)(1) == 1);
+        XL_TEST_ASSERT(Function<int (int, int)>     (f)(1, 2) == 12);
+        XL_TEST_ASSERT(Function<int (int, int, int)>(f)(1, 2, 3) == 123);
     }
 }
