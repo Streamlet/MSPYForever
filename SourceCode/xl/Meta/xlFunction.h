@@ -28,16 +28,16 @@ namespace xl
 #define XL_FUNCTION_DEFINE_MAX  20
 #endif
 
-#define XL_FUNCTION_TYPENAME_DECLARE_PATTERN(n)     typename T##n
+#define XL_FUNCTION_TYPENAME_DECLARE_PATTERN(n)     typename A##n
 #define XL_FUNCTION_TYPENAME_DECLARE(n)             XL_REPZ(XL_FUNCTION_TYPENAME_DECLARE_PATTERN, n, XL_COMMA)
 
-#define XL_FUNCTION_TYPENAME_LIST_PATTERN(n)        T##n
+#define XL_FUNCTION_TYPENAME_LIST_PATTERN(n)        A##n
 #define XL_FUNCTION_TYPENAME_LIST(n)                XL_REPZ(XL_FUNCTION_TYPENAME_LIST_PATTERN, n, XL_COMMA)
 
-#define XL_FUNCTION_TYPENAME_VARIABLE_PATTERN(n)    T##n v##n
+#define XL_FUNCTION_TYPENAME_VARIABLE_PATTERN(n)    A##n a##n
 #define XL_FUNCTION_TYPENAME_VARIABLE(n)            XL_REPZ(XL_FUNCTION_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
 
-#define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        v##n
+#define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        static_cast<A##n &&>(a##n)
 #define XL_FUNCTION_VARIABLE_LIST(n)                XL_REPZ(XL_FUNCTION_VARIABLE_LIST_PATTERN, n, XL_COMMA)
 
     template <typename R, typename TL>
@@ -52,6 +52,16 @@ namespace xl
         virtual bool IsEqual(FunctionBase *) const = 0;
         virtual ~FunctionBase() {}
     };
+
+//     template <typename R, typename A1>
+//     class FunctionBase<R, XL_TYPELIST_1(A1)>
+//     {
+//     public:
+//         virtual FunctionBase *Clone() const             = 0;
+//         virtual R Invoke(A1)  = 0;
+//         virtual bool IsEqual(FunctionBase *) const      = 0;
+//         virtual ~FunctionBase() {}
+//     };
 
 #define XL_FUNCTION_FUNCTORBASE_PATTERN(n)                                                          \
                                                                                                     \
@@ -125,6 +135,14 @@ namespace xl
             return false;
         }
 
+//         typedef typename TLTypeAtNS<ParamList, 0, EmptyType>::Type
+//                 A1;
+// 
+//         ReturnType Invoke(A1 a1)
+//         {
+//             return m_fnFunctionPointer(static_cast<A1 &&>(a1));
+//         }
+
 #define XL_FUNCTION_FUNCTIONPOINTER_INVOKE_PATTERN(n)                       \
                                                                             \
         typedef typename TLTypeAtNS<ParamList, XL_DEC(n), EmptyType>::Type  \
@@ -185,6 +203,14 @@ namespace xl
 
             return false;
         }
+
+//         typedef typename TLTypeAtNS<ParamList, 0, EmptyType>::Type
+//                 A1;
+// 
+//         ReturnType Invoke(A1 a1)
+//         {
+//             return m_fnFunctor(a1);
+//         }
 
 #define XL_FUNCTION_FUNCTOR_INVOKE_PATTERN(n)                               \
                                                                             \
@@ -260,6 +286,14 @@ namespace xl
             return false;
         }
 
+//         typedef typename TLTypeAtNS<ParamList, 0, EmptyType>::Type
+//                 A1;
+// 
+//         ReturnType Invoke(A1 a1)
+//         {
+//             return (m_pObject->*m_fnFunction)(a1);
+//         }
+
 #define XL_FUNCTION_MEMBERFUNCTION_INVOKE_PATTERN(n)                            \
                                                                                 \
         typedef typename TLTypeAtNS<ParamList, XL_DEC(n), EmptyType>::Type      \
@@ -283,6 +317,65 @@ namespace xl
     {
     public:
         typedef typename MakeTypeList<>::Type ParamList;
+
+//     public:
+//         typedef R                                   ReturnType;
+//         typedef FunctionBase<ReturnType, ParamList> FunctionBaseType;
+// 
+//     public:
+//         Function()
+//             : m_pFunctionBase(nullptr)
+//         {
+// 
+//         }
+// 
+//         Function(const Function &that)
+//             : m_pFunctionBase(that.m_pFunctionBase)
+//         {
+// 
+//         }
+// 
+//     public:
+//         template <typename F>
+//         Function(F *pFunctionPointer)
+//             : m_pFunctionBase(new FunctionPointerHandler<ReturnType, ParamList, F *>(pFunctionPointer))
+//         {
+// 
+//         }
+// 
+//         template <typename F>
+//         Function(F fnFunctor)
+//             : m_pFunctionBase(new FunctorHandler<ReturnType, ParamList, F>(fnFunctor))
+//         {
+// 
+//         }
+// 
+//         template <typename T, typename F>
+//         Function(T pObject, F pMemberFunction)
+//             : m_pFunctionBase(new MemberFunctionHandler<ReturnType, ParamList, T, F>(pObject, pMemberFunction))
+//         {
+// 
+//         }
+// 
+//     public:
+//         Function &operator = (const Function &that)
+//         {
+//             this->m_pFunctionBase = that.m_pFunctionBase->Clone();
+//             return *this;
+//         }
+// 
+//         bool operator == (const Function &that) const
+//         {
+//             return this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());
+//         }
+// 
+//         bool operator != (const Function &that) const
+//         {
+//             return !this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());
+//         }
+// 
+//     private:
+//         SharedPtr<FunctionBaseType> m_pFunctionBase;
 
 #define XL_FUCTION_IMPLEMENT_BODY()                                                                             \
                                                                                                                 \
@@ -354,12 +447,85 @@ namespace xl
         }
     };
 
+//      template <typename R, typename A1>
+//      class Function<R (A1)>
+//      {
+//      public:
+//          typedef typename MakeTypeList<A1>::Type ParamList;
+//  
+// //      public:
+// //          typedef R                                   ReturnType;
+// //          typedef FunctionBase<ReturnType, ParamList> FunctionBaseType;
+// //   
+// //      public:
+// //          Function()
+// //              : m_pFunctionBase(nullptr)
+// //          {
+// //   
+// //          }
+// //   
+// //          Function(const Function &that)
+// //              : m_pFunctionBase(that.m_pFunctionBase)
+// //          {
+// //   
+// //          }
+// //   
+// //      public:
+// //          template <typename F>
+// //          Function(F *pFunctionPointer)
+// //              : m_pFunctionBase(new FunctionPointerHandler<ReturnType, ParamList, F *>(pFunctionPointer))
+// //          {
+// //   
+// //          }
+// //   
+// //          template <typename F>
+// //          Function(F fnFunctor)
+// //              : m_pFunctionBase(new FunctorHandler<ReturnType, ParamList, F>(fnFunctor))
+// //          {
+// //   
+// //          }
+// //   
+// //          template <typename T, typename F>
+// //          Function(T pObject, F pMemberFunction)
+// //              : m_pFunctionBase(new MemberFunctionHandler<ReturnType, ParamList, T, F>(pObject, pMemberFunction))
+// //          {
+// //   
+// //          }
+// //   
+// //      public:
+// //          Function &operator = (const Function &that)
+// //          {
+// //              this->m_pFunctionBase = that.m_pFunctionBase->Clone();
+// //              return *this;
+// //          }
+// //   
+// //          bool operator == (const Function &that) const
+// //          {
+// //              return this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());
+// //          }
+// //   
+// //          bool operator != (const Function &that) const
+// //          {
+// //              return !this->m_pFunctionBase->IsEqual(that.m_pFunctionBase.RawPointer());
+// //          }
+// //   
+// //      private:
+// //          SharedPtr<FunctionBaseType> m_pFunctionBase;
+//  
+//      public:
+//          template <typename T1>
+//          ReturnType operator()(T1 &&t1)
+//          {
+//              return m_pFunctionBase->Invoke(static_cast<T1 &&>(t1));
+//          }
+//      };
+
 #define XL_FUNCTION_IMPLEMENT_PATTERN(n)                                                \
                                                                                         \
     template <typename R, XL_FUNCTION_TYPENAME_DECLARE(n)>                              \
     class Function<R (XL_FUNCTION_TYPENAME_LIST(n))>                                    \
     {                                                                                   \
-    private:                                                                            \
+    public:                                                                             \
         typedef typename MakeTypeList<XL_FUNCTION_TYPENAME_LIST(n)>::Type ParamList;    \
                                                                                         \
         XL_FUCTION_IMPLEMENT_BODY()                                                     \

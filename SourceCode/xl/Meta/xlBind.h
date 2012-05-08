@@ -39,16 +39,17 @@ namespace xl
 #define XL_BIND_TYPENAME_LIST_PATTERN_B(n)      B##n
 #define XL_BIND_TYPENAME_LIST_B(n)              XL_REPZ(XL_BIND_TYPENAME_LIST_PATTERN_B, n, XL_COMMA)
 
-#define XL_BIND_TYPENAME_VARIABLE_PATTERN(n)    A##n a##n
+#define XL_BIND_TYPENAME_VARIABLE_NO_RREF(n)    A##n a##n
+#define XL_BIND_TYPENAME_VARIABLE_PATTERN(n)    A##n &&a##n
 #define XL_BIND_TYPENAME_VARIABLE(n)            XL_REPZ(XL_BIND_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
 
-#define XL_BIND_VARIABLE_INITIALIZE_PATTERN(n)  a##n(a##n)
+#define XL_BIND_VARIABLE_INITIALIZE_PATTERN(n)  a##n(static_cast<A##n &&>(a##n))
 #define XL_BIND_VARIABLE_INITIALIZE(n)          XL_REPZ(XL_BIND_VARIABLE_INITIALIZE_PATTERN, n, XL_COMMA)
 
-#define XL_BIND_VARIABLE_LIST_PATTERN(n)        a##n
+#define XL_BIND_VARIABLE_LIST_PATTERN(n)        static_cast<A##n &&>(a##n)
 #define XL_BIND_VARIABLE_LIST(n)                XL_REPZ(XL_BIND_VARIABLE_LIST_PATTERN, n, XL_COMMA)
 
-#define XL_BIND_ARGUMENTS_QUERY_PATTERN(n)      a[a##n]
+#define XL_BIND_ARGUMENTS_QUERY_PATTERN(n)      a[static_cast<A##n &&>(a##n)]
 #define XL_BIND_ARGUMENTS_QUERY(n)              XL_REPZ(XL_BIND_ARGUMENTS_QUERY_PATTERN, n, XL_COMMA)
 
     template <int i>
@@ -75,9 +76,9 @@ namespace xl
 //     struct BindArguments<XL_TYPELIST_1(A1)> :
 //         public BindArguments<XL_TYPELIST_0()>
 //     {
-//         BindArguments(A1 a1) :
+//         BindArguments(A1 &&a1) :
 //             BindArguments<XL_TYPELIST_0()>(),
-//             a1(a1)
+//             a1(static_cast<A1 &&>(a1))
 //         {
 // 
 //         }
@@ -89,9 +90,9 @@ namespace xl
 //     struct BindArguments<XL_TYPELIST_2(A1, A2)> :
 //         public BindArguments<XL_TYPELIST_1(A1)>
 //     {
-//         BindArguments(A1 a1, A2 a2) :
-//             BindArguments<XL_TYPELIST_1(A1)>(a1),
-//             a2(a2)
+//         BindArguments(A1 &&a1, A2 &&a2) :
+//             BindArguments<XL_TYPELIST_1(A1)>(static_cast<A1 &&>(a1)),
+//             a2(static_cast<A2 &&>(a2))
 //         {
 // 
 //         }
@@ -113,7 +114,7 @@ namespace xl
                                                                                                             \
         }                                                                                                   \
                                                                                                             \
-        XL_BIND_TYPENAME_VARIABLE_PATTERN(n);                                                               \
+        XL_BIND_TYPENAME_VARIABLE_NO_RREF(n);                                                               \
     };
 
 #define XL_BIND_ARGUMENTS(n)  XL_REPY(XL_BIND_ARGUMENTS_PATTERN, n, XL_NIL)
@@ -132,9 +133,9 @@ namespace xl
 
     public:
         template <typename T>
-        T operator [](T t)
+        T &&operator [](T &&t)
         {
-            return t;
+            return static_cast<T &&>(t);
         }
     };
 
@@ -143,28 +144,28 @@ namespace xl
 //         public BindArguments<XL_TYPELIST_1(A1)>
 //     {
 //     public:
-//         CallList(A1 a1) :
-//             BindArguments<XL_TYPELIST_1(A1)>(a1)
+//         CallList(A1 &&a1) :
+//             BindArguments<XL_TYPELIST_1(A1)>(static_cast<A1 &&>(a1))
 //         {
 // 
 //         }
-// 
+//  
 //     public:
-//         A1 operator [](PlaceHolder<1>)
+//         A1 &&operator [](PlaceHolder<1>)
 //         {
-//             return a1;
+//             return static_cast<A1 &&>(a1);
 //         }
 // 
 //         template <typename T>
-//         T operator [](T t)
+//         T &&operator [](T &&t)
 //         {
-//             return t;
+//             return static_cast<T &&>(t);
 //         }
 //     };
 
 #define XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER_PATTERN(n)            \
                                                                     \
-    XL_BIND_TYPENAME_LIST_PATTERN(n) operator [](PlaceHolder<n>)    \
+    XL_BIND_TYPENAME_LIST_PATTERN(n) &&operator [](PlaceHolder<n>)  \
     {                                                               \
         return XL_BIND_VARIABLE_LIST_PATTERN(n);                    \
     }
@@ -188,9 +189,9 @@ namespace xl
         XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER(n)                                                                    \
                                                                                                                     \
         template <typename T>                                                                                       \
-        T operator [](T t)                                                                                          \
+        T &&operator [](T &&t)                                                                                      \
         {                                                                                                           \
-            return t;                                                                                               \
+            return static_cast<T &&>(t);                                                                            \
         }                                                                                                           \
     };
 
@@ -221,8 +222,8 @@ namespace xl
 //         public BindArguments<XL_TYPELIST_1(A1)>
 //     {
 //     public:
-//         BindList(A1 a1) :
-//             BindArguments<XL_TYPELIST_1(A1)>(a1)
+//         BindList(A1 &&a1) :
+//             BindArguments<XL_TYPELIST_1(A1)>(static_cast<A1 &&>(a1))
 //         {
 // 
 //         }
@@ -231,7 +232,7 @@ namespace xl
 //         template <typename F, typename A>
 //         typename F::ReturnType operator ()(F f, A a)
 //         {
-//             return f(a[a1]);
+//             return f(a[static_cast<A1 &&>(a1)]);
 //         }
 //     };
 // 
@@ -240,17 +241,17 @@ namespace xl
 //         public BindArguments<XL_TYPELIST_2(A1, A2)>
 //     {
 //     public:
-//         BindList(A1 a1, A2 a2) :
-//             BindArguments<XL_TYPELIST_2(A1, A2)>(a1, a2)
+//         BindList(A1 &&a1, A2 &&a2) :
+//             BindArguments<XL_TYPELIST_2(A1, A2)>(static_cast<A1 &&>(a1), static_cast<A2 &&>(a2))
 //         {
-// 
+//  
 //         }
-// 
+//  
 //     public:
 //         template <typename F, typename A>
 //         typename F::ReturnType operator ()(F f, A a)
 //         {
-//             return f(a[a1], a[a2]);
+//             return f(a[static_cast<A1 &&>(a1)], a[static_cast<A2 &&>(a2)]);
 //         }
 //     };
 
@@ -300,11 +301,11 @@ namespace xl
         }
 
 //         template <typename A1>
-//         ReturnType operator ()(A1 a1)
+//         ReturnType operator ()(A1 &&a1)
 //         {
 //             return bl(f,
 //                       CallList<XL_TYPELIST_1(A1)>(
-//                           a1));
+//                           static_cast<A1 &&>(a1)));
 //         }
 
 #define XL_BIND_BINDT_OPERATOR_PATTERN(n)                                                       \
@@ -338,7 +339,7 @@ namespace xl
 //     {
 //         return BindT<R(), BindList<>>(Function<R ()>(f), BindList<>());
 //     }
-// 
+//  
 //     template <typename R, typename T>
 //     BindT<R(), BindList<>> Bind(T *p, R (T::*f)())
 //     {
@@ -373,37 +374,37 @@ namespace xl
 //     template <typename S, typename A1>
 //     BindT<S,
 //           BindList<XL_TYPELIST_1(A1)>>
-//     Bind(Function<S> f, A1 a1)
+//     Bind(Function<S> f, A1 &&a1)
 //     {
 //         return BindT<S,
 //                      BindList<XL_TYPELIST_1(A1)>>(
 //                    f,
 //                    BindList<XL_TYPELIST_1(A1)>(
-//                        a1));
+//                        static_cast<A1 &&>(a1)));
 //     }
 // 
 //     template <typename R, typename B1, typename A1>
 //     BindT<R (B1),
 //           BindList<XL_TYPELIST_1(A1)>>
-//     Bind(R (*f)(B1), A1 a1)
+//     Bind(R (*f)(B1), A1 &&a1)
 //     {
 //         return BindT<R (B1),
 //                      BindList<XL_TYPELIST_1(A1)>>(
 //                    Function<R (B1)>(f),
 //                    BindList<XL_TYPELIST_1(A1)>(
-//                        a1));
+//                        static_cast<A1 &&>(a1)));
 //     }
 //     
 //     template <typename R, typename T, typename B1, typename A1>
 //     BindT<R (B1),
 //           BindList<XL_TYPELIST_1(A1)>>
-//     Bind(T *p, R (T::*f)(B1), A1 a1)
+//     Bind(T *p, R (T::*f)(B1), A1 &&a1)
 //     {
 //         return BindT<R (B1),
 //                      BindList<XL_TYPELIST_1(A1)>>(
 //                    Function<R (B1)>(p, f),
 //                    BindList<XL_TYPELIST_1(A1)>(
-//                        a1));
+//                        static_cast<A1 &&>(a1)));
 //     }
 
 #define XL_BIND_FUNCTOR_PARAM(n)                                                                \

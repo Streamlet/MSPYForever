@@ -189,6 +189,31 @@ namespace
 
     } f;
 
+    int test_const(const int i)
+    {
+        return i;
+    }
+
+    int test_ref(int &i)
+    {
+        return ++i;
+    }
+
+    int test_const_ref(const int &i)
+    {
+        return i;
+    }
+
+    int test_r_ref(int &&i)
+    {
+        return i;
+    }
+
+    int test_const_r_ref(const int &&i)
+    {
+        return i;
+    }
+
     XL_TEST_CASE()
     {
         XL_TEST_ASSERT(Bind(cdecl0)() == 0);
@@ -588,7 +613,21 @@ namespace
         XL_TEST_ASSERT(Bind(Function<int (int, int, int)>(f), 3, 1, 2)() == 312);
         XL_TEST_ASSERT(Bind(Function<int (int, int, int)>(f), 3, 2, 1)() == 321);
     }
+
+    XL_TEST_CASE()
+    {
+        int i = 0;
+
+        XL_TEST_ASSERT(Bind(test_const, _1)(i) == 0);
+        XL_TEST_ASSERT(Bind(test_const, i)() == 0);
+        XL_TEST_ASSERT(Bind(test_ref, _1)(i) == 1);
+        XL_TEST_ASSERT(i == 1);
+        XL_TEST_ASSERT(Bind(test_ref, i)() == 2);
+        XL_TEST_ASSERT(i == 2);
+        i = 0;
+        XL_TEST_ASSERT(Bind(test_const_ref, _1)(i) == 0);
+        XL_TEST_ASSERT(Function<int (int &&)>(test_r_ref)(0) == 0);
+        XL_TEST_ASSERT(Function<int (const int &&)>(test_const_r_ref)(0) == 0);
+    }
+
 }
-
-
-
