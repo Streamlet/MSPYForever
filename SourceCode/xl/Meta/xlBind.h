@@ -133,7 +133,7 @@ namespace xl
 
     public:
         template <typename T>
-        T &&operator [](T &&t)
+        T operator [](T &&t)
         {
             return static_cast<T &&>(t);
         }
@@ -151,13 +151,42 @@ namespace xl
 //         }
 //  
 //     public:
-//         A1 &&operator [](PlaceHolder<1>)
+//         A1 operator [](PlaceHolder<1>)
 //         {
 //             return static_cast<A1 &&>(a1);
 //         }
 // 
 //         template <typename T>
-//         T &&operator [](T &&t)
+//         T operator [](T &&t)
+//         {
+//             return static_cast<T &&>(t);
+//         }
+//     };
+// 
+//     template <typename A1, typename A2>
+//     class CallList<XL_TYPELIST_2(A1, A2)> :
+//         public BindArguments<XL_TYPELIST_2(A1, A2)>
+//     {
+//     public:
+//         CallList(A1 &&a1, A2 &&a2) :
+//             BindArguments<XL_TYPELIST_2(A1, A2)>(static_cast<A1 &&>(a1), static_cast<A2 &&>(a2))
+//         {
+// 
+//         }
+//  
+//     public:
+//         A1 operator [](PlaceHolder<1>)
+//         {
+//             return static_cast<A1 &&>(a1);
+//         }
+// 
+//         A2 operator [](PlaceHolder<2>)
+//         {
+//             return static_cast<A2 &&>(a2);
+//         }
+// 
+//         template <typename T>
+//         T operator [](T &&t)
 //         {
 //             return static_cast<T &&>(t);
 //         }
@@ -165,7 +194,7 @@ namespace xl
 
 #define XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER_PATTERN(n)            \
                                                                     \
-    XL_BIND_TYPENAME_LIST_PATTERN(n) &&operator [](PlaceHolder<n>)  \
+    XL_BIND_TYPENAME_LIST_PATTERN(n) operator [](PlaceHolder<n>)    \
     {                                                               \
         return XL_BIND_VARIABLE_LIST_PATTERN(n);                    \
     }
@@ -189,7 +218,7 @@ namespace xl
         XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER(n)                                                                    \
                                                                                                                     \
         template <typename T>                                                                                       \
-        T &&operator [](T &&t)                                                                                      \
+        T operator [](T &&t)                                                                                        \
         {                                                                                                           \
             return static_cast<T &&>(t);                                                                            \
         }                                                                                                           \
@@ -362,13 +391,18 @@ namespace xl
         return BindT<R(), BindList<>>(Function<R ()>(p, f), BindList<>());  \
     }
 
+#ifdef _M_X64
+    XL_BIND_FUNCTION_PARAM_0(XL_NIL)
+    XL_BIND_MEMBER_FUNCTION_PARAM_0(XL_NIL)
+#else
     XL_BIND_FUNCTION_PARAM_0(__cdecl)
     XL_BIND_FUNCTION_PARAM_0(__stdcall)
     XL_BIND_FUNCTION_PARAM_0(__fastcall)
-    XL_BIND_MEMBER_FUNCTION_PARAM_0(__thiscall)
     XL_BIND_MEMBER_FUNCTION_PARAM_0(__cdecl)
     XL_BIND_MEMBER_FUNCTION_PARAM_0(__stdcall)
     XL_BIND_MEMBER_FUNCTION_PARAM_0(__fastcall)
+    XL_BIND_MEMBER_FUNCTION_PARAM_0(__thiscall)
+#endif
     
 
 //     template <typename S, typename A1>
@@ -449,6 +483,14 @@ namespace xl
                        XL_BIND_VARIABLE_LIST(n)));                                                  \
     }
 
+// #ifdef _M_X64
+//     XL_BIND_FUNCTOR_PARAM(1)
+//     XL_BIND_FUNCTION_PARAM(1, XL_NIL)
+//     XL_BIND_MEMBER_FUNCTION_PARAM(1, XL_NIL)
+//     XL_BIND_FUNCTOR_PARAM(2)
+//     XL_BIND_FUNCTION_PARAM(2, XL_NIL)
+//     XL_BIND_MEMBER_FUNCTION_PARAM(2, XL_NIL)
+// #else
 //     XL_BIND_FUNCTOR_PARAM(1)
 //     XL_BIND_FUNCTION_PARAM(1, __cdecl)
 //     XL_BIND_FUNCTION_PARAM(1, __stdcall)
@@ -465,6 +507,17 @@ namespace xl
 //     XL_BIND_MEMBER_FUNCTION_PARAM(2, __cdecl)
 //     XL_BIND_MEMBER_FUNCTION_PARAM(2, __stdcall)
 //     XL_BIND_MEMBER_FUNCTION_PARAM(2, __fastcall)
+// #endif
+
+#ifdef _M_X64
+
+#define XL_BIND_PARAM_PATTERN(n)                    \
+                                                    \
+    XL_BIND_FUNCTOR_PARAM(n)                        \
+    XL_BIND_FUNCTION_PARAM(n, XL_NIL)               \
+    XL_BIND_MEMBER_FUNCTION_PARAM(n, XL_NIL)
+
+#else
 
 #define XL_BIND_PARAM_PATTERN(n)                    \
                                                     \
@@ -476,6 +529,8 @@ namespace xl
     XL_BIND_MEMBER_FUNCTION_PARAM(n, __cdecl)       \
     XL_BIND_MEMBER_FUNCTION_PARAM(n, __stdcall)     \
     XL_BIND_MEMBER_FUNCTION_PARAM(n, __fastcall)
+
+#endif
 
 #define XL_BIND_PARAM(n)  XL_REPY(XL_BIND_PARAM_PATTERN, n, XL_NIL)
 
