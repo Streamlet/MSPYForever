@@ -14,7 +14,15 @@
 //------------------------------------------------------------------------------
 
 
+#include <xl/Parser/xlRegExp.h>
+using namespace xl;
+
 int main()
 {
+    RegExp r;
+
+    r.Parse(L"kjj\\\\kjj");
+
+
     return 0;
 }
