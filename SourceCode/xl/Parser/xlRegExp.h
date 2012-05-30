@@ -273,22 +273,16 @@ namespace xl
                 {
                 case TT_GROUP_BEGIN:
                     {
-//                         if (!MatchGroup())
-//                         {
-//                             return nullptr;
-// 						}
-                    }
+
+					}
                     break;
                 case TT_GROUP_END:
                     {
-//                         Backward();
-//                         bContinue = false;
-//                         break;
-                    }
+
+					}
                     break;
                 case TT_OR:
                     {
-                        // Get NodePtr
 
                     }
                     break;
@@ -319,10 +313,8 @@ namespace xl
                     break;
                 case TT_REPEAT_END:
                     {
-//                         Backward();
-//                         bContinue = false;
-//                         break;
-                    }
+
+					}
                     break;
                 case TT_REPEAT_ZERO_PLUS:
                     {
@@ -348,11 +340,6 @@ namespace xl
             }
 
             return spCurrent;
-        }
-
-        bool MatchGroup()
-        {
-            return true;
         }
 
         StateMachine::NodePtr MatchCollection(StateMachine::NodePtr spNode)
@@ -434,10 +421,20 @@ namespace xl
 			return spNext;
         }
 
-        bool MatchRepeat()
-        {
-            return true;
-        }
+		StateMachine::NodePtr MatchRepeatZeroPlus(StateMachine::NodePtr spNode)
+		{
+			return nullptr;
+		}
+
+		StateMachine::NodePtr MatchRepeatOnePlus(StateMachine::NodePtr spNode)
+		{
+			return nullptr;
+		}
+
+		StateMachine::NodePtr MatchRepeatZeroOne(StateMachine::NodePtr spNode)
+		{
+			return nullptr;
+		}
     
     private:
         StateMachine::NodePtr AddNormalNode(StateMachine::NodePtr spNodeFrom, Char chEdgeChar)
