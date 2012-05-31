@@ -20,6 +20,7 @@
 #include <xl/Containers/xlGraph.h>
 #include <xl/String/xlString.h>
 #include <xl/Memory/xlSmartPtr.h>
+#include <xl/Containers/xlGraph.h>
 
 namespace xl
 {
@@ -37,7 +38,7 @@ namespace xl
         }
 
     private:
-        class Node
+        struct Node
         {
         public:
             Node() : m_nIdentify(++ms_nCounter)
@@ -45,43 +46,43 @@ namespace xl
 
             }
 
-            ~Node()
-            {
-
-            }
-
-        private:
             int m_nIdentify;
 
-        private:
             static int ms_nCounter;
         };
 
-        class Edge
+        struct Edge
         {
-        public:
-            Edge(Char ch) : m_chBegin(ch), m_chEnd(ch)
+            Edge()
+                : m_bEpsilon(true), m_bOpposite(false), m_chBegin(0), m_chEnd(0)
+            {
+            
+            }
+
+            Edge(Char ch)
+                : m_bEpsilon(false), m_chBegin(ch), m_chEnd(ch)
             {
 
             }
 
-            Edge(Char chBegin, Char chEnd) : m_chBegin(chBegin), m_chEnd(chEnd)
+            Edge(Char chBegin, Char chEnd)
+                : m_bEpsilon(false), m_chBegin(chBegin), m_chEnd(chEnd)
             {
 
             }
 
-            ~Edge()
-            {
-
-            }
-
-        public:
             bool Match(Char ch)
             {
-                return ch >= m_chBegin && ch <= m_chEnd;
+                if (m_bEpsilon)
+                {
+                    return false;
+                }
+
+                return (ch >= m_chBegin && ch <= m_chEnd);
             }
 
-        private:
+            bool m_bEpsilon;
+            bool m_bOpposite;
             Char m_chBegin;
             Char m_chEnd;
         };
@@ -92,8 +93,8 @@ namespace xl
 
     private:
         StateMachinePtr       m_spStateMachine;
-		StateMachine::NodePtr m_spBegin;
-		StateMachine::NodePtr m_spEnd;
+        StateMachine::NodePtr m_pBegin;
+        StateMachine::NodePtr m_pEnd;
         String m_strRegExp;
         int m_nCurrentPosition;
 
@@ -103,355 +104,359 @@ namespace xl
             m_strRegExp = s;
             m_nCurrentPosition = 0;
             m_spStateMachine = new StateMachine;
-            m_spBegin = m_spStateMachine->AddNode(NewNode());
-			m_spEnd = MatchExpression(m_spBegin);
+            m_pBegin = m_spStateMachine->AddNode(NewNode());
+            m_pEnd = ParseExpression(m_pBegin);
         
-            if (m_spEnd == nullptr)
+            if (m_pEnd == nullptr || m_nCurrentPosition < m_strRegExp.Length())
             {
                 return false;
             }
 
+            FixStateMachine();
+
             return true;
         }
 
-		bool Test(const String &s)
-		{
-			StateMachine::NodePtr spCurrent = m_spBegin;
+        bool Match(const String &s)
+        {
+            return Match(s, 0, m_pBegin);
+        }
 
-			for (int i = 0; i < s.Length(); ++i)
-			{
-				bool bFound = false;
+    private:
+        void FixStateMachine()
+        {
 
-				for (auto it = spCurrent->arrNext.Begin(); it != spCurrent->arrNext.End(); ++it)
-				{
-					StateMachine::EdgePtr &spEdge = *it;
+        }
 
-					if (spEdge->tValue.Match(s[i]))
-					{
-						spCurrent = spEdge->pNext;
-						bFound = true;
-						break;
-					}
-				}
+        bool Match(const String &s, int i, StateMachine::NodePtr pNode)
+        {
+            if (pNode == nullptr || pNode->arrNext.Empty())
+            {
+                return true;
+            }
 
-				if (!bFound)
-				{
-					return false;
-				}
-			}
+            for (auto it = pNode->arrNext.Begin(); it != pNode->arrNext.End(); ++it)
+            {
+                if (Match(s, i, *it))
+                {
+                    return true;
+                }
+            }
 
-			if (spCurrent != m_spEnd)
-			{
-				return false;
-			}
+            return false;
+        }
 
-			return true;
-		}
+        bool Match(const String &s, int i, StateMachine::EdgePtr pEdge)
+        {
+            if (i >= s.Length())
+            {
+                return true;
+            }
 
-	private:
-		enum TokenType
-		{
-			TT_EOF,
-			TT_GROUP_BEGIN,
-			TT_GROUP_END,
-			TT_OR,
-			TT_COLLECTION_BEGIN,
-			TT_COLLECTION_END,
-			TT_COLLECTION_REVERSE,
-			TT_REPEAT_BEGIN,
-			TT_REPEAT_END,
-			TT_REPEAT_SEPARATOR,
-			TT_REPEAT_ZERO_PLUS,
-			TT_REPEAT_ONE_PLUS,
-			TT_REPEAT_ZERO_ONE,
-			TT_CHAR
-		};
+            if (!pEdge->tValue.m_bEpsilon)
+            {
+                if (!pEdge->tValue.Match(s[i]))
+                {
+                    return false;
+                }
+            }
 
-		struct Token 
-		{
-			Char ch;
-			TokenType type;
-			bool escaped;
+            return Match(s, i + 1, pEdge->pNext);
+        }
 
-			Token(Char ch = L'\0', TokenType type = TT_CHAR, bool escaped = false)
-				: ch(ch), type(type), escaped(escaped)
-			{
+    private:
+        enum TokenType
+        {
+            TT_Error,
+            TT_Eof,
+            TT_OpenParen,
+            TT_CloseParen,
+            TT_VerticalBar ,
+            TT_OpenBracket,
+            TT_CloseBracket,
+            TT_Hyphen,
+            TT_Caret,
+            TT_OrdinaryChar
+        };
 
-			}
-		};
+        struct Token 
+        {
+            TokenType type;
+            Char ch;
+            size_t length;
+
+            Token(TokenType type = TT_OrdinaryChar, Char ch = L'\0', size_t length = 1)
+                : ch(ch), type(type), length(length)
+            {
+
+            }
+        };
 
     private:
         Token LookAhead()
         {
-			Char ch = m_strRegExp[m_nCurrentPosition++];
-			TokenType type = TT_CHAR;
+            if (m_nCurrentPosition > m_strRegExp.Length())
+            {
+                return Token(TT_Error, 0, 1);
+            }
 
-			if (ch == L'\\')
-			{
-				Char chNext = m_strRegExp[m_nCurrentPosition];
+            Char ch = m_strRegExp[m_nCurrentPosition++];
+            TokenType type = TT_OrdinaryChar;
 
-				if (chNext != TT_EOF)
-				{
-					++m_nCurrentPosition;
-					return Token(chNext, TT_CHAR, true);
-				}
-			}
+            if (ch == L'\\')
+            {
+                Char chNext = m_strRegExp[m_nCurrentPosition];
 
-			switch (ch)
-			{
-			case L'\0':
-				type = TT_EOF;
-				break;
-			case L'(':
-				type = TT_GROUP_BEGIN;
-				break;
-			case L')':
-				type = TT_GROUP_END;
-				break;
-			case L'|':
-				type = TT_OR;
-				break;
-			case L'[':
-				type = TT_COLLECTION_BEGIN;
-				break;
-			case L']':
-				type = TT_COLLECTION_END;
-				break;
-			case L'^':
-				type = TT_COLLECTION_REVERSE;
-				break;
-			case L'{':
-				type = TT_REPEAT_BEGIN;
-				break;
-			case L'}':
-				type = TT_REPEAT_END;
-				break;
-			case L',':
-				type = TT_REPEAT_SEPARATOR;
-				break;
-			case L'*':
-				type = TT_REPEAT_ZERO_PLUS;
-				break;
-			case L'+':
-				type = TT_REPEAT_ONE_PLUS;
-				break;
-			case L'?':
-				type = TT_REPEAT_ZERO_ONE;
-				break;
-			default:
-				break;
-			}
+                if (chNext != TT_Eof)
+                {
+                    ++m_nCurrentPosition;
+                    return Token(TT_OrdinaryChar, chNext, 2);
+                }
+            }
 
-			return Token(ch, type);
+            switch (ch)
+            {
+            case L'\0':
+                type = TT_Eof;
+                break;
+            case L'(':
+                type = TT_OpenParen;
+                break;
+            case L')':
+                type = TT_CloseParen;
+                break;
+            case L'|':
+                type = TT_VerticalBar ;
+                break;
+            case L'[':
+                type = TT_OpenBracket;
+                break;
+            case L']':
+                type = TT_CloseBracket;
+                break;
+            case L'-':
+                type = TT_Hyphen;
+                break;
+            case L'^':
+                type = TT_Caret;
+                break;
+            default:
+                break;
+            }
+
+            return Token(type, ch);
         }
 
         void Backward(const Token &token)
         {
-            --m_nCurrentPosition;
-
-			if (token.escaped)
-			{
-				--m_nCurrentPosition;
-			}
+            m_nCurrentPosition -= token.length;
         }
 
-        StateMachine::NodePtr MatchExpression(StateMachine::NodePtr spNode)
+        StateMachine::NodePtr ParseExpression(StateMachine::NodePtr pNode)
         {
-            StateMachine::NodePtr spCurrent = spNode;
-            bool bContinue = true;
+            StateMachine::NodePtr pCurrent = pNode;
 
-            while (bContinue)
+            while (pCurrent != nullptr)
             {
                 Token token = LookAhead();
 
-                if (token.type == TT_EOF)
+                if (token.type == TT_Error)
                 {
-                    return spCurrent;
+                    return nullptr;
                 }
 
+                if (token.type == TT_Eof)
+                {
+                    return pCurrent;
+                }
+    
                 switch (token.type)
                 {
-                case TT_GROUP_BEGIN:
+                case TT_OpenParen:
                     {
-
-					}
-                    break;
-                case TT_GROUP_END:
-                    {
-
-					}
-                    break;
-                case TT_OR:
-                    {
-
+                        pCurrent = ParseExpression(pCurrent);
                     }
                     break;
-                case TT_COLLECTION_BEGIN:
+                case TT_VerticalBar:
                     {
-						spCurrent = MatchCollection(spCurrent);
-
-						if (spCurrent == nullptr)
-                        {
-                            return nullptr;
-                        }
+                        StateMachine::NodePtr pNewNode = ParseExpression(pNode);
+                        StateMachine::EdgePtr pEdge = NewEdge();
+                        m_spStateMachine->AddEdge(pEdge, pNewNode, pCurrent);
                     }
                     break;
-                case TT_COLLECTION_END:
+                case TT_OpenBracket:
                     {
-						return nullptr;
+                        pCurrent = ParseCollection(pCurrent);
                     }
                     break;
-				case TT_COLLECTION_REVERSE:
-					{
-						return nullptr;
-					}
-					break;
-                case TT_REPEAT_BEGIN:
+                case TT_OrdinaryChar:
                     {
-
-                    }
-                    break;
-                case TT_REPEAT_END:
-                    {
-
-					}
-                    break;
-                case TT_REPEAT_ZERO_PLUS:
-                    {
-
-                    }
-                    break;
-                case TT_REPEAT_ONE_PLUS:
-                    {
-
-                    }
-                    break;
-                case TT_REPEAT_ZERO_ONE:
-                    {
-
+                        pCurrent = AddNormalNode(pCurrent, token.ch);
                     }
                     break;
                 default:
-                    {
-                        spCurrent = AddNormalNode(spCurrent, token.ch);
-                    }
-                    break;
+                    return nullptr;
                 }
             }
 
-            return spCurrent;
+            return pCurrent;
         }
 
-        StateMachine::NodePtr MatchCollection(StateMachine::NodePtr spNode)
+        struct RangeCalc
         {
-			bool bReverse = false;
+            struct Range
+            {
+                Char chFrom;
+                Char chTo;
 
-			Token token = LookAhead();
+                Range() : chFrom(0), chTo(0)
+                {
 
-			if (token.type == TT_COLLECTION_REVERSE)
-			{
-				bReverse = true;
-			}
-			else
-			{
-				Backward(token);
-			}
+                }
 
-			Set<Char> setChar;
+                Range(Char chFrom, Char chTo) : chFrom(chFrom), chTo(chTo)
+                {
 
-			while (true)
-			{
-				token = LookAhead();
+                }
+            };
 
-				if (token.type == TT_COLLECTION_END)
-				{
-					break;
-				}
+            Array<Range> arrRanges;
 
-				if (token.type != TT_CHAR)
-				{
-					return nullptr;
-				}
+            void Append(Char chFrom, Char chTo)
+            {
+                size_t nFrom = -1;
+                size_t nTo = -1;
 
-				setChar.Insert(token.ch);
-			}
+                for (size_t i = 0; i < arrRanges.Size(); ++i)
+                {
+                    if (chFrom <= arrRanges[i].chFrom && nFrom != -1)
+                    {
+                        nFrom = i;
+                    }
 
-			if (setChar.Empty())
-			{
-				return spNode;
-			}
+                    if (chTo >= arrRanges[i].chTo && nTo != -1)
+                    {
+                        nTo = i;
+                    }
 
-			StateMachine::NodePtr spNext = NewNode();
+                    if (chFrom >= arrRanges[i].chFrom && chFrom <= arrRanges[i].chTo)
+                    {
+                        chFrom = arrRanges[i].chFrom;
+                    }
 
-			if (bReverse)
-			{
-				Char chCurrent = (Char)0;
+                    if (nTo >= arrRanges[i].chFrom && nTo <= arrRanges[i].chTo)
+                    {
+                        chTo = arrRanges[i].chTo;
+                    }
+                }
 
-				for (auto it = setChar.Begin(); it != setChar.End(); ++it)
-				{
-					if (*it == chCurrent)
-					{
-						++chCurrent;
-						continue;
-					}
+                arrRanges.Delete(nFrom, (int)(nTo - nFrom));
+                arrRanges.Insert((nFrom == -1 ? 0 : nFrom), Range(nFrom, nTo));
+            }
+            void Reverse();
+        };
 
-					StateMachine::EdgePtr spEdge = NewEdge(chCurrent, *it - 1);
-					m_spStateMachine->AddEdge(spEdge, spNode, spNext);
+        StateMachine::NodePtr ParseCollection(StateMachine::NodePtr pNode)
+        {
+            StateMachine::NodePtr pNext = nullptr;
+            StateMachine::EdgePtr pLastEdge = nullptr;
 
-					chCurrent = *it + 1;
-				}
+            bool bFirst = true;
+            bool bOpposite = false;
+            bool bInHyphen = false;
 
-				if (chCurrent != 0 || setChar.Empty())
-				{
-					StateMachine::EdgePtr spEdge = NewEdge(chCurrent, (Char)-1);
-					m_spStateMachine->AddEdge(spEdge, spNode, spNext);
-				}
-			}
-			else
-			{
-				for (auto it = setChar.Begin(); it != setChar.End(); ++it)
-				{
-					StateMachine::EdgePtr spEdge = NewEdge(*it);
-					m_spStateMachine->AddEdge(spEdge, spNode, spNext);
-				}
-			}
+            while (true)
+            {
+                Token token = LookAhead();
 
-			m_spStateMachine->AddNode(spNext);
+                switch (token.type)
+                {
+                case TT_CloseBracket:
+                    {
+                        if (bFirst)
+                        {
+                            return pNode;
+                        }
+                        else
+                        {
+                            return pNext;
+                        }
+                    }
+                    break;
+                case TT_Caret:
+                    {
+                        if (!bFirst)
+                        {
+                            return nullptr;
+                        }
+                        else
+                        {
+                            bOpposite = true;
+                        }
+                    }
+                    break;
+                case TT_Hyphen:
+                    {
+                        if (bFirst || bInHyphen)
+                        {
+                            return nullptr;
+                        }
+                        else
+                        {
+                            bInHyphen = true;
+                        }
+                    }
+                    break;
+                case TT_OrdinaryChar:
+                    {
+                        if (bInHyphen)
+                        {
+                            pLastEdge->tValue.m_chEnd = token.ch;
+                            bInHyphen = false;
+                        }
+                        else
+                        {
+                            if (pNext == nullptr)
+                            {
+                                pNext = NewNode();
+                            }
 
-			return spNext;
+                            pLastEdge = NewEdge(token.ch, bOpposite);
+                            m_spStateMachine->AddEdge(pLastEdge, pNode, pNext);
+                        }
+                    }
+                    break;
+                default:
+                    return nullptr;
+                }
+
+                bFirst = false;
+            }
+
+            return nullptr;
         }
 
-		StateMachine::NodePtr MatchRepeatZeroPlus(StateMachine::NodePtr spNode)
-		{
-			return nullptr;
-		}
-
-		StateMachine::NodePtr MatchRepeatOnePlus(StateMachine::NodePtr spNode)
-		{
-			return nullptr;
-		}
-
-		StateMachine::NodePtr MatchRepeatZeroOne(StateMachine::NodePtr spNode)
-		{
-			return nullptr;
-		}
-    
     private:
-        StateMachine::NodePtr AddNormalNode(StateMachine::NodePtr spNodeFrom, Char chEdgeChar)
+        StateMachine::NodePtr AddNormalNode(StateMachine::NodePtr pNodeFrom, Char chEdgeChar)
         {
-            StateMachine::EdgePtr spEdge = NewEdge(chEdgeChar);
-            StateMachine::NodePtr spNode = NewNode();
+            StateMachine::EdgePtr pEdge = NewEdge(chEdgeChar);
+            StateMachine::NodePtr pNode = NewNode();
 
-            m_spStateMachine->AddNode(spNode);
-            m_spStateMachine->AddEdge(spEdge, spNodeFrom, spNode);
+            m_spStateMachine->AddNode(pNode);
+            m_spStateMachine->AddEdge(pEdge, pNodeFrom, pNode);
 
-            return spNode;
+            return pNode;
         }
 
     private:
         StateMachine::NodePtr NewNode()
         {
             return new StateMachine::NodeType();
+        }
+
+        StateMachine::EdgePtr NewEdge()
+        {
+            return new StateMachine::EdgeType();
         }
 
         StateMachine::EdgePtr NewEdge(Char ch)

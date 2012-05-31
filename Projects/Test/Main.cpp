@@ -20,15 +20,15 @@ using namespace xl;
 int main()
 {
     RegExp r;
-	bool b = false;
+    bool b = false;
 
     r.Parse(L"a[^1b2]c");
-	b = r.Test(L"aac");
-	b = r.Test(L"abc");
-	b = r.Test(L"acc");
-	b = r.Test(L"a1c");
-	b = r.Test(L"a2c");
-	b = r.Test(L"a3c");
+    b = r.Match(L"aac");
+    b = r.Match(L"abc");
+    b = r.Match(L"acc");
+    b = r.Match(L"a1c");
+    b = r.Match(L"a2c");
+    b = r.Match(L"a3c");
 
 
 
