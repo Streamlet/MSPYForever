@@ -96,7 +96,7 @@
     <ClCompile Include="Math\xlIntervalTest.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\xlMathSetTest.cpp">
+    <ClCompile Include="Math\xlIntervalSetTest.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,7 +2,7 @@
 //
 //    Copyright (C) Streamlet. All rights reserved.
 //
-//    File Name:   xlMathSetTest.cpp
+//    File Name:   xlIntervalSetTest.cpp
 //    Author:      Streamlet
 //    Create Time: 2012-06-01
 //    Description: 

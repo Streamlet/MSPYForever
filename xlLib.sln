@@ -153,8 +153,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{4533161B-D220-48E6-9C78-D5A6122527A2}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Math\xlInterval.h = SourceCode\xl\Math\xlInterval.h
+		SourceCode\xl\Math\xlIntervalSet.h = SourceCode\xl\Math\xlIntervalSet.h
 		SourceCode\xl\Math\xlMathBase.h = SourceCode\xl\Math\xlMathBase.h
-		SourceCode\xl\Math\xlMathSet.h = SourceCode\xl\Math\xlMathSet.h
 	EndProjectSection
 EndProject
 Global

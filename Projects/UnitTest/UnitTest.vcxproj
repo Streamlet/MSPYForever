@@ -151,7 +151,7 @@
     <ClCompile Include="Cryption\xlSHA1Test.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math\xlIntervalTest.cpp" />
-    <ClCompile Include="Math\xlMathSetTest.cpp" />
+    <ClCompile Include="Math\xlIntervalSetTest.cpp" />
     <ClCompile Include="Memory\xlSmartPtrTest.cpp" />
     <ClCompile Include="Meta\xlBindTest.cpp" />
     <ClCompile Include="Meta\xlFunctionTest.cpp" />

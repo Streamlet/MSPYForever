@@ -2,7 +2,7 @@
 //
 //    Copyright (C) Streamlet. All rights reserved.
 //
-//    File Name:   xlMathSet.h
+//    File Name:   xlIntervalSet.h
 //    Author:      Streamlet
 //    Create Time: 2012-06-01
 //    Description: 
@@ -13,8 +13,8 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef __XLMATHSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
-#define __XLMATHSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
+#ifndef __XLINTERVALSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
+#define __XLINTERVALSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
 
 
 #include <xl/Containers/xlArray.h>
@@ -23,7 +23,7 @@
 namespace xl
 {
     template <typename T>
-    class MathSet
+    class IntervalSet
     {
     public:
         typedef Interval<T> IntervalType;
@@ -32,23 +32,23 @@ namespace xl
         Array<IntervalType> arrIntervals;
 
     public:
-        MathSet()
+        IntervalSet()
         {
 
         }
 
-        MathSet(const MathSet &that)
+        IntervalSet(const IntervalSet &that)
         {
             this->arrRanges = that.arrRanges;
         }
 
-        ~MathSet()
+        ~IntervalSet()
         {
 
         }
 
     public:
-        MathSet &operator = (const MathSet &that)
+        IntervalSet &operator = (const IntervalSet &that)
         {
             if (this != &that)
             {
@@ -58,12 +58,12 @@ namespace xl
             return *this;
         }
 
-        bool operator == (MathSet &that) const
+        bool operator == (IntervalSet &that) const
         {
             return this->arrRanges == that.arrRanges;
         }
 
-        bool operator != (MathSet &that) const
+        bool operator != (IntervalSet &that) const
         {
             return this->arrRanges != that.arrRanges;
         }
@@ -85,17 +85,17 @@ namespace xl
 
         }
 
-        MathSet Complementary(const IntervalType &universe) const
+        IntervalSet Complementary(const IntervalType &universe) const
         {
 
         }
 
-        MathSet Intersection(const MathSet &that) const
+        IntervalSet Intersection(const IntervalSet &that) const
         {
 
         }
 
-        MathSet Union(const MathSet &that) const
+        IntervalSet Union(const IntervalSet &that) const
         {
 
         }
@@ -116,4 +116,4 @@ namespace xl
 
 
 
-#endif // #ifndef __XLMATHSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
+#endif // #ifndef __XLINTERVALSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
