@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Memory">
       <UniqueIdentifier>{dcd14cc7-abea-4e8c-8ae5-ec45cc60febc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{00a0c352-e0ff-46fe-890d-6d3f85ab2d8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -89,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="Meta\xlScopedExitTest.cpp">
       <Filter>Source Files\Meta</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\xlIntervalTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\xlMathSetTest.cpp">
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
