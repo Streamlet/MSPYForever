@@ -17,7 +17,7 @@
 #define __XLINTERVAL_H_14F2C212_AFD1_4E01_8F71_60E67EACC903_INCLUDED__
 
 
-#include <xl/Containers/xlArray.h>
+#include <xl/Containers/xlSet.h>
 #include <xl/Math/xlMathBase.h>
 
 namespace xl
@@ -95,7 +95,126 @@ namespace xl
             return true;
         }
 
-    public:
+        bool operator < (const Interval &that) const
+        {
+            if (that.IsEmpty())
+            {
+                return false;
+            }
+
+            if (this->IsEmpty())
+            {
+                return true;
+            }
+
+            if (that.left < this->left)
+            {
+                return false;
+            }
+
+            if (this->left < that.left)
+            {
+                return true;
+            }
+
+            if (that.bIncludeLeft)
+            {
+                return false;
+            }
+
+            if (this->bIncludeLeft)
+            {
+                return true;
+            }
+
+            if (that.right < this->right)
+            {
+                return false;
+            }
+
+            if (this->right < that.right)
+            {
+                return true;
+            }
+
+            if (this->bIncludeRight)
+            {
+                return false;
+            }
+
+            if (that.bIncludeRight)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        bool operator > (const Interval &that) const
+        {
+            if (this->IsEmpty())
+            {
+                return false;
+            }
+
+            if (that.IsEmpty())
+            {
+                return true;
+            }
+
+            if (this->left > that.left)
+            {
+                return true;
+            }
+
+            if (that.left > this->left)
+            {
+                return false;
+            }
+
+            if (this->bIncludeLeft)
+            {
+                return false;
+            }
+
+            if (that.bIncludeLeft)
+            {
+                return true;
+            }
+
+            if (this->right > that.right)
+            {
+                return true;
+            }
+
+            if (that.right > this->right)
+            {
+                return false;
+            }
+
+            if (that.bIncludeRight)
+            {
+                return false;
+            }
+
+            if (this->bIncludeRight)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        bool operator <= (const Interval &that) const
+        {
+            return *this == that || *this < that;
+        }
+
+        bool operator >= (const Interval &that) const
+        {
+            return *this == that || *this > that;
+        }
+
         bool IsEmpty() const
         {
             if (left < right)
@@ -280,52 +399,52 @@ namespace xl
             return r;
         }
 
-        Array<Interval> Union(const Interval &that) const
+        Set<Interval> Union(const Interval &that) const
         {
-            Array<Interval> arrIntervals;
+            Set<Interval> setIntervals;
 
             if (this->Touched(that))
             {
-                arrIntervals.PushBack(UnionTouched(that));
+                setIntervals.Insert(UnionTouched(that));
             }
             else
             {
-                arrIntervals.PushBack(*this);
-                arrIntervals.PushBack(that);
+                setIntervals.Insert(*this);
+                setIntervals.Insert(that);
             }
 
-            return arrIntervals;
+            return setIntervals;
         }
 
-        Array<Interval> Complementary(const Interval &universe) const
+        Set<Interval> Complementary(const Interval &universe) const
         {
-            Array<Interval> arrIntervals;
+            Set<Interval> setIntervals;
 
             Interval intersection = this->Intersection(universe);
 
             if (intersection.IsEmpty())
             {
-                arrIntervals.PushBack(universe);
-                return arrIntervals;
+                setIntervals.Insert(universe);
+                return setIntervals;
             }
 
             if (intersection.left != universe.left || (!intersection.bIncludeLeft && universe.bIncludeLeft))
             {
-                arrIntervals.PushBack(Interval(universe.left,
-                                               intersection.left,
-                                               universe.bIncludeLeft,
-                                               !intersection.bIncludeLeft));
+                setIntervals.Insert(Interval(universe.left,
+                                             intersection.left,
+                                             universe.bIncludeLeft,
+                                             !intersection.bIncludeLeft));
             }
 
             if (intersection.right != universe.right || (!intersection.bIncludeRight && universe.bIncludeRight))
             {
-                arrIntervals.PushBack(Interval(intersection.right,
-                                               universe.right,
-                                               !intersection.bIncludeRight,
-                                               universe.bIncludeRight));
+                setIntervals.Insert(Interval(intersection.right,
+                                             universe.right,
+                                             !intersection.bIncludeRight,
+                                             universe.bIncludeRight));
             }
 
-            return arrIntervals;
+            return setIntervals;
         }
     };
 

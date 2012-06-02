@@ -17,7 +17,7 @@
 #define __XLINTERVALSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
 
 
-#include <xl/Containers/xlArray.h>
+#include <xl/Containers/xlSet.h>
 #include <xl/Math/xlInterval.h>
 
 namespace xl
@@ -29,7 +29,7 @@ namespace xl
         typedef Interval<T> IntervalType;
 
     private:
-        Array<IntervalType> arrIntervals;
+        Set<IntervalType> m_setIntervals;
 
     public:
         IntervalSet()
@@ -39,7 +39,7 @@ namespace xl
 
         IntervalSet(const IntervalSet &that)
         {
-            this->arrRanges = that.arrRanges;
+            this->m_setIntervals = that.m_setIntervals;
         }
 
         ~IntervalSet()
@@ -52,7 +52,7 @@ namespace xl
         {
             if (this != &that)
             {
-                this->arrRanges = that.arrRanges;
+                this->m_setIntervals = that.m_setIntervals;
             }
 
             return *this;
@@ -60,29 +60,24 @@ namespace xl
 
         bool operator == (IntervalSet &that) const
         {
-            return this->arrRanges == that.arrRanges;
+            return this->m_setIntervals == that.m_setIntervals;
         }
 
         bool operator != (IntervalSet &that) const
         {
-            return this->arrRanges != that.arrRanges;
+            return this->m_setIntervals != that.m_setIntervals;
         }
 
     public:
-        Array<IntervalType> GetRanges()
+        Set<IntervalType> GetIntervals()
         {
-            return arrRanges;
+            return m_setIntervals;
         }
 
     public:
         bool IsEmpty() const
         {
-            return arrRanges.Empty();
-        }
-
-        bool IsUniverse() const
-        {
-
+            return m_setIntervals.Empty();
         }
 
         IntervalSet Complementary(const IntervalType &universe) const
@@ -103,12 +98,39 @@ namespace xl
     public:
         void Union(const IntervalType &interval)
         {
+            IntervalType i = interval;
 
+            for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
+            {
+                if (interval.Touched(*it))
+                {
+                    i = i.UnionTouched(*it);
+                    it = it->Delete(it);
+                }
+                else
+                {
+                    ++it;
+                }                
+            }
+
+            m_setIntervals.Insert(i);
         }
 
-        void Exclude(const IntervalType &that)
+        void Exclude(const IntervalType &interval)
         {
+            for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
+            {
+                *it = interval.Complementary(*it);
 
+                if (it->IsEmpty())
+                {
+                    it = m_setIntervals.Delete(it);
+                }
+                else
+                {
+                    ++it;
+                }
+            }
         }
     };
 
