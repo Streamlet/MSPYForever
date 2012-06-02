@@ -219,6 +219,23 @@ namespace xl
 
             return res;
         }
+
+        void MakeClose(const T &step)
+        {
+            Set<IntervalType> setIntervals;
+
+            for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); ++it)
+            {
+                IntervalType i = it->CloseInterval(step);
+
+                if (!i.IsEmpty())
+                {
+                    setIntervals.Insert(i);
+                }
+            }
+
+            m_setIntervals = setIntervals;
+        }
     };
 
 } // namespace xl

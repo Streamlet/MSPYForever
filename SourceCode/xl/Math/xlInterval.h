@@ -452,6 +452,25 @@ namespace xl
 
             return setIntervals;
         }
+
+        Interval CloseInterval(const T step)
+        {
+            Interval r = *this;
+
+            if (!r.bIncludeLeft)
+            {
+                r.left += step;
+                r.bIncludeLeft = true;
+            }
+
+            if (!r.bIncludeRight)
+            {
+                r.right -= step;
+                r.bIncludeRight = true;
+            }
+
+            return r;
+        }
     };
 
 } // namespace xl
