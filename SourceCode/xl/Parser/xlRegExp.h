@@ -176,14 +176,14 @@ namespace xl
     private:
         enum TokenType
         {
-            TT_Eof,
-            TT_OpenParen,
-            TT_CloseParen,
-            TT_VerticalBar ,
-            TT_OpenBracket,
-            TT_CloseBracket,
-            TT_Hyphen,
-            TT_Caret,
+            TT_Eof,             // \0
+            TT_VerticalBar,     // |
+            TT_OpenParen,       // (
+            TT_CloseParen,      // )
+            TT_OpenBracket,     // [
+            TT_CloseBracket,    // ]
+            TT_Hyphen,          // -
+            TT_Caret,           // ^
             TT_OrdinaryChar
         };
 
@@ -193,7 +193,7 @@ namespace xl
             Char ch;
             size_t length;
 
-            Token(TokenType type = TT_OrdinaryChar, Char ch = L'\0', size_t length = 1)
+            Token(TokenType type = TT_OrdinaryChar, Char ch = 0, size_t length = 1)
                 : ch(ch), type(type), length(length)
             {
 
@@ -260,7 +260,7 @@ namespace xl
         // EBNF:
         //
         // Expr        -> ExprNoOr { | ExprNoOr }
-        // ExprNoOr    -> { { ExpreNoGroup } { "(" Expr ")" } }
+        // ExprNoOr    -> ExpreNoGroup { "(" Expr ")" ExpreNoGroup }
         // ExprNoGroup -> { OrdinaryChar }
         //
 
