@@ -132,6 +132,11 @@ namespace xl
         {
             if (pNode == nullptr || pNode->arrNext.Empty() || pNode == m_pEnd)
             {
+                if (i < s.Length())
+                {
+                    return false;
+                }
+
                 return true;
             }
 
@@ -159,9 +164,13 @@ namespace xl
                 {
                     return false;
                 }
-            }
 
-            return Match(s, i + 1, pEdge->pNext);
+                return Match(s, i + 1, pEdge->pNext);
+            }
+            else
+            {
+                return Match(s, i, pEdge->pNext);
+            }
         }
 
     private:

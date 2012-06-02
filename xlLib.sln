@@ -140,7 +140,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parser", "Parser", "{43BE58E5-6828-40BC-BD88-7BB1ECEC469D}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Parser\xlRegExp.h = SourceCode\xl\Parser\xlRegExp.h
-		SourceCode\xl\Parser\xlStateMachine.h = SourceCode\xl\Parser\xlStateMachine.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{F762A194-5340-4B26-B63C-F3AEABE24562}"
