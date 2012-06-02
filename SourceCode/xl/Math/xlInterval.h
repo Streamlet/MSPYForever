@@ -184,7 +184,7 @@ namespace xl
             }
             else if (this->right > that.right)
             {
-                r.left = that.right;
+                r.right = that.right;
                 r.bIncludeRight = that.bIncludeRight;
             }
             else
@@ -201,14 +201,14 @@ namespace xl
             return !this->Intersection(that).IsEmpty();
         }
 
-        bool Touched(const Interval &that)
+        bool Touched(const Interval &that) const
         {
             if (this->IsEmpty() || that.IsEmpty())
             {
-                return false;
+                return true;
             }
 
-            if (!this->HasIntersectionWith(that))
+            if (this->HasIntersectionWith(that))
             {
                 return true;
             }
@@ -226,23 +226,21 @@ namespace xl
             return false;
         }
 
-        Array<Interval> Union(const Interval &that) const
+        Interval UnionTouched(const Interval &that) const
         {
-            Array<Interval> arrIntervals;
-
             if (!this->Touched(that))
             {
-                if (!this->IsEmpty())
-                {
-                    arrIntervals.PushBack(*this);
-                }
+                return *this;
+            }
 
-                if (!that.IsEmpty())
-                {
-                    arrIntervals.PushBack(that);
-                }
+            if (that.IsEmpty())
+            {
+                return *this;
+            }
 
-                return arrIntervals;
+            if (this->IsEmpty())
+            {
+                return that;
             }
 
             Interval r;
@@ -265,7 +263,7 @@ namespace xl
 
             if (this->right < that.right)
             {
-                r.left = that.right;
+                r.right = that.right;
                 r.bIncludeRight = that.bIncludeRight;
             }
             else if (this->right > that.right)
@@ -279,7 +277,22 @@ namespace xl
                 r.bIncludeRight = (this->bIncludeRight || that.bIncludeRight);
             }
 
-            arrIntervals.PushBack(r);
+            return r;
+        }
+
+        Array<Interval> Union(const Interval &that) const
+        {
+            Array<Interval> arrIntervals;
+
+            if (this->Touched(that))
+            {
+                arrIntervals.PushBack(UnionTouched(that));
+            }
+            else
+            {
+                arrIntervals.PushBack(*this);
+                arrIntervals.PushBack(that);
+            }
 
             return arrIntervals;
         }
@@ -314,7 +327,6 @@ namespace xl
 
             return arrIntervals;
         }
-
     };
 
 } // namespace xl
