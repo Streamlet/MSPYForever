@@ -30,7 +30,13 @@ namespace xl
         bool bIncludeLeft;
         bool bIncludeRight;
 
-        Interval(T left = 0, T right = 0, bool bIncludeLeft = false, bool bIncludeRight = false)
+        Interval()
+            : left(0), right(0), bIncludeLeft(false), bIncludeRight(false)
+        {
+
+        }
+
+        Interval(T left, T right, bool bIncludeLeft = true, bool bIncludeRight = true)
             : left(left), right(right), bIncludeLeft(bIncludeLeft), bIncludeRight(bIncludeRight)
         {
 

@@ -80,32 +80,47 @@ namespace xl
             return m_setIntervals.Empty();
         }
 
-        IntervalSet Complementary(const IntervalType &universe) const
-        {
-
-        }
-
-        IntervalSet Intersection(const IntervalSet &that) const
-        {
-
-        }
-
-        IntervalSet Union(const IntervalSet &that) const
-        {
-
-        }
-
     public:
+        void Intersect(const IntervalType &interval)
+        {
+            Set<IntervalType> setIntervals;
+
+            if (!interval.IsEmpty())
+            {
+                for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); ++it)
+                {
+                    IntervalType i = it->Intersection(interval);
+
+                    if (!i.IsEmpty())
+                    {
+                        setIntervals.Insert(i);
+                    }
+                }
+            }
+
+            m_setIntervals = setIntervals;
+        }
+
         void Union(const IntervalType &interval)
         {
+            if (interval.IsEmpty())
+            {
+                return;
+            }
+
             IntervalType i = interval;
 
             for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
             {
+                if (it->Contains(interval))
+                {
+                    return;
+                }
+
                 if (interval.Touched(*it))
                 {
                     i = i.UnionTouched(*it);
-                    it = it->Delete(it);
+                    it = m_setIntervals.Delete(it);
                 }
                 else
                 {
@@ -118,12 +133,20 @@ namespace xl
 
         void Exclude(const IntervalType &interval)
         {
+            if (interval.IsEmpty())
+            {
+                return;
+            }
+
+            Set<IntervalType> s;
+
             for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
             {
-                *it = interval.Complementary(*it);
-
-                if (it->IsEmpty())
+                if (it->HasIntersectionWith(interval))
                 {
+                    Set<IntervalType> intervals = it->Exclude(interval);
+                    s.Insert(intervals.Begin(), intervals.End());
+
                     it = m_setIntervals.Delete(it);
                 }
                 else
@@ -131,6 +154,70 @@ namespace xl
                     ++it;
                 }
             }
+
+            m_setIntervals.Insert(s.Begin(), s.End());
+        }
+
+    public:
+        IntervalSet Intersection(const IntervalSet &that) const
+        {
+            if (this->IsEmpty() || that.IsEmpty())
+            {
+                return IntervalSet();
+            }
+
+            IntervalSet res = *this;
+
+            for (auto it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
+            {
+                res.Intersect(*it);
+
+                if (res.IsEmpty())
+                {
+                    return res;
+                }
+            }
+
+            return res;
+        }
+
+        IntervalSet Union(const IntervalSet &that) const
+        {
+            if (that.IsEmpty())
+            {
+                return *this;
+            }
+
+            if (this->IsEmpty())
+            {
+                return that;
+            }
+
+            IntervalSet res = *this;
+
+            for (auto it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
+            {
+                res.Union(*it);
+            }
+
+            return res;
+        }
+
+        IntervalSet Exclude(const IntervalSet &that) const
+        {
+            if (that.IsEmpty() || that.IsEmpty())
+            {
+                return *this;
+            }
+
+            IntervalSet res = *this;
+
+            for (auto it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
+            {
+                res.Exclude(*it);
+            }
+
+            return res;
         }
     };
 
