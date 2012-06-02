@@ -157,6 +157,7 @@
     <ClCompile Include="Meta\xlFunctionTest.cpp" />
     <ClCompile Include="Meta\xlScopedExitTest.cpp" />
     <ClCompile Include="Objects\xlBigIntTest.cpp" />
+    <ClCompile Include="Parser\xlRegExpTest.cpp" />
     <ClCompile Include="String\xlBase64Test.cpp" />
     <ClCompile Include="String\xlStringTest.cpp" />
     <ClCompile Include="String\xlEncodingTest.cpp" />

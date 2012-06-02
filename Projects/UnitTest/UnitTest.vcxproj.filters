@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Math">
       <UniqueIdentifier>{00a0c352-e0ff-46fe-890d-6d3f85ab2d8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Parser">
+      <UniqueIdentifier>{1911084c-8da2-4a0c-af63-7f69562eff3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="Math\xlIntervalSetTest.cpp">
       <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser\xlRegExpTest.cpp">
+      <Filter>Source Files\Parser</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
