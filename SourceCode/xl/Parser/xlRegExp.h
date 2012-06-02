@@ -54,37 +54,36 @@ namespace xl
         struct Edge
         {
             Edge()
-                : m_bEpsilon(true), m_bOpposite(false), m_chBegin(0), m_chEnd(0)
+                : bEpsilon(true), chBegin(0), chEnd(0)
             {
             
             }
 
             Edge(Char ch)
-                : m_bEpsilon(false), m_chBegin(ch), m_chEnd(ch)
+                : bEpsilon(false), chBegin(ch), chEnd(ch)
             {
 
             }
 
             Edge(Char chBegin, Char chEnd)
-                : m_bEpsilon(false), m_chBegin(chBegin), m_chEnd(chEnd)
+                : bEpsilon(false), chBegin(chBegin), chEnd(chEnd)
             {
 
             }
 
             bool Match(Char ch)
             {
-                if (m_bEpsilon)
+                if (bEpsilon)
                 {
                     return false;
                 }
 
-                return (ch >= m_chBegin && ch <= m_chEnd);
+                return (ch >= chBegin && ch <= chEnd);
             }
 
-            bool m_bEpsilon;
-            bool m_bOpposite;
-            Char m_chBegin;
-            Char m_chEnd;
+            bool bEpsilon;
+            Char chBegin;
+            Char chEnd;
         };
 
     private:
@@ -153,7 +152,7 @@ namespace xl
 
         bool Match(const String &s, int i, StateMachine::EdgePtr pEdge)
         {
-            if (!pEdge->tValue.m_bEpsilon)
+            if (!pEdge->tValue.bEpsilon)
             {
                 if (i >= s.Length())
                 {
