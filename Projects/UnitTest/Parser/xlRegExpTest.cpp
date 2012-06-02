@@ -73,6 +73,30 @@ namespace
     XL_TEST_CASE()
     {
         RegExp r;
+
+        XL_TEST_ASSERT(r.Parse(L"\\|"));
+        XL_TEST_ASSERT(r.Match(L"|"));
+
+        XL_TEST_ASSERT(r.Parse(L"\\("));
+        XL_TEST_ASSERT(r.Match(L"("));
+
+        XL_TEST_ASSERT(r.Parse(L"\\)"));
+        XL_TEST_ASSERT(r.Match(L")"));
+
+        XL_TEST_ASSERT(r.Parse(L"\\\\"));
+        XL_TEST_ASSERT(r.Match(L"\\"));
+
+        XL_TEST_ASSERT(r.Parse(L"\\"));
+        XL_TEST_ASSERT(r.Match(L"\\"));
+
+        XL_TEST_ASSERT(r.Parse(L"\\|(\\(|\\))"));
+        XL_TEST_ASSERT(r.Match(L"|("));
+        XL_TEST_ASSERT(r.Match(L"|)"));
+    }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
         // an integer from 0 to 255
         // 1 digit: (0|1|2|3|4|5|6|7|8|9)
         // 2 digit: (0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)
