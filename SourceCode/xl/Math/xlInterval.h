@@ -416,32 +416,32 @@ namespace xl
             return setIntervals;
         }
 
-        Set<Interval> Complementary(const Interval &universe) const
+        Set<Interval> Exclude(const Interval &that) const
         {
             Set<Interval> setIntervals;
 
-            Interval intersection = this->Intersection(universe);
+            Interval intersection = this->Intersection(that);
 
             if (intersection.IsEmpty())
             {
-                setIntervals.Insert(universe);
+                setIntervals.Insert(*this);
                 return setIntervals;
             }
 
-            if (intersection.left != universe.left || (!intersection.bIncludeLeft && universe.bIncludeLeft))
+            if (intersection.left != this->left || (!intersection.bIncludeLeft && this->bIncludeLeft))
             {
-                setIntervals.Insert(Interval(universe.left,
+                setIntervals.Insert(Interval(this->left,
                                              intersection.left,
-                                             universe.bIncludeLeft,
+                                             this->bIncludeLeft,
                                              !intersection.bIncludeLeft));
             }
 
-            if (intersection.right != universe.right || (!intersection.bIncludeRight && universe.bIncludeRight))
+            if (intersection.right != this->right || (!intersection.bIncludeRight && this->bIncludeRight))
             {
                 setIntervals.Insert(Interval(intersection.right,
-                                             universe.right,
+                                             this->right,
                                              !intersection.bIncludeRight,
-                                             universe.bIncludeRight));
+                                             this->bIncludeRight));
             }
 
             return setIntervals;

@@ -445,11 +445,11 @@ namespace
         Interval<int> b(3, 4, true, true);
         XL_TEST_ASSERT(a.UnionTouched(b) == a);
 
-        Array<Interval<int>> c = a.Union(b);
+        Set<Interval<int>> c = a.Union(b);
 
         XL_TEST_ASSERT(c.Size() == 2);
-        XL_TEST_ASSERT(c[0] == a);
-        XL_TEST_ASSERT(c[1] == b);
+        XL_TEST_ASSERT(*c.Begin() == a);
+        XL_TEST_ASSERT(*c.ReverseBegin() == b);
     }
 
     XL_TEST_CASE()
@@ -457,20 +457,20 @@ namespace
         Interval<int> a(1, 2, false, false);
         Interval<int> b(3, 4, true, true);
 
-        Array<Interval<int>> c = a.Complementary(b);
+        Set<Interval<int>> c = b.Exclude(a);
         XL_TEST_ASSERT(c.Size() == 1);
-        XL_TEST_ASSERT(c[0] == b);
+        XL_TEST_ASSERT(*c.Begin() == b);
 
         Interval<int> d(0, 4, true, true);
-        Array<Interval<int>> e = a.Complementary(d);
+        Set<Interval<int>> e = d.Exclude(a);
         XL_TEST_ASSERT(e.Size() == 2);
-        XL_TEST_ASSERT(e[0] == Interval<int>(0, 1, true, true));
-        XL_TEST_ASSERT(e[1] == Interval<int>(2, 4, true, true));
+        XL_TEST_ASSERT(*e.Begin() == Interval<int>(0, 1, true, true));
+        XL_TEST_ASSERT(*e.ReverseBegin() == Interval<int>(2, 4, true, true));
 
         Interval<int> f(1, 2, true, true);
-        Array<Interval<int>> g = a.Complementary(f);
+        Set<Interval<int>> g = f.Exclude(a);
         XL_TEST_ASSERT(g.Size() == 2);
-        XL_TEST_ASSERT(g[0] == Interval<int>(1, 1, true, true));
-        XL_TEST_ASSERT(g[1] == Interval<int>(2, 2, true, true));
+        XL_TEST_ASSERT(*g.Begin() == Interval<int>(1, 1, true, true));
+        XL_TEST_ASSERT(*g.ReverseBegin() == Interval<int>(2, 2, true, true));
     }
 }
