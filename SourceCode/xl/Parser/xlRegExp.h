@@ -129,7 +129,7 @@ namespace xl
 
         bool Match(const String &s, int i, StateMachine::NodePtr pNode)
         {
-            if (pNode == nullptr || pNode->arrNext.Empty() || pNode == m_pEnd)
+            if (pNode == m_pEnd)
             {
                 if (i < s.Length())
                 {
