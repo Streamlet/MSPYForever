@@ -260,9 +260,11 @@ namespace xl
         //
         // EBNF:
         //
-        // Expr        -> ExprNoOr { | ExprNoOr }
-        // ExprNoOr    -> ExprNoGroup { "(" Expr ")" ExprNoGroup }
-        // ExprNoGroup -> { OrdinaryChar }
+        // Expr             -> ExprNoOr { "|" ExprNoOr }
+        // ExprNoOr         -> ExprNoGroup { "(" Expr ")" ExprNoGroup }
+        // ExprNoGroup      -> ExprNoCollection { "[" ExprCollection "]" ExprNoCollection }
+        // ExprCollection   -> [ "^" ] { OrdinaryChar | OrdinaryChar "-" OrdinaryChar }
+        // ExprNoCollection -> { OrdinaryChar }
         //
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
@@ -351,17 +353,31 @@ namespace xl
 
             while (true)
             {
+                pCurrent = ParseExprNoCollection(pCurrent);
+
+                if (pCurrent == nullptr)
+                {
+                    return nullptr;
+                }
+
                 Token token = LookAhead();
 
-                if (token.type != TT_OrdinaryChar)
+                if (token.type != TT_OpenBracket)
                 {
                     Backward(token);
                     return pCurrent;
                 }
-    
-                pCurrent = AddNormalNode(pCurrent, token.ch);
+
+                pCurrent = ParseExprCollection(pCurrent);
 
                 if (pCurrent == nullptr)
+                {
+                    return nullptr;
+                }
+
+                token = LookAhead();
+
+                if (token.type != TT_CloseBracket)
                 {
                     return nullptr;
                 }
@@ -370,7 +386,7 @@ namespace xl
             return nullptr;
         }
 
-        StateMachine::NodePtr ParseCollection(StateMachine::NodePtr pNode)
+        StateMachine::NodePtr ParseExprCollection(StateMachine::NodePtr pNode)
         {
             bool bFirst = true;
             bool bOpposite = false;
@@ -386,11 +402,6 @@ namespace xl
 
                 switch (token.type)
                 {
-                case TT_CloseBracket:
-                    {
-                        bContinue = false;
-                    }
-                    break;
                 case TT_Caret:
                     {
                         if (!bFirst)
@@ -419,19 +430,23 @@ namespace xl
                     {
                         if (bInHyphen)
                         {
+                            is.Union(Interval<Char>(chLastChar, token.ch));
                             bInHyphen = false;
                             chLastChar = 0;
-                            is.Union(Interval<Char>(chLastChar, token.ch));
                         }
                         else
                         {
-                            chLastChar = token.ch;
                             is.Union(Interval<Char>(token.ch, token.ch));
+                            chLastChar = token.ch;
                         }
                     }
                     break;
                 default:
-                    return nullptr;
+                    {
+                        Backward(token);
+                        bContinue = false;
+                    }
+                    break;
                 }
 
                 bFirst = false;
@@ -445,23 +460,50 @@ namespace xl
                 is.MakeClose(1);
             }
 
+            StateMachine::NodePtr pCurrent = pNode;
+
             if (is.IsEmpty())
             {
-                return pNode;
+                return pCurrent;
             }
 
-            StateMachine::NodePtr pNext = NewNode();
+            pCurrent = NewNode();
             Set<Interval<Char>> intervals = is.GetIntervals();
 
             for (auto it = intervals.Begin(); it != intervals.End(); ++it)
             {
                 StateMachine::EdgePtr pEdge = NewEdge(it->left, it->right);
-                m_spStateMachine->AddEdge(pEdge, pNode, pNext);
+                m_spStateMachine->AddEdge(pEdge, pNode, pCurrent);
             }
 
-            m_spStateMachine->AddNode(pNext);
+            m_spStateMachine->AddNode(pCurrent);
 
-            return pNext;
+            return pCurrent;
+        }
+
+        StateMachine::NodePtr ParseExprNoCollection(StateMachine::NodePtr pNode)
+        {
+            StateMachine::NodePtr pCurrent = pNode;
+
+            while (true)
+            {
+                Token token = LookAhead();
+
+                if (token.type != TT_OrdinaryChar)
+                {
+                    Backward(token);
+                    return pCurrent;
+                }
+
+                pCurrent = AddNormalNode(pCurrent, token.ch);
+
+                if (pCurrent == nullptr)
+                {
+                    return nullptr;
+                }
+            }
+
+            return nullptr;
         }
 
     private:
