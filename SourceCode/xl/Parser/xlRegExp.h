@@ -353,22 +353,10 @@ namespace xl
             {
                 Token token = LookAhead();
 
-
-                switch (token.type)
-                {
-                case TT_Eof:
-                case TT_VerticalBar:
-                case TT_OpenParen:
-                case TT_CloseParen:
-                    Backward(token);
-                    return pCurrent;
-                default:
-                    break;
-                }
-
                 if (token.type != TT_OrdinaryChar)
                 {
-                    return nullptr;
+                    Backward(token);
+                    return pCurrent;
                 }
     
                 pCurrent = AddNormalNode(pCurrent, token.ch);
