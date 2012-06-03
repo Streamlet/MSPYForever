@@ -212,12 +212,9 @@ namespace xl
 
             if (ch == L'\\')
             {
-                Char chNext = m_strRegExp[m_nCurrentPosition];
-
-                if (chNext != TT_Eof)
+                if (m_nCurrentPosition < m_strRegExp.Length())
                 {
-                    ++m_nCurrentPosition;
-                    return Token(TT_OrdinaryChar, chNext, 2);
+                    return Token(TT_OrdinaryChar, m_strRegExp[m_nCurrentPosition++], 2);
                 }
             }
 
