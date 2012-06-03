@@ -175,7 +175,7 @@ namespace xl
     private:
         enum TokenType
         {
-            TT_Eof,             // \0
+            TT_Eof,
             TT_VerticalBar,     // |
             TT_OpenParen,       // (
             TT_CloseParen,      // )
@@ -202,6 +202,11 @@ namespace xl
     private:
         Token LookAhead()
         {
+            if (m_nCurrentPosition >= m_strRegExp.Length())
+            {
+                return Token(TT_Eof, 0, 0);
+            }
+
             Char ch = m_strRegExp[m_nCurrentPosition++];
             TokenType type = TT_OrdinaryChar;
 
@@ -218,17 +223,14 @@ namespace xl
 
             switch (ch)
             {
-            case L'\0':
-                type = TT_Eof;
+            case L'|':
+                type = TT_VerticalBar;
                 break;
             case L'(':
                 type = TT_OpenParen;
                 break;
             case L')':
                 type = TT_CloseParen;
-                break;
-            case L'|':
-                type = TT_VerticalBar ;
                 break;
             case L'[':
                 type = TT_OpenBracket;
@@ -259,7 +261,7 @@ namespace xl
         // EBNF:
         //
         // Expr        -> ExprNoOr { | ExprNoOr }
-        // ExprNoOr    -> ExpreNoGroup { "(" Expr ")" ExpreNoGroup }
+        // ExprNoOr    -> ExprNoGroup { "(" Expr ")" ExprNoGroup }
         // ExprNoGroup -> { OrdinaryChar }
         //
 
