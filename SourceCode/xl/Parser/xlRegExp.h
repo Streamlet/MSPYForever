@@ -385,12 +385,13 @@ namespace xl
         StateMachine::NodePtr ParseExprCollection(StateMachine::NodePtr pNode)
         {
             bool bFirst = true;
-            bool bOpposite = false;
             bool bInHyphen = false;
             bool bAcceptHyphen = false;
             Char chLastChar = 0;
 
+            bool bOpposite = false;
             IntervalSet<Char> is;
+
             bool bContinue = true;
 
             while (bContinue)
@@ -413,7 +414,7 @@ namespace xl
                     break;
                 case TT_Hyphen:
                     {
-                        if (bInHyphen || chLastChar == 0)
+                        if (bInHyphen || !bAcceptHyphen)
                         {
                             return nullptr;
                         }
