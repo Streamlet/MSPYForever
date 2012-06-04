@@ -40,7 +40,6 @@ namespace xl
     private:
         struct Node
         {
-        public:
             Node() : m_nIdentify(++ms_nCounter)
             {
 
@@ -388,6 +387,7 @@ namespace xl
             bool bFirst = true;
             bool bOpposite = false;
             bool bInHyphen = false;
+            bool bAcceptHyphen = false;
             Char chLastChar = 0;
 
             IntervalSet<Char> is;
@@ -429,12 +429,13 @@ namespace xl
                         {
                             is.Union(Interval<Char>(chLastChar, token.ch));
                             bInHyphen = false;
-                            chLastChar = 0;
+                            bAcceptHyphen = false;
                         }
                         else
                         {
                             is.Union(Interval<Char>(token.ch, token.ch));
                             chLastChar = token.ch;
+                            bAcceptHyphen = true;
                         }
                     }
                     break;
