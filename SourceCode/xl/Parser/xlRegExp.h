@@ -176,13 +176,16 @@ namespace xl
         {
             TT_Eof,
             TT_VerticalBar,     // |
-            TT_OpenParen,       // (
-            TT_CloseParen,      // )
+            TT_QuestionMark,    // ?
+            TT_Plus,            // +
+            TT_Star,            // *
             TT_OpenBracket,     // [
             TT_CloseBracket,    // ]
             TT_Hyphen,          // -
             TT_Caret,           // ^
-            TT_OrdinaryChar
+            TT_OpenParen,       // (
+            TT_CloseParen,      // )
+            TT_OrdinaryChar,
         };
 
         struct Token 
@@ -222,12 +225,6 @@ namespace xl
             case L'|':
                 type = TT_VerticalBar;
                 break;
-            case L'(':
-                type = TT_OpenParen;
-                break;
-            case L')':
-                type = TT_CloseParen;
-                break;
             case L'[':
                 type = TT_OpenBracket;
                 break;
@@ -239,6 +236,21 @@ namespace xl
                 break;
             case L'^':
                 type = TT_Caret;
+                break;
+            case L'?':
+                type = TT_QuestionMark;
+                break;
+            case L'+':
+                type = TT_Plus;
+                break;
+            case L'*':
+                type = TT_Star;
+                break;
+            case L'(':
+                type = TT_OpenParen;
+                break;
+            case L')':
+                type = TT_CloseParen;
                 break;
             default:
                 break;
@@ -256,11 +268,13 @@ namespace xl
         //
         // EBNF:
         //
-        // Expr             -> ExprNoOr { "|" ExprNoOr }
-        // ExprNoOr         -> ExprNoGroup { "(" Expr ")" ExprNoGroup }
-        // ExprNoGroup      -> ExprNoCollection { "[" ExprCollection "]" ExprNoCollection }
-        // ExprCollection   -> [ "^" ] { OrdinaryChar | OrdinaryChar "-" OrdinaryChar }
-        // ExprNoCollection -> { OrdinaryChar }
+        // Expr             -> SubExpr { "|" SubExpr }
+        // SubExpr          -> { Phrase }
+        // Phrase           -> Word [ Repeater ]
+        // Repeater         -> ( "?" | "+" | "*" ) [ "?" ]
+        // Word             -> OrdinaryChar | "[" Collection "]" | "(" Expr ")"
+        // Collection       -> [ "^" ] { OrdinaryChar | OrdinaryChar "-" OrdinaryChar }
+        // OrdinaryChar     -> All ordinary characters
         //
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
@@ -279,7 +293,7 @@ namespace xl
 
         StateMachine::NodePtr ParseExpr(StateMachine::NodePtr pNode)
         {
-            StateMachine::NodePtr pCurrent = ParseExprNoOr(pNode);
+            StateMachine::NodePtr pCurrent = ParseSubExpr(pNode);
 
             if (pCurrent == nullptr)
             {
@@ -296,7 +310,7 @@ namespace xl
                     return pCurrent;
                 }
 
-                StateMachine::NodePtr pNewNode = ParseExprNoOr(pNode);
+                StateMachine::NodePtr pNewNode = ParseSubExpr(pNode);
                 StateMachine::EdgePtr pEdge = NewEdge();
                 m_spStateMachine->AddEdge(pEdge, pNewNode, pCurrent);
             }
@@ -304,85 +318,100 @@ namespace xl
             return nullptr;
         }
 
-        StateMachine::NodePtr ParseExprNoOr(StateMachine::NodePtr pNode)
+        StateMachine::NodePtr ParseSubExpr(StateMachine::NodePtr pNode)
         {
             StateMachine::NodePtr pCurrent = pNode;
 
             while (true)
             {
-                pCurrent = ParseExprNoGroup(pCurrent);
+                StateMachine::NodePtr pNewNode = ParsePhrase(pCurrent);
 
-                if (pCurrent == nullptr)
+                if (pNewNode == pCurrent || pNewNode == nullptr)
                 {
-                    return nullptr;
+                    return pNewNode;
                 }
 
-                Token token = LookAhead();
-
-                if (token.type != TT_OpenParen)
-                {
-                    Backward(token);
-                    return pCurrent;
-                }
-
-                pCurrent = ParseExpr(pCurrent);
-
-                if (pCurrent == nullptr)
-                {
-                    return nullptr;
-                }
-
-                token = LookAhead();
-
-                if (token.type != TT_CloseParen)
-                {
-                    return nullptr;
-                }
+                pCurrent = pNewNode;
             }
 
             return nullptr;
         }
 
-        StateMachine::NodePtr ParseExprNoGroup(StateMachine::NodePtr pNode)
+        StateMachine::NodePtr ParsePhrase(StateMachine::NodePtr pNode)
+        {
+            StateMachine::NodePtr pCurrent = ParseWord(pNode);
+
+            if (pCurrent == nullptr)
+            {
+                return nullptr;
+            }
+
+            // Parse repeater
+
+            return pCurrent;
+        }
+
+        StateMachine::NodePtr ParseWord(StateMachine::NodePtr pNode)
         {
             StateMachine::NodePtr pCurrent = pNode;
 
-            while (true)
+            Token token = LookAhead();
+
+            switch (token.type)
             {
-                pCurrent = ParseExprNoCollection(pCurrent);
-
-                if (pCurrent == nullptr)
+            case TT_OpenParen:
                 {
-                    return nullptr;
+                    pCurrent = ParseExpr(pCurrent);
+
+                    if (pCurrent == nullptr)
+                    {
+                        return nullptr;
+                    }
+
+                    token = LookAhead();
+
+                    if (token.type != TT_CloseParen)
+                    {
+                        return nullptr;
+                    }
                 }
-
-                Token token = LookAhead();
-
-                if (token.type != TT_OpenBracket)
+                break;
+            case TT_OpenBracket:
                 {
-                    Backward(token);
-                    return pCurrent;
+                    pCurrent = ParseCollection(pCurrent);
+
+                    if (pCurrent == nullptr)
+                    {
+                        return nullptr;
+                    }
+
+                    token = LookAhead();
+
+                    if (token.type != TT_CloseBracket)
+                    {
+                        return nullptr;
+                    }
                 }
-
-                pCurrent = ParseExprCollection(pCurrent);
-
-                if (pCurrent == nullptr)
+                break;
+            case TT_OrdinaryChar:
                 {
-                    return nullptr;
-                }
+                    pCurrent = AddNormalNode(pCurrent, token.ch);
 
-                token = LookAhead();
-
-                if (token.type != TT_CloseBracket)
-                {
-                    return nullptr;
+                    if (pCurrent == nullptr)
+                    {
+                        return nullptr;
+                    }
                 }
+                break;
+            default:
+                Backward(token);
+                return pCurrent;
             }
 
-            return nullptr;
+            return pCurrent;
         }
 
-        StateMachine::NodePtr ParseExprCollection(StateMachine::NodePtr pNode)
+        StateMachine::NodePtr ParseCollection(StateMachine::NodePtr pNode)
         {
             bool bFirst = true;
             bool bInHyphen = false;
@@ -478,31 +507,6 @@ namespace xl
             m_spStateMachine->AddNode(pCurrent);
 
             return pCurrent;
-        }
-
-        StateMachine::NodePtr ParseExprNoCollection(StateMachine::NodePtr pNode)
-        {
-            StateMachine::NodePtr pCurrent = pNode;
-
-            while (true)
-            {
-                Token token = LookAhead();
-
-                if (token.type != TT_OrdinaryChar)
-                {
-                    Backward(token);
-                    return pCurrent;
-                }
-
-                pCurrent = AddNormalNode(pCurrent, token.ch);
-
-                if (pCurrent == nullptr)
-                {
-                    return nullptr;
-                }
-            }
-
-            return nullptr;
         }
 
     private:
