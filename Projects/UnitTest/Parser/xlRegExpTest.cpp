@@ -302,6 +302,15 @@ namespace
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(r.Match(L"aa"));
         XL_TEST_ASSERT(r.Match(L"aaa"));
+
+        XL_TEST_ASSERT(r.Parse(L"w1+"));
+        XL_TEST_ASSERT(!r.Match(L""));
+        XL_TEST_ASSERT(!r.Match(L"w"));
+        XL_TEST_ASSERT(r.Match(L"w1"));
+        XL_TEST_ASSERT(r.Match(L"w11"));
+        XL_TEST_ASSERT(r.Match(L"w111"));
+        XL_TEST_ASSERT(r.Match(L"w1111"));
+        XL_TEST_ASSERT(r.Match(L"w11111"));
     }
 
     XL_TEST_CASE()
