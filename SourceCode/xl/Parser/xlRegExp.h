@@ -339,14 +339,147 @@ namespace xl
 
         StateMachine::NodePtr ParsePhrase(StateMachine::NodePtr pNode)
         {
-            StateMachine::NodePtr pCurrent = ParseWord(pNode);
+            StateMachine::NodePtr pFrom = NewNode();
+            StateMachine::NodePtr pCurrent = ParseWord(pFrom);
 
             if (pCurrent == nullptr)
             {
+                delete pFrom;
                 return nullptr;
             }
 
-            // Parse repeater
+            if (pCurrent == pFrom)
+            {
+                delete pFrom;
+                return pNode;
+            }
+
+            enum RepeatorType
+            {
+                RT_None,
+                RT_ZeroOrOne,
+                RT_OnePlus,
+                RT_ZeroPlus
+            };
+
+            RepeatorType rt = RT_None;
+
+            Token token = LookAhead();
+
+            switch (token.type)
+            {
+            case TT_QuestionMark:
+                rt = RT_ZeroOrOne;
+                break;
+            case TT_Plus:
+                rt = RT_OnePlus;
+                break;
+            case TT_Star:
+                rt = RT_ZeroPlus;
+                break;
+            default:
+                Backward(token);
+                break;
+            }
+
+            bool bGreedy = true;
+
+            if (rt != RT_None)
+            {
+                token = LookAhead();
+
+                if (token.type == TT_QuestionMark)
+                {
+                    bGreedy = false;
+                }
+                else
+                {
+                    Backward(token);
+                }
+            }
+
+            switch (rt)
+            {
+            case RT_None:
+                {
+                    m_spStateMachine->AddNode(pFrom);
+                    StateMachine::EdgePtr pEdge = NewEdge();
+                    m_spStateMachine->AddEdge(pEdge, pNode, pFrom);
+                }
+                break;
+            case RT_ZeroOrOne:
+                {
+                    m_spStateMachine->AddNode(pFrom);
+                    StateMachine::EdgePtr pEdgeNodeToFrom    = NewEdge();
+                    StateMachine::EdgePtr pEdgeNodeToCurrent = NewEdge();
+
+                    if (bGreedy)
+                    {
+                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
+                        m_spStateMachine->AddEdge(pEdgeNodeToCurrent, pNode, pCurrent);
+                    }
+                    else
+                    {
+                        m_spStateMachine->AddEdge(pEdgeNodeToCurrent, pNode, pCurrent);
+                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
+                    }
+                }
+                break;
+            case RT_OnePlus:
+                {
+                    StateMachine::NodePtr pTo = NewNode();
+                    m_spStateMachine->AddNode(pFrom);
+                    m_spStateMachine->AddNode(pTo);
+
+                    StateMachine::EdgePtr pEdgeNodeToFrom = NewEdge();
+                    m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
+
+                    StateMachine::EdgePtr pEdgeCurrentToFrom = NewEdge();
+                    StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
+
+                    if (bGreedy)
+                    {
+                        m_spStateMachine->AddEdge(pEdgeCurrentToFrom, pCurrent, pFrom);
+                        m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
+                    }
+                    else
+                    {
+                        m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
+                        m_spStateMachine->AddEdge(pEdgeCurrentToFrom, pCurrent, pFrom);
+                    }
+
+                    pCurrent = pTo;
+                }
+                break;
+            case RT_ZeroPlus:
+                {
+                    StateMachine::NodePtr pTo = NewNode();
+                    m_spStateMachine->AddNode(pFrom);
+                    m_spStateMachine->AddNode(pTo);
+
+                    StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
+                    m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
+
+                    StateMachine::EdgePtr pEdgeNodeToFrom = NewEdge();
+                    StateMachine::EdgePtr pEdgeNodeToTo   = NewEdge();
+
+                    if (bGreedy)
+                    {
+                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
+                        m_spStateMachine->AddEdge(pEdgeNodeToTo,   pNode, pTo);
+                    }
+                    else
+                    {
+                        m_spStateMachine->AddEdge(pEdgeNodeToTo,   pNode, pTo);
+                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
+                    }
+
+                    pCurrent = pTo;
+                }
+                break;
+            default:
+                break;
+            }
 
             return pCurrent;
         }

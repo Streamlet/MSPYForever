@@ -260,4 +260,60 @@ namespace
         XL_TEST_ASSERT(r.Match(L"255.255.255.255"));
         XL_TEST_ASSERT(!r.Match(L"0.0.0.256"));
     }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
+
+        XL_TEST_ASSERT(!r.Parse(L"?"));
+        XL_TEST_ASSERT(!r.Parse(L"+"));
+        XL_TEST_ASSERT(!r.Parse(L"*"));
+        XL_TEST_ASSERT(!r.Parse(L"??"));
+        XL_TEST_ASSERT(!r.Parse(L"+?"));
+        XL_TEST_ASSERT(!r.Parse(L"*?"));
+
+        XL_TEST_ASSERT(r.Parse(L"a?"));
+        XL_TEST_ASSERT(r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(!r.Match(L"aa"));
+        XL_TEST_ASSERT(r.Parse(L"a??"));
+        XL_TEST_ASSERT(r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(!r.Match(L"aa"));
+
+        XL_TEST_ASSERT(r.Parse(L"a+"));
+        XL_TEST_ASSERT(!r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"aa"));
+        XL_TEST_ASSERT(r.Match(L"aaa"));
+        XL_TEST_ASSERT(r.Parse(L"a+?"));
+        XL_TEST_ASSERT(!r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"aa"));
+        XL_TEST_ASSERT(r.Match(L"aaa"));
+
+        XL_TEST_ASSERT(r.Parse(L"a*"));
+        XL_TEST_ASSERT(r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"aa"));
+        XL_TEST_ASSERT(r.Match(L"aaa"));
+        XL_TEST_ASSERT(r.Parse(L"a*?"));
+        XL_TEST_ASSERT(r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"aa"));
+        XL_TEST_ASSERT(r.Match(L"aaa"));
+    }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
+
+        XL_TEST_ASSERT(r.Parse(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/"));
+        XL_TEST_ASSERT(r.Match(L"http://streamlet.org/"));
+        XL_TEST_ASSERT(r.Match(L"http://w-1.streamlet.org/"));
+        XL_TEST_ASSERT(r.Match(L"http://w-1.w-2.streamlet.org/"));
+        XL_TEST_ASSERT(r.Match(L"http://w-1.w-2.w-3.streamlet.org/"));
+        XL_TEST_ASSERT(!r.Match(L"http://org/"));
+        XL_TEST_ASSERT(!r.Match(L"http://streamlet.o-g/"));
+    }
 }
