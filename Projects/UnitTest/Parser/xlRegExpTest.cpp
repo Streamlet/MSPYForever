@@ -24,6 +24,7 @@ namespace
     XL_TEST_CASE()
     {
         RegExp r;
+
         XL_TEST_ASSERT(r.Parse(L""));
         XL_TEST_ASSERT(r.Parse(L"||"));
         XL_TEST_ASSERT(r.Parse(L"()"));
@@ -38,19 +39,23 @@ namespace
     XL_TEST_CASE()
     {
         RegExp r;
+        int nPos = 0;
 
         XL_TEST_ASSERT(r.Parse(L""));
         XL_TEST_ASSERT(r.Match(L""));
         XL_TEST_ASSERT(!r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 0);
 
         XL_TEST_ASSERT(r.Parse(L"a"));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(!r.Match(L"ab"));
+        XL_TEST_ASSERT(r.Match(L"ab", &nPos) && nPos == 1);
         XL_TEST_ASSERT(!r.Match(L"b"));
 
         XL_TEST_ASSERT(r.Parse(L"(a)"));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(!r.Match(L"ab"));
+        XL_TEST_ASSERT(r.Match(L"ab", &nPos) && nPos == 1);
         XL_TEST_ASSERT(!r.Match(L"b"));
 
         XL_TEST_ASSERT(r.Parse(L"ab|c"));
@@ -97,18 +102,20 @@ namespace
     XL_TEST_CASE()
     {
         RegExp r;
+        int nPos = 0;
+
         // an integer from 0 to 255
-        // 1 digit: (0|1|2|3|4|5|6|7|8|9)
-        // 2 digit: (0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)
         // 3 digit:
         //   0-199: (0|1)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)
         // 200-249: 2(0|1|2|3|4)(0|1|2|3|4|5|6|7|8|9)
         // 250-255: 25(0|1|2|3|4|5)
-        XL_TEST_ASSERT(r.Parse(L"(0|1|2|3|4|5|6|7|8|9)|"
-                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
-                               L"(0|1)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
+        // 2 digit: (0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)
+        // 1 digit: (0|1|2|3|4|5|6|7|8|9)
+        XL_TEST_ASSERT(r.Parse(L"(0|1)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"2(0|1|2|3|4)(0|1|2|3|4|5|6|7|8|9)|"
-                               L"25(0|1|2|3|4|5)"));
+                               L"25(0|1|2|3|4|5)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)"));
         XL_TEST_ASSERT(r.Match(L"0"));
         XL_TEST_ASSERT(r.Match(L"1"));
         XL_TEST_ASSERT(r.Match(L"2"));
@@ -141,37 +148,41 @@ namespace
         XL_TEST_ASSERT(!r.Match(L"256"));
         XL_TEST_ASSERT(!r.Match(L"260"));
         XL_TEST_ASSERT(!r.Match(L"300"));
+        XL_TEST_ASSERT(r.Match(L"256", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"260", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"300", &nPos) && nPos == 2);
 
         // IPv4 address
         XL_TEST_ASSERT(r.Parse(L"("
-                               L"(0|1|2|3|4|5|6|7|8|9)|"
-                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"(0|1)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"2(0|1|2|3|4)(0|1|2|3|4|5|6|7|8|9)|"
-                               L"25(0|1|2|3|4|5)"
+                               L"25(0|1|2|3|4|5)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)"
                                L").("
-                               L"(0|1|2|3|4|5|6|7|8|9)|"
-                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"(0|1)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"2(0|1|2|3|4)(0|1|2|3|4|5|6|7|8|9)|"
-                               L"25(0|1|2|3|4|5)"
+                               L"25(0|1|2|3|4|5)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)"
                                L").("
-                               L"(0|1|2|3|4|5|6|7|8|9)|"
-                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"(0|1)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"2(0|1|2|3|4)(0|1|2|3|4|5|6|7|8|9)|"
-                               L"25(0|1|2|3|4|5)"
+                               L"25(0|1|2|3|4|5)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)"
                                L").("
-                               L"(0|1|2|3|4|5|6|7|8|9)|"
-                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"(0|1)(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
                                L"2(0|1|2|3|4)(0|1|2|3|4|5|6|7|8|9)|"
-                               L"25(0|1|2|3|4|5)"
+                               L"25(0|1|2|3|4|5)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)(0|1|2|3|4|5|6|7|8|9)|"
+                               L"(0|1|2|3|4|5|6|7|8|9)"
                                L")"));
         XL_TEST_ASSERT(r.Match(L"192.168.1.1"));
         XL_TEST_ASSERT(r.Match(L"0.0.0.0"));
         XL_TEST_ASSERT(r.Match(L"255.255.255.255"));
         XL_TEST_ASSERT(!r.Match(L"0.0.0.256"));
+        XL_TEST_ASSERT(r.Match(L"0.0.0.256", &nPos) && nPos == 8);
     }
 
     XL_TEST_CASE()
@@ -204,14 +215,16 @@ namespace
     XL_TEST_CASE()
     {
         RegExp r;
+        int nPos = 0;
+
         // an integer from 0 to 255
-        // 1 digit: [0-9]
-        // 2 digit: [0-9][0-9]
         // 3 digit:
         //   0-199: [01][0-9][0-9]
         // 200-249: 2[0-4][0-9]
         // 250-255: 25[0-5]
-        XL_TEST_ASSERT(r.Parse(L"[0-9]|[0-9][0-9]|[01][0-9][0-9]|2[0-4][0-9]|25[0-5]"));
+        // 2 digit: [0-9][0-9]
+        // 1 digit: [0-9]
+        XL_TEST_ASSERT(r.Parse(L"[01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[0-9][0-9]|[0-9]"));
         XL_TEST_ASSERT(r.Match(L"0"));
         XL_TEST_ASSERT(r.Match(L"1"));
         XL_TEST_ASSERT(r.Match(L"2"));
@@ -244,26 +257,31 @@ namespace
         XL_TEST_ASSERT(!r.Match(L"256"));
         XL_TEST_ASSERT(!r.Match(L"260"));
         XL_TEST_ASSERT(!r.Match(L"300"));
+        XL_TEST_ASSERT(r.Match(L"256", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"260", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"300", &nPos) && nPos == 2);
 
         // IPv4 address
         XL_TEST_ASSERT(r.Parse(L"("
-                               L"[0-9]|[0-9][0-9]|[01][0-9][0-9]|2[0-4][0-9]|25[0-5]"
+                               L"[01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[0-9][0-9]|[0-9]"
                                L").("
-                               L"[0-9]|[0-9][0-9]|[01][0-9][0-9]|2[0-4][0-9]|25[0-5]"
+                               L"[01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[0-9][0-9]|[0-9]"
                                L").("
-                               L"[0-9]|[0-9][0-9]|[01][0-9][0-9]|2[0-4][0-9]|25[0-5]"
+                               L"[01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[0-9][0-9]|[0-9]"
                                L").("
-                               L"[0-9]|[0-9][0-9]|[01][0-9][0-9]|2[0-4][0-9]|25[0-5]"
+                               L"[01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[0-9][0-9]|[0-9]"
                                L")"));
         XL_TEST_ASSERT(r.Match(L"192.168.1.1"));
         XL_TEST_ASSERT(r.Match(L"0.0.0.0"));
         XL_TEST_ASSERT(r.Match(L"255.255.255.255"));
         XL_TEST_ASSERT(!r.Match(L"0.0.0.256"));
+        XL_TEST_ASSERT(r.Match(L"0.0.0.256", &nPos) && nPos == 8);
     }
 
     XL_TEST_CASE()
     {
         RegExp r;
+        int nPos = 0;
 
         XL_TEST_ASSERT(!r.Parse(L"?"));
         XL_TEST_ASSERT(!r.Parse(L"+"));
@@ -276,32 +294,57 @@ namespace
         XL_TEST_ASSERT(r.Match(L""));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(!r.Match(L"aa"));
+        XL_TEST_ASSERT(r.Match(L"", &nPos) && nPos == 0);
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 1);
+
         XL_TEST_ASSERT(r.Parse(L"a??"));
         XL_TEST_ASSERT(r.Match(L""));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(!r.Match(L"aa"));
+        XL_TEST_ASSERT(r.Parse(L"a??"));
+        XL_TEST_ASSERT(r.Match(L"", &nPos) && nPos == 0);
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 0);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 0);
 
         XL_TEST_ASSERT(r.Parse(L"a+"));
         XL_TEST_ASSERT(!r.Match(L""));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(r.Match(L"aa"));
         XL_TEST_ASSERT(r.Match(L"aaa"));
+        XL_TEST_ASSERT(!r.Match(L"", &nPos));
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"aaa", &nPos) && nPos == 3);
+
         XL_TEST_ASSERT(r.Parse(L"a+?"));
         XL_TEST_ASSERT(!r.Match(L""));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(r.Match(L"aa"));
         XL_TEST_ASSERT(r.Match(L"aaa"));
+        XL_TEST_ASSERT(!r.Match(L"", &nPos));
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aaa", &nPos) && nPos == 1);
 
         XL_TEST_ASSERT(r.Parse(L"a*"));
         XL_TEST_ASSERT(r.Match(L""));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(r.Match(L"aa"));
         XL_TEST_ASSERT(r.Match(L"aaa"));
+        XL_TEST_ASSERT(r.Match(L"", &nPos) && nPos == 0);
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"aaa", &nPos) && nPos == 3);
         XL_TEST_ASSERT(r.Parse(L"a*?"));
         XL_TEST_ASSERT(r.Match(L""));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(r.Match(L"aa"));
         XL_TEST_ASSERT(r.Match(L"aaa"));
+        XL_TEST_ASSERT(r.Match(L"", &nPos) && nPos == 0);
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 0);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 0);
+        XL_TEST_ASSERT(r.Match(L"aaa", &nPos) && nPos == 0);
 
         XL_TEST_ASSERT(r.Parse(L"w1+"));
         XL_TEST_ASSERT(!r.Match(L""));
@@ -311,6 +354,29 @@ namespace
         XL_TEST_ASSERT(r.Match(L"w111"));
         XL_TEST_ASSERT(r.Match(L"w1111"));
         XL_TEST_ASSERT(r.Match(L"w11111"));
+        XL_TEST_ASSERT(!r.Match(L"", &nPos));
+        XL_TEST_ASSERT(!r.Match(L"w", &nPos));
+        XL_TEST_ASSERT(r.Match(L"w1", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"w11", &nPos) && nPos == 3);
+        XL_TEST_ASSERT(r.Match(L"w111", &nPos) && nPos == 4);
+        XL_TEST_ASSERT(r.Match(L"w1111", &nPos) && nPos == 5);
+        XL_TEST_ASSERT(r.Match(L"w11111", &nPos) && nPos == 6);
+
+        XL_TEST_ASSERT(r.Parse(L"w1+?"));
+        XL_TEST_ASSERT(!r.Match(L""));
+        XL_TEST_ASSERT(!r.Match(L"w"));
+        XL_TEST_ASSERT(r.Match(L"w1"));
+        XL_TEST_ASSERT(r.Match(L"w11"));
+        XL_TEST_ASSERT(r.Match(L"w111"));
+        XL_TEST_ASSERT(r.Match(L"w1111"));
+        XL_TEST_ASSERT(r.Match(L"w11111"));
+        XL_TEST_ASSERT(!r.Match(L"", &nPos));
+        XL_TEST_ASSERT(!r.Match(L"w", &nPos));
+        XL_TEST_ASSERT(r.Match(L"w1", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"w11", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"w111", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"w1111", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"w11111", &nPos) && nPos == 2);
     }
 
     XL_TEST_CASE()

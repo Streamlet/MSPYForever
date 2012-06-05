@@ -115,9 +115,9 @@ namespace xl
             return true;
         }
 
-        bool Match(const String &s)
+        bool Match(const String &s, int *pnPos = nullptr)
         {
-            return Match(s, 0, m_pBegin);
+            return Match(s, 0, m_pBegin, pnPos);
         }
 
     private:
@@ -126,10 +126,16 @@ namespace xl
 
         }
 
-        bool Match(const String &s, int i, StateMachine::NodePtr pNode)
+        bool Match(const String &s, int i, StateMachine::NodePtr pNode, int *pnPos = nullptr)
         {
             if (pNode == m_pEnd)
             {
+                if (pnPos != nullptr)
+                {
+                    *pnPos = i;
+                    return true;
+                }
+
                 if (i < s.Length())
                 {
                     return false;
@@ -140,7 +146,7 @@ namespace xl
 
             for (auto it = pNode->arrNext.Begin(); it != pNode->arrNext.End(); ++it)
             {
-                if (Match(s, i, *it))
+                if (Match(s, i, *it, pnPos))
                 {
                     return true;
                 }
@@ -149,7 +155,7 @@ namespace xl
             return false;
         }
 
-        bool Match(const String &s, int i, StateMachine::EdgePtr pEdge)
+        bool Match(const String &s, int i, StateMachine::EdgePtr pEdge, int *pnPos = nullptr)
         {
             if (!pEdge->tValue.bEpsilon)
             {
@@ -163,11 +169,11 @@ namespace xl
                     return false;
                 }
 
-                return Match(s, i + 1, pEdge->pNext);
+                return Match(s, i + 1, pEdge->pNext, pnPos);
             }
             else
             {
-                return Match(s, i, pEdge->pNext);
+                return Match(s, i, pEdge->pNext, pnPos);
             }
         }
 
