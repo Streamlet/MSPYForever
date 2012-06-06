@@ -24,7 +24,7 @@ namespace xl
 {
     class WindowBaseEx : public WindowBase
     {
-    protected:
+    public:
         // CommandMsgHandler Parameters:
         // HWND: hWnd
         // WORD: wID

@@ -56,7 +56,7 @@ namespace xl
 
     class WindowBase : public NonCopyable
     {
-    protected:
+    public:
         // MsgHandler Parameters:
         // HWND:   hWnd
         // UINT:   uMsg
