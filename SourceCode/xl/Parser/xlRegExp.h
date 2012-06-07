@@ -271,6 +271,27 @@ namespace xl
         }
 
     private:
+        enum RepeatorType
+        {
+            RT_None,
+            RT_ZeroOrOne,
+            RT_OnePlus,
+            RT_ZeroPlus
+        };
+
+        struct Repeator
+        {
+            RepeatorType type;
+            bool bGreedy;
+
+            Repeator()
+                : type(RT_None), bGreedy(true)
+            {
+
+            }
+        };
+
+    private:
         //
         // EBNF:
         //
@@ -360,51 +381,9 @@ namespace xl
                 return pNode;
             }
 
-            enum RepeatorType
-            {
-                RT_None,
-                RT_ZeroOrOne,
-                RT_OnePlus,
-                RT_ZeroPlus
-            };
+            Repeator r = ParseRepeater();
 
-            RepeatorType rt = RT_None;
-
-            Token token = LookAhead();
-
-            switch (token.type)
-            {
-            case TT_QuestionMark:
-                rt = RT_ZeroOrOne;
-                break;
-            case TT_Plus:
-                rt = RT_OnePlus;
-                break;
-            case TT_Star:
-                rt = RT_ZeroPlus;
-                break;
-            default:
-                Backward(token);
-                break;
-            }
-
-            bool bGreedy = true;
-
-            if (rt != RT_None)
-            {
-                token = LookAhead();
-
-                if (token.type == TT_QuestionMark)
-                {
-                    bGreedy = false;
-                }
-                else
-                {
-                    Backward(token);
-                }
-            }
-
-            switch (rt)
+            switch (r.type)
             {
             case RT_None:
                 {
@@ -419,7 +398,7 @@ namespace xl
                     StateMachine::EdgePtr pEdgeNodeToFrom    = NewEdge();
                     StateMachine::EdgePtr pEdgeNodeToCurrent = NewEdge();
 
-                    if (bGreedy)
+                    if (r.bGreedy)
                     {
                         m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
                         m_spStateMachine->AddEdge(pEdgeNodeToCurrent, pNode, pCurrent);
@@ -443,7 +422,7 @@ namespace xl
                     StateMachine::EdgePtr pEdgeCurrentToFrom = NewEdge();
                     StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
 
-                    if (bGreedy)
+                    if (r.bGreedy)
                     {
                         m_spStateMachine->AddEdge(pEdgeCurrentToFrom, pCurrent, pFrom);
                         m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
@@ -469,7 +448,7 @@ namespace xl
                     StateMachine::EdgePtr pEdgeNodeToFrom = NewEdge();
                     StateMachine::EdgePtr pEdgeNodeToTo   = NewEdge();
 
-                    if (bGreedy)
+                    if (r.bGreedy)
                     {
                         m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
                         m_spStateMachine->AddEdge(pEdgeNodeToTo,   pNode, pTo);
@@ -488,6 +467,47 @@ namespace xl
             }
 
             return pCurrent;
+        }
+
+        Repeator ParseRepeater()
+        {
+            Repeator r;
+
+            Token token = LookAhead();
+
+            switch (token.type)
+            {
+            case TT_QuestionMark:
+                r.type = RT_ZeroOrOne;
+                break;
+            case TT_Plus:
+                r.type = RT_OnePlus;
+                break;
+            case TT_Star:
+                r.type = RT_ZeroPlus;
+                break;
+            default:
+                Backward(token);
+                break;
+            }
+
+            bool bGreedy = true;
+
+            if (r.type != RT_None)
+            {
+                token = LookAhead();
+
+                if (token.type == TT_QuestionMark)
+                {
+                    r.bGreedy = false;
+                }
+                else
+                {
+                    Backward(token);
+                }
+            }
+
+            return r;
         }
 
         StateMachine::NodePtr ParseWord(StateMachine::NodePtr pNode)
