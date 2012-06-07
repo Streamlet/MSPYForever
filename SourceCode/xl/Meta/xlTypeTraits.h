@@ -78,7 +78,15 @@ namespace xl
         typedef T       &RRefType;
     };
 
-    template <typename T>
+	template <typename T>
+	struct RValueRefTraits<T &>
+	{
+		static const bool IsRValueRef = false;
+		typedef NullType RRefToType;
+		typedef T      &&RRefType;
+	};
+
+	template <typename T>
     struct RValueRefTraits<T &&>
     {
         static const bool IsRValueRef = true;
