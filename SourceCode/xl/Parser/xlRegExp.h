@@ -366,18 +366,15 @@ namespace xl
 
         StateMachine::NodePtr ParsePhrase(StateMachine::NodePtr pNode)
         {
-            StateMachine::NodePtr pFrom = NewNode();
-            StateMachine::NodePtr pCurrent = ParseWord(pFrom);
+            StateMachine::NodePtr pCurrent = ParseWord(pNode);
 
             if (pCurrent == nullptr)
             {
-                delete pFrom;
                 return nullptr;
             }
 
-            if (pCurrent == pFrom)
+            if (pCurrent == pNode)
             {
-                delete pFrom;
                 return pNode;
             }
 
@@ -386,51 +383,43 @@ namespace xl
             switch (r.type)
             {
             case RT_None:
-                {
-                    m_spStateMachine->AddNode(pFrom);
-                    StateMachine::EdgePtr pEdge = NewEdge();
-                    m_spStateMachine->AddEdge(pEdge, pNode, pFrom);
-                }
                 break;
             case RT_ZeroOrOne:
                 {
-                    m_spStateMachine->AddNode(pFrom);
-                    StateMachine::EdgePtr pEdgeNodeToFrom    = NewEdge();
                     StateMachine::EdgePtr pEdgeNodeToCurrent = NewEdge();
+                    m_spStateMachine->AddEdge(pEdgeNodeToCurrent);
+                    pEdgeNodeToCurrent->pPrevious = pNode;
+                    pEdgeNodeToCurrent->pNext     = pCurrent;
 
                     if (r.bGreedy)
                     {
-                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
-                        m_spStateMachine->AddEdge(pEdgeNodeToCurrent, pNode, pCurrent);
+                        pNode->arrNext.PushFront(pEdgeNodeToCurrent);
+                        pCurrent->arrPrevious.PushFront(pEdgeNodeToCurrent);
                     }
                     else
                     {
-                        m_spStateMachine->AddEdge(pEdgeNodeToCurrent, pNode, pCurrent);
-                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
+                        pNode->arrNext.PushBack(pEdgeNodeToCurrent);
+                        pCurrent->arrPrevious.PushBack(pEdgeNodeToCurrent);
                     }
                 }
                 break;
             case RT_OnePlus:
                 {
                     StateMachine::NodePtr pTo = NewNode();
-                    m_spStateMachine->AddNode(pFrom);
                     m_spStateMachine->AddNode(pTo);
 
-                    StateMachine::EdgePtr pEdgeNodeToFrom = NewEdge();
-                    m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
-
-                    StateMachine::EdgePtr pEdgeCurrentToFrom = NewEdge();
+                    StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
                     StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
 
                     if (r.bGreedy)
                     {
-                        m_spStateMachine->AddEdge(pEdgeCurrentToFrom, pCurrent, pFrom);
+                        m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
                         m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
                     }
                     else
                     {
                         m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
-                        m_spStateMachine->AddEdge(pEdgeCurrentToFrom, pCurrent, pFrom);
+                        m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
                     }
 
                     pCurrent = pTo;
@@ -439,24 +428,25 @@ namespace xl
             case RT_ZeroPlus:
                 {
                     StateMachine::NodePtr pTo = NewNode();
-                    m_spStateMachine->AddNode(pFrom);
                     m_spStateMachine->AddNode(pTo);
 
                     StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
                     m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
 
-                    StateMachine::EdgePtr pEdgeNodeToFrom = NewEdge();
-                    StateMachine::EdgePtr pEdgeNodeToTo   = NewEdge();
+                    StateMachine::EdgePtr pEdgeNodeToTo = NewEdge();
+                    m_spStateMachine->AddEdge(pEdgeNodeToTo);
+                    pEdgeNodeToTo->pPrevious = pNode;
+                    pEdgeNodeToTo->pNext     = pTo;
 
                     if (r.bGreedy)
                     {
-                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
-                        m_spStateMachine->AddEdge(pEdgeNodeToTo,   pNode, pTo);
+                        pNode->arrNext.PushFront(pEdgeNodeToTo);
+                        pTo->arrPrevious.PushFront(pEdgeNodeToTo);
                     }
                     else
                     {
-                        m_spStateMachine->AddEdge(pEdgeNodeToTo,   pNode, pTo);
-                        m_spStateMachine->AddEdge(pEdgeNodeToFrom, pNode, pFrom);
+                        pNode->arrNext.PushBack(pEdgeNodeToTo);
+                        pTo->arrPrevious.PushBack(pEdgeNodeToTo);
                     }
 
                     pCurrent = pTo;
