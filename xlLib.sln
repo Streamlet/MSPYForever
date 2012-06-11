@@ -115,6 +115,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "Projects\UnitTest\UnitTest.vcxproj", "{538AE18F-F369-4B89-B8E0-DBD5EDA379F1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PerformanceTest", "PerformanceTest", "{F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}"
+	ProjectSection(SolutionItems) = preProject
+		Projects\PerformanceTest\PerformanceTest.h = Projects\PerformanceTest\PerformanceTest.h
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlArrayTest", "Projects\PerformanceTest\xlArrayTest\xlArrayTest.vcxproj", "{0200BE79-EA0F-438D-9681-B226E389B4A1}"
 EndProject
@@ -248,10 +251,12 @@ Global
 		{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40}.Release|x64.Build.0 = Release|x64
 		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|Win32.Build.0 = Debug|Win32
-		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|x64.ActiveCfg = Debug|Win32
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|x64.ActiveCfg = Debug|x64
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|x64.Build.0 = Debug|x64
 		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|Win32.ActiveCfg = Release|Win32
 		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|Win32.Build.0 = Release|Win32
-		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|x64.ActiveCfg = Release|Win32
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|x64.ActiveCfg = Release|x64
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

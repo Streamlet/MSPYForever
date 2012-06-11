@@ -267,7 +267,7 @@ namespace xl
 
         void Backward(const Token &token)
         {
-            m_nCurrentPosition -= token.length;
+            m_nCurrentPosition -= (int)token.length;
         }
 
     private:

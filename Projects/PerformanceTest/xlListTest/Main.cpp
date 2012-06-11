@@ -14,147 +14,15 @@
 //------------------------------------------------------------------------------
 
 
+#include "../PerformanceTest.h"
 #include <xl/Containers/xlList.h>
-#include <xl/Test/xlUnitTest.h>
-
-using namespace xl;
-
-XL_TEST_CASE()
-{
-    List<int> a;
-    XL_TEST_ASSERT(a.Size() == 0);
-}
-
-XL_TEST_CASE()
-{
-    List<int> a;
-
-    a.PushBack(1);
-    a.PushBack(2);
-
-    List<int> b(a);
-
-    XL_TEST_ASSERT(b == a);
-
-    List<int>::Iterator it = b.Begin();
-    XL_TEST_ASSERT(*it == 1);
-    ++it;
-    XL_TEST_ASSERT(*it == 2);
-}
-
-XL_TEST_CASE()
-{
-    List<int> a;
-
-    a.PushBack(10);
-    a.PushBack(9);
-
-    List<int> b;
-
-    b = a;
-
-    XL_TEST_ASSERT(b == a);
-
-    List<int>::Iterator it = b.Begin();
-    XL_TEST_ASSERT(*it == 10);
-    ++it;
-    XL_TEST_ASSERT(*it == 9);
-}
-
-XL_TEST_CASE()
-{
-    List<int> a, b;
-
-    a.PushBack(11);
-    a.PushBack(22);
-
-    b = a;
-    XL_TEST_ASSERT(b == a);
-
-    ++*b.Begin();
-    XL_TEST_ASSERT(b != a);
-
-    --*b.Begin();
-    XL_TEST_ASSERT(b == a);
-
-    a.PushBack(100);
-    XL_TEST_ASSERT(b != a);
-
-    a.PopBack();
-    XL_TEST_ASSERT(b == a);
-}
-
-XL_TEST_CASE()
-{
-    List<int> a;
-    XL_TEST_ASSERT(a.Empty() == true);
-
-    a.PushBack(0);
-    XL_TEST_ASSERT(a.Empty() == false);
-
-    a.PopBack();
-    XL_TEST_ASSERT(a.Empty() == true);
-
-    a.PushFront(1);
-    a.PushFront(0);
-    XL_TEST_ASSERT(a.Size() == 2);
-
-    a.Clear();
-    XL_TEST_ASSERT(a.Size() == 0);
-}
-
-XL_TEST_CASE()
-{
-    List<int> a;
-    XL_TEST_ASSERT(a.Empty() == true);
-
-    a.Insert(a.Begin(), -1);
-    XL_TEST_ASSERT(a.Size() == 1);
-    XL_TEST_ASSERT(*a.Begin() == -1);
-
-    a.PushBack(15);
-    XL_TEST_ASSERT(a.Size() == 2);
-    XL_TEST_ASSERT(*a.ReverseBegin() == 15);
-
-    a.PushFront(20);
-    XL_TEST_ASSERT(a.Size() == 3);
-    XL_TEST_ASSERT(*a.Begin() == 20);
-    
-    a.Delete(a.Begin());
-    XL_TEST_ASSERT(a.Size() == 2);
-    XL_TEST_ASSERT(*a.Begin() == -1);
-    XL_TEST_ASSERT(*(++a.Begin()) == 15);
-
-    a.PopBack();
-    XL_TEST_ASSERT(a.Size() == 1);
-    XL_TEST_ASSERT(*a.Begin() == -1);
-
-    a.Clear();
-    XL_TEST_ASSERT(a.Size() == 0);
-    XL_TEST_ASSERT(a.Empty() == true);
-}
-
-// Performance Test
-
-#include <stdio.h>
-#include <time.h>
-
-#define SECTION_BEGIN(name) \
-    printf("Testing \"" #name "\"...\n")
-#define SECTION_END()   \
-    printf("\n")
-#define PERFORMANCE_TEST_BEGIN(name)    \
-    printf("Test begins.\n");   \
-    clock_t begin_##name = clock()
-#define PERFORMANCE_TEST_END(name)  \
-    clock_t end_##name = clock();   \
-    printf("Test ends. Time elasped: %lfs.\n", (double)(end_##name - begin_##name) / CLOCKS_PER_SEC)
-
 #include <list>
-using namespace std;
 
 int main()
 {
+    using namespace std;
+    using namespace xl;
+
     SECTION_BEGIN(StdListPushBack100000);
     list<int> l1;
     PERFORMANCE_TEST_BEGIN(StdListPushBack100000);
