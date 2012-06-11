@@ -156,6 +156,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{4533161B-D
 		SourceCode\xl\Math\xlMathBase.h = SourceCode\xl\Math\xlMathBase.h
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlRegExpTest", "Projects\PerformanceTest\xlRegExpTest\xlRegExpTest.vcxproj", "{4122678E-85D4-455A-B431-8B66E4024BD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -244,6 +246,12 @@ Global
 		{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40}.Release|Win32.Build.0 = Release|Win32
 		{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40}.Release|x64.ActiveCfg = Release|x64
 		{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40}.Release|x64.Build.0 = Release|x64
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|Win32.Build.0 = Debug|Win32
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Debug|x64.ActiveCfg = Debug|Win32
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|Win32.ActiveCfg = Release|Win32
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|Win32.Build.0 = Release|Win32
+		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -275,5 +283,6 @@ Global
 		{0D471331-A9CB-4A99-A848-C22CCD87EA2D} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{E83F331B-818B-40A0-BD86-7EA48A0C259B} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
+		{4122678E-85D4-455A-B431-8B66E4024BD6} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 	EndGlobalSection
 EndGlobal
