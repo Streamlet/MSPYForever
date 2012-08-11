@@ -106,7 +106,7 @@ namespace xl
 
     public:
 
-        INT_PTR DoModal()
+        INT_PTR DoModal(int nCmdShow = SW_SHOW)
         {
             HWND hOwner = GetWindow(GW_OWNER);
 
@@ -115,7 +115,7 @@ namespace xl
                 ::EnableWindow(hOwner, FALSE);
             }
 
-            ShowWindow(SW_SHOW);
+            ShowWindow(nCmdShow);
 
             INT_PTR nModalResult = RunModalLoop();
 
