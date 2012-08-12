@@ -108,7 +108,8 @@ namespace xl
             m_pThunk->m_relproc = (ULONG64)pWndProc - ((ULONG64)m_pThunk + sizeof(StdCallThunk));
 #endif
         }
-               WNDPROC GetThunkWndProc()
+        
+        WNDPROC GetThunkWndProc()
         {
             return (WNDPROC)m_pThunk;
         }
