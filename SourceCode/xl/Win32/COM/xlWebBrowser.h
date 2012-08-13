@@ -115,27 +115,7 @@ namespace xl
         {
             *ppvObject = nullptr;
 
-            if (riid == IID_IUnknown)
-            {
-                *ppvObject = this;
-            }
-            else if(riid == IID_IOleObject)
-            {
-                *ppvObject = (IOleObject *)this;
-            }
-            else if (riid == IID_IOleInPlaceSite)
-            {
-                *ppvObject = (IOleInPlaceSite *)this;
-            }
-            else if (riid == IID_IOleInPlaceUIWindow)
-            {
-                *ppvObject = (IOleInPlaceUIWindow *)this;
-            }
-            else if (riid == IID_IOleInPlaceFrame)
-            {   
-                *ppvObject = (IOleInPlaceFrame *)this;
-            }
-            else if (riid == IID_IDocHostUIHandler)
+            if (riid == IID_IDocHostUIHandler)
             {
                 *ppvObject = (IDocHostUIHandler *)this;
             }
@@ -150,7 +130,7 @@ namespace xl
 
             if (*ppvObject == nullptr)
             {
-                return E_NOINTERFACE;
+                return OleContainer::QueryInterface(riid, ppvObject);
             }
 
             AddRef();

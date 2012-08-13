@@ -125,7 +125,7 @@ namespace xl
 
             if (riid == IID_IUnknown)
             {
-                *ppvObject = this;
+                *ppvObject = (IOleClientSite *)this;
             }
             else if(riid == IID_IOleObject)
             {
