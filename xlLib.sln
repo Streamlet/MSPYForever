@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xlLib", "xlLib", "{41DE1E2B-20E7-4CA9-95BF-FED590434EBA}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\xlDef.h = SourceCode\xl\xlDef.h

@@ -58,7 +58,7 @@ namespace xl
         }
 
     public:
-        bool CreateWebBrowser(HWND hParent, LPCRECT lpRect)
+        bool CreateWebBrowser(HWND hParent, LPCRECT lpRect = nullptr)
         {
             if (!CreateOleObject(CLSID_WebBrowser))
             {
@@ -67,7 +67,7 @@ namespace xl
 
             RECT rect = {};
 
-            if (lpRect != nullptr)
+            if (lpRect == nullptr)
             {
                 GetClientRect(hParent, &rect);
                 lpRect = &rect;
@@ -269,7 +269,6 @@ namespace xl
         IWebBrowser2              *m_pWebBrowser;
         IConnectionPointContainer *m_pCPC;
         IConnectionPoint          *m_pCP;
-
     };
 
 } // namespace xl

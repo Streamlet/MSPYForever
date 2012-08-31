@@ -91,7 +91,7 @@ namespace xl
             return true;
         }
 
-        bool InPlaceActive(HWND hWnd, LPCRECT lpRect)
+        bool InPlaceActive(HWND hWnd, LPCRECT lpRect = nullptr)
         {
             if (hWnd == nullptr)
             {
@@ -100,7 +100,7 @@ namespace xl
 
             RECT rect = {};
 
-            if (lpRect != nullptr)
+            if (lpRect == nullptr)
             {
                 GetClientRect(hWnd, &rect);
                 lpRect = &rect;
@@ -345,7 +345,7 @@ namespace xl
         IOleObject        *m_pOleObj;
         IOleInPlaceObject *m_pInPlaceObj;
         HWND               m_hWindow;
-};
+    };
 
 } // namespace xl
 
