@@ -37,6 +37,8 @@ namespace xl
                          m_pInPlaceObj(nullptr),
                          m_bInPlaceActived(false)
         {
+            ZeroMemory(&m_rect, sizeof(RECT));
+
             OleInitialize(nullptr);
         }
 
@@ -101,15 +103,16 @@ namespace xl
 
             m_hOleParent = hWnd;
 
-            RECT rect = {};
-
-            if (lpRect == nullptr)
+            if (lpRect != nullptr)
             {
-                GetClientRect(m_hOleParent, &rect);
-                lpRect = &rect;
+                CopyMemory(&m_rect, lpRect, sizeof(RECT));
+            }
+            else
+            {
+                GetClientRect(m_hOleParent, &m_rect);
             }
 
-            HRESULT hr = m_pOleObj->DoVerb(OLEIVERB_INPLACEACTIVATE, nullptr, this, 0, m_hOleParent, lpRect);
+            HRESULT hr = m_pOleObj->DoVerb(OLEIVERB_INPLACEACTIVATE, nullptr, this, 0, m_hOleParent, &m_rect);
 
             if (FAILED(hr))
             {
@@ -154,8 +157,8 @@ namespace xl
 
             *ppDoc = NULL;
  
-            GetClientRect(m_hOleParent, lprcPosRect);
-            GetClientRect(m_hOleParent, lprcClipRect);
+            CopyMemory(lprcPosRect, &m_rect, sizeof(RECT));
+            CopyMemory(lprcClipRect, &m_rect, sizeof(RECT));
  
             lpFrameInfo->cb = sizeof(OLEINPLACEFRAMEINFO);
             lpFrameInfo->fMDIApp = false;
@@ -172,6 +175,7 @@ namespace xl
         IOleObject        *m_pOleObj;
         IOleInPlaceObject *m_pInPlaceObj;
         bool               m_bInPlaceActived;
+        RECT               m_rect;
     };
 
 } // namespace xl
