@@ -18,6 +18,7 @@
 
 
 #include <xl/Meta/xlUtility.h>
+#include <xl/Meta/xlScopeExit.h>
 #include <Windows.h>
 
 namespace xl
@@ -59,6 +60,11 @@ namespace xl
     private:
         CRITICAL_SECTION m_CriticalSection;
     };
+
+#define XL_SCOPED_CRITICAL_SECTION(cs)              \
+                                                    \
+    cs.Lock();                                      \
+    XL_ON_BLOCK_EXIT(&cs, &xl::CriticalSection::UnLock)
 
 } // namespace xl
 
