@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xlLib", "xlLib", "{41DE1E2B-20E7-4CA9-95BF-FED590434EBA}"
 	ProjectSection(SolutionItems) = preProject
@@ -163,8 +163,26 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlRegExpTest", "Projects\Pe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "COM", "COM", "{D79A0520-F414-40FB-81CA-858E6BEDF0B3}"
 	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\COM\xlOleContainer.h = SourceCode\xl\Win32\COM\xlOleContainer.h
-		SourceCode\xl\Win32\COM\xlWebBrowser.h = SourceCode\xl\Win32\COM\xlWebBrowser.h
+		SourceCode\xl\Win32\COM\xlComDef.h = SourceCode\xl\Win32\COM\xlComDef.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InterfaceHelper", "InterfaceHelper", "{13065D1A-8E27-47DA-BC05-1D1629145AFA}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{919C43EE-18AE-4EC3-BCA3-2D2DD3C14388}"
+	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\COM\Objects\xlOleContainer.h = SourceCode\xl\Win32\COM\Objects\xlOleContainer.h
+		SourceCode\xl\Win32\COM\Objects\xlWebBrowser.h = SourceCode\xl\Win32\COM\Objects\xlWebBrowser.h
 	EndProjectSection
 EndProject
 Global
@@ -296,5 +314,7 @@ Global
 		{E83F331B-818B-40A0-BD86-7EA48A0C259B} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{4122678E-85D4-455A-B431-8B66E4024BD6} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
+		{13065D1A-8E27-47DA-BC05-1D1629145AFA} = {D79A0520-F414-40FB-81CA-858E6BEDF0B3}
+		{919C43EE-18AE-4EC3-BCA3-2D2DD3C14388} = {D79A0520-F414-40FB-81CA-858E6BEDF0B3}
 	EndGlobalSection
 EndGlobal
