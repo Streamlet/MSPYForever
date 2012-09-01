@@ -177,10 +177,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InterfaceHelper", "Interfac
 		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h
 		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h
 		SourceCode\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{919C43EE-18AE-4EC3-BCA3-2D2DD3C14388}"
 	ProjectSection(SolutionItems) = preProject
+		SourceCode\xl\Win32\COM\Objects\xlMediaPlayer.h = SourceCode\xl\Win32\COM\Objects\xlMediaPlayer.h
 		SourceCode\xl\Win32\COM\Objects\xlOleContainer.h = SourceCode\xl\Win32\COM\Objects\xlOleContainer.h
 		SourceCode\xl\Win32\COM\Objects\xlWebBrowser.h = SourceCode\xl\Win32\COM\Objects\xlWebBrowser.h
 	EndProjectSection

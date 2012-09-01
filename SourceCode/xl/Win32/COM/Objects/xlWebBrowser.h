@@ -60,7 +60,7 @@ namespace xl
     public:
         bool CreateWebBrowser(HWND hWnd, LPCRECT lpRect = nullptr)
         {
-            if (!CreateOleObject(CLSID_WebBrowser))
+            if (!CreateOleObject(__uuidof(WebBrowser)))
             {
                 return false;
             }
@@ -70,21 +70,21 @@ namespace xl
                 return false;
             }
 
-            HRESULT hr = m_pOleObj->QueryInterface(IID_IWebBrowser2, (LPVOID *)&m_pWebBrowser);
+            HRESULT hr = m_pOleObj->QueryInterface(__uuidof(IWebBrowser2), (LPVOID *)&m_pWebBrowser);
 
             if (FAILED(hr))
             {
                 return false;
             }
 
-            hr = m_pWebBrowser->QueryInterface(IID_IConnectionPointContainer, (LPVOID *)&m_pCPC);
+            hr = m_pWebBrowser->QueryInterface(__uuidof(IConnectionPointContainer), (LPVOID *)&m_pCPC);
 
             if (FAILED(hr))
             {
                 return false;
             }
 
-            hr = m_pCPC->FindConnectionPoint(DIID_DWebBrowserEvents2, &m_pCP);
+            hr = m_pCPC->FindConnectionPoint(__uuidof(DWebBrowserEvents2), &m_pCP);
 
             if (FAILED(hr))
             {
