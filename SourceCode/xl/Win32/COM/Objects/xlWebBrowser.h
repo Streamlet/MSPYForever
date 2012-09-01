@@ -60,7 +60,7 @@ namespace xl
     public:
         bool CreateWebBrowser(HWND hWnd, LPCRECT lpRect = nullptr)
         {
-            if (!CreateOleObject(__uuidof(WebBrowser)))
+            if (!CreateOleObject(__uuidof(::WebBrowser)))
             {
                 return false;
             }
