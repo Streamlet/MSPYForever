@@ -17,9 +17,6 @@
 #define __XLOLECONTAINER_H_0B2334C9_4006_47C0_A940_CE8A19BE3568_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
-#include <Windows.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleClientSiteImpl.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceSiteImpl.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceFrameImpl.h>
