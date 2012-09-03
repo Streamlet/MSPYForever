@@ -51,7 +51,6 @@ namespace xl
         {
             return E_NOTIMPL;
         }
-
     };
 
 } // namespace xl
