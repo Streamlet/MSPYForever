@@ -23,7 +23,7 @@ namespace xl
     struct InterfaceEntry
     {
     	const IID *piid;
-	    DWORD_PTR dwOffset;
+        DWORD_PTR dwOffset;
     };
 
     template <typename T>
