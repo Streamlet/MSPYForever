@@ -18,7 +18,6 @@
 
 
 #include <xl/Win32/COM/Objects/xlOleContainer.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIDocHostUIHandlerImpl.h>
 #include <xl/Win32/COM/InterfaceHelper/xlDWebBrowserEvents2Impl.h>
 
