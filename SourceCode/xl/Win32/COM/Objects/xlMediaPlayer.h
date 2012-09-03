@@ -16,13 +16,14 @@
 #define __XLMEDIAPLAYER_H_90C6295E_B667_44F2_98D6_BA0F435FECB0_INCLUDED__
 
 
+#include <wmp.h>
 #include <xl/Win32/COM/Objects/xlOleContainer.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIWMPPlayerImpl.h>
+#include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
 
 namespace xl
 {
     class MediaPlayerImpl : public OleContainerImpl,
-                            public IWMPPlayerImpl<>
+                            public IDispatchImpl<>
     {
     public:
         MediaPlayerImpl() : m_pWMPPlayer(nullptr)
@@ -94,8 +95,6 @@ namespace xl
             XL_COM_INTERFACE(IOleClientSite)
             XL_COM_INTERFACE(IOleInPlaceSite)
             XL_COM_INTERFACE(IOleInPlaceFrame)
-            XL_COM_INTERFACE(IWMPCore)
-            XL_COM_INTERFACE(IWMPPlayer)
             XL_COM_INTERFACE(IDispatch)
         XL_COM_INTERFACE_END()
     };
