@@ -19,48 +19,32 @@
 
 #include <xl/Meta/xlUtility.h>
 #include <Windows.h>
+#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleClientSiteImpl.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceSiteImpl.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceFrameImpl.h>
 
 namespace xl
 {
-    class OleContainer : public NonCopyable,
-                         public IOleClientSiteImpl<>,
-                         public IOleInPlaceSiteImpl<>,
-                         public IOleInPlaceFrameImpl<>
+    class OleContainerImpl : public IOleClientSiteImpl<>,
+                             public IOleInPlaceSiteImpl<>,
+                             public IOleInPlaceFrameImpl<>
     {
     public:
-        OleContainer() : m_hOleParent(nullptr),
-                         m_pStorage(nullptr),
-                         m_pOleObj(nullptr),
-                         m_pInPlaceObj(nullptr),
-                         m_bInPlaceActived(false)
+        OleContainerImpl() : m_hOleParent(nullptr),
+                             m_pStorage(nullptr),
+                             m_pOleObj(nullptr),
+                             m_pInPlaceObj(nullptr),
+                             m_bInPlaceActived(false)
         {
             ZeroMemory(&m_rect, sizeof(RECT));
 
             OleInitialize(nullptr);
         }
 
-        virtual ~OleContainer()
+        virtual ~OleContainerImpl()
         {
-            if (m_pInPlaceObj != nullptr)
-            {
-                m_pInPlaceObj->Release();
-                m_pInPlaceObj = nullptr;
-            }
-
-            if (m_pOleObj != nullptr)
-            {
-                m_pOleObj->Release();
-                m_pOleObj = nullptr;
-            }
-
-            if (m_pStorage != nullptr)
-            {
-                m_pStorage->Release();
-                m_pStorage = nullptr;
-            }
+            DestroyOleObject();
 
             OleUninitialize();
         }
@@ -68,6 +52,8 @@ namespace xl
     public:
         bool CreateOleObject(const IID &clsid)
         {
+            DestroyOleObject();
+
             HRESULT hr = StgCreateDocfile(nullptr,
                                           STGM_READWRITE | STGM_SHARE_EXCLUSIVE | STGM_DIRECT | STGM_CREATE,
                                           0,
@@ -94,9 +80,30 @@ namespace xl
             return true;
         }
 
+        void DestroyOleObject()
+        {
+            if (m_pInPlaceObj != nullptr)
+            {
+                m_pInPlaceObj->Release();
+                m_pInPlaceObj = nullptr;
+            }
+
+            if (m_pOleObj != nullptr)
+            {
+                m_pOleObj->Release();
+                m_pOleObj = nullptr;
+            }
+
+            if (m_pStorage != nullptr)
+            {
+                m_pStorage->Release();
+                m_pStorage = nullptr;
+            }
+        }
+
         bool InPlaceActive(HWND hWnd, LPCRECT lpRect = nullptr)
         {
-            if (hWnd == nullptr)
+            if (hWnd == nullptr || m_pOleObj == nullptr)
             {
                 return false;
             }
@@ -123,13 +130,6 @@ namespace xl
         }
 
     public:
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE_CHAIN(IOleClientSiteImpl)
-            XL_COM_INTERFACE_CHAIN(IOleInPlaceSiteImpl)
-            XL_COM_INTERFACE_CHAIN(IOleInPlaceFrameImpl)
-        XL_COM_INTERFACE_END()
-
-    public:
         STDMETHOD(GetWindow)(HWND *phwnd)
         {
             *phwnd = m_hOleParent;
@@ -153,7 +153,7 @@ namespace xl
             }
  
             *ppFrame = (IOleInPlaceFrame*)this;
-            IOleInPlaceFrameImpl::AddRef();
+            (*ppFrame)->AddRef();
 
             *ppDoc = NULL;
  
@@ -176,6 +176,28 @@ namespace xl
         IOleInPlaceObject *m_pInPlaceObj;
         bool               m_bInPlaceActived;
         RECT               m_rect;
+    };
+
+    class OleContainer : public ComClass<OleContainer>,
+                         public OleContainerImpl
+    {
+    public:
+        OleContainer()
+        {
+        
+        }
+
+        ~OleContainer()
+        {
+            DestroyOleObject();
+        }
+
+    public:
+        XL_COM_INTERFACE_BEGIN(OleContainer)
+            XL_COM_INTERFACE(IOleClientSite)
+            XL_COM_INTERFACE(IOleInPlaceSite)
+            XL_COM_INTERFACE(IOleInPlaceFrame)
+        XL_COM_INTERFACE_END()
     };
 
 } // namespace xl

@@ -17,7 +17,6 @@
 
 
 #include <oaidl.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
@@ -25,12 +24,6 @@ namespace xl
     template <typename T = IDispatch>
     class IDispatchImpl : public IUnknownImpl<T>
     {
-    public:
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IDispatch)
-            XL_COM_INTERFACE_CHAIN(IUnknownImpl<T>)
-        XL_COM_INTERFACE_END()
-
     public: // IDispatch Methods
         STDMETHOD(GetTypeInfoCount)(UINT *pctinfo)
         {

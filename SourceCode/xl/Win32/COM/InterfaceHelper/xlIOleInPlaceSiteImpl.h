@@ -17,7 +17,6 @@
 
 
 #include <oleidl.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleWindowImpl.h>
 
 namespace xl
@@ -25,12 +24,6 @@ namespace xl
     template <typename T = IOleInPlaceSite>
     class IOleInPlaceSiteImpl : public IOleWindowImpl<T>
     {
-    public:
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IOleInPlaceSite)
-            XL_COM_INTERFACE_CHAIN(IOleWindowImpl<T>)
-        XL_COM_INTERFACE_END()
-
     public: // IOleInPlaceSite Methods
         STDMETHOD(CanInPlaceActivate)()
         {

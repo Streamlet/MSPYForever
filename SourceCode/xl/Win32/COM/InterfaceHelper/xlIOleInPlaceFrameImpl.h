@@ -17,7 +17,6 @@
 
 
 #include <oleidl.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceUIWindowImpl.h>
 
 namespace xl
@@ -25,12 +24,6 @@ namespace xl
     template <typename T = IOleInPlaceFrame>
     class IOleInPlaceFrameImpl : public IOleInPlaceUIWindowImpl<T>
     {
-    public:
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IOleInPlaceFrame)
-            XL_COM_INTERFACE_CHAIN(IOleInPlaceUIWindowImpl<T>)
-        XL_COM_INTERFACE_END()
-
     public: // IOleInPlaceFrame Methods
         STDMETHOD(InsertMenus)(HMENU hmenuShared, LPOLEMENUGROUPWIDTHS lpMenuWidths)
         {

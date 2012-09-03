@@ -17,7 +17,6 @@
 
 
 #include <wmp.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
 
 namespace xl
@@ -25,12 +24,6 @@ namespace xl
     template <typename T = IWMPCore>
     class IWMPCoreImpl : public IDispatchImpl<T>
     {
-    public: // IUnknown Methods
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IWMPCoreImpl)
-            XL_COM_INTERFACE_CHAIN(IDispatchImpl<T>)
-        XL_COM_INTERFACE_END()
-
     public:
         STDMETHOD(close)()
         {

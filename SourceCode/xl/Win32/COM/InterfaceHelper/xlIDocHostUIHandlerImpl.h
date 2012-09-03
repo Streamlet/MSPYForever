@@ -17,7 +17,6 @@
 
 
 #include <Mshtmhst.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
@@ -25,12 +24,6 @@ namespace xl
     template <typename T = IDocHostUIHandler>
     class IDocHostUIHandlerImpl : public IUnknownImpl<T>
     {
-    public:
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IDocHostUIHandler)
-            XL_COM_INTERFACE_CHAIN(IUnknownImpl<T>)
-        XL_COM_INTERFACE_END()
-
     public: // IDocHostUIHandler Methods
         STDMETHOD(ShowContextMenu)(DWORD dwID, POINT *ppt, IUnknown *pcmdtReserved, IDispatch *pdispReserved)
         {

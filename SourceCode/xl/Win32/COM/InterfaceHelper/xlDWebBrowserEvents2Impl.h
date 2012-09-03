@@ -17,7 +17,6 @@
 
 
 #include <ExDisp.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
 
 namespace xl
@@ -25,11 +24,7 @@ namespace xl
     template <typename T = DWebBrowserEvents2>
     class DWebBrowserEvents2Impl : public IDispatchImpl<T>
     {
-    public:
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(DWebBrowserEvents2)
-            XL_COM_INTERFACE_CHAIN(IDispatchImpl<T>)
-        XL_COM_INTERFACE_END()
+
     };
 
 } // namespace xl

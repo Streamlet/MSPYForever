@@ -26,9 +26,9 @@ namespace xl
     class IUnknownImpl : public T
     {
     public:
-        IUnknownImpl() : m_nRefCount(0)
+        IUnknownImpl()
         {
-            AddRef();
+
         }
 
         ~IUnknownImpl()
@@ -36,30 +36,44 @@ namespace xl
         
         }
 
-    public: // IUnknown Methods
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IUnknown)
-        XL_COM_INTERFACE_END()
+    public:
 
-        ULONG STDMETHODCALLTYPE AddRef()
-        {
-            return (ULONG)InterlockedIncrement(&m_nRefCount);
-        }
+#define XL_COM_INTERFACE_BEGIN(c)                                                                   \
+                                                                                                    \
+        typedef c ComClass;                                                                         \
+                                                                                                    \
+        static const InterfaceEntry *GetEntries()                                                   \
+        {                                                                                           \
+            static const InterfaceEntry entries[] =                                                 \
+            {                                                                                       \
 
-        ULONG STDMETHODCALLTYPE Release()
-        {
-            LONG nRefCount = InterlockedDecrement(&m_nRefCount);
+#define XL_COM_INTERFACE(i)                                                                         \
+                                                                                                    \
+                { &__uuidof(i), (DWORD_PTR)((i *)(ComClass *)sizeof(nullptr)) - sizeof(nullptr) },  \
 
-            if (nRefCount <= 0)
-            {
-                delete this;
-            }
+#define XL_COM_INTERFACE_END()                                                                      \
+                                                                                                    \
+                { nullptr, 0 }                                                                      \
+            };                                                                                      \
+                                                                                                    \
+            return entries;                                                                         \
+        }                                                                                           \
+                                                                                                    \
+        STDMETHODIMP QueryInterface(REFIID riid, LPVOID *ppvObject)                                 \
+        {                                                                                           \
+            return InternalQueryInterface(GetEntries(), riid, ppvObject);                           \
+        }                                                                                           \
+                                                                                                    \
+        ULONG STDMETHODCALLTYPE AddRef()                                                            \
+        {                                                                                           \
+            return InternalAddRef();                                                                \
+        }                                                                                           \
+                                                                                                    \
+        ULONG STDMETHODCALLTYPE Release()                                                           \
+        {                                                                                           \
+            return InternalRelease();                                                               \
+        }                                                                                           \
 
-            return (ULONG)nRefCount;
-        }
-
-    private:
-        LONG m_nRefCount;
     };
 
 } // namespace xl

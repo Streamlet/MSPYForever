@@ -17,7 +17,6 @@
 
 
 #include <oleidl.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
@@ -25,12 +24,6 @@ namespace xl
     template <typename T = IOleInPlaceUIWindow>
     class IOleInPlaceUIWindowImpl : public IOleWindowImpl<T>
     {
-    public:
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IOleInPlaceUIWindow)
-            XL_COM_INTERFACE_CHAIN(IOleWindowImpl<T>)
-        XL_COM_INTERFACE_END()
-
     public: // IOleInPlaceUIWindow Methods
         STDMETHOD(GetBorder)(LPRECT lprectBorder)
         {

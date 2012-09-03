@@ -18,48 +18,35 @@
 
 
 #include <xl/Win32/COM/Objects/xlOleContainer.h>
+#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIDocHostUIHandlerImpl.h>
 #include <xl/Win32/COM/InterfaceHelper/xlDWebBrowserEvents2Impl.h>
 
 
 namespace xl
 {
-    class WebBrowser : public OleContainer,
-                       public IDocHostUIHandlerImpl<>,
-                       public DWebBrowserEvents2Impl<>
+    class WebBrowserImpl : public OleContainerImpl,
+                           public IDocHostUIHandlerImpl<>,
+                           public DWebBrowserEvents2Impl<>
     {
     public:
-        WebBrowser() : m_pWebBrowser(nullptr),
-                       m_pCPC(nullptr),
-                       m_pCP(nullptr)
+        WebBrowserImpl() : m_pWebBrowser(nullptr),
+                           m_pCPC(nullptr),
+                           m_pCP(nullptr)
         {
 
         }
 
-        virtual ~WebBrowser()
+        ~WebBrowserImpl()
         {
-            if (m_pCP != nullptr)
-            {
-                m_pCP->Release();
-                m_pCP = nullptr;
-            }
-
-            if (m_pCPC != nullptr)
-            {
-                m_pCPC->Release();
-                m_pCPC = nullptr;
-            }
-
-            if (m_pWebBrowser != nullptr)
-            {
-                m_pWebBrowser->Release();
-                m_pWebBrowser = nullptr;
-            }
+            DestroyWebBrowser();
         }
 
     public:
         bool CreateWebBrowser(HWND hWnd, LPCRECT lpRect = nullptr)
         {
+            DestroyWebBrowser();
+
             if (!CreateOleObject(__uuidof(::WebBrowser)))
             {
                 return false;
@@ -102,17 +89,57 @@ namespace xl
             return true;
         }
 
-    public: // IUnknown Methods
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE_CHAIN(OleContainer)
-            XL_COM_INTERFACE_CHAIN(IDocHostUIHandlerImpl)
-            XL_COM_INTERFACE_CHAIN(DWebBrowserEvents2Impl)
-        XL_COM_INTERFACE_END()
-        
+        void DestroyWebBrowser()
+        {
+            if (m_pCP != nullptr)
+            {
+                m_pCP->Release();
+                m_pCP = nullptr;
+            }
+
+            if (m_pCPC != nullptr)
+            {
+                m_pCPC->Release();
+                m_pCPC = nullptr;
+            }
+
+            if (m_pWebBrowser != nullptr)
+            {
+                m_pWebBrowser->Release();
+                m_pWebBrowser = nullptr;
+            }
+
+            DestroyOleObject();
+        }
+
     protected:
         IWebBrowser2              *m_pWebBrowser;
         IConnectionPointContainer *m_pCPC;
         IConnectionPoint          *m_pCP;
+    };
+
+    class WebBrowser : public ComClass<WebBrowser>,
+                       public WebBrowserImpl
+    {
+    public:
+        WebBrowser()
+        {
+
+        }
+
+        ~WebBrowser()
+        {
+            DestroyWebBrowser();
+        }
+
+    public:
+        XL_COM_INTERFACE_BEGIN(WebBrowser)
+            XL_COM_INTERFACE(IOleClientSite)
+            XL_COM_INTERFACE(IOleInPlaceSite)
+            XL_COM_INTERFACE(IOleInPlaceFrame)
+            XL_COM_INTERFACE(IDocHostUIHandler)
+            XL_COM_INTERFACE(DWebBrowserEvents2)
+        XL_COM_INTERFACE_END()
     };
 
 } // namespace xl

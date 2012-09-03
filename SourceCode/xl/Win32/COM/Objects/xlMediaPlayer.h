@@ -21,27 +21,25 @@
 
 namespace xl
 {
-    class MediaPlayer : public OleContainer,
-                        public IWMPPlayerImpl<>
+    class MediaPlayerImpl : public OleContainerImpl,
+                            public IWMPPlayerImpl<>
     {
     public:
-        MediaPlayer() : m_pWMPPlayer(nullptr)
+        MediaPlayerImpl() : m_pWMPPlayer(nullptr)
         {
 
         }
 
-        virtual ~MediaPlayer()
+        virtual ~MediaPlayerImpl()
         {
-            if (m_pWMPPlayer != NULL)
-            {
-                m_pWMPPlayer->Release();
-                m_pWMPPlayer = nullptr;
-            }
+            DestroyMediaPlayer();
         }
 
     public:
         bool CreateMediaPlayer(HWND hWnd, LPCRECT lpRect = nullptr)
         {
+            DestroyMediaPlayer();
+
             if (!CreateOleObject(__uuidof(WindowsMediaPlayer)))
             {
                 return false;
@@ -62,15 +60,46 @@ namespace xl
             return true;
         }
 
-    public: // IUnknown Methods
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE_CHAIN(OleContainer)
-            XL_COM_INTERFACE_CHAIN(IWMPPlayerImpl)
-        XL_COM_INTERFACE_END()
+        void DestroyMediaPlayer()
+        {
+            if (m_pWMPPlayer != NULL)
+            {
+                m_pWMPPlayer->Release();
+                m_pWMPPlayer = nullptr;
+            }
+
+            DestroyOleObject();
+        }
 
     protected:
         IWMPPlayer *m_pWMPPlayer;
     };
+
+    class MediaPlayer : public ComClass<MediaPlayer>,
+                        public MediaPlayerImpl
+    {
+    public:
+        MediaPlayer()
+        {
+
+        }
+
+        ~MediaPlayer()
+        {
+            DestroyMediaPlayer();
+        }
+
+    public:
+        XL_COM_INTERFACE_BEGIN(MediaPlayer)
+            XL_COM_INTERFACE(IOleClientSite)
+            XL_COM_INTERFACE(IOleInPlaceSite)
+            XL_COM_INTERFACE(IOleInPlaceFrame)
+            XL_COM_INTERFACE(IWMPCore)
+            XL_COM_INTERFACE(IWMPPlayer)
+            XL_COM_INTERFACE(IDispatch)
+        XL_COM_INTERFACE_END()
+    };
+
 
 } // namespace xl
 

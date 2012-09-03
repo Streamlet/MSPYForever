@@ -17,7 +17,6 @@
 
 
 #include <wmp.h>
-#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIWMPCoreImpl.h>
 
 namespace xl
@@ -25,12 +24,6 @@ namespace xl
     template <typename T = IWMPPlayer>
     class IWMPPlayerImpl : public IWMPCoreImpl<T>
     {
-    public: // IUnknown Methods
-        XL_COM_INTERFACE_BEGIN()
-            XL_COM_INTERFACE(IWMPPlayer)
-            XL_COM_INTERFACE_CHAIN(IWMPCoreImpl<T>)
-        XL_COM_INTERFACE_END()
-
     public:
         STDMETHOD(get_enabled)(VARIANT_BOOL *pbEnabled)
         {
