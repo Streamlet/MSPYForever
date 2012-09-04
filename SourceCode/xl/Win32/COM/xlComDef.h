@@ -32,7 +32,7 @@ namespace xl
     public:
         ComClass() : m_nRefCount(0)
         {
-            InternalAddRef();
+
         }
 
         ~ComClass()

@@ -38,41 +38,41 @@ namespace xl
 
     public:
 
-#define XL_COM_INTERFACE_BEGIN(c)                                                                   \
-                                                                                                    \
-        typedef c ComClass;                                                                         \
-                                                                                                    \
-        static const InterfaceEntry *GetEntries()                                                   \
-        {                                                                                           \
-            static const InterfaceEntry entries[] =                                                 \
-            {                                                                                       \
+#define XL_COM_INTERFACE_BEGIN(c)                                                                       \
+                                                                                                        \
+        typedef c ComMapClass;                                                                          \
+                                                                                                        \
+        static const xl::InterfaceEntry *GetEntries()                                                   \
+        {                                                                                               \
+            static const xl::InterfaceEntry entries[] =                                                 \
+            {                                                                                           \
 
-#define XL_COM_INTERFACE(i)                                                                         \
-                                                                                                    \
-                { &__uuidof(i), (DWORD_PTR)((i *)(ComClass *)sizeof(nullptr)) - sizeof(nullptr) },  \
+#define XL_COM_INTERFACE(i)                                                                             \
+                                                                                                        \
+                { &__uuidof(i), (DWORD_PTR)((i *)(ComMapClass *)sizeof(nullptr)) - sizeof(nullptr) },   \
 
-#define XL_COM_INTERFACE_END()                                                                      \
-                                                                                                    \
-                { nullptr, 0 }                                                                      \
-            };                                                                                      \
-                                                                                                    \
-            return entries;                                                                         \
-        }                                                                                           \
-                                                                                                    \
-        STDMETHODIMP QueryInterface(REFIID riid, LPVOID *ppvObject)                                 \
-        {                                                                                           \
-            return InternalQueryInterface(GetEntries(), riid, ppvObject);                           \
-        }                                                                                           \
-                                                                                                    \
-        ULONG STDMETHODCALLTYPE AddRef()                                                            \
-        {                                                                                           \
-            return InternalAddRef();                                                                \
-        }                                                                                           \
-                                                                                                    \
-        ULONG STDMETHODCALLTYPE Release()                                                           \
-        {                                                                                           \
-            return InternalRelease();                                                               \
-        }                                                                                           \
+#define XL_COM_INTERFACE_END()                                                                          \
+                                                                                                        \
+                { nullptr, 0 }                                                                          \
+            };                                                                                          \
+                                                                                                        \
+            return entries;                                                                             \
+        }                                                                                               \
+                                                                                                        \
+        STDMETHODIMP QueryInterface(REFIID riid, LPVOID *ppvObject)                                     \
+        {                                                                                               \
+            return InternalQueryInterface(GetEntries(), riid, ppvObject);                               \
+        }                                                                                               \
+                                                                                                        \
+        ULONG STDMETHODCALLTYPE AddRef()                                                                \
+        {                                                                                               \
+            return InternalAddRef();                                                                    \
+        }                                                                                               \
+                                                                                                        \
+        ULONG STDMETHODCALLTYPE Release()                                                               \
+        {                                                                                               \
+            return InternalRelease();                                                                   \
+        }                                                                                               \
 
     };
 
