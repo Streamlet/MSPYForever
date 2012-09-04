@@ -39,7 +39,7 @@ namespace xl
             OleInitialize(nullptr);
         }
 
-        virtual ~OleContainerImpl()
+        ~OleContainerImpl()
         {
             DestroyOleObject();
 

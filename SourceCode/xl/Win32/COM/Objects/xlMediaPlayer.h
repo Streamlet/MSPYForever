@@ -31,7 +31,7 @@ namespace xl
 
         }
 
-        virtual ~MediaPlayerImpl()
+        ~MediaPlayerImpl()
         {
             DestroyMediaPlayer();
         }
@@ -98,7 +98,6 @@ namespace xl
             XL_COM_INTERFACE(IDispatch)
         XL_COM_INTERFACE_END()
     };
-
 
 } // namespace xl
 
