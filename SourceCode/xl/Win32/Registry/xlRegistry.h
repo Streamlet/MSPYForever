@@ -97,7 +97,7 @@ namespace xl
 
             XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-            if (RegSetValueEx(hKey, strName.GetAddress(), nullptr, REG_SZ, (LPCBYTE)strValue.GetAddress(), (DWORD)(strValue.GetLength() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
+            if (RegSetValueEx(hKey, strName.GetAddress(), 0, REG_SZ, (LPCBYTE)strValue.GetAddress(), (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
             {
                 return false;
             }
@@ -260,7 +260,7 @@ namespace xl
 	        for (int i = 0; true; ++i)
 	        {
 		        DWORD dwSize = sizeof(szName);
-		        lRet = RegEnumKeyEx(hKey, i, szName.GetAddress(), &dwSize, nullptr, nullptr, nullptr, nullptr);
+		        lRet = RegEnumKeyEx(hKey, i, szName, &dwSize, nullptr, nullptr, nullptr, nullptr);
 
 		        if (lRet == ERROR_NO_MORE_ITEMS)
 		        {
@@ -346,12 +346,12 @@ namespace xl
 
             while (true)
             {
-                if (nPastPos < = 0)
+                if (nLastPos <= 0)
                 {
                     return false;
                 }
             
-                int nPos = strPath.LastIndexOf(_T('\\'), nLastPos);
+                int nPos = strPath.LastIndexOf(_T("\\"), nLastPos);
 
                 if (nPos == nLastPos - 1)
                 {
@@ -395,7 +395,7 @@ namespace xl
         {
 	        Array<String> arrKeys;
 
-            if (!EnumSubKey(hRootKey, strPath.GetAddress(), arrKeys))
+            if (!EnumSubKey(hRootKey, strPath.GetAddress(), &arrKeys))
 	        {
 		        return false;
 	        }
@@ -411,7 +411,7 @@ namespace xl
 	            }            
             }
 
-	        return  DeleteKey(hRootKey, strPath)
+	        return  DeleteKey(hRootKey, strPath);
         }
 
     private:
@@ -426,7 +426,7 @@ namespace xl
 	        case RV_X86:
 		        dwFlags |= KEY_WOW64_32KEY;
 		        break;
-	        case RV_Default:
+	        case RV_X64:
 		        dwFlags |= KEY_WOW64_64KEY;
 		        break;
 	        default:
