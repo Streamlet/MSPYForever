@@ -421,12 +421,12 @@ namespace xl
 
 	        switch (V)
 	        {
-	        case RegistryView::DefaultView:
+	        case RV_Default:
 		        break;
-	        case RegistryView::X86View:
+	        case RV_X86:
 		        dwFlags |= KEY_WOW64_32KEY;
 		        break;
-	        case RegistryView::DefaultView:
+	        case RV_Default:
 		        dwFlags |= KEY_WOW64_64KEY;
 		        break;
 	        default:
