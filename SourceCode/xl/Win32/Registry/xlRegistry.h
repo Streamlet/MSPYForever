@@ -350,7 +350,7 @@ namespace xl
                 {
                     return false;
                 }
-            
+
                 int nPos = strPath.LastIndexOf(_T("\\"), nLastPos);
 
                 if (nPos == nLastPos - 1)
@@ -374,6 +374,8 @@ namespace xl
 		            hKey = hRootKey;
 		            strName = strPath;
 	            }
+
+                break;
             }
 
             LONG lRet = RegDeleteKey(hKey, strName.GetAddress());
