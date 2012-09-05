@@ -169,6 +169,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InterfaceHelper", "InterfaceHelper", "{13065D1A-8E27-47DA-BC05-1D1629145AFA}"
 	ProjectSection(SolutionItems) = preProject
 		SourceCode\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h
+		SourceCode\xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h
 		SourceCode\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h
 		SourceCode\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h
 		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h
