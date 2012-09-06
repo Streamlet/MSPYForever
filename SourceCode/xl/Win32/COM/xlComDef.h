@@ -79,7 +79,7 @@ namespace xl
 
             if (nRefCount <= 0)
             {
-                delete this;
+                delete (T *)this;
             }
             
             return (ULONG)nRefCount;
