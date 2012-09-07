@@ -1,116 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xlLib", "xlLib", "{41DE1E2B-20E7-4CA9-95BF-FED590434EBA}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\xlDef.h = SourceCode\xl\xlDef.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Containers", "Containers", "{FD3A4148-0987-4149-B459-5727872E3AA9}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Containers\xlArray.h = SourceCode\xl\Containers\xlArray.h
-		SourceCode\xl\Containers\xlBinTree.h = SourceCode\xl\Containers\xlBinTree.h
-		SourceCode\xl\Containers\xlGraph.h = SourceCode\xl\Containers\xlGraph.h
-		SourceCode\xl\Containers\xlList.h = SourceCode\xl\Containers\xlList.h
-		SourceCode\xl\Containers\xlMap.h = SourceCode\xl\Containers\xlMap.h
-		SourceCode\xl\Containers\xlPair.h = SourceCode\xl\Containers\xlPair.h
-		SourceCode\xl\Containers\xlRBTree.h = SourceCode\xl\Containers\xlRBTree.h
-		SourceCode\xl\Containers\xlSet.h = SourceCode\xl\Containers\xlSet.h
-		SourceCode\xl\Containers\xlTree.h = SourceCode\xl\Containers\xlTree.h
-		SourceCode\xl\Containers\xlTuple.h = SourceCode\xl\Containers\xlTuple.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Objects\xlBigInt.h = SourceCode\xl\Objects\xlBigInt.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{3CF5010F-D9AA-40DA-9823-D23D64A7BE33}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Meta\xlAssert.h = SourceCode\xl\Meta\xlAssert.h
-		SourceCode\xl\Meta\xlBind.h = SourceCode\xl\Meta\xlBind.h
-		SourceCode\xl\Meta\xlFunction.h = SourceCode\xl\Meta\xlFunction.h
-		SourceCode\xl\Meta\xlMacros.h = SourceCode\xl\Meta\xlMacros.h
-		SourceCode\xl\Meta\xlMetaBase.h = SourceCode\xl\Meta\xlMetaBase.h
-		SourceCode\xl\Meta\xlScopeExit.h = SourceCode\xl\Meta\xlScopeExit.h
-		SourceCode\xl\Meta\xlStaticAssert.h = SourceCode\xl\Meta\xlStaticAssert.h
-		SourceCode\xl\Meta\xlTypeList.h = SourceCode\xl\Meta\xlTypeList.h
-		SourceCode\xl\Meta\xlTypeTraits.h = SourceCode\xl\Meta\xlTypeTraits.h
-		SourceCode\xl\Meta\xlUtility.h = SourceCode\xl\Meta\xlUtility.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win32", "Win32", "{8F40867B-C99D-4C15-A0C7-F407C9CC741D}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\xlWin32Ver.h = SourceCode\xl\Win32\xlWin32Ver.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Threads", "Threads", "{C5DC26E9-5A2C-453C-993D-554D9D220DA1}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\Threads\xlCriticalSection.h = SourceCode\xl\Win32\Threads\xlCriticalSection.h
-		SourceCode\xl\Win32\Threads\xlThread.h = SourceCode\xl\Win32\Threads\xlThread.h
-		SourceCode\xl\Win32\Threads\xlThreadPool.h = SourceCode\xl\Win32\Threads\xlThreadPool.h
-		SourceCode\xl\Win32\Threads\xlTls.h = SourceCode\xl\Win32\Threads\xlTls.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\GUI\xlCommCtrlInitializer.h = SourceCode\xl\Win32\GUI\xlCommCtrlInitializer.h
-		SourceCode\xl\Win32\GUI\xlDialog.h = SourceCode\xl\Win32\GUI\xlDialog.h
-		SourceCode\xl\Win32\GUI\xlMenu.h = SourceCode\xl\Win32\GUI\xlMenu.h
-		SourceCode\xl\Win32\GUI\xlMenuBase.h = SourceCode\xl\Win32\GUI\xlMenuBase.h
-		SourceCode\xl\Win32\GUI\xlStdButton.h = SourceCode\xl\Win32\GUI\xlStdButton.h
-		SourceCode\xl\Win32\GUI\xlStdComboBox.h = SourceCode\xl\Win32\GUI\xlStdComboBox.h
-		SourceCode\xl\Win32\GUI\xlStdEdit.h = SourceCode\xl\Win32\GUI\xlStdEdit.h
-		SourceCode\xl\Win32\GUI\xlStdLink.h = SourceCode\xl\Win32\GUI\xlStdLink.h
-		SourceCode\xl\Win32\GUI\xlStdListBox.h = SourceCode\xl\Win32\GUI\xlStdListBox.h
-		SourceCode\xl\Win32\GUI\xlStdListView.h = SourceCode\xl\Win32\GUI\xlStdListView.h
-		SourceCode\xl\Win32\GUI\xlStdScrollBar.h = SourceCode\xl\Win32\GUI\xlStdScrollBar.h
-		SourceCode\xl\Win32\GUI\xlStdStatic.h = SourceCode\xl\Win32\GUI\xlStdStatic.h
-		SourceCode\xl\Win32\GUI\xlThunk.h = SourceCode\xl\Win32\GUI\xlThunk.h
-		SourceCode\xl\Win32\GUI\xlWindow.h = SourceCode\xl\Win32\GUI\xlWindow.h
-		SourceCode\xl\Win32\GUI\xlWindowAPIMacroRedefine.h = SourceCode\xl\Win32\GUI\xlWindowAPIMacroRedefine.h
-		SourceCode\xl\Win32\GUI\xlWindowBase.h = SourceCode\xl\Win32\GUI\xlWindowBase.h
-		SourceCode\xl\Win32\GUI\xlWindowBaseEx.h = SourceCode\xl\Win32\GUI\xlWindowBaseEx.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{8E12D1F8-E344-41C8-9FD9-2F93E874F24E}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\Memory\xlHeap.h = SourceCode\xl\Win32\Memory\xlHeap.h
-		SourceCode\xl\Win32\Memory\xlSafeSmartPtr.h = SourceCode\xl\Win32\Memory\xlSafeSmartPtr.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cryption", "Cryption", "{54E546A4-BE6C-49B1-90D1-10C609CB1115}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Cryption\xlCRC32.h = SourceCode\xl\Cryption\xlCRC32.h
-		SourceCode\xl\Cryption\xlMD5.h = SourceCode\xl\Cryption\xlMD5.h
-		SourceCode\xl\Cryption\xlSHA1.h = SourceCode\xl\Cryption\xlSHA1.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{27631DF6-2FAF-4EDA-A7BB-FB989284C771}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Test\xlUnitTest.h = SourceCode\xl\Test\xlUnitTest.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "String", "String", "{3001410B-F3F0-4387-9E64-3BE6078D1C7E}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\String\xlBase64.h = SourceCode\xl\String\xlBase64.h
-		SourceCode\xl\String\xlEncoding.h = SourceCode\xl\String\xlEncoding.h
-		SourceCode\xl\String\xlRegExp.h = SourceCode\xl\String\xlRegExp.h
-		SourceCode\xl\String\xlString.h = SourceCode\xl\String\xlString.h
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{C37FE0BD-5B78-4C92-87B3-D3CF499A5E0D}"
 	ProjectSection(SolutionItems) = preProject
 		Document\autoexp.txt = Document\autoexp.txt
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Memory", "Memory", "{9274E5C4-72E6-4147-BB18-30853424D2D3}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Memory\xlMemory.h = SourceCode\xl\Memory\xlMemory.h
-		SourceCode\xl\Memory\xlSmartPtr.h = SourceCode\xl\Memory\xlSmartPtr.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{4F5286EA-D279-4EED-ADAD-5E1F8428F49D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{4F5286EA-D279-4EED-ADAD-5E1F8428F49D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "Projects\UnitTest\UnitTest.vcxproj", "{538AE18F-F369-4B89-B8E0-DBD5EDA379F1}"
 EndProject
@@ -133,69 +29,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32GUITest", "Projects\Wi
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Projects\Test\Test.vcxproj", "{6620C303-0D70-41AF-82BF-CA7EA66A1B21}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{3B34D6A7-961D-432B-A284-A5FCA54ADB7B}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\Network\xlSocket.h = SourceCode\xl\Win32\Network\xlSocket.h
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32NetworkTest", "Projects\Win32NetworkTest\Win32NetworkTest.vcxproj", "{9D377F4D-EC3E-4730-877B-E63E9376B71E}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Parser", "Parser", "{43BE58E5-6828-40BC-BD88-7BB1ECEC469D}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Parser\xlRegExp.h = SourceCode\xl\Parser\xlRegExp.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{F762A194-5340-4B26-B63C-F3AEABE24562}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\Messaging\xlMessageBus.h = SourceCode\xl\Win32\Messaging\xlMessageBus.h
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32MessagingTest", "Projects\Win32MessagingTest\Win32MessagingTest.vcxproj", "{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{4533161B-D220-48E6-9C78-D5A6122527A2}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Math\xlInterval.h = SourceCode\xl\Math\xlInterval.h
-		SourceCode\xl\Math\xlIntervalSet.h = SourceCode\xl\Math\xlIntervalSet.h
-		SourceCode\xl\Math\xlMathBase.h = SourceCode\xl\Math\xlMathBase.h
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlRegExpTest", "Projects\PerformanceTest\xlRegExpTest\xlRegExpTest.vcxproj", "{4122678E-85D4-455A-B431-8B66E4024BD6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "COM", "COM", "{D79A0520-F414-40FB-81CA-858E6BEDF0B3}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\COM\xlComDef.h = SourceCode\xl\Win32\COM\xlComDef.h
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlLib", "SourceCode\xlLib.vcxproj", "{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InterfaceHelper", "InterfaceHelper", "{13065D1A-8E27-47DA-BC05-1D1629145AFA}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlITypeCompImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlITypeCompImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlITypeInfoImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlITypeInfoImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlITypeLibImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlITypeLibImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h
-		SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h = SourceCode\xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Objects", "Objects", "{919C43EE-18AE-4EC3-BCA3-2D2DD3C14388}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\COM\Objects\xlMediaPlayer.h = SourceCode\xl\Win32\COM\Objects\xlMediaPlayer.h
-		SourceCode\xl\Win32\COM\Objects\xlOleContainer.h = SourceCode\xl\Win32\COM\Objects\xlOleContainer.h
-		SourceCode\xl\Win32\COM\Objects\xlWebBrowser.h = SourceCode\xl\Win32\COM\Objects\xlWebBrowser.h
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Registry", "Registry", "{C2D217C4-172C-4867-93A2-25989349BDCE}"
-	ProjectSection(SolutionItems) = preProject
-		SourceCode\xl\Win32\Registry\xlRegistry.h = SourceCode\xl\Win32\Registry\xlRegistry.h
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FeatureTest", "FeatureTest", "{11F0D05E-0CFA-47DB-92C0-723B8F8F9152}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -293,41 +135,27 @@ Global
 		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|Win32.Build.0 = Release|Win32
 		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|x64.ActiveCfg = Release|x64
 		{4122678E-85D4-455A-B431-8B66E4024BD6}.Release|x64.Build.0 = Release|x64
+		{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}.Debug|x64.ActiveCfg = Debug|Win32
+		{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}.Release|Win32.ActiveCfg = Release|Win32
+		{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{FD3A4148-0987-4149-B459-5727872E3AA9} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{9B64EC0F-9080-4D92-9A68-5A1423CC3BA7} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{3CF5010F-D9AA-40DA-9823-D23D64A7BE33} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{8F40867B-C99D-4C15-A0C7-F407C9CC741D} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{54E546A4-BE6C-49B1-90D1-10C609CB1115} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{27631DF6-2FAF-4EDA-A7BB-FB989284C771} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{3001410B-F3F0-4387-9E64-3BE6078D1C7E} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{9274E5C4-72E6-4147-BB18-30853424D2D3} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{43BE58E5-6828-40BC-BD88-7BB1ECEC469D} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{4533161B-D220-48E6-9C78-D5A6122527A2} = {41DE1E2B-20E7-4CA9-95BF-FED590434EBA}
-		{C5DC26E9-5A2C-453C-993D-554D9D220DA1} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
-		{B9EA58CE-58D0-48C0-B8DC-89DBC8B2D88D} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
-		{8E12D1F8-E344-41C8-9FD9-2F93E874F24E} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
-		{3B34D6A7-961D-432B-A284-A5FCA54ADB7B} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
-		{F762A194-5340-4B26-B63C-F3AEABE24562} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
-		{D79A0520-F414-40FB-81CA-858E6BEDF0B3} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
-		{C2D217C4-172C-4867-93A2-25989349BDCE} = {8F40867B-C99D-4C15-A0C7-F407C9CC741D}
-		{538AE18F-F369-4B89-B8E0-DBD5EDA379F1} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
+		{11F0D05E-0CFA-47DB-92C0-723B8F8F9152} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
 		{F057D34A-2199-48ED-B2AC-9A1A6B12BDF7} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
-		{8E218C86-AF3F-4DE0-AE39-F43BEA91AC54} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
 		{6620C303-0D70-41AF-82BF-CA7EA66A1B21} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
-		{9D377F4D-EC3E-4730-877B-E63E9376B71E} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
-		{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40} = {4F5286EA-D279-4EED-ADAD-5E1F8428F49D}
+		{8E218C86-AF3F-4DE0-AE39-F43BEA91AC54} = {11F0D05E-0CFA-47DB-92C0-723B8F8F9152}
+		{9D377F4D-EC3E-4730-877B-E63E9376B71E} = {11F0D05E-0CFA-47DB-92C0-723B8F8F9152}
+		{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40} = {11F0D05E-0CFA-47DB-92C0-723B8F8F9152}
+		{538AE18F-F369-4B89-B8E0-DBD5EDA379F1} = {11F0D05E-0CFA-47DB-92C0-723B8F8F9152}
 		{0200BE79-EA0F-438D-9681-B226E389B4A1} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{3E4BFCF9-C59F-4976-B16F-6CD3BE6CBADE} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{0D471331-A9CB-4A99-A848-C22CCD87EA2D} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{E83F331B-818B-40A0-BD86-7EA48A0C259B} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{BB26E470-1F2B-4D70-AB44-00BBE861C9B4} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
 		{4122678E-85D4-455A-B431-8B66E4024BD6} = {F057D34A-2199-48ED-B2AC-9A1A6B12BDF7}
-		{13065D1A-8E27-47DA-BC05-1D1629145AFA} = {D79A0520-F414-40FB-81CA-858E6BEDF0B3}
-		{919C43EE-18AE-4EC3-BCA3-2D2DD3C14388} = {D79A0520-F414-40FB-81CA-858E6BEDF0B3}
 	EndGlobalSection
 EndGlobal
