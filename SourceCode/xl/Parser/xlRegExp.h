@@ -393,13 +393,13 @@ namespace xl
 
                     if (r.bGreedy)
                     {
-                        pNode->arrNext.PushFront(pEdgeNodeToCurrent);
-                        pCurrent->arrPrevious.PushFront(pEdgeNodeToCurrent);
+                        pNode->arrNext.PushBack(pEdgeNodeToCurrent);
+                        pCurrent->arrPrevious.PushBack(pEdgeNodeToCurrent);
                     }
                     else
                     {
-                        pNode->arrNext.PushBack(pEdgeNodeToCurrent);
-                        pCurrent->arrPrevious.PushBack(pEdgeNodeToCurrent);
+                        pNode->arrNext.PushFront(pEdgeNodeToCurrent);
+                        pCurrent->arrPrevious.PushFront(pEdgeNodeToCurrent);
                     }
                 }
                 break;
@@ -440,13 +440,13 @@ namespace xl
 
                     if (r.bGreedy)
                     {
-                        pNode->arrNext.PushFront(pEdgeNodeToTo);
-                        pTo->arrPrevious.PushFront(pEdgeNodeToTo);
+                        pNode->arrNext.PushBack(pEdgeNodeToTo);
+                        pTo->arrPrevious.PushBack(pEdgeNodeToTo);
                     }
                     else
                     {
-                        pNode->arrNext.PushBack(pEdgeNodeToTo);
-                        pTo->arrPrevious.PushBack(pEdgeNodeToTo);
+                        pNode->arrNext.PushFront(pEdgeNodeToTo);
+                        pTo->arrPrevious.PushFront(pEdgeNodeToTo);
                     }
 
                     pCurrent = pTo;
