@@ -26,7 +26,7 @@ namespace
     {
         IntervalSet<int> s;
         XL_TEST_ASSERT(s.IsEmpty());
-        
+
         Interval<int> a(0, 5);
         Interval<int> b(6, 8);
 

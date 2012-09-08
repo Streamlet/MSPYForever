@@ -441,7 +441,7 @@ namespace
         Function<void (int, int)>     void2(voidf);
         Function<void (int, int, int)>void3(voidf);
     }
-    
+
     XL_TEST_CASE()
     {
         XL_TEST_ASSERT(Function<int ()>             (cdecl0)() == 0);

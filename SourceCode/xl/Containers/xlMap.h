@@ -164,7 +164,7 @@ namespace xl
 
         return it->Value;
     }
-    
+
     template <typename K, typename V>
     inline const V &Map<K, V>::operator [] (const K &key) const
     {

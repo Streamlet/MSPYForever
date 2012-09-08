@@ -37,7 +37,7 @@ namespace xl
 
         ~ComClass()
         {
-        
+
         }
 
     public:
@@ -81,7 +81,7 @@ namespace xl
             {
                 delete (T *)this;
             }
-            
+
             return (ULONG)nRefCount;
         }
 

@@ -45,7 +45,7 @@ namespace xl
         {
             return STD_CONTROL_CLASSNAME_BUTTON;
         }
-        
+
     public:
         bool Create(UINT nID,
                     Window *pParent,
@@ -203,7 +203,7 @@ namespace xl
 #endif // (_WIN32_WINNT >= 0x0600)
 
     public: // Operations
-        
+
         void Click()
         {
             ::SendMessage(m_hWnd, BM_CLICK, 0, 0);

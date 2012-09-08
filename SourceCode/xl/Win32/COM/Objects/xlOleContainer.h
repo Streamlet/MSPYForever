@@ -148,24 +148,24 @@ namespace xl
             {
                 return E_NOTIMPL;
             }
- 
+
             *ppFrame = (IOleInPlaceFrame*)this;
             (*ppFrame)->AddRef();
 
             *ppDoc = NULL;
- 
+
             CopyMemory(lprcPosRect, &m_rect, sizeof(RECT));
             CopyMemory(lprcClipRect, &m_rect, sizeof(RECT));
- 
+
             lpFrameInfo->cb = sizeof(OLEINPLACEFRAMEINFO);
             lpFrameInfo->fMDIApp = false;
             lpFrameInfo->hwndFrame = GetParent(m_hOleParent);
             lpFrameInfo->haccel = nullptr;
             lpFrameInfo->cAccelEntries = 0;
- 
+
             return S_OK;
         }
-        
+
     protected:
         HWND               m_hOleParent;
         IStorage          *m_pStorage;
@@ -181,7 +181,7 @@ namespace xl
     public:
         OleContainer()
         {
-        
+
         }
 
         ~OleContainer()

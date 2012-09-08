@@ -57,7 +57,7 @@ namespace xl
         {
             return _T("xlWindow");
         }
-        
+
     public:
         bool Create(int x = CW_USEDEFAULT,
                     int y = CW_USEDEFAULT,
@@ -125,7 +125,7 @@ namespace xl
 //      HFONT m_hFontMenu;
 //      HFONT m_hFontStatus;
         HFONT m_hFontMessage;
-        
+
     private:
         CommCtrlInitializer ms_cci;
 

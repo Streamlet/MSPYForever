@@ -61,7 +61,7 @@ namespace xl
         {
             return _T("xlDialog");
         }
-        
+
     public:
         bool Create(int nWidth = CW_USEDEFAULT,
                     int nHeight = CW_USEDEFAULT,

@@ -302,13 +302,13 @@ namespace xl
     {
         FromString(string_value, base, alphabet);
     }
-    
+
     template <typename T>
     BigIntT<T>::BigIntT(const String &string_value, unsigned int base /*= 10*/, const String &alphabet /*= L"0123456789ABCDEF"*/)
     {
         FromString(string_value, base, alphabet);
     }
-    
+
     template <typename T>
     BigIntT<T>::BigIntT(const BigIntT &that)
         : m_bPositive(true)
@@ -1078,7 +1078,7 @@ namespace xl
             {
                 break;
             }
-            
+
             *this = (*this) * base + it->Value;
         }
 

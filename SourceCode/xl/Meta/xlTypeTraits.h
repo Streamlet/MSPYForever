@@ -186,7 +186,7 @@ namespace xl
                          ParamType;
     };
 
-    
+
 } // namespace xl
 
 #endif // #ifndef __XLTYPETRAITS_H_F84DEF1B_BC39_41ED_A130_A31D78520A8A_INCLUDED__

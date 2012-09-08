@@ -140,12 +140,12 @@ namespace xl
         {
             return ::InsertMenuItem(m_hMenu, uItem, fByPosition, lpMenuItemInfo);
         }
-        
+
         BOOL ModifyMenu(UINT uPosition, UINT uFlags, UINT_PTR uIDNewItem, LPCTSTR lpNewItem)
         {
             return ::ModifyMenu(m_hMenu, uPosition, uFlags, uIDNewItem, lpNewItem);
         }
-        
+
         BOOL RemoveMenu(UINT uPosition, UINT uFlags)
         {
             return ::RemoveMenu(m_hMenu, uPosition, uFlags);

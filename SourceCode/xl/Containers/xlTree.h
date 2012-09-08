@@ -274,7 +274,7 @@ namespace xl
             }
 
             delete pSubTreeRoot;
-            
+
             return pParent;
         }
     };

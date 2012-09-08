@@ -29,33 +29,33 @@ namespace xl
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(GetTypeInfo)(UINT index, __RPC__deref_out_opt ITypeInfo **ppTInfo)
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(GetTypeInfoType)(UINT index, __RPC__out TYPEKIND *pTKind)
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(GetTypeInfoOfGuid)(__RPC__in REFGUID guid,
                                      __RPC__deref_out_opt ITypeInfo **ppTinfo)
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(GetLibAttr)(TLIBATTR **ppTLibAttr)
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(GetTypeComp)(__RPC__deref_out_opt ITypeComp **ppTComp)
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(GetDocumentation)(INT index,
                                     BSTR *pBstrName,
                                     BSTR *pBstrDocString,
@@ -64,14 +64,14 @@ namespace xl
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(IsName)(__RPC__inout  LPOLESTR szNameBuf,
                           ULONG lHashVal,
                           BOOL *pfName)
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(FindName)(__RPC__inout  LPOLESTR szNameBuf,
                             ULONG lHashVal,
                             ITypeInfo **ppTInfo,
@@ -80,7 +80,7 @@ namespace xl
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(ReleaseTLibAttr)(TLIBATTR *pTLibAttr)
         {
             return E_NOTIMPL;

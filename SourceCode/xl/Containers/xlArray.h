@@ -386,7 +386,7 @@ namespace xl
         {
             nWellSize *= 3;
         }
-        
+
         // Not enough spaces, reallocate.
 
         T *pNewData = new T[nWellSize];

@@ -48,15 +48,15 @@ namespace xl
         {
             T tValue;
             NodeColor ncColor;
-            
+
             NodeData() : ncColor(NC_BLACK)
             {
-            
+
             }
 
             NodeData(const T &tValue, NodeColor ncColor = NC_BLACK) : tValue(tValue), ncColor(ncColor)
             {
-            
+
             }
 
             NodeData(const NodeData &that)

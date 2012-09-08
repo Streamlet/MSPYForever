@@ -22,12 +22,12 @@ using namespace xl;
 int main()
 {
     Socket s;
-    
+
     bool b = s.Open(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
     ULONG ulValue = 1;
     b = s.IOControl(FIONBIO, &ulValue);
-    
+
     b = s.Connect(_T("119.75.218.45"), 80);
     Socket::SelectOption so = s.Select(Socket::SO_WRITE, INFINITE);
 

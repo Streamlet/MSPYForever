@@ -139,7 +139,7 @@ namespace xl
         bool Listen()
         {
             int nRes = listen(m_hSocket, SOMAXCONN);
- 
+
             if (nRes != 0)
             {
                 return false;
@@ -202,7 +202,7 @@ namespace xl
         SelectOption Select(SelectOption so, DWORD dwTimeout)
         {
             fd_set fsRead = {}, fsWrite = {}, fsExcept = {};
-                        
+
             FD_SET(m_hSocket, &fsRead);
             FD_SET(m_hSocket, &fsWrite);
             FD_SET(m_hSocket, &fsExcept);
@@ -250,7 +250,7 @@ namespace xl
 
             return true;
         }
-        
+
         void Close()
         {
             if (m_hSocket == INVALID_SOCKET)

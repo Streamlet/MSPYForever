@@ -36,7 +36,7 @@ namespace xl
     {
 
     };
-    
+
 #define XL_STATIC_ASSERT(expr) typedef xl::StaticAssertTest<sizeof(xl::StaticAssert<expr>)> XL_CONN(StaticAssert_, __COUNTER__)
 
 #if (!defined(_MSC_VER) || _MSC_VER < 1600)

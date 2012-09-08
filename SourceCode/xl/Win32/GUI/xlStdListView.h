@@ -73,7 +73,7 @@ namespace xl
 
             return true;
         }
-        
+
     public: // Attributes
 
         COLORREF GetBkColor()
@@ -130,7 +130,7 @@ namespace xl
             lvi.lParam = lParam;
             return (BOOL)::SendMessage(m_hWnd, LVM_SETITEM, 0, (LPARAM)&lvi);
         }
-        
+
         UINT GetItemState(int nItem, UINT nMask)
         {
             return (UINT)::SendMessage(m_hWnd, LVM_GETITEMSTATE, nItem, nMask);
@@ -351,7 +351,7 @@ namespace xl
         BOOL GetSelectedItem(LPLVITEM pItem)
         {
             pItem->iItem = (int)::SendMessage(m_hWnd, LVM_GETNEXTITEM, (WPARAM)-1, MAKELPARAM(LVNI_ALL | LVNI_SELECTED, 0));
-            
+
             if(pItem->iItem == -1)
             {
                 return FALSE;
@@ -397,7 +397,7 @@ namespace xl
         DWORD SetViewType(DWORD dwType)
         {
             DWORD dwOldType = GetViewType();
-            
+
             if(dwType != dwOldType)
             {
                 ModifyStyle(LVS_TYPEMASK, (dwType & LVS_TYPEMASK));
@@ -976,7 +976,7 @@ namespace xl
             LVHITTESTINFO hti = { 0 };
             hti.pt = pt;
             int nRes = (int)::SendMessage(m_hWnd, LVM_HITTEST, (WPARAM)-1, (LPARAM)&hti);
-            
+
             if (pFlags != NULL)
             {
                 *pFlags = hti.flags;

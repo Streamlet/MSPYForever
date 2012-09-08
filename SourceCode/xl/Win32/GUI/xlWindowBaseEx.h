@@ -89,7 +89,7 @@ namespace xl
     private:
         CommandMsgMap   m_CommandMsgMap;
         CriticalSection m_csCommandMsgMap;
-    
+
     public:
         void AppendCommandMsgHandler(WORD wID, WORD wCode, CommandMsgHandler pMsgHandler)
         {

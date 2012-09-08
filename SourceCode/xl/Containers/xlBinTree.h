@@ -144,7 +144,7 @@ namespace xl
             {
                 return false;
             }
-            
+
             return (IsSubTreeEqual(pThisNode->pLeft, pThatNode->pLeft) &&
                     IsSubTreeEqual(pThisNode->pRight, pThatNode->pRight));
         }
@@ -201,7 +201,7 @@ namespace xl
             {
                 return RightmostOf(pNode->pLeft);
             }
-            
+
             if (pNode->pParent == nullptr)
             {
                 return nullptr;
@@ -226,7 +226,7 @@ namespace xl
             {
                 return LeftmostOf(pNode->pRight);
             }
-            
+
             if (pNode->pParent == nullptr)
             {
                 return nullptr;

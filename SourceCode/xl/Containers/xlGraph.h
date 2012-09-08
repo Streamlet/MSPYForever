@@ -34,7 +34,7 @@ namespace xl
     struct GraphNode
     {
         typedef GraphEdge<EdgeData, NodeData> EdgeType;
-        
+
         NodeData tValue;
 
         Array<EdgeType *> arrPrevious;
@@ -287,7 +287,7 @@ namespace xl
             for (auto it = this->m_setNodes.Begin(); it != this->m_setNodes.End(); ++it)
             {
                 NodePtr pNode = *it;
-                
+
                 for (auto itPrevious = pNode->arrPrevious.Begin(); itPrevious != pNode->arrPrevious.End(); ++itPrevious)
                 {
                     *itPrevious = mapEdges[*itPrevious];

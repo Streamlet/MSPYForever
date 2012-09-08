@@ -42,7 +42,7 @@ namespace xl
 
 #define XL_TUPLE_TYPENAME_VARIABLE_PATTERN(n)       T##n _##n
 #define XL_TUPLE_TYPENAME_VARIABLE(n)               XL_REPZ(XL_TUPLE_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
-        
+
 #define XL_TUPLE_INITIALIZE_LIST_PATTERN(n)         _##n(_##n)
 #define XL_TUPLE_INITIALIZE_LIST(n)                 XL_REPZ(XL_TUPLE_INITIALIZE_LIST_PATTERN, n, XL_COMMA)
 

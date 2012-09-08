@@ -30,7 +30,7 @@ namespace xl
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(LockServer)(BOOL fLock)
         {
             return E_NOTIMPL;

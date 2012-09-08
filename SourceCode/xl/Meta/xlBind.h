@@ -65,7 +65,7 @@ namespace xl
 
     XL_BIND_PLACEHOLDER_DECLARE(XL_BIND_DEFINE_MAX);
 
-    
+
     template <typename TL = XL_TYPELIST_0()>
     struct BindArguments
     {
@@ -403,7 +403,7 @@ namespace xl
     XL_BIND_MEMBER_FUNCTION_PARAM_0(__fastcall)
     XL_BIND_MEMBER_FUNCTION_PARAM_0(__thiscall)
 #endif
-    
+
 
 //     template <typename S, typename A1>
 //     BindT<S,

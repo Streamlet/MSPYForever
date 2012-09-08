@@ -34,7 +34,7 @@ namespace xl
         {
             return E_NOTIMPL;
         }
-        
+
         STDMETHOD(BindType)(__RPC__in LPOLESTR szName,
                             ULONG lHashVal,
                             ITypeInfo **ppTInfo,

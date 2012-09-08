@@ -44,7 +44,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     mainMenu.AppendMenu(MF_STRING, 101, _T("&Edit"));
     mainMenu.AppendMenu(MF_SEPARATOR, 0, nullptr);
     mainMenu.AppendMenu(MF_STRING, 102, _T("&Help"));
-                
+
     xl::Window wnd;
     wnd.Create(300, 240, 500, 400);
     wnd.SetWindowText(_T("MyWindow"));
@@ -146,7 +146,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
         return FALSE;
     });
-    
+
     wnd.AppendNotifyMsgHandler(8, NM_CLICK, [](HWND hWnd, UINT_PTR wID, UINT wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
         ShellExecute(hWnd, _T("open"), _T("http://www.streamlet.org/"), _T(""), _T(""), SW_SHOW);
@@ -185,7 +185,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         default:
             break;
         }
-        
+
         if (nPos < 0)
         {
             nPos = 0;

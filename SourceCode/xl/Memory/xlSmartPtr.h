@@ -91,7 +91,7 @@ namespace xl
         {
             this->m_pData = that.m_pData;
             this->m_pRefCounter = that.m_pRefCounter;
-            
+
             AddRef();
         }
 
@@ -103,7 +103,7 @@ namespace xl
 
                 this->m_pData = that.m_pData;
                 this->m_pRefCounter = that.m_pRefCounter;
-                
+
                 if (m_pData != nullptr)
                 {
                     AddRef();    
@@ -176,7 +176,7 @@ namespace xl
 
             m_pRefCounter->Increase();
         }
-        
+
         void Release()
         {
             if (m_pRefCounter != nullptr && m_pRefCounter->Decrease() == 0)

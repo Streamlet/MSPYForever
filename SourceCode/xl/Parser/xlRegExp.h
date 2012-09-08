@@ -29,12 +29,12 @@ namespace xl
     public:
         RegExp()
         {
-        
+
         }
 
         ~RegExp()
         {
-        
+
         }
 
     private:
@@ -55,7 +55,7 @@ namespace xl
             Edge()
                 : bEpsilon(true), chBegin(0), chEnd(0)
             {
-            
+
             }
 
             Edge(Char ch)
@@ -104,7 +104,7 @@ namespace xl
             m_spStateMachine = new StateMachine;
             m_pBegin = m_spStateMachine->AddNode(NewNode());
             m_pEnd = Parse(m_pBegin);
-      
+
             if (m_pEnd == nullptr)
             {
                 return false;

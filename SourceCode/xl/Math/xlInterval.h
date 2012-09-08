@@ -71,7 +71,7 @@ namespace xl
             {
                 return true;
             }
-            
+
             if (this->left == that.left &&
                 this->right == that.right &&
                 ((this->bIncludeLeft && that.bIncludeLeft) || (!this->bIncludeLeft && !that.bIncludeLeft)) &&
@@ -317,7 +317,7 @@ namespace xl
                 r.right = right;
                 r.bIncludeRight = (this->bIncludeRight && that.bIncludeRight);
             }
-            
+
             return r;
         }
 

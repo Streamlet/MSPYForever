@@ -45,7 +45,7 @@ namespace xl
         {
             return STD_CONTROL_CLASSNAME_STATIC;
         }
-        
+
     public:
         bool Create(UINT nID,
                     Window *pParent,

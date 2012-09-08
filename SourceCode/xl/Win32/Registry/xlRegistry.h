@@ -223,7 +223,7 @@ namespace xl
 
 	        return true;
         }
-        
+
         static bool CreateKey(HKEY hRootKey, const String &strPath)
         {
 	        HKEY hKey = nullptr;

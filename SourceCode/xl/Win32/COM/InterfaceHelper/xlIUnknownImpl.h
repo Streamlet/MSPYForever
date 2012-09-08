@@ -33,7 +33,7 @@ namespace xl
 
         ~IUnknownImpl()
         {
-        
+
         }
 
     public:
