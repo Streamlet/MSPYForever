@@ -45,7 +45,7 @@ namespace xl
             return E_NOTIMPL;
         }
 
-        STDMETHOD(GetNames)( MEMBERID memid, BSTR *rgBstrNames, UINT cMaxNames, UINT *pcNames)
+        STDMETHOD(GetNames)(MEMBERID memid, BSTR *rgBstrNames, UINT cMaxNames, UINT *pcNames)
         {
             return E_NOTIMPL;
         }
