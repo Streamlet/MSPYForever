@@ -27,44 +27,44 @@ namespace xl
     public: // ITypeInfo Methods
         STDMETHOD(GetTypeAttr)(TYPEATTR **ppTypeAttr)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetTypeComp)(__RPC__deref_out_opt ITypeComp **ppTComp)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetFuncDesc)(UINT index, FUNCDESC **ppFuncDesc)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetVarDesc)(UINT index, VARDESC **ppVarDesc)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetNames)( MEMBERID memid, BSTR *rgBstrNames, UINT cMaxNames, UINT *pcNames)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetRefTypeOfImplType)(UINT index, __RPC__out HREFTYPE *pRefType)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetImplTypeFlags)( UINT index, __RPC__out INT *pImplTypeFlags)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetIDsOfNames)(__RPC__in_ecount(cNames) LPOLESTR *rgszNames,
                                  UINT cNames,
                                  MEMBERID *pMemId)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(Invoke)(PVOID pvInstance,
@@ -75,7 +75,7 @@ namespace xl
                           EXCEPINFO *pExcepInfo,
                           UINT *puArgErr)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetDocumentation)(MEMBERID memid,
@@ -84,7 +84,7 @@ namespace xl
                                     DWORD *pdwHelpContext,
                                     BSTR *pBstrHelpFile)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetDllEntry)(MEMBERID memid,
@@ -93,47 +93,47 @@ namespace xl
                                BSTR *pBstrName,
                                WORD *pwOrdinal)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetRefTypeInfo)(HREFTYPE hRefType, __RPC__deref_out_opt ITypeInfo **ppTInfo)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(AddressOfMember)(MEMBERID memid, INVOKEKIND invKind, PVOID *ppv)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(CreateInstance)(IUnknown *pUnkOuter, REFIID riid, PVOID *ppvObj)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetMops)(MEMBERID memid, __RPC__deref_out_opt BSTR *pBstrMops)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(GetContainingTypeLib(ITypeLib **ppTLib, UINT *pIndex)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(ReleaseTypeAttr)(TYPEATTR *pTypeAttr)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(ReleaseFuncDesc)(FUNCDESC *pFuncDesc)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
         
         STDMETHOD(ReleaseVarDesc)(VARDESC *pVarDesc)
         {
-            return E_NOTEMPL;
+            return E_NOTIMPL;
         }
     };
 
