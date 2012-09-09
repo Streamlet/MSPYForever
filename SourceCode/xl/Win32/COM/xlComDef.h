@@ -17,6 +17,7 @@
 
 
 #include <Windows.h>
+#include <xl/Win32/COM/xlComModule.h>
 
 namespace xl
 {
@@ -32,12 +33,18 @@ namespace xl
     public:
         ComClass() : m_nRefCount(0)
         {
-
+            if (g_pComModule != nullptr)
+            {
+                g_pComModule->GlobalAddRef();
+            }
         }
 
         ~ComClass()
         {
-
+            if (g_pComModule != nullptr)
+            {
+                g_pComModule->GlobalRelease();
+            }
         }
 
     public:

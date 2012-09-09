@@ -245,6 +245,12 @@
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComModule.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlClassFactory.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
