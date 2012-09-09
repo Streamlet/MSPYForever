@@ -121,19 +121,19 @@ namespace xl
             return E_NOTIMPL;
         }
 
-        STDMETHOD(ReleaseTypeAttr)(TYPEATTR *pTypeAttr)
+        void STDMETHODCALLTYPE ReleaseTypeAttr(TYPEATTR *pTypeAttr)
         {
-            return E_NOTIMPL;
+
         }
 
-        STDMETHOD(ReleaseFuncDesc)(FUNCDESC *pFuncDesc)
+        void STDMETHODCALLTYPE ReleaseFuncDesc(FUNCDESC *pFuncDesc)
         {
-            return E_NOTIMPL;
+
         }
 
-        STDMETHOD(ReleaseVarDesc)(VARDESC *pVarDesc)
+        void STDMETHODCALLTYPE ReleaseVarDesc(VARDESC *pVarDesc)
         {
-            return E_NOTIMPL;
+
         }
     };
 
