@@ -251,6 +251,9 @@
     <ClInclude Include="xl\Win32\COM\xlClassFactory.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlDispatcher.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">

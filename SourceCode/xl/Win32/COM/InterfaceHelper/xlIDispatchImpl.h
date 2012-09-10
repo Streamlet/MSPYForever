@@ -17,92 +17,27 @@
 
 
 #include <oaidl.h>
-#include <oleauto.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
-#include <xl/Win32/COM/xlComModule.h>
 
 namespace xl
 {
     template <typename T = IDispatch>
     class IDispatchImpl : public IUnknownImpl<T>
     {
-    public:
-        IDispatchImpl() : m_pTypeInfo(nullptr)
-        {
-            if (g_pComModule != nullptr)
-            {
-                g_pComModule->GetTypeInfo(__uuidof(T), &m_pTypeInfo);
-            }
-        }
-
-        ~IDispatchImpl()
-        {
-            if (m_pTypeInfo != nullptr)
-            {
-                m_pTypeInfo->Release();
-                m_pTypeInfo = nullptr;
-            }
-        
-        }
-
     public: // IDispatch Methods
         STDMETHOD(GetTypeInfoCount)(UINT *pctinfo)
         {
-            if (g_pComModule == nullptr)
-            {
-                return E_NOTIMPL;
-            }
-
-            if (pctinfo == nullptr)
-            {
-                return E_INVALIDARG;
-            }
-
-            *pctinfo = 1;
-            return S_OK;
+            return E_NOTIMPL;
         }
 
         STDMETHOD(GetTypeInfo)(UINT iTInfo, LCID lcid, ITypeInfo **ppTInfo)
         {
-            if (g_pComModule == nullptr)
-            {
-                return E_NOTIMPL;
-            }
-
-            if (iTInfo != 0)
-            {
-                return DISP_E_BADINDEX;
-            }
-
-            if (m_pTypeInfo == nullptr)
-            {
-                return E_FAIL;
-            }
-
-            *ppTInfo = m_pTypeInfo;
-            (*ppTInfo)->AddRef();
-
-            return S_OK;
+            return E_NOTIMPL;
         }
 
         STDMETHOD(GetIDsOfNames)(REFIID riid, LPOLESTR *rgszNames, UINT cNames, LCID lcid, DISPID *rgDispId)
         {
-            if (g_pComModule == nullptr)
-            {
-                return E_NOTIMPL;
-            }
-
-            if (riid != IID_NULL)
-            {
-                return E_INVALIDARG;
-            }
-
-            if (m_pTypeInfo == nullptr)
-            {
-                return E_FAIL;
-            }
-
-            return DispGetIDsOfNames(m_pTypeInfo, rgszNames, cNames, rgDispId);
+            return E_NOTIMPL;
         }
 
         STDMETHOD(Invoke)(DISPID dispIdMember,
@@ -114,26 +49,8 @@ namespace xl
                           EXCEPINFO *pExcepInfo,
                           UINT *puArgErr)
         {
-            if (g_pComModule == nullptr)
-            {
-                return E_NOTIMPL;
-            }
-
-            if (riid != IID_NULL)
-            {
-                return E_INVALIDARG;
-            }
-
-            if (m_pTypeInfo == nullptr)
-            {
-                return E_FAIL;
-            }
-
-            return DispInvoke(this, m_pTypeInfo, dispIdMember, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr); 
+            return E_NOTIMPL;
         }
-
-    private:
-        ITypeInfo *m_pTypeInfo;
     };
 
 } // namespace xl
