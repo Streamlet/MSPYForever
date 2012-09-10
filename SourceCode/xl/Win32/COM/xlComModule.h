@@ -162,74 +162,48 @@ namespace xl
 
         HRESULT DllUnregisterServer()
         {
-            if (!UnregisterTypeLib(HKEY_LOCAL_MACHINE))
-            {
-                return E_FAIL;
-            }
-
-            if (!UnregisterComClasses(HKEY_LOCAL_MACHINE))
-            {
-                return E_FAIL;
-            }
+            UnregisterTypeLib(HKEY_LOCAL_MACHINE);
+            UnregisterComClasses(HKEY_LOCAL_MACHINE);
 
             return S_OK;
         }
 
         HRESULT DllInstall(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine)
         {
-            return S_OK;
-        }
+	        if (lpszCmdLine == nullptr)
+	        {
+                return E_INVALIDARG;
+	        }
 
-    protected:
-        template <bool (ComModule::*fnRegisterTypeLib)(TLIBATTR *), bool (ComModule::*fnRegisterComClass)(TYPEATTR *)>
-        HRESULT Register()
-        {
-
-            if (!(this->*fnRegisterTypeLib)(HKEY_LOCAL_MACHINE, pTLibAttr))
-            {
-                return E_FAIL;
-            }
-
-            UINT nCount = m_pTypeLib->GetTypeInfoCount();
-
-            for (UINT i = 0; i < nCount; ++i)
-            {
-                ITypeInfo *pTypeInfo = nullptr;
-                HRESULT hr = m_pTypeLib->GetTypeInfo(i, &pTypeInfo);
-
-                if (FAILED(hr))
+		    if (_tcsicmp(lpszCmdLine, _T("User")) == 0)
+		    {
+			    if (bInstall)
                 {
-                    continue;
-                }
-
-                XL_ON_BLOCK_EXIT((IUnknown *)pTypeInfo, &ITypeInfo::Release);
-
-                TYPEATTR *pTypeAttr = nullptr;
-                hr = pTypeInfo->GetTypeAttr(&pTypeAttr);
-
-                if (FAILED(hr))
-                {
-                    continue;
-                }
-
-                XL_ON_BLOCK_EXIT(pTypeInfo, &ITypeInfo::ReleaseTypeAttr, pTypeAttr);
-
-                switch (pTypeAttr->typekind)
-                {
-                case TKIND_COCLASS:
-                    if (!(this->*fnRegisterComClass)(HKEY_LOCAL_MACHINE, pTypeAttr, pTLibAttr))
+                    if (!RegisterTypeLib(HKEY_CURRENT_USER))
                     {
                         return E_FAIL;
                     }
-                    break;
-                default:
-                    break;
+
+                    if (!RegisterComClasses(HKEY_CURRENT_USER))
+                    {
+                        return E_FAIL;
+                    }
+
+                    return S_OK;
                 }
-            }
-            
-            return S_OK;
+                else
+                {
+                    UnregisterTypeLib(HKEY_CURRENT_USER);
+                    UnregisterComClasses(HKEY_CURRENT_USER);
+
+                    return S_OK;
+                }
+		    }
+
+            return E_FAIL;
         }
 
+    protected:
         bool RegisterTypeLib(HKEY hRootKey)
         {
             String strPath ;
