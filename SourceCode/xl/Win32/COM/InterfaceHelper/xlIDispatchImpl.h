@@ -31,7 +31,7 @@ namespace xl
         {
             if (g_pComModule != nullptr)
             {
-                g_pComModule->GetTypeInfo(__uuidof(ITypeInfo), &m_pTypeInfo);
+                g_pComModule->GetTypeInfo(__uuidof(T), &m_pTypeInfo);
             }
         }
 
@@ -69,14 +69,14 @@ namespace xl
                 return E_NOTIMPL;
             }
 
-            if (m_pTypeInfo == nullptr)
-            {
-                return E_FAIL;
-            }
-
             if (iTInfo != 0)
             {
                 return DISP_E_BADINDEX;
+            }
+
+            if (m_pTypeInfo == nullptr)
+            {
+                return E_FAIL;
             }
 
             *ppTInfo = m_pTypeInfo;
@@ -95,6 +95,11 @@ namespace xl
             if (riid != IID_NULL)
             {
                 return E_INVALIDARG;
+            }
+
+            if (m_pTypeInfo == nullptr)
+            {
+                return E_FAIL;
             }
 
             return DispGetIDsOfNames(m_pTypeInfo, rgszNames, cNames, rgDispId);
@@ -117,6 +122,11 @@ namespace xl
             if (riid != IID_NULL)
             {
                 return E_INVALIDARG;
+            }
+
+            if (m_pTypeInfo == nullptr)
+            {
+                return E_FAIL;
             }
 
             return DispInvoke(this, m_pTypeInfo, dispIdMember, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr); 

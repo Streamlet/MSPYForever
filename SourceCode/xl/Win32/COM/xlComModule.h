@@ -29,8 +29,11 @@ namespace xl
 
     struct ClassEntry
     {
-    	const CLSID        *pclsid;
+    	const CLSID        *pClsid;
         ClassFactoryCreator pfnCreator;
+        LPCTSTR             lpszClassDesc;
+        LPCTSTR             lpszProgID;
+        LPCTSTR             lpszVersion;
     };
 
 #pragma section("XL_COM$__a", read)
@@ -50,31 +53,62 @@ namespace xl
 #endif
 
 #if defined(_M_IX86)
-#define XL_CLASS_MAP_PRAGMA(c) __pragma(comment(linker, "/include:_LP_CLASS_ENTRY_" # c));
+#define XL_CLASS_MAP_PRAGMA(class) __pragma(comment(linker, "/include:_LP_CLASS_ENTRY_" # class));
 #elif defined(_M_IA64) || defined(_M_AMD64)
-#define XL_CLASS_MAP_PRAGMA(c) __pragma(comment(linker, "/include:LP_CLASS_ENTRY_" # c));
+#define XL_CLASS_MAP_PRAGMA(class) __pragma(comment(linker, "/include:LP_CLASS_ENTRY_" # class));
 #else
 #error Unknown Platform. define XL_CLASS_MAP_PRAGMA
 #endif
 
-#define XL_DECLARE_COM_CLASS(c)                                                                     \
-                                                                                                    \
-    const xl::ClassEntry CLASS_ENTRY_##c = { &__uuidof(c), &xl::ClassFactory<c>::CreateFactory };   \
-    extern "C" __declspec(allocate("XL_COM$__m")) __declspec(selectany)                             \
-        const xl::ClassEntry * LP_CLASS_ENTRY_##c = &CLASS_ENTRY_##c;                               \
-    XL_CLASS_MAP_PRAGMA(c)                                                                          \
+#define XL_DECLARE_COM_CLASS(class, desc, progid, version)                      \
+                                                                                \
+    const xl::ClassEntry CLASS_ENTRY_##class =                                  \
+    {                                                                           \
+        &__uuidof(class),                                                       \
+        &xl::ClassFactory<class>::CreateFactory,                                \
+        desc,                                                                   \
+        progid,                                                                 \
+        version                                                                 \
+    };                                                                          \
+    extern "C" __declspec(allocate("XL_COM$__m")) __declspec(selectany)         \
+        const xl::ClassEntry * LP_CLASS_ENTRY_##class = &CLASS_ENTRY_##class;   \
+    XL_CLASS_MAP_PRAGMA(class)                                                  \
 
     class ComModule : NonCopyable
     {
     public:
-        ComModule(HMODULE hModule) : m_hModule(hModule), m_nGlobalRefCount(0), m_pTypeLib(nullptr)
+        ComModule(HMODULE hModule = nullptr, LPCTSTR lpLibName = nullptr) :
+            m_hModule(hModule), m_strLibName(lpLibName), m_nGlobalRefCount(0), m_pTypeLib(nullptr)
         {
             TCHAR szModulePath[MAX_PATH] = {};
             GetModuleFileName(m_hModule, szModulePath, ARRAYSIZE(szModulePath));
 
             m_strModulePath = szModulePath;
 
-            LoadTypeLib(szModulePath, &m_pTypeLib);
+            HRESULT hr = LoadTypeLib(szModulePath, &m_pTypeLib);
+
+            if (FAILED(hr) || m_pTypeLib == nullptr)
+            {
+                return;
+            }
+
+            TLIBATTR *pTLibAttr = nullptr;
+            hr = m_pTypeLib->GetLibAttr(&pTLibAttr);
+
+            if (FAILED(hr) || pTLibAttr == nullptr)
+            {
+                return;
+            }
+
+            XL_ON_BLOCK_EXIT(m_pTypeLib, &ITypeLib::ReleaseTLibAttr, pTLibAttr);
+
+            TCHAR szTLibID[40] = {};
+            StringFromGUID2(pTLibAttr->guid, szTLibID, ARRAYSIZE(szTLibID));
+            m_strLibID = szTLibID;
+
+            TCHAR szVersion[40] = {};
+            _stprintf_s(szVersion, _T("%u.%u"), (DWORD)pTLibAttr->wMajorVerNum, (DWORD)pTLibAttr->wMinorVerNum);
+            m_strLibVersion = szVersion;
         }
 
         ~ComModule()
@@ -101,7 +135,7 @@ namespace xl
                     continue;
                 }
 
-                if (rclsid == *(*ppEntry)->pclsid)
+                if (rclsid == *(*ppEntry)->pClsid)
                 {
                     IClassFactory *pClassFactory = (*ppEntry)->pfnCreator();
                     return pClassFactory->QueryInterface(riid, ppv);
@@ -113,12 +147,32 @@ namespace xl
 
         HRESULT DllRegisterServer()
         {
-            return Register<&ComModule::RegisterTypeLib, &ComModule::RegisterComClass>();
+            if (!RegisterTypeLib(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            if (!RegisterComClasses(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            return S_OK;
         }
 
         HRESULT DllUnregisterServer()
         {
-            return Register<&ComModule::UnregisterTypeLib, &ComModule::UnregisterComClass>();
+            if (!UnregisterTypeLib(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            if (!UnregisterComClasses(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            return S_OK;
         }
 
         HRESULT DllInstall(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine)
@@ -130,20 +184,6 @@ namespace xl
         template <bool (ComModule::*fnRegisterTypeLib)(TLIBATTR *), bool (ComModule::*fnRegisterComClass)(TYPEATTR *)>
         HRESULT Register()
         {
-            if (m_pTypeLib == nullptr)
-            {
-                return E_FAIL;
-            }
-
-            TLIBATTR *pTLibAttr = nullptr;
-            HRESULT hr = m_pTypeLib->GetLibAttr(&pTLibAttr);
-
-            if (FAILED(hr))
-            {
-                return E_FAIL;
-            }
-
-            XL_ON_BLOCK_EXIT(m_pTypeLib, &ITypeLib::ReleaseTLibAttr, pTLibAttr);
 
             if (!(this->*fnRegisterTypeLib)(HKEY_LOCAL_MACHINE, pTLibAttr))
             {
@@ -190,28 +230,174 @@ namespace xl
             return S_OK;
         }
 
-        bool RegisterTypeLib(HKEY hRootKey, TLIBATTR *pTLibAttr)
+        bool RegisterTypeLib(HKEY hRootKey)
         {
+            String strPath ;
+            strPath += _T("Software\\Classes\\TypeLib\\");
+            strPath += m_strLibID;
+            strPath += _T("\\");
+            strPath += m_strLibVersion;
+
+            if (!Registry::SetString(hRootKey, strPath, _T(""), m_strLibName))
+            {
+                return false;
+            }
+
+            strPath += _T("\\0\\");
+#ifdef _WIN64
+            strPath += _T("Win64");
+#else
+            strPath += _T("Win32");
+#endif
+
+            if (!Registry::SetString(hRootKey, strPath, _T(""), m_strModulePath))
+            {
+                return false;
+            }
+
             return true;
         }
 
-        bool UnregisterTypeLib(HKEY hRootKey, TLIBATTR *pTLibAttr)
+        bool UnregisterTypeLib(HKEY hRootKey)
         {
-            xl::Registry::DeleteKeyRecursion(HKEY_CLASSES_ROOT,
-                                             _T("TypeLib\\{22935FC2-282E-4727-B40F-E55128EA1072}"));
+            String strPath ;
+            strPath += _T("Software\\Classes\\TypeLib\\");
+            strPath += m_strLibID;
 
+            if (!Registry::DeleteKeyRecursion(hRootKey, strPath))
+            {
+                return false;
+            }
 
-            return true;
-        
+            return true;        
         }
 
-        bool RegisterComClass(HKEY hRootKey, TYPEATTR *pTypeAttr, TLIBATTR *pTLibAttr)
+        bool RegisterComClasses(HKEY hRootKey)
         {
+            for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
+            {
+                if (*ppEntry == nullptr)
+                {
+                    continue;
+                }
+
+                TCHAR szClassID[40] = {};
+                StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
+
+                String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
+                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+
+                String strPath;
+                strPath = _T("Software\\Classes\\");
+                String strClassIDPath = strPath + _T("CLSID\\") + szClassID;
+
+                if (!Registry::SetString(hRootKey, strClassIDPath, _T(""), (*ppEntry)->lpszClassDesc))
+                {
+                    return false;
+                }
+
+                if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\InprocServer32"), _T(""), m_strModulePath))
+                {
+                    return false;
+                }
+
+                if (!m_strLibID.Empty())
+                {
+                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\TypeLib"), _T(""), m_strLibID))
+                    {
+                        return false;
+                    }
+                }
+
+                if (!strProgID.Empty())
+                {
+                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\ProgID"), _T(""), strProgID))
+                    {
+                        return false;
+                    }
+
+                    String strProgIDPath = strPath + strProgID;
+
+                    if (!Registry::SetString(hRootKey, strProgIDPath, _T(""), (*ppEntry)->lpszClassDesc))
+                    {
+                        return false;
+                    }
+
+                    if (!Registry::SetString(hRootKey, strProgIDPath + _T("\\CLSID\\"), _T(""), szClassID))
+                    {
+                        return false;
+                    }
+                }
+
+                if (!strVersionIndependentProgID.Empty())
+                {
+                    String strProgIDPath = strPath + strVersionIndependentProgID;
+
+                    if (!Registry::SetString(hRootKey, strProgIDPath, _T(""), (*ppEntry)->lpszClassDesc))
+                    {
+                        return false;
+                    }
+
+                    if (!Registry::SetString(hRootKey, strProgIDPath + _T("\\CurVer\\"), _T(""), strProgID))
+                    {
+                        return false;
+                    }
+
+                    if (!Registry::SetString(hRootKey, strProgIDPath + _T("\\CLSID\\"), _T(""), szClassID))
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
 
-        bool UnregisterComClass(HKEY hRootKey, TYPEATTR *pTypeAttr, TLIBATTR *pTLibAttr)
+        bool UnregisterComClasses(HKEY hRootKey)
         {
+            for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
+            {
+                if (*ppEntry == nullptr)
+                {
+                    continue;
+                }
+
+                TCHAR szClassID[40] = {};
+                StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
+
+                String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
+                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+
+                String strPath;
+                strPath = _T("Software\\Classes\\");
+                String strClassIDPath = strPath + _T("CLSID\\") + szClassID;
+
+                if (!Registry::DeleteKeyRecursion(hRootKey, strClassIDPath))
+                {
+                    return false;
+                }
+
+                if (!strProgID.Empty())
+                {
+                    String strProgIDPath = strPath + strProgID;
+
+                    if (!Registry::DeleteKeyRecursion(hRootKey, strProgIDPath))
+                    {
+                        return false;
+                    }
+                }
+
+                if (!strVersionIndependentProgID.Empty())
+                {
+                    String strProgIDPath = strPath + strVersionIndependentProgID;
+
+                    if (!Registry::DeleteKeyRecursion(hRootKey, strProgIDPath))
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
 
@@ -234,7 +420,10 @@ namespace xl
 
     private:
         HMODULE   m_hModule;
+        String    m_strLibName;
         String    m_strModulePath;
+        String    m_strLibID;
+        String    m_strLibVersion;
         LONG      m_nGlobalRefCount;
         ITypeLib *m_pTypeLib;
     };
