@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Objects/xlBigInt.h>
+#include <xl/Math/xlBigInt.h>
 #include <xl/Test/xlUnitTest.h>
 
 namespace

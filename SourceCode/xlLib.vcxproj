@@ -32,6 +32,7 @@
     <ClInclude Include="xl\Cryption\xlCRC32.h" />
     <ClInclude Include="xl\Cryption\xlMD5.h" />
     <ClInclude Include="xl\Cryption\xlSHA1.h" />
+    <ClInclude Include="xl\Math\xlBigInt.h" />
     <ClInclude Include="xl\Math\xlInterval.h" />
     <ClInclude Include="xl\Math\xlIntervalSet.h" />
     <ClInclude Include="xl\Math\xlMathBase.h" />
@@ -47,7 +48,6 @@
     <ClInclude Include="xl\Meta\xlTypeList.h" />
     <ClInclude Include="xl\Meta\xlTypeTraits.h" />
     <ClInclude Include="xl\Meta\xlUtility.h" />
-    <ClInclude Include="xl\Objects\xlBigInt.h" />
     <ClInclude Include="xl\Parser\xlRegExp.h" />
     <ClInclude Include="xl\String\xlBase64.h" />
     <ClInclude Include="xl\String\xlEncoding.h" />

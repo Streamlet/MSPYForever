@@ -15,7 +15,7 @@
 
 
 #include "../PerformanceTest.h"
-#include <xl/Objects/xlBigInt.h>
+#include <xl/Math/xlBigInt.h>
 #include <wchar.h>
 
 #define P_512   L"BF273099C31081FA8F32819C4D5C219579A9430B5B594FB3825F5929B77D1813"

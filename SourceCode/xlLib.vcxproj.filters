@@ -41,6 +41,9 @@
     <ClInclude Include="xl\Cryption\xlSHA1.h">
       <Filter>Cryption</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Math\xlBigInt.h">
+      <Filter>Math</Filter>
+    </ClInclude>
     <ClInclude Include="xl\Math\xlInterval.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -85,9 +88,6 @@
     </ClInclude>
     <ClInclude Include="xl\Meta\xlUtility.h">
       <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="xl\Objects\xlBigInt.h">
-      <Filter>Math</Filter>
     </ClInclude>
     <ClInclude Include="xl\Parser\xlRegExp.h">
       <Filter>Parser</Filter>
