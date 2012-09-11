@@ -162,8 +162,15 @@ namespace xl
 
         HRESULT DllUnregisterServer()
         {
-            UnregisterTypeLib(HKEY_LOCAL_MACHINE);
-            UnregisterComClasses(HKEY_LOCAL_MACHINE);
+            if (!UnregisterComClasses(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            if (!UnregisterTypeLib(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
 
             return S_OK;
         }
@@ -193,8 +200,15 @@ namespace xl
                 }
                 else
                 {
-                    UnregisterTypeLib(HKEY_CURRENT_USER);
-                    UnregisterComClasses(HKEY_CURRENT_USER);
+                    if (!UnregisterComClasses(HKEY_CURRENT_USER))
+                    {
+                        return E_FAIL;
+                    }
+
+                    if (!UnregisterTypeLib(HKEY_CURRENT_USER))
+                    {
+                        return E_FAIL;
+                    }
 
                     return S_OK;
                 }
