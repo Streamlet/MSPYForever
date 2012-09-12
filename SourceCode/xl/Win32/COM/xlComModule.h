@@ -30,7 +30,7 @@ namespace xl
 
     struct ClassEntry
     {
-    	const CLSID        *pClsid;
+        const CLSID        *pClsid;
         ClassFactoryCreator pfnCreator;
         LPCTSTR             lpszClassDesc;
         LPCTSTR             lpszProgID;
@@ -178,14 +178,17 @@ namespace xl
 
         HRESULT DllInstall(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine)
         {
-	        if (lpszCmdLine == nullptr)
-	        {
+            if (lpszCmdLine == nullptr)
+            {
                 return E_INVALIDARG;
-	        }
+            }
 
-		    if (_tcsicmp(lpszCmdLine, _T("User")) == 0)
-		    {
-			    if (bInstall)
+            String strCmdLine = lpszCmdLine;
+            String strCmdLineLower = strCmdLine.ToLower();
+
+            if (strCmdLineLower == _T("user"))
+            {
+                if (bInstall)
                 {
                     if (!RegisterTypeLib(HKEY_CURRENT_USER))
                     {
@@ -213,19 +216,25 @@ namespace xl
 
                     return S_OK;
                 }
-		    }
+            }
 
-		    if (_tcsicmp(lpszCmdLine, _T("INI")) == 0)
-		    {
-                LPCTSTR lpszIniFileName = _T("xlComReg.ini");
-			    if (bInstall)
+            if (strCmdLineLower == _T("ini") || strCmdLineLower.IndexOf(_T("ini:")) == 0)
+            {
+                String strIniFileName = _T("xlComReg.ini");
+
+                if (strCmdLine.Length() > 4)
                 {
-                    if (!RegisterTypeLibToIni(lpszIniFileName))
+                    strIniFileName = strCmdLine.SubString(4);
+                }
+
+                if (bInstall)
+                {
+                    if (!RegisterTypeLibToIni(strIniFileName))
                     {
                         return E_FAIL;
                     }
 
-                    if (!RegisterComClassesToIni(lpszIniFileName))
+                    if (!RegisterComClassesToIni(strIniFileName))
                     {
                         return E_FAIL;
                     }
@@ -234,19 +243,19 @@ namespace xl
                 }
                 else
                 {
-                    if (!UnregisterComClassesToIni(lpszIniFileName))
+                    if (!UnregisterComClassesToIni(strIniFileName))
                     {
                         return E_FAIL;
                     }
 
-                    if (!UnregisterTypeLibToIni(lpszIniFileName))
+                    if (!UnregisterTypeLibToIni(strIniFileName))
                     {
                         return E_FAIL;
                     }
 
                     return S_OK;
                 }
-		    }
+            }
 
             return E_FAIL;
         }
@@ -424,25 +433,25 @@ namespace xl
         }
 
     protected:
-        bool RegisterTypeLibToIni(LPCTSTR lpszFileName)
+        bool RegisterTypeLibToIni(const String &strIniFileName)
         {
-            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("TypeLib"), m_strLibName))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("TypeLib"), m_strLibName))
             {
                 return false;
             }
 
-            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("Version"), m_strLibVersion))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Version"), m_strLibVersion))
             {
                 return false;
             }
 
 #ifdef _WIN64
-            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("Win64"), m_strModulePath))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win64"), m_strModulePath))
             {
                 return false;
             }
 #else
-            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("Win32"), m_strModulePath))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win32"), m_strModulePath))
             {
                 return false;
             }
@@ -451,9 +460,9 @@ namespace xl
             return true;
         }
 
-        bool UnregisterTypeLibToIni(LPCTSTR lpszFileName)
+        bool UnregisterTypeLibToIni(const String &strIniFileName)
         {
-            if (!IniFile::DeleteSection(lpszFileName, m_strLibID))
+            if (!IniFile::DeleteSection(strIniFileName, m_strLibID))
             {
                 return false;
             }
@@ -461,7 +470,7 @@ namespace xl
             return true;        
         }
 
-        bool RegisterComClassesToIni(LPCTSTR lpszFileName)
+        bool RegisterComClassesToIni(const String &strIniFileName)
         {
             for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
             {
@@ -476,19 +485,19 @@ namespace xl
                 String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
                 String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
 
-                if (!IniFile::SetValue(lpszFileName, szClassID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                if (!IniFile::SetValue(strIniFileName, szClassID, _T("Class"), (*ppEntry)->lpszClassDesc))
                 {
                     return false;
                 }
 
-                if (!IniFile::SetValue(lpszFileName, szClassID, _T("InprocServer32"), m_strModulePath))
+                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer32"), m_strModulePath))
                 {
                     return false;
                 }
 
                 if (!m_strLibID.Empty())
                 {
-                    if (!IniFile::SetValue(lpszFileName, szClassID, _T("TypeLib"), m_strLibID))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("TypeLib"), m_strLibID))
                     {
                         return false;
                     }
@@ -496,17 +505,17 @@ namespace xl
 
                 if (!strProgID.Empty())
                 {
-                    if (!IniFile::SetValue(lpszFileName, szClassID, _T("ProgID"), strProgID))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("ProgID"), strProgID))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(lpszFileName, strProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                    if (!IniFile::SetValue(strIniFileName, strProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(lpszFileName, strProgID, _T("CLSID"), szClassID))
+                    if (!IniFile::SetValue(strIniFileName, strProgID, _T("CLSID"), szClassID))
                     {
                         return false;
                     }
@@ -514,17 +523,17 @@ namespace xl
 
                 if (!strVersionIndependentProgID.Empty())
                 {
-                    if (!IniFile::SetValue(lpszFileName, strVersionIndependentProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(lpszFileName, strVersionIndependentProgID, _T("CurVer"), strProgID))
+                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, _T("CurVer"), strProgID))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(lpszFileName, strVersionIndependentProgID, _T("CLSID"), szClassID))
+                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, _T("CLSID"), szClassID))
                     {
                         return false;
                     }
@@ -534,7 +543,7 @@ namespace xl
             return true;
         }
 
-        bool UnregisterComClassesToIni(LPCTSTR lpszFileName)
+        bool UnregisterComClassesToIni(const String &strIniFileName)
         {
             for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
             {
@@ -549,14 +558,14 @@ namespace xl
                 String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
                 String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
 
-                if (!IniFile::DeleteSection(lpszFileName, szClassID))
+                if (!IniFile::DeleteSection(strIniFileName, szClassID))
                 {
                     return false;
                 }
 
                 if (!strProgID.Empty())
                 {
-                    if (!IniFile::DeleteSection(lpszFileName, strProgID))
+                    if (!IniFile::DeleteSection(strIniFileName, strProgID))
                     {
                         return false;
                     }
@@ -564,7 +573,7 @@ namespace xl
 
                 if (!strVersionIndependentProgID.Empty())
                 {
-                    if (!IniFile::DeleteSection(lpszFileName, strVersionIndependentProgID))
+                    if (!IniFile::DeleteSection(strIniFileName, strVersionIndependentProgID))
                     {
                         return false;
                     }
