@@ -59,6 +59,11 @@ namespace xl
         StringT<T> ToUpper() const;
 
     public:
+        StringT<T> &TrimLeft(T ch = T(' '));
+        StringT<T> &TrimRight(T ch = T(' '));
+        StringT<T> &Trim(T ch = T(' '));
+
+    public:
         StringT<T> &AppendFront(T ch, int nCount = 1);
         StringT<T> &AppendBack(T ch, int nCount = 1);
         void Clear();
@@ -66,7 +71,7 @@ namespace xl
     public:
         StringT<T> Left(int nLength) const;
         StringT<T> Right(int nLength) const;
-        StringT<T> SubString(int nStart, int nLength) const;
+        StringT<T> SubString(int nStart, int nLength = -1) const;
 
     public:
         int IndexOf(const StringT<T> &strFind, int nStart) const;
@@ -333,6 +338,37 @@ namespace xl
     }
 
     template <typename T>
+    StringT<T> &StringT<T>::TrimLeft(T ch /*= T(' ')*/)
+    {
+        while (*m_aData.Begin() == ch)
+        {
+            m_aData.PopFront();
+        }
+
+        return *this;
+    }
+    
+    template <typename T>
+    StringT<T> &StringT<T>::TrimRight(T ch /*= T(' ')*/)
+    {
+        while (*m_aData.End() == ch)
+        {
+            m_aData.PopBack();
+        }
+
+        return *this;
+    }
+    
+    template <typename T>
+    StringT<T> &StringT<T>::Trim(T ch /*= T(' ')*/)
+    {
+        TrimLeft(ch);
+        TrimRight(ch);
+
+        return *this;
+    }
+
+    template <typename T>
     StringT<T> &StringT<T>::AppendFront(T ch, int nCount /*= 1*/)
     {
         for (int i = 0; i < nCount; ++i)
@@ -383,17 +419,20 @@ namespace xl
     }
 
     template <typename T>
-    StringT<T> StringT<T>::SubString(int nStart, int nLength) const
+    StringT<T> StringT<T>::SubString(int nStart, int nLength /*= -1*/) const
     {
         StringT<T> strRet;
+        strRet.m_aData.PopBack();
 
-        if (nLength <= 0)
+        if (nLength > 0)
         {
-            return strRet;
+            strRet.m_aData.Insert(strRet.m_aData.End(), m_aData.Begin() + nStart, m_aData.Begin() + nStart + nLength);
+        }
+        else
+        {
+            strRet.m_aData.Insert(strRet.m_aData.End(), m_aData.Begin() + nStart, m_aData.End());
         }
 
-        strRet.m_aData.PopBack();
-        strRet.m_aData.Insert(strRet.m_aData.End(), m_aData.Begin() + nStart, m_aData.Begin() + nStart + nLength);
 
         if (strRet.m_aData[strRet.m_aData.Size() - 1] != T(0))
         {
