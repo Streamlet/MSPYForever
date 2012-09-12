@@ -254,6 +254,9 @@
     <ClInclude Include="xl\Win32\COM\xlDispatcher.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\File\IniFile.h">
+      <Filter>Win32\File</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -309,6 +312,9 @@
     </Filter>
     <Filter Include="Win32\COM\Objects">
       <UniqueIdentifier>{f3ece58d-9f3b-43fd-8e48-78af0d13b73d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\File">
+      <UniqueIdentifier>{09c53fd6-b24b-4251-aedb-7111dd89032a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
