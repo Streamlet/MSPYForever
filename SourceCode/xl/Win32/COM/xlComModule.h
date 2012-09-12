@@ -20,6 +20,7 @@
 #include <xl/Meta/xlScopeExit.h>
 #include <xl/String/xlString.h>
 #include <xl/Win32/Registry/xlRegistry.h>
+#include <xl/Win32/File/IniFile.h>
 #include <xl/Win32/COM/xlClassFactory.h>
 #include <Windows.h>
 
@@ -214,13 +215,46 @@ namespace xl
                 }
 		    }
 
+		    if (_tcsicmp(lpszCmdLine, _T("INI")) == 0)
+		    {
+                LPCTSTR lpszIniFileName = _T("xlComReg.ini");
+			    if (bInstall)
+                {
+                    if (!RegisterTypeLibToIni(lpszIniFileName))
+                    {
+                        return E_FAIL;
+                    }
+
+                    if (!RegisterComClassesToIni(lpszIniFileName))
+                    {
+                        return E_FAIL;
+                    }
+
+                    return S_OK;
+                }
+                else
+                {
+                    if (!UnregisterComClassesToIni(lpszIniFileName))
+                    {
+                        return E_FAIL;
+                    }
+
+                    if (!UnregisterTypeLibToIni(lpszIniFileName))
+                    {
+                        return E_FAIL;
+                    }
+
+                    return S_OK;
+                }
+		    }
+
             return E_FAIL;
         }
 
     protected:
         bool RegisterTypeLib(HKEY hRootKey)
         {
-            String strPath ;
+            String strPath;
             strPath += _T("Software\\Classes\\TypeLib\\");
             strPath += m_strLibID;
             strPath += _T("\\");
@@ -248,7 +282,7 @@ namespace xl
 
         bool UnregisterTypeLib(HKEY hRootKey)
         {
-            String strPath ;
+            String strPath;
             strPath += _T("Software\\Classes\\TypeLib\\");
             strPath += m_strLibID;
 
@@ -380,6 +414,157 @@ namespace xl
                     String strProgIDPath = strPath + strVersionIndependentProgID;
 
                     if (!Registry::DeleteKeyRecursion(hRootKey, strProgIDPath))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+    protected:
+        bool RegisterTypeLibToIni(LPCTSTR lpszFileName)
+        {
+            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("TypeLib"), m_strLibName))
+            {
+                return false;
+            }
+
+            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("Version"), m_strLibVersion))
+            {
+                return false;
+            }
+
+#ifdef _WIN64
+            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("Win64"), m_strModulePath))
+            {
+                return false;
+            }
+#else
+            if (!IniFile::SetValue(lpszFileName, m_strLibID, _T("Win32"), m_strModulePath))
+            {
+                return false;
+            }
+#endif
+
+            return true;
+        }
+
+        bool UnregisterTypeLibToIni(LPCTSTR lpszFileName)
+        {
+            if (!IniFile::DeleteSection(lpszFileName, m_strLibID))
+            {
+                return false;
+            }
+
+            return true;        
+        }
+
+        bool RegisterComClassesToIni(LPCTSTR lpszFileName)
+        {
+            for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
+            {
+                if (*ppEntry == nullptr)
+                {
+                    continue;
+                }
+
+                TCHAR szClassID[40] = {};
+                StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
+
+                String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
+                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+
+                if (!IniFile::SetValue(lpszFileName, szClassID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                {
+                    return false;
+                }
+
+                if (!IniFile::SetValue(lpszFileName, szClassID, _T("InprocServer32"), m_strModulePath))
+                {
+                    return false;
+                }
+
+                if (!m_strLibID.Empty())
+                {
+                    if (!IniFile::SetValue(lpszFileName, szClassID, _T("TypeLib"), m_strLibID))
+                    {
+                        return false;
+                    }
+                }
+
+                if (!strProgID.Empty())
+                {
+                    if (!IniFile::SetValue(lpszFileName, szClassID, _T("ProgID"), strProgID))
+                    {
+                        return false;
+                    }
+
+                    if (!IniFile::SetValue(lpszFileName, strProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                    {
+                        return false;
+                    }
+
+                    if (!IniFile::SetValue(lpszFileName, strProgID, _T("CLSID"), szClassID))
+                    {
+                        return false;
+                    }
+                }
+
+                if (!strVersionIndependentProgID.Empty())
+                {
+                    if (!IniFile::SetValue(lpszFileName, strVersionIndependentProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                    {
+                        return false;
+                    }
+
+                    if (!IniFile::SetValue(lpszFileName, strVersionIndependentProgID, _T("CurVer"), strProgID))
+                    {
+                        return false;
+                    }
+
+                    if (!IniFile::SetValue(lpszFileName, strVersionIndependentProgID, _T("CLSID"), szClassID))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        bool UnregisterComClassesToIni(LPCTSTR lpszFileName)
+        {
+            for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
+            {
+                if (*ppEntry == nullptr)
+                {
+                    continue;
+                }
+
+                TCHAR szClassID[40] = {};
+                StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
+
+                String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
+                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+
+                if (!IniFile::DeleteSection(lpszFileName, szClassID))
+                {
+                    return false;
+                }
+
+                if (!strProgID.Empty())
+                {
+                    if (!IniFile::DeleteSection(lpszFileName, strProgID))
+                    {
+                        return false;
+                    }
+                }
+
+                if (!strVersionIndependentProgID.Empty())
+                {
+                    if (!IniFile::DeleteSection(lpszFileName, strVersionIndependentProgID))
                     {
                         return false;
                     }
