@@ -257,6 +257,9 @@
     <ClInclude Include="xl\Win32\File\IniFile.h">
       <Filter>Win32\File</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComLoader.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">

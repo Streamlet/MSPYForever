@@ -20,7 +20,7 @@
 #include <xl/Meta/xlScopeExit.h>
 #include <xl/String/xlString.h>
 #include <xl/Win32/Registry/xlRegistry.h>
-#include <xl/Win32/File/IniFile.h>
+#include <xl/Win32/File/xlIniFile.h>
 #include <xl/Win32/COM/xlClassFactory.h>
 #include <Windows.h>
 
