@@ -17,7 +17,7 @@
 
 
 #include <Windows.h>
-#include <xl/Win32/COM/xlComModule.h>
+#include <Unknwn.h>
 
 namespace xl
 {
@@ -27,74 +27,114 @@ namespace xl
         DWORD_PTR dwOffset;
     };
 
-    template <typename T>
-    class ComClass
+    struct IComModule
     {
     public:
-        ComClass() : m_nRefCount(0)
-        {
-            if (g_pComModule != nullptr)
-            {
-                g_pComModule->GlobalAddRef();
-            }
-        }
-
-        ~ComClass()
-        {
-            if (g_pComModule != nullptr)
-            {
-                g_pComModule->GlobalRelease();
-            }
-        }
+        virtual ULONG STDMETHODCALLTYPE ObjectAddRef() PURE;
+        virtual ULONG STDMETHODCALLTYPE ObjectRelease() PURE;
 
     public:
-        STDMETHODIMP InternalQueryInterface(const InterfaceEntry *pEntries, REFIID riid, LPVOID *ppvObject)
-        {
-            *ppvObject = nullptr;
-            T *pThis = (T *)this;
+        virtual ULONG STDMETHODCALLTYPE LockAddRef() PURE;
+        virtual ULONG STDMETHODCALLTYPE LockRelease() PURE;
 
-            IUnknown *pUnknown = (IUnknown *)((INT_PTR)pThis + pEntries->dwOffset);
+    public:
+        STDMETHOD(GetTypeInfo)(_In_ REFIID riid, _Outptr_ ITypeInfo **ppTinfo) PURE;
 
-            if (riid == __uuidof(IUnknown))
-            {
-                *ppvObject = pUnknown;
-                pUnknown->AddRef();
-                return S_OK;
-            }
-
-            for (const InterfaceEntry *pEntry = pEntries; pEntry->piid != nullptr; ++pEntry)
-            {
-                if (riid == *pEntry->piid)
-                {
-                    *ppvObject = (IUnknown *)((INT_PTR)pThis + pEntry->dwOffset);
-                    pUnknown->AddRef();
-                    return S_OK;
-                }
-            }
-
-            return E_NOINTERFACE; 
-        }
-
-        ULONG STDMETHODCALLTYPE InternalAddRef()
-        {
-            return (ULONG)InterlockedIncrement(&m_nRefCount);
-        }
-
-        ULONG STDMETHODCALLTYPE InternalRelease()
-        {
-            LONG nRefCount = InterlockedDecrement(&m_nRefCount);
-
-            if (nRefCount <= 0)
-            {
-                delete (T *)this;
-            }
-
-            return (ULONG)nRefCount;
-        }
-
-    protected:
-        LONG m_nRefCount;
+    public:
+        STDMETHOD(DllCanUnloadNow)() PURE;
+        STDMETHOD(DllGetClassObject)(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID *ppv) PURE;
+        STDMETHOD(DllRegisterServer)() PURE;
+        STDMETHOD(DllUnregisterServer)() PURE;
+        STDMETHOD(DllInstall)(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine) PURE;
     };
+
+    __declspec(selectany) IComModule *g_pComModule = nullptr;
+
+#define XL_COM_INTERFACE_BEGIN(c)                                                                       \
+                                                                                                        \
+        typedef c ComMapClass;                                                                          \
+                                                                                                        \
+        static const xl::InterfaceEntry *GetEntries()                                                   \
+        {                                                                                               \
+            static const xl::InterfaceEntry entries[] =                                                 \
+            {                                                                                           \
+
+#define XL_COM_INTERFACE(i)                                                                             \
+                                                                                                        \
+                { &__uuidof(i), (DWORD_PTR)((i *)(ComMapClass *)sizeof(nullptr)) - sizeof(nullptr) },   \
+
+#define XL_COM_INTERFACE_END()                                                                          \
+                                                                                                        \
+                { nullptr, 0 }                                                                          \
+            };                                                                                          \
+                                                                                                        \
+            return entries;                                                                             \
+        }                                                                                               \
+                                                                                                        \
+        STDMETHODIMP QueryInterface(REFIID riid, LPVOID *ppvObject)                                     \
+        {                                                                                               \
+            return InternalQueryInterface(GetEntries(), riid, ppvObject);                               \
+        }                                                                                               \
+                                                                                                        \
+        ULONG STDMETHODCALLTYPE AddRef()                                                                \
+        {                                                                                               \
+            return InternalAddRef();                                                                    \
+        }                                                                                               \
+                                                                                                        \
+        ULONG STDMETHODCALLTYPE Release()                                                               \
+        {                                                                                               \
+            return InternalRelease();                                                                   \
+        }                                                                                               \
+
+    typedef IClassFactory *(*ClassFactoryCreator)();
+
+    struct ClassEntry
+    {
+        const CLSID        *pClsid;
+        ClassFactoryCreator pfnCreator;
+        LPCTSTR             lpszClassDesc;
+        LPCTSTR             lpszProgID;
+        LPCTSTR             lpszVersion;
+    };
+
+#pragma section("XL_COM$__a", read)
+#pragma section("XL_COM$__m", read)
+#pragma section("XL_COM$__z", read)
+
+    extern "C"
+    {
+        __declspec(selectany) __declspec(allocate("XL_COM$__a"))
+            const xl::ClassEntry *LP_CLASS_BEGIN = nullptr;
+        __declspec(selectany) __declspec(allocate("XL_COM$__z"))
+            const xl::ClassEntry *LP_CLASS_END = nullptr;
+    }
+
+#if !defined(_M_IA64)
+#pragma comment(linker, "/merge:XL_COM=.rdata")
+#endif
+
+#if defined(_M_IX86)
+#define XL_CLASS_MAP_PRAGMA(class) __pragma(comment(linker, "/include:_LP_CLASS_ENTRY_" # class));
+#elif defined(_M_IA64) || defined(_M_AMD64)
+#define XL_CLASS_MAP_PRAGMA(class) __pragma(comment(linker, "/include:LP_CLASS_ENTRY_" # class));
+#else
+#error Unknown Platform. define XL_CLASS_MAP_PRAGMA
+#endif
+
+#define XL_DECLARE_COM_CLASS(class, desc, progid, version)                      \
+                                                                                \
+    const xl::ClassEntry CLASS_ENTRY_##class =                                  \
+    {                                                                           \
+        &__uuidof(class),                                                       \
+        &xl::ClassFactory<class>::CreateFactory,                                \
+        desc,                                                                   \
+        progid,                                                                 \
+        version                                                                 \
+    };                                                                          \
+    extern "C" __declspec(allocate("XL_COM$__m")) __declspec(selectany)         \
+        const xl::ClassEntry * LP_CLASS_ENTRY_##class = &CLASS_ENTRY_##class;   \
+    XL_CLASS_MAP_PRAGMA(class)                                                  \
+
 
 } // namespace xl
 

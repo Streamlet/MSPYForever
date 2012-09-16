@@ -18,13 +18,13 @@
 
 #include <oaidl.h>
 #include <oleauto.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
-#include <xl/Win32/COM/xlComModule.h>
+#include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
+#include <xl/Win32/COM/xlComDef.h>
 
 namespace xl
 {
     template <typename T = IDispatch>
-    class Dispatcher : public IUnknownImpl<T>
+    class Dispatcher : public IDispatchImpl<T>
     {
     public:
         Dispatcher() : m_pTypeInfo(nullptr)

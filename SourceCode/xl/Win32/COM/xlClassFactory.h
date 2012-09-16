@@ -16,7 +16,7 @@
 #define __XLCLASSFACTORY_H_30C5A972_4508_453D_AC45_B489268F1183_INCLUDED__
 
 
-#include <xl/Win32/COM/xlComDef.h>
+#include <xl/Win32/COM/xlComClass.h>
 #include <xl/Win32/COM/InterfaceHelper/xlIClassFactoryImpl.h>
 
 namespace xl
@@ -49,6 +49,25 @@ namespace xl
         {
             IUnknown *p = new T;
             return p->QueryInterface(riid, ppvObject);
+        }
+
+        STDMETHOD(LockServer)(BOOL fLock)
+        {
+            if (g_pComModule == nullptr)
+            {
+                return E_NOTIMPL;
+            }
+
+            if (fLock)
+            {
+                g_pComModule->LockAddRef();
+            }
+            else
+            {
+                g_pComModule->LockAddRef();
+            }
+
+            return S_OK;
         }
 
     public:

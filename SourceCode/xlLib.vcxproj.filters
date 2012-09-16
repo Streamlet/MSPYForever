@@ -254,10 +254,16 @@
     <ClInclude Include="xl\Win32\COM\xlDispatcher.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\File\IniFile.h">
+    <ClInclude Include="xl\Win32\COM\xlComLoader.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\File\xlIniFile.h">
       <Filter>Win32\File</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComLoader.h">
+    <ClInclude Include="xl\Win32\COM\xlComClass.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComInclude.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,7 +18,7 @@
 
 #include <xl/String/xlString.h>
 #include <xl/Containers/xlMap.h>
-#include <xl/Win32/COM/xlComModule.h>
+#include <xl/Win32/COM/xlComClass.h>
 #include <xl/Win32/COM/xlDispatcher.h>
 #include <xl/Win32/Threads/xlCriticalSection.h>
 #include <xl/Win32/File/xlIniFile.h>
@@ -273,7 +273,7 @@ namespace xl
         CLT_FROM_INI,
     };
 
-    IComLoader *CreateComLoader(ComLoadType type, const String &strData = _T(""))
+    inline IComLoader *CreateComLoader(ComLoadType type, const String &strData = _T(""))
     {
         IComLoader *pLoader = nullptr;
 

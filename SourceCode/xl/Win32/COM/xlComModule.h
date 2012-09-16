@@ -21,65 +21,17 @@
 #include <xl/String/xlString.h>
 #include <xl/Win32/Registry/xlRegistry.h>
 #include <xl/Win32/File/xlIniFile.h>
+#include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/xlClassFactory.h>
 #include <Windows.h>
 
 namespace xl
 {
-    typedef IClassFactory *(*ClassFactoryCreator)();
-
-    struct ClassEntry
-    {
-        const CLSID        *pClsid;
-        ClassFactoryCreator pfnCreator;
-        LPCTSTR             lpszClassDesc;
-        LPCTSTR             lpszProgID;
-        LPCTSTR             lpszVersion;
-    };
-
-#pragma section("XL_COM$__a", read)
-#pragma section("XL_COM$__m", read)
-#pragma section("XL_COM$__z", read)
-
-    extern "C"
-    {
-        __declspec(selectany) __declspec(allocate("XL_COM$__a"))
-            const xl::ClassEntry *LP_CLASS_BEGIN = nullptr;
-        __declspec(selectany) __declspec(allocate("XL_COM$__z"))
-            const xl::ClassEntry *LP_CLASS_END = nullptr;
-    }
-
-#if !defined(_M_IA64)
-#pragma comment(linker, "/merge:XL_COM=.rdata")
-#endif
-
-#if defined(_M_IX86)
-#define XL_CLASS_MAP_PRAGMA(class) __pragma(comment(linker, "/include:_LP_CLASS_ENTRY_" # class));
-#elif defined(_M_IA64) || defined(_M_AMD64)
-#define XL_CLASS_MAP_PRAGMA(class) __pragma(comment(linker, "/include:LP_CLASS_ENTRY_" # class));
-#else
-#error Unknown Platform. define XL_CLASS_MAP_PRAGMA
-#endif
-
-#define XL_DECLARE_COM_CLASS(class, desc, progid, version)                      \
-                                                                                \
-    const xl::ClassEntry CLASS_ENTRY_##class =                                  \
-    {                                                                           \
-        &__uuidof(class),                                                       \
-        &xl::ClassFactory<class>::CreateFactory,                                \
-        desc,                                                                   \
-        progid,                                                                 \
-        version                                                                 \
-    };                                                                          \
-    extern "C" __declspec(allocate("XL_COM$__m")) __declspec(selectany)         \
-        const xl::ClassEntry * LP_CLASS_ENTRY_##class = &CLASS_ENTRY_##class;   \
-    XL_CLASS_MAP_PRAGMA(class)                                                  \
-
-    class ComModule : NonCopyable
+    class ComModule : public IComModule
     {
     public:
         ComModule(HMODULE hModule = nullptr, LPCTSTR lpLibName = nullptr) :
-            m_hModule(hModule), m_strLibName(lpLibName), m_nGlobalRefCount(0), m_pTypeLib(nullptr)
+            m_hModule(hModule), m_strLibName(lpLibName), m_nObjectRefCount(0), m_nLockRefCount(0), m_pTypeLib(nullptr)
         {
             TCHAR szModulePath[MAX_PATH] = {};
             GetModuleFileName(m_hModule, szModulePath, ARRAYSIZE(szModulePath));
@@ -122,12 +74,40 @@ namespace xl
         }
 
     public:
-        HRESULT DllCanUnloadNow()
+        ULONG STDMETHODCALLTYPE ObjectAddRef()
         {
-            return m_nGlobalRefCount > 0 ? S_FALSE : S_OK;
+            return (ULONG)InterlockedIncrement(&m_nObjectRefCount);
         }
 
-        HRESULT DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID *ppv)
+        ULONG STDMETHODCALLTYPE ObjectRelease()
+        {
+            return (ULONG)InterlockedDecrement(&m_nObjectRefCount);
+        }
+
+    public:
+        ULONG STDMETHODCALLTYPE LockAddRef()
+        {
+            return (ULONG)InterlockedIncrement(&m_nLockRefCount);
+        }
+
+        ULONG STDMETHODCALLTYPE LockRelease()
+        {
+            return (ULONG)InterlockedDecrement(&m_nLockRefCount);
+        }
+
+    public:
+        STDMETHODIMP GetTypeInfo(_In_ REFIID riid, _Outptr_ ITypeInfo **ppTinfo)
+        {
+            return m_pTypeLib->GetTypeInfoOfGuid(riid, ppTinfo);
+        }
+
+    public:
+        STDMETHODIMP DllCanUnloadNow()
+        {
+            return (m_nObjectRefCount > 0 || m_nLockRefCount > 0) ? S_FALSE : S_OK;
+        }
+
+        STDMETHODIMP DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID *ppv)
         {
             for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
             {
@@ -146,7 +126,7 @@ namespace xl
             return CLASS_E_CLASSNOTAVAILABLE;
         }
 
-        HRESULT DllRegisterServer()
+        STDMETHODIMP DllRegisterServer()
         {
             if (!RegisterTypeLib(HKEY_LOCAL_MACHINE))
             {
@@ -161,7 +141,7 @@ namespace xl
             return S_OK;
         }
 
-        HRESULT DllUnregisterServer()
+        STDMETHODIMP DllUnregisterServer()
         {
             if (!UnregisterComClasses(HKEY_LOCAL_MACHINE))
             {
@@ -176,7 +156,7 @@ namespace xl
             return S_OK;
         }
 
-        HRESULT DllInstall(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine)
+        STDMETHODIMP DllInstall(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine)
         {
             if (lpszCmdLine == nullptr)
             {
@@ -583,34 +563,16 @@ namespace xl
             return true;
         }
 
-    public:
-        HRESULT GetTypeInfo(_In_ REFIID riid, _Outptr_ ITypeInfo **ppTinfo)
-        {
-            return m_pTypeLib->GetTypeInfoOfGuid(riid, ppTinfo);
-        }
-
-    public:
-        ULONG GlobalAddRef()
-        {
-            return (ULONG)InterlockedIncrement(&m_nGlobalRefCount);
-        }
-
-        ULONG GlobalRelease()
-        {
-            return (ULONG)InterlockedDecrement(&m_nGlobalRefCount);
-        }
-
     private:
         HMODULE   m_hModule;
         String    m_strLibName;
         String    m_strModulePath;
         String    m_strLibID;
         String    m_strLibVersion;
-        LONG      m_nGlobalRefCount;
+        LONG      m_nObjectRefCount;
+        LONG      m_nLockRefCount;
         ITypeLib *m_pTypeLib;
     };
-
-    __declspec(selectany) ComModule *g_pComModule = nullptr;
 
 } // namespace xl
 

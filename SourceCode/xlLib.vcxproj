@@ -73,11 +73,13 @@
     <ClInclude Include="xl\Win32\COM\Objects\xlOleContainer.h" />
     <ClInclude Include="xl\Win32\COM\Objects\xlWebBrowser.h" />
     <ClInclude Include="xl\Win32\COM\xlClassFactory.h" />
+    <ClInclude Include="xl\Win32\COM\xlComClass.h" />
     <ClInclude Include="xl\Win32\COM\xlComDef.h" />
+    <ClInclude Include="xl\Win32\COM\xlComInclude.h" />
     <ClInclude Include="xl\Win32\COM\xlComLoader.h" />
     <ClInclude Include="xl\Win32\COM\xlComModule.h" />
     <ClInclude Include="xl\Win32\COM\xlDispatcher.h" />
-    <ClInclude Include="xl\Win32\File\IniFile.h" />
+    <ClInclude Include="xl\Win32\File\xlIniFile.h" />
     <ClInclude Include="xl\Win32\GUI\xlCommCtrlInitializer.h" />
     <ClInclude Include="xl\Win32\GUI\xlDialog.h" />
     <ClInclude Include="xl\Win32\GUI\xlMenu.h" />
