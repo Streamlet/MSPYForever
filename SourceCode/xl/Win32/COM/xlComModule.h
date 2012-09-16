@@ -211,11 +211,17 @@ namespace xl
 
             if (strCmdLineLower == _T("ini") || strCmdLineLower.IndexOf(_T("ini:")) == 0)
             {
-                String strIniFileName = _T("xlComReg.ini");
+                LPCTSTR DEFAULT_INI_FILENAME = _T("xlComReg.ini");
+                String strIniFileName = DEFAULT_INI_FILENAME;
 
                 if (strCmdLine.Length() > 4)
                 {
                     strIniFileName = strCmdLine.SubString(4);
+
+                    if (strIniFileName[strIniFileName.Length() - 1] == _T('\\'))
+                    {
+                        strIniFileName += DEFAULT_INI_FILENAME;
+                    }
                 }
 
                 if (bInstall)
