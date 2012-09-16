@@ -56,7 +56,7 @@ namespace xl
                              public Dispatcher<IComLoader>
     {
     public:
-        ComLoaderFromIni(const String &strIniFile = _T("")) : m_strIniFile(strIniFile), m_lInitializeCount(0)
+        ComLoaderFromIni(const String &strIniFile =_T("xlComReg.ini")) : m_strIniFile(strIniFile), m_lInitializeCount(0)
         {
         
         }

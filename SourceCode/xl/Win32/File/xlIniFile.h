@@ -214,6 +214,16 @@ namespace xl
 		        return false;
 	        }
 
+            HANDLE hFile = CreateFile(szFileNameAbsolute, GENERIC_WRITE, 0, nullptr, CREATE_NEW, 0, nullptr);
+
+            if (hFile != INVALID_HANDLE_VALUE)
+            {
+                WORD wUnicodeBOM = 0xfeff;
+                DWORD dwWritten = 0;
+                WriteFile(hFile, &wUnicodeBOM, sizeof(WORD), &dwWritten, NULL);
+                CloseHandle(hFile);
+            }
+
             if (!WritePrivateProfileString(strSectionName.GetAddress(),
                                            strKeyName.GetAddress(),
                                            strValue.GetAddress(),
