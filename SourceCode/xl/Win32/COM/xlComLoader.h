@@ -63,7 +63,7 @@ namespace xl
 
         ~ComLoaderFromIni()
         {
-        
+            CoUninitialize();
         }
 
     public:
@@ -118,6 +118,11 @@ namespace xl
         void CoUninitialize()
         {
             XL_SCOPED_CRITICAL_SECTION(m_cs);
+
+            if (m_lInitializeCount == 0)
+            {
+                return;
+            }
 
             --m_lInitializeCount;
 
