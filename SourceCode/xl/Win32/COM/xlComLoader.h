@@ -280,7 +280,7 @@ namespace xl
         CLT_FROM_INI,
     };
 
-    inline IComLoader *CreateComLoader(ComLoadType type, const String &strData = _T(""))
+    inline IComLoader *CreateComLoader(ComLoadType type, const String &strData = _T("xlComReg.ini"))
     {
         IComLoader *pLoader = nullptr;
 
