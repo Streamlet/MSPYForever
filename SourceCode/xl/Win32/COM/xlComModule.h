@@ -24,6 +24,8 @@
 #include <xl/Win32/COM/xlComDef.h>
 #include <xl/Win32/COM/xlClassFactory.h>
 #include <Windows.h>
+#include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
 
 namespace xl
 {
@@ -36,9 +38,18 @@ namespace xl
             TCHAR szModulePath[MAX_PATH] = {};
             GetModuleFileName(m_hModule, szModulePath, ARRAYSIZE(szModulePath));
 
-            m_strModulePath = szModulePath;
+            TCHAR szModulePathCanonicalized[MAX_PATH] = {};
+            
+            if (PathCanonicalize(szModulePathCanonicalized, szModulePath))
+            {
+                m_strModulePath = szModulePathCanonicalized;
+            }
+            else
+            {
+                m_strModulePath = szModulePath;
+            }
 
-            HRESULT hr = LoadTypeLib(szModulePath, &m_pTypeLib);
+            HRESULT hr = LoadTypeLib(m_strModulePath.GetAddress(), &m_pTypeLib);
 
             if (FAILED(hr) || m_pTypeLib == nullptr)
             {
@@ -426,13 +437,15 @@ namespace xl
                 return false;
             }
 
+            String strModulePath = GetModuleRelativePathToIni(strIniFileName);
+
 #ifdef _WIN64
-            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win64"), m_strModulePath))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win64"), strModulePath))
             {
                 return false;
             }
 #else
-            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win32"), m_strModulePath))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win32"), strModulePath))
             {
                 return false;
             }
@@ -471,13 +484,15 @@ namespace xl
                     return false;
                 }
 
+                String strModulePath = GetModuleRelativePathToIni(strIniFileName);
+
 #ifdef _WIN64
-                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer64"), m_strModulePath))
+                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer64"), strModulePath))
                 {
                     return false;
                 }
 #else
-                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer32"), m_strModulePath))
+                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer32"), strModulePath))
                 {
                     return false;
                 }
@@ -571,6 +586,25 @@ namespace xl
             }
 
             return true;
+        }
+
+        String GetModuleRelativePathToIni(const String &strIniFileName)
+        {
+            TCHAR szIniPathAbsolute[MAX_PATH] = {};
+            
+            if (GetFullPathName(strIniFileName.GetAddress(), ARRAYSIZE(szIniPathAbsolute), szIniPathAbsolute, nullptr) == 0)
+            {
+                return m_strModulePath;
+            }
+
+            TCHAR szModuleRelativePath[MAX_PATH] = {};
+
+            if (!PathRelativePathTo(szModuleRelativePath, szIniPathAbsolute, 0, m_strModulePath.GetAddress(), 0))
+            {
+                return m_strModulePath;
+            }
+
+            return szModuleRelativePath;
         }
 
     private:
