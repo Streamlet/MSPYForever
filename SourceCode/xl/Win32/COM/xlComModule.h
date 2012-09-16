@@ -415,6 +415,7 @@ namespace xl
     protected:
         bool RegisterTypeLibToIni(const String &strIniFileName)
         {
+#if 0   // Do not register TypeLib to INI
             if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("TypeLib"), m_strLibName))
             {
                 return false;
@@ -436,7 +437,7 @@ namespace xl
                 return false;
             }
 #endif
-
+#endif
             return true;
         }
 
@@ -470,11 +471,19 @@ namespace xl
                     return false;
                 }
 
+#ifdef _WIN64
+                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer64"), m_strModulePath))
+                {
+                    return false;
+                }
+#else
                 if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer32"), m_strModulePath))
                 {
                     return false;
                 }
+#endif
 
+#if 0   // Do not register TypeLib and ProgID to INI
                 if (!m_strLibID.Empty())
                 {
                     if (!IniFile::SetValue(strIniFileName, szClassID, _T("TypeLib"), m_strLibID))
@@ -518,6 +527,7 @@ namespace xl
                         return false;
                     }
                 }
+#endif
             }
 
             return true;

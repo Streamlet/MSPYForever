@@ -95,10 +95,17 @@ namespace xl
 
                 String strPath;
 
+#ifdef _WIN64
+                if (!IniFile::GetValue(m_strIniFile, *it, _T("InprocServer64"), &strPath))
+                {
+                    continue;
+                }
+#else
                 if (!IniFile::GetValue(m_strIniFile, *it, _T("InprocServer32"), &strPath))
                 {
                     continue;
                 }
+#endif
 
                 m_mapClassIDToPath.Insert(*it, strPath);
             }        
