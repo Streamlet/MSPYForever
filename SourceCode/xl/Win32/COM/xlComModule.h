@@ -240,12 +240,12 @@ namespace xl
                 }
                 else
                 {
-                    if (!UnregisterComClassesToIni(strIniFileName))
+                    if (!UnregisterComClassesFromIni(strIniFileName))
                     {
                         return E_FAIL;
                     }
 
-                    if (!UnregisterTypeLibToIni(strIniFileName))
+                    if (!UnregisterTypeLibFromIni(strIniFileName))
                     {
                         return E_FAIL;
                     }
@@ -460,7 +460,7 @@ namespace xl
             return true;
         }
 
-        bool UnregisterTypeLibToIni(const String &strIniFileName)
+        bool UnregisterTypeLibFromIni(const String &strIniFileName)
         {
             if (!IniFile::DeleteSection(strIniFileName, m_strLibID))
             {
@@ -554,7 +554,7 @@ namespace xl
             return true;
         }
 
-        bool UnregisterComClassesToIni(const String &strIniFileName)
+        bool UnregisterComClassesFromIni(const String &strIniFileName)
         {
             for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
             {
