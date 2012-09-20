@@ -32,11 +32,15 @@ namespace xl
 
     struct ComDllModule
     {
-    
         String              strFileName;
         HMODULE             hModule;
         FnDllCanUnloadNow   fnDllCanUnloadNow;
         FnDllGetClassObject fnDllGetClassObject;
+
+        ComDllModule() : hModule(nullptr), fnDllCanUnloadNow(nullptr), fnDllGetClassObject(nullptr)
+        {
+        
+        }
     };
 
     typedef Map<String, String>       ClassIDPathMap;
@@ -73,7 +77,7 @@ namespace xl
 
             if (m_lInitializeCount > 0)
             {
-                ++m_lInitializeCount;
+                InterlockedIncrement(&m_lInitializeCount);
                 return S_FALSE;
             }
 
@@ -110,7 +114,7 @@ namespace xl
                 m_mapClassIDToPath.Insert(*it, strPath);
             }        
 
-            ++m_lInitializeCount;
+            InterlockedIncrement(&m_lInitializeCount);
 
             return S_OK;
         }
@@ -124,7 +128,7 @@ namespace xl
                 return;
             }
 
-            --m_lInitializeCount;
+            InterlockedDecrement(&m_lInitializeCount);;
 
             if (m_lInitializeCount > 0)
             {
@@ -188,6 +192,7 @@ namespace xl
 
             return hr;
         }
+
     private:
         HRESULT FindComDllModule(REFCLSID rclsid, const ComDllModule **ppModule)
         {
@@ -243,6 +248,8 @@ namespace xl
                 return false;
             }
 
+            ScopeGuard sgFreeLibrary = MakeGuard(Bind(FreeLibrary, hModule));
+
             FnDllCanUnloadNow fnDllCanUnloadNow = (FnDllCanUnloadNow)GetProcAddress(hModule, "DllCanUnloadNow");
 
             if (fnDllCanUnloadNow == nullptr)
@@ -262,6 +269,8 @@ namespace xl
             module.hModule = hModule;
             module.fnDllCanUnloadNow = fnDllCanUnloadNow;
             module.fnDllGetClassObject = fnDllGetClassObject;
+
+            sgFreeLibrary.Dismiss();
 
             return true;
         }
