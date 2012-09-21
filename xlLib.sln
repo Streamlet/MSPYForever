@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{C37FE0BD-5B78-4C92-87B3-D3CF499A5E0D}"
 	ProjectSection(SolutionItems) = preProject
 		Document\autoexp.txt = Document\autoexp.txt
+		Document\xlLib.natvis = Document\xlLib.natvis
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestProjects", "TestProjects", "{4F5286EA-D279-4EED-ADAD-5E1F8428F49D}"

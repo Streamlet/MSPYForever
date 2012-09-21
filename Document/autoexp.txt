@@ -154,16 +154,6 @@ xl::Set<*>{
         )
     )
 }
-xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
-    preview (
-        $e.m_pCurrent->tValue.tValue
-    )
-    children (
-        #(
-            [ptr] : &$e.m_pCurrent->tValue.tValue
-        )
-    )
-}
 
 ;------------------------------------------------------------------------------
 ;  xl::Pair

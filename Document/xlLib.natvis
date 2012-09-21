@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+    <!--
+        For convenience of debugging, put the this file to any of the following path:
+            %VSINSTALLDIR%\Common7\Packages\Debugger\Visualizers\ (requires admin access)
+            %USERPROFILE%\My Documents\Visual Studio 2012\Visualizers\
+            VS extension folders 
+
+        Please see http://blogs.msdn.com/b/vcblog/archive/2012/07/12/10329460.aspx for more information.
+    -->
+        
+    <Type Name="xl::Array&lt;*&gt;">
+        <DisplayString>{{ size={m_nEof - m_nStart} }}</DisplayString>
+        <Expand>
+            <ArrayItems>
+                <Size>m_nEof - m_nStart</Size>
+                <ValuePointer>m_pData + m_nStart</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::Array&lt;*&gt;::Iterator">
+        <AlternativeType Name="xl::Array&lt;*&gt;::Iterator" />
+        <AlternativeType Name="xl::Array&lt;*&gt;::ReverseIterator" />
+        <DisplayString>{*m_pCurrent}</DisplayString>
+        <Expand>
+            <Item Name="[ptr]">m_pCurrent</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::List&lt;*&gt;">
+        <DisplayString>{{ size={m_nSize} }}</DisplayString>
+        <Expand>
+            <LinkedListItems>
+                <Size>m_nSize</Size>
+                <HeadPointer>m_pHead</HeadPointer>
+                <NextPointer>pNext</NextPointer>
+                <ValueNode>tValue</ValueNode>
+            </LinkedListItems>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::List&lt;*&gt;::Iterator">
+        <AlternativeType Name="xl::List&lt;*&gt;::Iterator" />
+        <AlternativeType Name="xl::List&lt;*&gt;::ReverseIterator" />
+        <DisplayString>{m_pCurrent-&gt;tValue}</DisplayString>
+        <Expand>
+            <Item Name="[ptr]">&amp;m_pCurrent-&gt;tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::BinTree&lt;*&gt;::Iterator">
+        <AlternativeType Name="xl::BinTree&lt;*&gt;::Iterator" />
+        <AlternativeType Name="xl::BinTree&lt;*&gt;::ReverseIterator" />
+        <AlternativeType Name="xl::RBTree&lt;*&gt;::Iterator" />
+        <AlternativeType Name="xl::RBTree&lt;*&gt;::ReverseIterator" />
+        <DisplayString>{m_pCurrent-&gt;tValue.tValue}</DisplayString>
+        <Expand>
+            <Item Name="[ptr]">&amp;m_pCurrent-&gt;tValue.tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::RBTree&lt;*&gt;">
+        <DisplayString>{{ size={m_nSize} }}</DisplayString>
+        <Expand>
+            <TreeItems>
+                <Size>m_nSize</Size>
+                <HeadPointer>m_tBinTree.m_pRoot</HeadPointer>
+                <LeftPointer>pLeft</LeftPointer>
+                <RightPointer>pRight</RightPointer>
+                <ValueNode>tValue.tValue</ValueNode>
+            </TreeItems>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::Pair&lt;*&gt;">
+        <DisplayString>{{ {Key}-&gt;{Value} }}</DisplayString>
+        <Expand>
+            <Item Name="[Key]">Key</Item>
+            <Item Name="[Value]">Value</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::Set&lt;*&gt;">
+        <AlternativeType Name="xl::Map&lt;*&gt;" />
+        <DisplayString>{{ size={m_tRBTree.m_nSize} }}</DisplayString>
+        <Expand>
+            <TreeItems>
+                <Size>m_tRBTree.m_nSize</Size>
+                <HeadPointer>m_tRBTree.m_tBinTree.m_pRoot</HeadPointer>
+                <LeftPointer>pLeft</LeftPointer>
+                <RightPointer>pRight</RightPointer>
+                <ValueNode>tValue.tValue</ValueNode>
+            </TreeItems>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::StringT&lt;char&gt;">
+        <DisplayString>{m_aData.m_pData+m_aData.m_nStart,s}</DisplayString>
+        <StringView>m_aData.m_pData+m_aData.m_nStart,s</StringView>
+        <Expand>
+            <ArrayItems>
+                <Size>m_aData.m_nEof-m_aData.m_nStart-1</Size>
+                <ValuePointer>m_aData.m_pData+m_aData.m_nStart</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::StringT&lt;wchar_t&gt;">
+        <DisplayString>{m_aData.m_pData+m_aData.m_nStart,su}</DisplayString>
+        <StringView>m_aData.m_pData+m_aData.m_nStart,su</StringView>
+        <Expand>
+            <ArrayItems>
+                <Size>m_aData.m_nEof-m_aData.m_nStart-1</Size>
+                <ValuePointer>m_aData.m_pData+m_aData.m_nStart</ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::SharedPtr&lt;*&gt;">
+        <AlternativeType Name="xl::SharedArray&lt;*&gt;" />
+        <DisplayString>{*m_pData}</DisplayString>
+        <Expand>
+            <Item Name="[ref]" Condition="m_pRefCounter == 0">0</Item>
+            <Item Name="[ref]" Condition="m_pRefCounter != 0">m_pRefCounter-&gt;m_nCount</Item>
+            <Item Name="[ptr]">m_pData</Item>
+        </Expand>
+    </Type>
+
+
+</AutoVisualizer>
