@@ -136,7 +136,7 @@ namespace xl
             m_bInModal = false;
         }
 
-    private:
+    protected:
 
         INT_PTR RunModalLoop()
         {
@@ -174,11 +174,11 @@ namespace xl
             return m_nModalResult;
         }
 
-    private:
+    protected:
         bool    m_bInModal;
         INT_PTR m_nModalResult;
 
-    private:
+    protected:
 
         LRESULT OnMsgCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
         {
