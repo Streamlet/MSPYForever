@@ -69,6 +69,8 @@ namespace xl
                 return false;
             }
 
+            m_bCreated = true;
+
             return true;
         }
 
