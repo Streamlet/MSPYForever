@@ -316,7 +316,7 @@ namespace xl
         {                                                                                                           \
             if (pFunctionPointer != nullptr)                                                                        \
             {                                                                                                       \
-                m_pFunctionBase = new FunctionPointerHandler<ReturnType, ParamList, F *>(pFunctionPointer)          \
+                m_pFunctionBase = new FunctionPointerHandler<ReturnType, ParamList, F *>(pFunctionPointer);         \
             }                                                                                                       \
         }                                                                                                           \
                                                                                                                     \
@@ -333,7 +333,7 @@ namespace xl
         {                                                                                                           \
             if (pMemberFunction != nullptr)                                                                         \
             {                                                                                                       \
-                m_pFunctionBase = new MemberFunctionHandler<ReturnType, ParamList, T, F>(pObject, pMemberFunction)  \
+                m_pFunctionBase = new MemberFunctionHandler<ReturnType, ParamList, T, F>(pObject, pMemberFunction); \
             }                                                                                                       \
         }                                                                                                           \
                                                                                                                     \
