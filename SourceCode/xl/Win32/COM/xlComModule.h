@@ -345,7 +345,7 @@ namespace xl
 
                 DWORD dwRegister = 0;
                 hr = CoRegisterClassObject(*(*ppEntry)->pClsid,
-                                           pClassFactory,
+                                           pUnk,
                                            CLSCTX_LOCAL_SERVER,
                                            REGCLS_MULTIPLEUSE,
                                            &dwRegister);
