@@ -46,6 +46,12 @@ namespace xl
         STDMETHOD(DllRegisterServer)() PURE;
         STDMETHOD(DllUnregisterServer)() PURE;
         STDMETHOD(DllInstall)(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine) PURE;
+
+    public:
+        STDMETHOD(ExeRegisterServer)() PURE;
+        STDMETHOD(ExeUnregisterServer)() PURE;
+        STDMETHOD(ExeRegisterClassObject)() PURE;
+        STDMETHOD(ExeUnregisterClassObject)() PURE;
     };
 
     __declspec(selectany) IComModule *g_pComModule = nullptr;
@@ -86,7 +92,7 @@ namespace xl
             return InternalRelease();                                                                   \
         }                                                                                               \
 
-    typedef IClassFactory *(*ClassFactoryCreator)();
+    typedef IClassFactory *(*ClassFactoryCreator)(bool);
 
     struct ClassEntry
     {
@@ -97,20 +103,20 @@ namespace xl
         LPCTSTR             lpszVersion;
     };
 
-#pragma section("XL_COM$__a", read)
-#pragma section("XL_COM$__m", read)
-#pragma section("XL_COM$__z", read)
+#pragma section("XL_COM_CLASSES$__a", read)
+#pragma section("XL_COM_CLASSES$__m", read)
+#pragma section("XL_COM_CLASSES$__z", read)
 
     extern "C"
     {
-        __declspec(selectany) __declspec(allocate("XL_COM$__a"))
+        __declspec(selectany) __declspec(allocate("XL_COM_CLASSES$__a"))
             const xl::ClassEntry *LP_CLASS_BEGIN = nullptr;
-        __declspec(selectany) __declspec(allocate("XL_COM$__z"))
+        __declspec(selectany) __declspec(allocate("XL_COM_CLASSES$__z"))
             const xl::ClassEntry *LP_CLASS_END = nullptr;
     }
 
 #if !defined(_M_IA64)
-#pragma comment(linker, "/merge:XL_COM=.rdata")
+#pragma comment(linker, "/merge:XL_COM_CLASSES=.rdata")
 #endif
 
 #if defined(_M_IX86)
@@ -131,7 +137,7 @@ namespace xl
         progid,                                                                 \
         version                                                                 \
     };                                                                          \
-    extern "C" __declspec(allocate("XL_COM$__m")) __declspec(selectany)         \
+    extern "C" __declspec(allocate("XL_COM_CLASSES$__m")) __declspec(selectany) \
         const xl::ClassEntry * LP_CLASS_ENTRY_##class = &CLASS_ENTRY_##class;   \
     XL_CLASS_MAP_PRAGMA(class)                                                  \
 

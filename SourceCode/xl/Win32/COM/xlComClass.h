@@ -25,9 +25,9 @@ namespace xl
     class ComClass
     {
     public:
-        ComClass() : m_nRefCount(0)
+        ComClass(bool bAddObjRefCount = true) : m_nRefCount(0), m_bAddObjRefCount(bAddObjRefCount)
         {
-            if (g_pComModule != nullptr)
+            if (g_pComModule != nullptr && m_bAddObjRefCount)
             {
                 g_pComModule->ObjectAddRef();
             }
@@ -35,7 +35,7 @@ namespace xl
 
         ~ComClass()
         {
-            if (g_pComModule != nullptr)
+            if (g_pComModule != nullptr && m_bAddObjRefCount)
             {
                 g_pComModule->ObjectRelease();
             }
@@ -88,6 +88,7 @@ namespace xl
 
     protected:
         LONG m_nRefCount;
+        bool m_bAddObjRefCount;
     };
 
 } // namespace xl

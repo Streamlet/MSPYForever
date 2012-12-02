@@ -16,6 +16,7 @@
 #define __XLCOMMODULE_H_89C4A369_6CBD_4316_947D_122F6E6C3F55_INCLUDED__
 
 
+#include <xl/Meta/xlAssert.h>
 #include <xl/Meta/xlUtility.h>
 #include <xl/Meta/xlScopeExit.h>
 #include <xl/String/xlString.h>
@@ -33,7 +34,13 @@ namespace xl
     {
     public:
         ComModule(HMODULE hModule = nullptr, LPCTSTR lpLibName = nullptr) :
-            m_hModule(hModule), m_strLibName(lpLibName), m_nObjectRefCount(0), m_nLockRefCount(0), m_pTypeLib(nullptr)
+            m_hModule(hModule),
+            m_strLibName(lpLibName),
+            m_nObjectRefCount(0),
+            m_nLockRefCount(0),
+            m_pTypeLib(nullptr),
+            m_pTLibAttr(nullptr),
+            m_dwThreadId(0)
         {
             TCHAR szModulePath[MAX_PATH] = {};
             GetModuleFileName(m_hModule, szModulePath, ARRAYSIZE(szModulePath));
@@ -53,30 +60,33 @@ namespace xl
 
             if (FAILED(hr) || m_pTypeLib == nullptr)
             {
-                return;
+                XL_ASSERT(false);
             }
 
-            TLIBATTR *pTLibAttr = nullptr;
-            hr = m_pTypeLib->GetLibAttr(&pTLibAttr);
+            hr = m_pTypeLib->GetLibAttr(&m_pTLibAttr);
 
-            if (FAILED(hr) || pTLibAttr == nullptr)
+            if (FAILED(hr) || m_pTLibAttr == nullptr)
             {
-                return;
+                XL_ASSERT(false);
             }
-
-            XL_ON_BLOCK_EXIT(m_pTypeLib, &ITypeLib::ReleaseTLibAttr, pTLibAttr);
 
             TCHAR szTLibID[40] = {};
-            StringFromGUID2(pTLibAttr->guid, szTLibID, ARRAYSIZE(szTLibID));
+            StringFromGUID2(m_pTLibAttr->guid, szTLibID, ARRAYSIZE(szTLibID));
             m_strLibID = szTLibID;
 
             TCHAR szVersion[40] = {};
-            _stprintf_s(szVersion, _T("%u.%u"), (DWORD)pTLibAttr->wMajorVerNum, (DWORD)pTLibAttr->wMinorVerNum);
+            _stprintf_s(szVersion, _T("%u.%u"), (DWORD)m_pTLibAttr->wMajorVerNum, (DWORD)m_pTLibAttr->wMinorVerNum);
             m_strLibVersion = szVersion;
         }
 
         ~ComModule()
         {
+            if (m_pTLibAttr != nullptr)
+            {
+                m_pTypeLib->ReleaseTLibAttr(m_pTLibAttr);
+                m_pTLibAttr = nullptr;
+            }
+
             if (m_pTypeLib != nullptr)
             {
                 m_pTypeLib->Release();
@@ -92,7 +102,14 @@ namespace xl
 
         ULONG STDMETHODCALLTYPE ObjectRelease()
         {
-            return (ULONG)InterlockedDecrement(&m_nObjectRefCount);
+            ULONG lResult = (ULONG)InterlockedDecrement(&m_nObjectRefCount);
+
+            if (m_dwThreadId != 0 && CanUnloadNow())
+            {
+                PostThreadMessage(m_dwThreadId, WM_QUIT, 0, 0);
+            }
+
+            return lResult;
         }
 
     public:
@@ -103,7 +120,14 @@ namespace xl
 
         ULONG STDMETHODCALLTYPE LockRelease()
         {
-            return (ULONG)InterlockedDecrement(&m_nLockRefCount);
+            ULONG lResult = (ULONG)InterlockedDecrement(&m_nLockRefCount);
+
+            if (m_dwThreadId != 0 && CanUnloadNow())
+            {
+                PostThreadMessage(m_dwThreadId, WM_QUIT, 0, 0);
+            }
+
+            return lResult;
         }
 
     public:
@@ -115,7 +139,7 @@ namespace xl
     public:
         STDMETHODIMP DllCanUnloadNow()
         {
-            return (m_nObjectRefCount > 0 || m_nLockRefCount > 0) ? S_FALSE : S_OK;
+            return CanUnloadNow() ? S_OK : S_FALSE;
         }
 
         STDMETHODIMP DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID *ppv)
@@ -129,7 +153,7 @@ namespace xl
 
                 if (rclsid == *(*ppEntry)->pClsid)
                 {
-                    IClassFactory *pClassFactory = (*ppEntry)->pfnCreator();
+                    IClassFactory *pClassFactory = (*ppEntry)->pfnCreator(true);
                     return pClassFactory->QueryInterface(riid, ppv);
                 }
             }
@@ -257,7 +281,114 @@ namespace xl
             return E_FAIL;
         }
 
+    public:
+        STDMETHODIMP ExeRegisterServer()
+        {
+            if (!RegisterTypeLib(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            if (!RegisterComClasses(HKEY_LOCAL_MACHINE, false))
+            {
+                return E_FAIL;
+            }
+
+            return S_OK;
+        }
+        
+        STDMETHODIMP ExeUnregisterServer()
+        {
+            if (!UnregisterComClasses(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            if (!UnregisterTypeLib(HKEY_LOCAL_MACHINE))
+            {
+                return E_FAIL;
+            }
+
+            return S_OK;
+        }
+        
+        STDMETHODIMP ExeRegisterClassObject()
+        {
+            HRESULT hr = CoInitialize(nullptr);
+
+            if (FAILED(hr))
+            {
+                return hr;
+            }
+
+            for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
+            {
+                if (*ppEntry == nullptr)
+                {
+                    continue;
+                }
+
+                IClassFactory *pClassFactory = (*ppEntry)->pfnCreator(false);
+
+                if (pClassFactory == nullptr)
+                {
+                    return E_FAIL;
+                }
+
+                IUnknown *pUnk = nullptr;
+                HRESULT hr = pClassFactory->QueryInterface(__uuidof(IUnknown), (LPVOID *)&pUnk);
+
+                if (FAILED(hr) || pUnk == nullptr)
+                {
+                    return hr;
+                }
+
+                DWORD dwRegister = 0;
+                hr = CoRegisterClassObject(*(*ppEntry)->pClsid,
+                                           pClassFactory,
+                                           CLSCTX_LOCAL_SERVER,
+                                           REGCLS_MULTIPLEUSE,
+                                           &dwRegister);
+                pUnk->Release();
+
+                if (FAILED(hr))
+                {
+                    return hr;
+                }
+
+                m_arrRegClassObjects.PushBack(dwRegister);
+            }
+
+            m_dwThreadId = GetCurrentThreadId();
+
+            return S_OK;
+        }
+        
+        STDMETHODIMP ExeUnregisterClassObject()
+        {
+            for (auto it = m_arrRegClassObjects.Begin(); it != m_arrRegClassObjects.End(); ++it)
+            {
+                CoRevokeClassObject(*it);
+            }
+
+            m_arrRegClassObjects.Clear();
+
+            CoUninitialize();
+
+            return S_OK;
+        }
+
     protected:
+        bool CanUnloadNow()
+        {
+            if (m_nObjectRefCount > 0 || m_nLockRefCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         bool RegisterTypeLib(HKEY hRootKey)
         {
             String strPath;
@@ -283,11 +414,117 @@ namespace xl
                 return false;
             }
 
+            for (UINT i = 0; i < m_pTypeLib->GetTypeInfoCount(); ++i)
+            {
+                TYPEKIND type = TKIND_MAX;
+                HRESULT hr = m_pTypeLib->GetTypeInfoType(i, &type);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                if (type != TKIND_INTERFACE && type != TKIND_DISPATCH)
+                {
+                    continue;
+                }
+
+                ITypeInfo *pTypeInfo = nullptr;
+                hr = m_pTypeLib->GetTypeInfo(i, &pTypeInfo);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                XL_ON_BLOCK_EXIT(pTypeInfo, &ITypeInfo::Release);
+
+                TYPEATTR *pAttr = nullptr;
+                pTypeInfo->GetTypeAttr(&pAttr);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                XL_ON_BLOCK_EXIT(pTypeInfo, &ITypeInfo::ReleaseTypeAttr, pAttr);
+
+                TCHAR szInterfaceID[40] = {};
+                StringFromGUID2(pAttr->guid, szInterfaceID, ARRAYSIZE(szInterfaceID));
+
+                String strInterfacePath;
+                strInterfacePath += _T("Software\\Classes\\Interface\\");
+                strInterfacePath += szInterfaceID;
+
+                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\ProxyStubClsid32"), _T(""), _T("{00020424-0000-0000-C000-000000000046}")))
+                {
+                    return false;
+                }
+
+                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T(""), m_strLibID.GetAddress()))
+                {
+                    return false;
+                }
+
+                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T("Version"), m_strLibVersion.GetAddress()))
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
         bool UnregisterTypeLib(HKEY hRootKey)
         {
+            for (UINT i = 0; i < m_pTypeLib->GetTypeInfoCount(); ++i)
+            {
+                TYPEKIND type = TKIND_MAX;
+                HRESULT hr = m_pTypeLib->GetTypeInfoType(i, &type);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                if (type != TKIND_INTERFACE && type != TKIND_DISPATCH)
+                {
+                    continue;
+                }
+
+                ITypeInfo *pTypeInfo = nullptr;
+                hr = m_pTypeLib->GetTypeInfo(i, &pTypeInfo);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                XL_ON_BLOCK_EXIT(pTypeInfo, &ITypeInfo::Release);
+
+                TYPEATTR *pAttr = nullptr;
+                pTypeInfo->GetTypeAttr(&pAttr);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                XL_ON_BLOCK_EXIT(pTypeInfo, &ITypeInfo::ReleaseTypeAttr, pAttr);
+
+                TCHAR szInterfaceID[40] = {};
+                StringFromGUID2(pAttr->guid, szInterfaceID, ARRAYSIZE(szInterfaceID));
+
+                String strInterfacePath;
+                strInterfacePath += _T("Software\\Classes\\Interface\\");
+                strInterfacePath += szInterfaceID;
+
+                if (!Registry::DeleteKeyRecursion(hRootKey, strInterfacePath))
+                {
+                    return false;
+                }
+            }
+
             String strPath;
             strPath += _T("Software\\Classes\\TypeLib\\");
             strPath += m_strLibID;
@@ -300,7 +537,7 @@ namespace xl
             return true;        
         }
 
-        bool RegisterComClasses(HKEY hRootKey)
+        bool RegisterComClasses(HKEY hRootKey, bool bInprocServer = true)
         {
             for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
             {
@@ -324,9 +561,19 @@ namespace xl
                     return false;
                 }
 
-                if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\InprocServer32"), _T(""), m_strModulePath))
+                if (bInprocServer)
                 {
-                    return false;
+                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\InprocServer32"), _T(""), m_strModulePath))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\LocalServer32"), _T(""), m_strModulePath))
+                    {
+                        return false;
+                    }
                 }
 
                 if (!m_strLibID.Empty())
@@ -470,7 +717,7 @@ namespace xl
             return true;        
         }
 
-        bool RegisterComClassesToIni(const String &strIniFileName)
+        bool RegisterComClassesToIni(const String &strIniFileName, bool bInprocServer = true)
         {
             for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
             {
@@ -492,17 +739,34 @@ namespace xl
 
                 String strModulePath = GetModuleRelativePathToIni(strIniFileName);
 
+                if (bInprocServer)
+                {
 #ifdef _WIN64
-                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer64"), strModulePath))
-                {
-                    return false;
-                }
+                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer64"), strModulePath))
+                    {
+                        return false;
+                    }
 #else
-                if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer32"), strModulePath))
-                {
-                    return false;
-                }
+                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer32"), strModulePath))
+                    {
+                        return false;
+                    }
 #endif
+                }
+                else
+                {
+#ifdef _WIN64
+                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("LocalServer64"), strModulePath))
+                    {
+                        return false;
+                    }
+#else
+                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("LocalServer32"), strModulePath))
+                    {
+                        return false;
+                    }
+#endif
+                }
 
 #if 0   // Do not register TypeLib and ProgID to INI
                 if (!m_strLibID.Empty())
@@ -622,6 +886,9 @@ namespace xl
         LONG      m_nObjectRefCount;
         LONG      m_nLockRefCount;
         ITypeLib *m_pTypeLib;
+        TLIBATTR *m_pTLibAttr;
+        DWORD     m_dwThreadId;
+        xl::Array<DWORD> m_arrRegClassObjects;
     };
 
 } // namespace xl

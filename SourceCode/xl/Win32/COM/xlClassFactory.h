@@ -26,13 +26,14 @@ namespace xl
                          public IClassFactoryImpl<>
     {
     public:
-        static IClassFactory *CreateFactory()
+        static IClassFactory *CreateFactory(bool bAddObjRefCount = true)
         {
-            return new ClassFactory;
+            return new ClassFactory(bAddObjRefCount);
         }
 
     public:
-        ClassFactory()
+        ClassFactory(bool bAddObjRefCount = true) :
+            ComClass<ClassFactory<T>>(bAddObjRefCount)
         {
 
         }
