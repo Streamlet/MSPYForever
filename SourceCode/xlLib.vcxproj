@@ -58,6 +58,7 @@
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h" />
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIObjectWithSiteImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h" />

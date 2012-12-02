@@ -48,7 +48,7 @@ namespace xl
                                   REFIID riid,
                                   void **ppvObject)
         {
-            IUnknown *p = new T;
+            T *p = new T;
             return p->QueryInterface(riid, ppvObject);
         }
 

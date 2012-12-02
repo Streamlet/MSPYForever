@@ -266,6 +266,9 @@
     <ClInclude Include="xl\Win32\COM\xlComInclude.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIObjectWithSiteImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
