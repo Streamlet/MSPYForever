@@ -44,9 +44,9 @@ namespace xl
         }
 
     public:
-        STDMETHOD(CreateInstance)(_In_opt_ IUnknown *pUnkOuter,
-                                  _In_ REFIID riid,
-                                  _COM_Outptr_  void **ppvObject)
+        STDMETHOD(CreateInstance)(IUnknown *pUnkOuter,
+                                  REFIID riid,
+                                  void **ppvObject)
         {
             IUnknown *p = new T;
             return p->QueryInterface(riid, ppvObject);

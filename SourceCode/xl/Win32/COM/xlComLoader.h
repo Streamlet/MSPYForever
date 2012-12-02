@@ -28,7 +28,7 @@
 namespace xl
 {
     typedef HRESULT (__stdcall *FnDllCanUnloadNow)();
-    typedef HRESULT (__stdcall *FnDllGetClassObject)(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID *ppv);
+    typedef HRESULT (__stdcall *FnDllGetClassObject)(REFCLSID rclsid, REFIID riid, LPVOID *ppv);
 
     struct ComDllModule
     {

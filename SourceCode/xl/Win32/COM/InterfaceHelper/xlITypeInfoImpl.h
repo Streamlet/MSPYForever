@@ -30,7 +30,7 @@ namespace xl
             return E_NOTIMPL;
         }
 
-        STDMETHOD(GetTypeComp)(__RPC__deref_out_opt ITypeComp **ppTComp)
+        STDMETHOD(GetTypeComp)(ITypeComp **ppTComp)
         {
             return E_NOTIMPL;
         }
@@ -50,17 +50,17 @@ namespace xl
             return E_NOTIMPL;
         }
 
-        STDMETHOD(GetRefTypeOfImplType)(UINT index, __RPC__out HREFTYPE *pRefType)
+        STDMETHOD(GetRefTypeOfImplType)(UINT index, HREFTYPE *pRefType)
         {
             return E_NOTIMPL;
         }
 
-        STDMETHOD(GetImplTypeFlags)( UINT index, __RPC__out INT *pImplTypeFlags)
+        STDMETHOD(GetImplTypeFlags)( UINT index, INT *pImplTypeFlags)
         {
             return E_NOTIMPL;
         }
 
-        STDMETHOD(GetIDsOfNames)(__RPC__in_ecount(cNames) LPOLESTR *rgszNames,
+        STDMETHOD(GetIDsOfNames)(LPOLESTR *rgszNames,
                                  UINT cNames,
                                  MEMBERID *pMemId)
         {
@@ -96,7 +96,7 @@ namespace xl
             return E_NOTIMPL;
         }
 
-        STDMETHOD(GetRefTypeInfo)(HREFTYPE hRefType, __RPC__deref_out_opt ITypeInfo **ppTInfo)
+        STDMETHOD(GetRefTypeInfo)(HREFTYPE hRefType, ITypeInfo **ppTInfo)
         {
             return E_NOTIMPL;
         }
@@ -111,7 +111,7 @@ namespace xl
             return E_NOTIMPL;
         }
 
-        STDMETHOD(GetMops)(MEMBERID memid, __RPC__deref_out_opt BSTR *pBstrMops)
+        STDMETHOD(GetMops)(MEMBERID memid, BSTR *pBstrMops)
         {
             return E_NOTIMPL;
         }

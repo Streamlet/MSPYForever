@@ -25,7 +25,7 @@ namespace xl
     class ITypeCompImpl : public IUnknownImpl<T>
     {
     public: // ITypeComp Methods
-        STDMETHOD(Bind)(__RPC__in LPOLESTR szName,
+        STDMETHOD(Bind)(LPOLESTR szName,
                         ULONG lHashVal,
                         WORD wFlags,
                         ITypeInfo **ppTInfo,
@@ -35,7 +35,7 @@ namespace xl
             return E_NOTIMPL;
         }
 
-        STDMETHOD(BindType)(__RPC__in LPOLESTR szName,
+        STDMETHOD(BindType)(LPOLESTR szName,
                             ULONG lHashVal,
                             ITypeInfo **ppTInfo,
                             ITypeComp **ppTComp)

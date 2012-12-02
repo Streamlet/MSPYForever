@@ -131,7 +131,7 @@ namespace xl
         }
 
     public:
-        STDMETHODIMP GetTypeInfo(_In_ REFIID riid, _Outptr_ ITypeInfo **ppTinfo)
+        STDMETHODIMP GetTypeInfo(REFIID riid, ITypeInfo **ppTinfo)
         {
             return m_pTypeLib->GetTypeInfoOfGuid(riid, ppTinfo);
         }
@@ -142,7 +142,7 @@ namespace xl
             return CanUnloadNow() ? S_OK : S_FALSE;
         }
 
-        STDMETHODIMP DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID *ppv)
+        STDMETHODIMP DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
         {
             for (const ClassEntry * const *ppEntry = &LP_CLASS_BEGIN + 1; ppEntry < &LP_CLASS_END; ++ppEntry)
             {
@@ -191,7 +191,7 @@ namespace xl
             return S_OK;
         }
 
-        STDMETHODIMP DllInstall(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine)
+        STDMETHODIMP DllInstall(BOOL bInstall, LPCTSTR lpszCmdLine)
         {
             if (lpszCmdLine == nullptr)
             {

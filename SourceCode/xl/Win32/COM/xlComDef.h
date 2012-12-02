@@ -38,14 +38,14 @@ namespace xl
         virtual ULONG STDMETHODCALLTYPE LockRelease() PURE;
 
     public:
-        STDMETHOD(GetTypeInfo)(_In_ REFIID riid, _Outptr_ ITypeInfo **ppTinfo) PURE;
+        STDMETHOD(GetTypeInfo)(REFIID riid, ITypeInfo **ppTinfo) PURE;
 
     public:
         STDMETHOD(DllCanUnloadNow)() PURE;
-        STDMETHOD(DllGetClassObject)(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID *ppv) PURE;
+        STDMETHOD(DllGetClassObject)(REFCLSID rclsid, REFIID riid, LPVOID *ppv) PURE;
         STDMETHOD(DllRegisterServer)() PURE;
         STDMETHOD(DllUnregisterServer)() PURE;
-        STDMETHOD(DllInstall)(BOOL bInstall, _In_opt_ LPCTSTR lpszCmdLine) PURE;
+        STDMETHOD(DllInstall)(BOOL bInstall, LPCTSTR lpszCmdLine) PURE;
 
     public:
         STDMETHOD(ExeRegisterServer)() PURE;
