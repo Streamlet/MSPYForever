@@ -91,6 +91,7 @@
     <ClInclude Include="xl\Win32\GUI\xlStdLink.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdListBox.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdListView.h" />
+    <ClInclude Include="xl\Win32\GUI\xlStdProgressBar.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdScrollBar.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdStatic.h" />
     <ClInclude Include="xl\Win32\GUI\xlThunk.h" />

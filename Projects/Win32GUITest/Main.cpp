@@ -25,6 +25,7 @@
 #include <xl/Win32/GUI/xlStdScrollBar.h>
 #include <xl/Win32/GUI/xlStdListView.h>
 #include <xl/Win32/GUI/xlStdLink.h>
+#include <xl/Win32/GUI/xlStdProgressBar.h>
 
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,
@@ -92,6 +93,10 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     xl::StdLink link;
     link.Create(8, &wnd, 300, 200, 160, 20);
     link.SetWindowText(_T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
+
+    xl::StdProgressBar progressbar;
+    progressbar.Create(9, &wnd, 300, 240, 160, 20);
+    progressbar.OffsetPos(60);
 
     wnd.AppendMsgHandler(WM_RBUTTONUP, [&popupMenu](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled) -> LRESULT
     {

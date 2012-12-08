@@ -269,6 +269,9 @@
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIObjectWithSiteImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdProgressBar.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
