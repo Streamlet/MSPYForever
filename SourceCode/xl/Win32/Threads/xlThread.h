@@ -124,7 +124,10 @@ namespace xl
 
         DWORD ThreadProc()
         {
-            return m_fnThreadProc(m_hEventQuit, m_param);
+            DWORD dwResult = m_fnThreadProc(m_hEventQuit, m_param);
+            m_bCreated = false;
+
+            return dwResult;
         }
 
         static DWORD NullThreadProc(HANDLE hQuit, ParamType param)
