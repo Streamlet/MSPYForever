@@ -98,9 +98,6 @@
     <ClInclude Include="xl\String\xlEncoding.h">
       <Filter>String</Filter>
     </ClInclude>
-    <ClInclude Include="xl\String\xlRegExp.h">
-      <Filter>String</Filter>
-    </ClInclude>
     <ClInclude Include="xl\String\xlString.h">
       <Filter>String</Filter>
     </ClInclude>

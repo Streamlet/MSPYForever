@@ -51,7 +51,6 @@
     <ClInclude Include="xl\Parser\xlRegExp.h" />
     <ClInclude Include="xl\String\xlBase64.h" />
     <ClInclude Include="xl\String\xlEncoding.h" />
-    <ClInclude Include="xl\String\xlRegExp.h" />
     <ClInclude Include="xl\String\xlString.h" />
     <ClInclude Include="xl\Test\xlUnitTest.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h" />
