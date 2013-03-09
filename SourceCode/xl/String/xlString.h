@@ -428,13 +428,8 @@ namespace xl
         {
             strRet.m_aData.Insert(strRet.m_aData.End(), m_aData.Begin() + nStart, m_aData.Begin() + nStart + nLength);
         }
-        else
-        {
-            strRet.m_aData.Insert(strRet.m_aData.End(), m_aData.Begin() + nStart, m_aData.End());
-        }
 
-
-        if (strRet.m_aData[strRet.m_aData.Size() - 1] != T(0))
+        if (strRet.m_aData.Empty() || strRet.m_aData[strRet.m_aData.Size() - 1] != T(0))
         {
             strRet.m_aData.PushBack(T(0));
         }
