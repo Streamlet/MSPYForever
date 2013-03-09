@@ -52,7 +52,7 @@ namespace xl
                     int y = CW_USEDEFAULT,
                     int nWidth = CW_USEDEFAULT,
                     int nHeight = CW_USEDEFAULT,
-                    DWORD dwStyle = WS_CHILD | WS_VISIBLE,
+                    DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_BORDER,
                     DWORD dwExStyle = 0,
                     HINSTANCE hInstance = nullptr)
         {

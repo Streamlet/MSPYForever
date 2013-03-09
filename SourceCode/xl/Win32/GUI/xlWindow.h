@@ -20,6 +20,9 @@
 #include <xl/Win32/GUI/xlWindowBaseEx.h>
 #include <xl/Win32/GUI/xlWindowAPIMacroRedefine.h>
 #include <xl/Win32/GUI/xlCommCtrlInitializer.h>
+#include <xl/String/xlString.h>
+#include <xl/Memory/xlSmartPtr.h>
+#include <ShellAPI.h>
 
 namespace xl
 {
@@ -218,6 +221,21 @@ namespace xl
         BOOL SetWindowText(LPCTSTR lpszString)
         {
             return ::SetWindowText(m_hWnd, lpszString);
+        }
+
+        xl::String GetWindowText()
+        {
+            int nLength = GetWindowTextLength();
+
+            if (nLength <= 0)
+            {
+                return _T("");
+            }
+
+            xl::SharedArray<TCHAR> spBuffer(new TCHAR[++nLength]);
+            GetWindowText(spBuffer.RawPointer(), nLength);
+
+            return spBuffer.RawPointer();
         }
 
     public: // Font Functions
