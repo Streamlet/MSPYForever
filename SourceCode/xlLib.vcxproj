@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="xl\Algorithm\xlSort.h" />
     <ClInclude Include="xl\Containers\xlArray.h" />
     <ClInclude Include="xl\Containers\xlBinTree.h" />
     <ClInclude Include="xl\Containers\xlGraph.h" />

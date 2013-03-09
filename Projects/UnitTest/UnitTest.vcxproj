@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithm\xlSortTest.cpp" />
     <ClCompile Include="Containers\xlArrayTest.cpp" />
     <ClCompile Include="Containers\xlListTest.cpp" />
     <ClCompile Include="Containers\xlMapTest.cpp" />

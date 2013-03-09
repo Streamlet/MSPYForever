@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Parser">
       <UniqueIdentifier>{1911084c-8da2-4a0c-af63-7f69562eff3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Algorithm">
+      <UniqueIdentifier>{a408f3b4-31fd-420c-aeaf-8d734ca47ad4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Parser\xlRegExpTest.cpp">
       <Filter>Source Files\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="Algorithm\xlSortTest.cpp">
+      <Filter>Source Files\Algorithm</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

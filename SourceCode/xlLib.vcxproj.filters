@@ -269,6 +269,9 @@
     <ClInclude Include="xl\Win32\GUI\xlStdProgressBar.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Algorithm\xlSort.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -327,6 +330,9 @@
     </Filter>
     <Filter Include="Win32\File">
       <UniqueIdentifier>{09c53fd6-b24b-4251-aedb-7111dd89032a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{9a154b06-b8b6-4e85-9813-711631db359e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
