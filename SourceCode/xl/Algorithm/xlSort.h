@@ -160,10 +160,18 @@ namespace xl
                     T t = tData[i];
                     size_t j = i;
 
-                    while (j > 0 && fnComparor(t, tData[j - gap]))
+                    while (fnComparor(t, tData[j - gap]))
                     {
                         tData[j] = tData[j - gap];
-                        j -= gap;
+
+                        if (j >= gap)
+                        {
+                            j -= gap;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
 
                     if (j != i)
