@@ -349,6 +349,11 @@ namespace xl
             return this->m_pFunctionBase == nullptr;                                                                \
         }                                                                                                           \
                                                                                                                     \
+        bool operator != (decltype(nullptr)) const                                                                  \
+        {                                                                                                           \
+            return this->m_pFunctionBase != nullptr;                                                                \
+        }                                                                                                           \
+                                                                                                                    \
         bool operator == (const Function &that) const                                                               \
         {                                                                                                           \
             if (this->m_pFunctionBase != nullptr && that.m_pFunctionBase != nullptr)                                \
