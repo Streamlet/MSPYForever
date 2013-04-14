@@ -351,10 +351,14 @@ namespace xl
     template <typename T>
     StringT<T> &StringT<T>::TrimRight(T ch /*= T(' ')*/)
     {
+        m_aData.PopBack();
+
         while (*m_aData.End() == ch)
         {
             m_aData.PopBack();
         }
+
+        m_aData.PushBack(T(0));
 
         return *this;
     }
