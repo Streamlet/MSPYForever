@@ -353,7 +353,7 @@ namespace xl
     {
         m_aData.PopBack();
 
-        while (*m_aData.End() == ch)
+        while (!m_aData.Empty() && *m_aData.ReverseBegin() == ch)
         {
             m_aData.PopBack();
         }
