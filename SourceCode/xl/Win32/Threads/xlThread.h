@@ -20,6 +20,7 @@
 #include <xl/Meta/xlUtility.h>
 #include <xl/Meta/xlFunction.h>
 #include <xl/Win32/xlWin32Ver.h>
+#include <xl/Win32/Threads/xlCriticalSection.h>
 #include <Windows.h>
 #include <process.h>
 
@@ -32,61 +33,104 @@ namespace xl
         typedef Function<DWORD (HANDLE, ParamType)> ProcType;
 
     public:
-        Thread() : m_hEventQuit(NULL), m_hThread(NULL), m_bCreated(false), m_param()
+        Thread() : m_hEventQuit(nullptr), m_hThread(nullptr), m_param()
         {
-
+            m_hEventQuit = CreateEvent(nullptr, TRUE, FALSE, nullptr);
+            m_hEventStopped = CreateEvent(nullptr, TRUE, TRUE, nullptr);
         }
 
         ~Thread()
         {
             Destroy();
+
+            CloseHandle(m_hEventStopped);
+            CloseHandle(m_hEventQuit);
         }
 
     public:
-        bool Create(ProcType fnThreadProc, ParamType param)
+        bool Create(ProcType fnThreadProc, ParamType param, bool bSuspend = false)
         {
-            if (m_bCreated)
-            {
-                return true;
-            }
+            XL_SCOPED_CRITICAL_SECTION(m_cs);
 
             Destroy();
-
-            m_hEventQuit = CreateEvent(NULL, TRUE, FALSE, NULL);
-
-            if (m_hEventQuit == NULL)
-            {
-                return false;
-            }
 
             m_fnThreadProc = fnThreadProc;
             m_param        = param;
 
-            m_hThread = (HANDLE)_beginthreadex(NULL, 0, StaticThreadProc, this, 0, NULL);
+            ResetEvent(m_hEventQuit);
+            ResetEvent(m_hEventStopped);
 
-            if (m_hThread == NULL)
+            m_hThread = (HANDLE)_beginthreadex(nullptr, 0, StaticThreadProc, this, bSuspend ? CREATE_SUSPENDED : 0, nullptr);
+
+            if (m_hThread == nullptr)
+            {
+                SetEvent(m_hEventStopped);
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Suspend()
+        {
+            XL_SCOPED_CRITICAL_SECTION(m_cs);
+        
+            if (m_hThread == nullptr)
             {
                 return false;
             }
 
-            m_bCreated = true;
+            if (SuspendThread(m_hThread) == -1)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Resume()
+        {
+            XL_SCOPED_CRITICAL_SECTION(m_cs);
+        
+            if (m_hThread == nullptr)
+            {
+                return false;
+            }
+
+            if (ResumeThread(m_hThread) == -1)
+            {
+                return false;
+            }
 
             return true;
         }
 
         void NotifyStop()
         {
-            if (m_bCreated)
-            {
-                SetEvent(m_hEventQuit);
-            }
+            SetEvent(m_hEventQuit);
         }
 
         bool Wait(DWORD dwTimeout = INFINITE)
         {
-            if (!m_bCreated)
+            DWORD dwTickCount = GetTickCount();
+
+            if (WaitForSingleObject(m_hEventStopped, dwTimeout) != WAIT_OBJECT_0)
             {
-                return true;
+                return false;
+            }
+
+            DWORD dwTimeUsed = GetTickCount() - dwTickCount;
+
+            if (dwTimeout != 0 && dwTimeout != INFINITE)
+            {
+                if (dwTimeUsed < dwTimeout)
+                {
+                    dwTimeout -= dwTimeUsed;
+                }
+                else
+                {
+                    dwTimeout = 0;
+                }
             }
 
             if (WaitForSingleObject(m_hThread, dwTimeout) != WAIT_OBJECT_0)
@@ -106,14 +150,15 @@ namespace xl
                 return;
             }
 
-            CloseHandle(m_hThread);
-            CloseHandle(m_hEventQuit);
+            XL_SCOPED_CRITICAL_SECTION(m_cs);
 
-            m_fnThreadProc = NullThreadProc;
+            if (m_hThread == nullptr)
+            {
+                CloseHandle(m_hThread);
+            }
+
+            m_fnThreadProc = nullptr;
             m_param        = ParamType();
-            m_hThread      = NULL;
-            m_hEventQuit   = NULL;
-            m_bCreated     = false;
         }
 
     private:
@@ -125,20 +170,17 @@ namespace xl
         DWORD ThreadProc()
         {
             DWORD dwResult = m_fnThreadProc(m_hEventQuit, m_param);
-            m_bCreated = false;
 
             return dwResult;
         }
 
-        static DWORD NullThreadProc(HANDLE hQuit, ParamType param)
-        {
-            return 0;
-        }
-
     private:
         HANDLE    m_hEventQuit;
+        HANDLE    m_hEventStopped;
+
+        CriticalSection m_cs;
         HANDLE    m_hThread;
-        bool      m_bCreated;
+
         ProcType  m_fnThreadProc;
         ParamType m_param;
     };
