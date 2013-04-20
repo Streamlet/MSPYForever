@@ -272,6 +272,9 @@
     <ClInclude Include="xl\Algorithm\xlSort.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComPtr.h">
+      <Filter>Win32\COM\Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
