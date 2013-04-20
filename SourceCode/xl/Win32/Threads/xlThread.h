@@ -141,6 +141,21 @@ namespace xl
             return true;
         }
 
+        bool GetExitCode(DWORD *lpExitCode)
+        {
+            if (lpExitCode == nullptr)
+            {
+                return false;
+            }
+            
+            if (!GetExitCodeThread(m_hThread, lpExitCode))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         void Destroy()
         {
             NotifyStop();
@@ -170,6 +185,7 @@ namespace xl
         DWORD ThreadProc()
         {
             DWORD dwResult = m_fnThreadProc(m_hEventQuit, m_param);
+            SetEvent(m_hEventStopped);
 
             return dwResult;
         }

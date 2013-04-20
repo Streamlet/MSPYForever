@@ -16,6 +16,7 @@
 
 #include <xl/Test/xlUnitTest.h>
 #include <xl/Meta/xlBind.h>
+#include <xl/Win32/Threads/xlThread.h>
 
 namespace
 {
@@ -210,6 +211,31 @@ namespace
     }
 
     int test_const_r_ref(const int &&i)
+    {
+        return i;
+    }
+
+    DWORD test_const_thread(HANDLE hQuitEvent, LPVOID pParam, const int i)
+    {
+        return i;
+    }
+
+    DWORD test_ref_thread(HANDLE hQuitEvent, LPVOID pParam, int &i)
+    {
+        return ++i;
+    }
+
+    DWORD test_const_ref_thread(HANDLE hQuitEvent, LPVOID pParam, const int &i)
+    {
+        return i;
+    }
+
+    DWORD test_r_ref_thread(HANDLE hQuitEvent, LPVOID pParam, int &&i)
+    {
+        return i;
+    }
+
+    DWORD test_const_r_ref_thread(HANDLE hQuitEvent, LPVOID pParam, const int &&i)
     {
         return i;
     }
@@ -626,8 +652,81 @@ namespace
         XL_TEST_ASSERT(i == 2);
         i = 0;
         XL_TEST_ASSERT(Bind(test_const_ref, _1)(i) == 0);
-        XL_TEST_ASSERT(Function<int (int &&)>(test_r_ref)(0) == 0);
-        XL_TEST_ASSERT(Function<int (const int &&)>(test_const_r_ref)(0) == 0);
+        XL_TEST_ASSERT(Bind(test_r_ref, _1)(0) == 0);
+        XL_TEST_ASSERT(Bind(test_const_r_ref, _1)(0) == 0);
     }
 
+    XL_TEST_CASE()
+    {
+        int i = 0;
+
+        {
+            Thread<> t;
+            t.Create(xl::Bind(test_const_thread, _1, _2, i), nullptr);
+            t.Wait(INFINITE);
+            XL_TEST_ASSERT(i == 0);
+
+            DWORD dwExitCode = 0;
+            t.GetExitCode(&dwExitCode);
+            XL_TEST_ASSERT(dwExitCode == 0);
+        }
+
+        {
+            Thread<> t;
+            t.Create(xl::Bind(test_ref_thread, _1, _2, i), nullptr);
+            t.Wait(INFINITE);
+            XL_TEST_ASSERT(i == 1);
+
+            DWORD dwExitCode = 0;
+            t.GetExitCode(&dwExitCode);
+            XL_TEST_ASSERT(dwExitCode == 1);
+            i = 0;
+        }
+
+        {
+            int *p = new int;
+            *p = 0;
+            Thread<> t;
+            t.Create(xl::Bind(test_ref_thread, _1, _2, *p), nullptr);
+            t.Wait(INFINITE);
+            XL_TEST_ASSERT(*p == 1);
+
+            DWORD dwExitCode = 0;
+            t.GetExitCode(&dwExitCode);
+            XL_TEST_ASSERT(dwExitCode == 1);
+            delete p;
+        }
+
+
+        {
+            Thread<> t;
+            t.Create(xl::Bind(test_const_ref_thread, _1, _2, i), nullptr);
+            t.Wait(INFINITE);
+            XL_TEST_ASSERT(i == 0);
+
+            DWORD dwExitCode = 0;
+            t.GetExitCode(&dwExitCode);
+            XL_TEST_ASSERT(dwExitCode == 0);
+        }
+
+        {
+            Thread<> t;
+            t.Create(xl::Bind(test_r_ref_thread, _1, _2, 0), nullptr);
+            t.Wait(INFINITE);
+
+            DWORD dwExitCode = 0;
+            t.GetExitCode(&dwExitCode);
+            XL_TEST_ASSERT(dwExitCode == 0);
+        }
+
+        {
+            Thread<> t;
+            t.Create(xl::Bind(test_const_r_ref_thread, _1, _2, 0), nullptr);
+            t.Wait(INFINITE);
+
+            DWORD dwExitCode = 0;
+            t.GetExitCode(&dwExitCode);
+            XL_TEST_ASSERT(dwExitCode == 0);
+        }
+    }
 }

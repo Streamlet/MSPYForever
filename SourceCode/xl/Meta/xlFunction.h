@@ -344,6 +344,12 @@ namespace xl
             return *this;                                                                                           \
         }                                                                                                           \
                                                                                                                     \
+        Function &operator = (decltype(nullptr))                                                                    \
+        {                                                                                                           \
+            this->m_pFunctionBase = nullptr;                                                                        \
+            return *this;                                                                                           \
+        }                                                                                                           \
+                                                                                                                    \
         bool operator == (decltype(nullptr)) const                                                                  \
         {                                                                                                           \
             return this->m_pFunctionBase == nullptr;                                                                \

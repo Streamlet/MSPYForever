@@ -39,7 +39,8 @@ namespace xl
 #define XL_BIND_TYPENAME_LIST_PATTERN_B(n)      B##n
 #define XL_BIND_TYPENAME_LIST_B(n)              XL_REPZ(XL_BIND_TYPENAME_LIST_PATTERN_B, n, XL_COMMA)
 
-#define XL_BIND_TYPENAME_VARIABLE_PATTERN(n)    A##n a##n
+#define XL_BIND_TYPENAME_VARIABLE_NO_RREF(n)    A##n a##n
+#define XL_BIND_TYPENAME_VARIABLE_PATTERN(n)    A##n &&a##n
 #define XL_BIND_TYPENAME_VARIABLE(n)            XL_REPZ(XL_BIND_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
 
 #define XL_BIND_VARIABLE_INITIALIZE_PATTERN(n)  a##n(static_cast<A##n &&>(a##n))
@@ -83,7 +84,7 @@ namespace xl
                                                                                                             \
         }                                                                                                   \
                                                                                                             \
-        XL_BIND_TYPENAME_VARIABLE_PATTERN(n);                                                               \
+        XL_BIND_TYPENAME_VARIABLE_NO_RREF(n);                                                               \
     };
 
 #define XL_BIND_ARGUMENTS(n)  XL_REPY(XL_BIND_ARGUMENTS_PATTERN, n, XL_NIL)
