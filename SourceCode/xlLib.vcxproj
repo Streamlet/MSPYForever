@@ -104,6 +104,7 @@
     <ClInclude Include="xl\Win32\Memory\xlSafeSmartPtr.h" />
     <ClInclude Include="xl\Win32\Messaging\xlMessageBus.h" />
     <ClInclude Include="xl\Win32\Network\xlSocket.h" />
+    <ClInclude Include="xl\Win32\Network\xlWinHttp.h" />
     <ClInclude Include="xl\Win32\Registry\xlRegistry.h" />
     <ClInclude Include="xl\Win32\Threads\xlCriticalSection.h" />
     <ClInclude Include="xl\Win32\Threads\xlThread.h" />
