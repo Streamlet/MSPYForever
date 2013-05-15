@@ -107,10 +107,12 @@
     <ClInclude Include="xl\Win32\Network\xlWinHttp.h" />
     <ClInclude Include="xl\Win32\Registry\xlRegistry.h" />
     <ClInclude Include="xl\Win32\Threads\xlCriticalSection.h" />
+    <ClInclude Include="xl\Win32\Threads\xlEvent.h" />
     <ClInclude Include="xl\Win32\Threads\xlThread.h" />
     <ClInclude Include="xl\Win32\Threads\xlThreadPool.h" />
     <ClInclude Include="xl\Win32\Threads\xlTls.h" />
     <ClInclude Include="xl\Win32\xlWin32Ver.h" />
+    <ClInclude Include="xl\Win32\xlHandle.h" />
     <ClInclude Include="xl\xlDef.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

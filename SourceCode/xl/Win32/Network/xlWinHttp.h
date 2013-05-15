@@ -24,16 +24,16 @@
 namespace xl
 {
     template <bool bManaged = true>
-    class WinHttpHandle : public NonCopyable
+    class WinHttpHandleT : public NonCopyable
     {
     public:
-        WinHttpHandle(HINTERNET hInternet = nullptr) :
+        WinHttpHandleT(HINTERNET hInternet = nullptr) :
             m_hInternet(hInternet)
         {
         
         }
         
-        ~WinHttpHandle()
+        ~WinHttpHandleT()
         {
             if (bManaged)
             {
@@ -104,7 +104,9 @@ namespace xl
         HINTERNET m_hInternet;
     };
 
-    class WinHttpSession : public WinHttpHandle<>
+    typedef WinHttpHandleT<> WinHttpHandle;
+
+    class WinHttpSession : public WinHttpHandle
     {
     public:
         WinHttpSession()
@@ -134,7 +136,7 @@ namespace xl
         }
     };
 
-    class WinHttpConnection : public WinHttpHandle<>
+    class WinHttpConnection : public WinHttpHandle
     {
     public:
         WinHttpConnection() :
@@ -172,7 +174,7 @@ namespace xl
         bool m_bSsl;
     };
 
-    class WinHttpRequest : public WinHttpHandle<>
+    class WinHttpRequest : public WinHttpHandle
     {
     public:
         WinHttpRequest()

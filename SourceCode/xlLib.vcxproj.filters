@@ -278,6 +278,12 @@
     <ClInclude Include="xl\Win32\Network\xlWinHttp.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\Threads\xlEvent.h">
+      <Filter>Win32\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\xlHandle.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
