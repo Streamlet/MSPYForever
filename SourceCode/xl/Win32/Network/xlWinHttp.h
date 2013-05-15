@@ -23,6 +23,54 @@
 
 namespace xl
 {
+    namespace WinHttpUtil
+    {
+        bool CheckPlatform()
+        {
+            if (!WinHttpCheckPlatform())
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool CrackUrl(LPCWSTR lpszUrl, DWORD dwUrlLength, DWORD dwFlags, LPURL_COMPONENTS lpUrlComponents)
+        {
+            if (!WinHttpCrackUrl(lpszUrl, dwUrlLength, dwFlags, lpUrlComponents))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        bool CreateUrl(LPURL_COMPONENTS lpUrlComponents, DWORD dwFlags, LPWSTR lpszUrl, LPDWORD lpdwUrlLength)
+        {
+            if (!WinHttpCreateUrl(lpUrlComponents, dwFlags, lpszUrl, lpdwUrlLength))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool DetectAutoProxyConfigUrl(DWORD dwAutoDetectFlags, LPWSTR *ppwszAutoConfigUrl)
+        {
+            if (!WinHttpDetectAutoProxyConfigUrl(dwAutoDetectFlags, ppwszAutoConfigUrl))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        void FreeProxyResult(WINHTTP_PROXY_RESULT *pProxyResult)
+        {
+            WinHttpFreeProxyResult(pProxyResult);
+        }
+    }
+
     template <bool bManaged = true>
     class WinHttpHandleT : public NonCopyable
     {
@@ -139,6 +187,31 @@ namespace xl
         
             return true;
         }
+    };
+
+    class WinHttpProxyResolver : public WinHttpHandle
+    {
+    public:
+        WinHttpProxyResolver()
+        {
+
+        }
+
+        ~WinHttpProxyResolver()
+        {
+
+        }
+
+    public:
+        bool Initialize(const WinHttpSession &session)
+        {
+            if (WinHttpCreateProxyResolver(session, &m_hInternet) != ERROR_SUCCESS)
+            {
+                return false;
+            }
+
+            return true;
+        }    
     };
 
     class WinHttpConnection : public WinHttpHandle
