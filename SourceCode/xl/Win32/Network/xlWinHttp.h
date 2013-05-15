@@ -84,6 +84,11 @@ namespace xl
             return true;
         }
 
+        WINHTTP_STATUS_CALLBACK SetStatusCallback(WINHTTP_STATUS_CALLBACK lpfnInternetCallback, DWORD dwNotificationFlags)
+        {
+            return WinHttpSetStatusCallback(m_hInternet, lpfnInternetCallback, dwNotificationFlags, 0);
+        }
+
         bool QueryOption(DWORD dwOption, LPVOID lpBuffer, LPDWORD lpdwBufferLength)
         {
             if (!WinHttpQueryOption(m_hInternet, dwOption, lpBuffer, lpdwBufferLength))
@@ -120,10 +125,10 @@ namespace xl
         }
 
     public:
-        bool Initialize(LPCTSTR lpUserAgent = _T(""),
+        bool Initialize(LPCWSTR lpUserAgent = L"",
                         DWORD dwAccessType = WINHTTP_ACCESS_TYPE_NO_PROXY,
-                        LPCTSTR lpszProxyName = WINHTTP_NO_PROXY_NAME,
-                        LPCTSTR lpszProxyBypass = WINHTTP_NO_PROXY_BYPASS)
+                        LPCWSTR lpszProxyName = WINHTTP_NO_PROXY_NAME,
+                        LPCWSTR lpszProxyBypass = WINHTTP_NO_PROXY_BYPASS)
         {
             m_hInternet = WinHttpOpen(lpUserAgent, dwAccessType, lpszProxyName, lpszProxyBypass, WINHTTP_FLAG_ASYNC);
 
@@ -151,7 +156,7 @@ namespace xl
         }
 
     public:
-        bool Initialize(const WinHttpSession &session, LPCTSTR lpszServerName, INTERNET_PORT nServerPort = INTERNET_DEFAULT_PORT, bool bSsl = false)
+        bool Initialize(const WinHttpSession &session, LPCWSTR lpszServerName, INTERNET_PORT nServerPort = INTERNET_DEFAULT_PORT, bool bSsl = false)
         {
             m_hInternet = WinHttpConnect(session, lpszServerName, nServerPort, 0);
 
@@ -174,6 +179,7 @@ namespace xl
         bool m_bSsl;
     };
 
+    template <typename T>
     class WinHttpRequest : public WinHttpHandle
     {
     public:
@@ -189,11 +195,11 @@ namespace xl
 
     public:
         bool Initialize(const WinHttpConnection &connection,
-                        LPCTSTR lpszVerb,
-                        LPCTSTR lpszObjectName,
-                        LPCTSTR lpszVersion = nullptr,
-                        LPCTSTR lpszReferrer = nullptr,
-                        LPCTSTR *ppwszAcceptTypes = WINHTTP_DEFAULT_ACCEPT_TYPES,
+                        LPCWSTR lpszVerb,
+                        LPCWSTR lpszObjectName,
+                        LPCWSTR lpszVersion = nullptr,
+                        LPCWSTR lpszReferrer = nullptr,
+                        LPCWSTR *ppwszAcceptTypes = WINHTTP_DEFAULT_ACCEPT_TYPES,
                         DWORD dwFlags = 0)
         {
             if (connection.IsSsl())
@@ -213,7 +219,118 @@ namespace xl
             {
                 return false;
             }
+
+            SetStatusCallback(StaticWinHttpStatusCallback, WINHTTP_CALLBACK_FLAG_ALL_COMPLETIONS);
         
+            return true;
+        }
+
+    public:
+        bool AddRequestHeaders(LPCWSTR lpszHeaders, DWORD dwHeadersLength, DWORD dwModifiers)
+        {
+            if (!WinHttpAddRequestHeaders(m_hInternet, lpszHeaders, dwHeadersLength, dwModifiers))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool QueryAuthSchemes(LPDWORD lpdwSupportedSchemes, LPDWORD lpdwFirstScheme, LPDWORD pdwAuthTarget)
+        {
+            if (!WinHttpQueryAuthSchemes(m_hInternet, lpdwSupportedSchemes, lpdwFirstScheme, pdwAuthTarget))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool QueryDataAvailable(LPDWORD lpdwNumberOfBytesAvailable)
+        {
+            if (!WinHttpQueryDataAvailable(m_hInternet, lpdwNumberOfBytesAvailable))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool QueryHeaders(DWORD dwInfoLevel, LPCWSTR lpszName, LPVOID lpBuffer, LPDWORD lpdwBufferLength, LPDWORD lpdwIndex)
+        {
+            if (!WinHttpQueryHeaders(m_hInternet,
+                                     dwInfoLevel,
+                                     lpszName,
+                                     lpBuffer,
+                                     lpdwBufferLength,
+                                     lpdwIndex))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        bool ReadData(LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead)
+        {
+            if (!WinHttpReadData(m_hInternet,
+                                 lpBuffer,
+                                 dwNumberOfBytesToRead,
+                                 lpdwNumberOfBytesRead))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool ReceiveResponse()
+        {
+            if (!WinHttpReceiveResponse(m_hInternet, nullptr))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool SendRequest(LPCWSTR lpszHeaders, DWORD dwHeadersLength, LPVOID lpOptional, DWORD dwOptionalLength, DWORD dwTotalLength)
+        {
+            if (!WinHttpSendRequest(m_hInternet,
+                                    lpszHeaders,
+                                    dwHeadersLength,
+                                    lpOptional,
+                                    dwOptionalLength,
+                                    dwTotalLength,
+                                    static_cast<T *>(this)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool SetCredentials(DWORD dwAuthTargets,
+                            DWORD dwAuthScheme,
+                            LPCWSTR lpszUserName,
+                            LPCWSTR lpszPassword,
+                            LPVOID pAuthParams)
+        {
+            if (!WinHttpSetCredentials(m_hInternet, dwAuthTargets, dwAuthScheme, lpszUserName, lpszPassword, pAuthParams))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool WriteData(LPCVOID lpBuffer, DWORD dwNumberOfBytesToWrite, LPDWORD lpdwNumberOfBytesWritten)
+        {
+            if (!WinHttpWriteData(m_hInternet, lpBuffer, dwNumberOfBytesToWrite, lpdwNumberOfBytesWritten))
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -224,22 +341,14 @@ namespace xl
                                                          LPVOID lpvStatusInformation,
                                                          DWORD dwStatusInformationLength)
         {
-            ((WinHttpRequest *)dwContext)->WinHttpStatusCallback(hInternet,
-                                                                 dwInternetStatus,
-                                                                 lpvStatusInformation,
-                                                                 dwStatusInformationLength);
-        }
+            T *pT = reinterpret_cast<T *>(dwContext);
 
-    private:
-        void WinHttpStatusCallback(HINTERNET hInternet,
-                                   DWORD dwInternetStatus,
-                                   LPVOID lpvStatusInformation,
-                                   DWORD dwStatusInformationLength)
-        {
-            if (hInternet != m_hInternet)
+            if (hInternet == pT->m_hInternet)
             {
-                return;
-            }        
+                pT->OnCallback(dwInternetStatus,
+                               lpvStatusInformation,
+                               dwStatusInformationLength);
+            }
         }
     };
 
