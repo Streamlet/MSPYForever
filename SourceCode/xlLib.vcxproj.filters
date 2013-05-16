@@ -284,6 +284,9 @@
     <ClInclude Include="xl\Win32\xlHandle.h">
       <Filter>Win32</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\Network\xlHttpIO.h">
+      <Filter>Win32\Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">

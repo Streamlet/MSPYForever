@@ -17,6 +17,7 @@
 
 
 #include <xl/Meta/xlUtility.h>
+#include <xl/String/xlString.h>
 #include <Windows.h>
 #include <WinHttp.h>
 #include <tchar.h>
@@ -24,9 +25,10 @@
 
 namespace xl
 {
-    namespace WinHttpUtil
+    class WinHttpUtils : public NonInstantiable
     {
-        bool CheckPlatform()
+    public:
+        static bool CheckPlatform()
         {
             if (!WinHttpCheckPlatform())
             {
@@ -36,7 +38,7 @@ namespace xl
             return true;
         }
 
-        bool CrackUrl(LPCWSTR lpszUrl, DWORD dwUrlLength, DWORD dwFlags, LPURL_COMPONENTS lpUrlComponents)
+        static bool CrackUrl(LPCWSTR lpszUrl, DWORD dwUrlLength, DWORD dwFlags, LPURL_COMPONENTS lpUrlComponents)
         {
             if (!WinHttpCrackUrl(lpszUrl, dwUrlLength, dwFlags, lpUrlComponents))
             {
@@ -45,8 +47,61 @@ namespace xl
 
             return true;
         }
+
+        static bool CrackUrl(const String &strUrl, String *pHostName, String *pUrlPath, String *pExtroInfo, bool *pSecure = nullptr)
+        {
+            URL_COMPONENTS urlComp = { sizeof(URL_COMPONENTS) };
+
+            urlComp.dwHostNameLength  = (DWORD)-1;
+            urlComp.dwUrlPathLength   = (DWORD)-1;
+            urlComp.dwExtraInfoLength = (DWORD)-1;
+
+            if (!CrackUrl(strUrl.GetAddress(), 0, 0, &urlComp))
+            {
+                return false;
+            }
+
+            if (pHostName != nullptr)
+            {
+                *pHostName = String(urlComp.lpszHostName, urlComp.dwHostNameLength);
+            }
+
+            if (pUrlPath != nullptr)
+            {
+                *pUrlPath = String(urlComp.lpszUrlPath, urlComp.dwUrlPathLength);
+            }
+
+            if (pExtroInfo != nullptr)
+            {
+                *pExtroInfo = String(urlComp.lpszExtraInfo, urlComp.dwExtraInfoLength);
+            }
+
+            if (pSecure != nullptr)
+            {
+                *pSecure = (urlComp.nScheme == INTERNET_SCHEME_HTTPS);
+            }
+
+            return true;
+        }
         
-        bool CreateUrl(LPURL_COMPONENTS lpUrlComponents, DWORD dwFlags, LPWSTR lpszUrl, LPDWORD lpdwUrlLength)
+        static bool CrackUrl(const String &strUrl, String *pHostName, String *pUrlPath, bool *pSecure = nullptr)
+        {
+            String strUrlPath, strExtraInfo;
+        
+            if (!CrackUrl(strUrl, pHostName, &strUrlPath, &strExtraInfo, pSecure))
+            {
+                return false;
+            }
+
+            if (pUrlPath != nullptr)
+            {
+                *pUrlPath = strUrlPath + strExtraInfo;
+            }
+
+            return true;
+        }
+
+        static bool CreateUrl(LPURL_COMPONENTS lpUrlComponents, DWORD dwFlags, LPWSTR lpszUrl, LPDWORD lpdwUrlLength)
         {
             if (!WinHttpCreateUrl(lpUrlComponents, dwFlags, lpszUrl, lpdwUrlLength))
             {
@@ -56,7 +111,7 @@ namespace xl
             return true;
         }
 
-        bool DetectAutoProxyConfigUrl(DWORD dwAutoDetectFlags, LPWSTR *ppwszAutoConfigUrl)
+        static bool DetectAutoProxyConfigUrl(DWORD dwAutoDetectFlags, LPWSTR *ppwszAutoConfigUrl)
         {
             if (!WinHttpDetectAutoProxyConfigUrl(dwAutoDetectFlags, ppwszAutoConfigUrl))
             {
@@ -66,7 +121,7 @@ namespace xl
             return true;
         }
 
-        bool GetDefaultProxyConfiguration(WINHTTP_PROXY_INFO *pProxyInfo)
+        static bool GetDefaultProxyConfiguration(WINHTTP_PROXY_INFO *pProxyInfo)
         {
             if (!WinHttpGetDefaultProxyConfiguration(pProxyInfo))
             {
@@ -76,7 +131,7 @@ namespace xl
             return true;
         }
         
-        bool GetIEProxyConfigForCurrentUser(WINHTTP_CURRENT_USER_IE_PROXY_CONFIG *pProxyConfig)
+        static bool GetIEProxyConfigForCurrentUser(WINHTTP_CURRENT_USER_IE_PROXY_CONFIG *pProxyConfig)
         {
             if (WinHttpGetIEProxyConfigForCurrentUser(pProxyConfig))
             {
@@ -86,7 +141,7 @@ namespace xl
             return true;
         }
 
-        bool SetDefaultProxyConfiguration(WINHTTP_PROXY_INFO *pProxyInfo)
+        static bool SetDefaultProxyConfiguration(WINHTTP_PROXY_INFO *pProxyInfo)
         {
             if (!WinHttpSetDefaultProxyConfiguration(pProxyInfo))
             {
@@ -96,7 +151,7 @@ namespace xl
             return true;
         }
 
-        bool HttpTimeFromSystemTime(const SYSTEMTIME *pst, LPWSTR lpszTime)
+        static bool HttpTimeFromSystemTime(const SYSTEMTIME *pst, LPWSTR lpszTime)
         {
             if (!WinHttpTimeFromSystemTime(pst, lpszTime))
             {
@@ -106,7 +161,7 @@ namespace xl
             return true;
         }
 
-        bool HttpTimeToSystemTime(LPCWSTR lpszTime, SYSTEMTIME *pst)
+        static bool HttpTimeToSystemTime(LPCWSTR lpszTime, SYSTEMTIME *pst)
         {
             if (!WinHttpTimeToSystemTime(lpszTime, pst))
             {
@@ -115,7 +170,7 @@ namespace xl
 
             return true;
         }
-    }
+    };
 
     template <typename T, bool bManaged = true>
     class WinHttpHandleT : public NonCopyable,
@@ -353,7 +408,7 @@ namespace xl
     {
     public:
         WinHttpConnectionT() :
-            m_bSsl(false)
+            m_bSecure(false)
         {
 
         }
@@ -368,7 +423,7 @@ namespace xl
         bool Initialize(const WinHttpSessionT<U> &session,
                         LPCWSTR lpszServerName,
                         INTERNET_PORT nServerPort = INTERNET_DEFAULT_PORT,
-                        bool bSsl = false)
+                        bool bSecure = false)
         {
             m_hInternet = WinHttpConnect(session, lpszServerName, nServerPort, 0);
 
@@ -377,18 +432,18 @@ namespace xl
                 return false;
             }
 
-            m_bSsl = bSsl;
+            m_bSecure = bSecure;
         
             return true;
         }
 
-        bool IsSsl() const
+        bool IsSecure() const
         {
-            return m_bSsl;
+            return m_bSecure;
         }
 
     protected:
-        bool m_bSsl;
+        bool m_bSecure;
     };
 
     template <typename T>
@@ -415,7 +470,7 @@ namespace xl
                         LPCWSTR *ppwszAcceptTypes = WINHTTP_DEFAULT_ACCEPT_TYPES,
                         DWORD dwFlags = 0)
         {
-            if (connection.IsSsl())
+            if (connection.IsSecure())
             {
                 dwFlags |= WINHTTP_FLAG_SECURE;
             }

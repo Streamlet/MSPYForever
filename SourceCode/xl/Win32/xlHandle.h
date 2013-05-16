@@ -71,6 +71,13 @@ namespace xl
 
             return true;
         }
+
+    public:
+        operator HANDLE() const
+        {
+            return m_hHandle;
+        }
+
     
     protected:
         HANDLE m_hHandle;
