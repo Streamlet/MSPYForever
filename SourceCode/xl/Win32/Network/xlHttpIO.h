@@ -560,13 +560,13 @@ namespace xl
         }
     };
 
-    bool SimpleHttpRestIO(LPCWSTR lpVerb,
-                          LPCWSTR lpUrl,
-                          LPCWSTR lpHeaders,
-                          LPVOID lpData,
-                          DWORD dwDataSize,
-                          HANDLE hEventCancel,
-                          xl::Array<BYTE> *pContent)
+    inline bool SimpleHttpRestIO(LPCWSTR lpVerb,
+                                 LPCWSTR lpUrl,
+                                 LPCWSTR lpHeaders,
+                                 LPVOID lpData,
+                                 DWORD dwDataSize,
+                                 HANDLE hEventCancel,
+                                 xl::Array<BYTE> *pContent)
     {
         String strHostName, strUrlPath;
         bool bSecure = false;
@@ -610,13 +610,13 @@ namespace xl
         return true;
     }
 
-    bool SimpleHttpUpload(LPCWSTR lpVerb,
-                          LPCWSTR lpUrl,
-                          LPCWSTR lpHeaders,
-                          LPCWSTR lpLocalFile,
-                          HANDLE hEventCancel,
-                          xl::Array<BYTE> *pResponse,
-                          HttpProgressNotifier fnProgressNotifier = nullptr)
+    inline bool SimpleHttpUpload(LPCWSTR lpVerb,
+                                 LPCWSTR lpUrl,
+                                 LPCWSTR lpHeaders,
+                                 LPCWSTR lpLocalFile,
+                                 HANDLE hEventCancel,
+                                 xl::Array<BYTE> *pResponse,
+                                 HttpProgressNotifier fnProgressNotifier = nullptr)
     {
         String strHostName, strUrlPath;
         bool bSecure = false;
@@ -660,14 +660,14 @@ namespace xl
         return true;
     }
 
-    bool SimpleHttpDownload(LPCTSTR lpVerb,
-                            LPCTSTR lpUrl,
-                            LPCTSTR lpHeaders,
-                            LPVOID lpData,
-                            DWORD dwDataSize,
-                            HANDLE hEventCancel,
-                            LPCTSTR lpLocalFile,
-                            HttpProgressNotifier fnProgressNotifier = nullptr)
+    inline bool SimpleHttpDownload(LPCTSTR lpVerb,
+                                   LPCTSTR lpUrl,
+                                   LPCTSTR lpHeaders,
+                                   LPVOID lpData,
+                                   DWORD dwDataSize,
+                                   HANDLE hEventCancel,
+                                   LPCTSTR lpLocalFile,
+                                   HttpProgressNotifier fnProgressNotifier = nullptr)
     {
         String strHostName, strUrlPath;
         bool bSecure = false;
