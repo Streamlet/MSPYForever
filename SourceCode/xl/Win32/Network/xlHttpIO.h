@@ -357,8 +357,8 @@ namespace xl
                 return false;
             }
 
-            if (ReceiveRespionse(hEventCancel,
-                                 xl::Bind(this, &HttpRestIO::HttpIOCallback, xl::_1, xl::_2, pContent)))
+            if (!ReceiveRespionse(hEventCancel,
+                                  xl::Bind(this, &HttpRestIO::HttpIOCallback, xl::_1, xl::_2, pContent)))
             {
                 return false;
             }
