@@ -67,6 +67,8 @@ namespace xl
                 return false;
             }
 
+            m_hHandle = nullptr;
+
             return true;
         }
     

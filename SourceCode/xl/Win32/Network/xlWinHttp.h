@@ -20,6 +20,7 @@
 #include <Windows.h>
 #include <WinHttp.h>
 #include <tchar.h>
+#pragma comment(lib, "WinHttp.lib")
 
 namespace xl
 {
@@ -65,20 +66,66 @@ namespace xl
             return true;
         }
 
-        void FreeProxyResult(WINHTTP_PROXY_RESULT *pProxyResult)
+        bool GetDefaultProxyConfiguration(WINHTTP_PROXY_INFO *pProxyInfo)
         {
-            WinHttpFreeProxyResult(pProxyResult);
+            if (!WinHttpGetDefaultProxyConfiguration(pProxyInfo))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        bool GetIEProxyConfigForCurrentUser(WINHTTP_CURRENT_USER_IE_PROXY_CONFIG *pProxyConfig)
+        {
+            if (WinHttpGetIEProxyConfigForCurrentUser(pProxyConfig))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool SetDefaultProxyConfiguration(WINHTTP_PROXY_INFO *pProxyInfo)
+        {
+            if (!WinHttpSetDefaultProxyConfiguration(pProxyInfo))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool HttpTimeFromSystemTime(const SYSTEMTIME *pst, LPWSTR lpszTime)
+        {
+            if (!WinHttpTimeFromSystemTime(pst, lpszTime))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool HttpTimeToSystemTime(LPCWSTR lpszTime, SYSTEMTIME *pst)
+        {
+            if (!WinHttpTimeToSystemTime(lpszTime, pst))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 
-    template <bool bManaged = true>
-    class WinHttpHandleT : public NonCopyable
+    template <typename T, bool bManaged = true>
+    class WinHttpHandleT : public NonCopyable,
+                           public T
     {
     public:
         WinHttpHandleT(HINTERNET hInternet = nullptr) :
-            m_hInternet(hInternet)
+            m_hInternet(nullptr)
         {
-        
+            Attach(hInternet);
         }
         
         ~WinHttpHandleT()
@@ -118,10 +165,22 @@ namespace xl
                 return false;
             }
 
+            m_hInternet = nullptr;
+
             return true;
         }
 
     public:
+        bool QueryOption(DWORD dwOption, LPVOID lpBuffer, LPDWORD lpdwBufferLength)
+        {
+            if (!WinHttpQueryOption(m_hInternet, dwOption, lpBuffer, lpdwBufferLength))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         bool SetOption(DWORD dwOption, LPCVOID lpBuffer, DWORD dwBufferLength)
         {
             if (!WinHttpSetOption(m_hInternet, dwOption, lpBuffer, dwBufferLength))
@@ -132,14 +191,18 @@ namespace xl
             return true;
         }
 
-        WINHTTP_STATUS_CALLBACK SetStatusCallback(WINHTTP_STATUS_CALLBACK lpfnInternetCallback, DWORD dwNotificationFlags)
+        WINHTTP_STATUS_CALLBACK SetStatusCallback(DWORD dwNotificationFlags)
         {
-            return WinHttpSetStatusCallback(m_hInternet, lpfnInternetCallback, dwNotificationFlags, 0);
+            return WinHttpSetStatusCallback(m_hInternet, StatusCallback, dwNotificationFlags, 0);
         }
 
-        bool QueryOption(DWORD dwOption, LPVOID lpBuffer, LPDWORD lpdwBufferLength)
+        bool SetTimeouts(int dwResolveTimeout, int dwConnectTimeout, int dwSendTimeout, int dwReceiveTimeout)
         {
-            if (!WinHttpQueryOption(m_hInternet, dwOption, lpBuffer, lpdwBufferLength))
+            if (!WinHttpSetTimeouts(m_hInternet,
+                                    dwResolveTimeout,
+                                    dwConnectTimeout,
+                                    dwSendTimeout,
+                                    dwReceiveTimeout))
             {
                 return false;
             }
@@ -152,22 +215,38 @@ namespace xl
         {
             return m_hInternet;
         }
+    
+    protected:
+        static void CALLBACK StatusCallback(HINTERNET hInternet,
+                                            DWORD_PTR dwContext,
+                                            DWORD dwInternetStatus,
+                                            LPVOID lpvStatusInformation,
+                                            DWORD dwStatusInformationLength)
+        {
+            WinHttpHandleT<T> *pHandle = reinterpret_cast<WinHttpHandleT<T> *>(dwContext);
+
+            if (hInternet == pHandle->m_hInternet)
+            {
+               pHandle->OnCallback(dwInternetStatus,
+                                   lpvStatusInformation,
+                                   dwStatusInformationLength);
+            }
+        }
 
     protected:
         HINTERNET m_hInternet;
     };
 
-    typedef WinHttpHandleT<> WinHttpHandle;
-
-    class WinHttpSession : public WinHttpHandle
+    template <typename T>
+    class WinHttpSessionT : public WinHttpHandleT<T>
     {
     public:
-        WinHttpSession()
+        WinHttpSessionT()
         {
 
         }
 
-        ~WinHttpSession()
+        ~WinHttpSessionT()
         {
 
         }
@@ -187,49 +266,108 @@ namespace xl
         
             return true;
         }
+
+    public:
+        bool GetProxyForUrl(LPCWSTR lpszUrl, WINHTTP_AUTOPROXY_OPTIONS *pAutoProxyOptions, WINHTTP_PROXY_INFO *pProxyInfo)
+        {
+            if (!WinHttpGetProxyForUrl(m_hInternet, lpszUrl, pAutoProxyOptions, pProxyInfo))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        DWORD ResetAutoProxy(DWORD dwFlags)
+        {
+            if (!WinHttpResetAutoProxy(m_hInternet, dwFlags))
+            {
+                return false;
+            }
+
+            return true;
+        }
     };
 
-    class WinHttpProxyResolver : public WinHttpHandle
+    class WinHttpProxyResult : public WINHTTP_PROXY_RESULT
     {
     public:
-        WinHttpProxyResolver()
+        WinHttpProxyResult()
+        {
+            cEntries = 0;
+            pEntries = nullptr;
+        }
+
+        ~WinHttpProxyResult()
+        {
+            WinHttpFreeProxyResult(this);
+        }
+    };
+
+    template <typename T>
+    class WinHttpProxyResolverT : public WinHttpHandleT<T>
+    {
+    public:
+        WinHttpProxyResolverT()
         {
 
         }
 
-        ~WinHttpProxyResolver()
+        ~WinHttpProxyResolverT()
         {
 
         }
 
     public:
-        bool Initialize(const WinHttpSession &session)
+        template <typename U>
+        bool Initialize(const WinHttpSessionT<U> &session)
         {
             if (WinHttpCreateProxyResolver(session, &m_hInternet) != ERROR_SUCCESS)
             {
                 return false;
             }
 
+            SetStatusCallback(WINHTTP_CALLBACK_FLAG_ALL_NOTIFICATIONS);
+
             return true;
-        }    
+        }
+
+    public:
+        DWORD GetProxyForUrl(LPCWSTR lpszUrl, WINHTTP_AUTOPROXY_OPTIONS *pAutoProxyOptions)
+        {
+            return WinHttpGetProxyForUrlEx(m_hInternet,
+                                           lpszUrl,
+                                           pAutoProxyOptions,
+                                           reinterpret_cast<DWORD_PTR>(static_cast<WinHttpHandleT<T> *>(this)));
+        }
+
+        DWORD GetProxyResult(WinHttpProxyResult &result)
+        {
+            return WinHttpGetProxyResult(m_hInternet, &result);
+        }
     };
 
-    class WinHttpConnection : public WinHttpHandle
+    template <typename T>
+    class WinHttpConnectionT : public WinHttpHandleT<T>
     {
     public:
-        WinHttpConnection() :
+        WinHttpConnectionT() :
             m_bSsl(false)
         {
 
         }
 
-        ~WinHttpConnection()
+        ~WinHttpConnectionT()
         {
 
         }
 
     public:
-        bool Initialize(const WinHttpSession &session, LPCWSTR lpszServerName, INTERNET_PORT nServerPort = INTERNET_DEFAULT_PORT, bool bSsl = false)
+        template <typename U>
+        bool Initialize(const WinHttpSessionT<U> &session,
+                        LPCWSTR lpszServerName,
+                        INTERNET_PORT nServerPort = INTERNET_DEFAULT_PORT,
+                        bool bSsl = false)
         {
             m_hInternet = WinHttpConnect(session, lpszServerName, nServerPort, 0);
 
@@ -253,21 +391,22 @@ namespace xl
     };
 
     template <typename T>
-    class WinHttpRequest : public WinHttpHandle
+    class WinHttpRequestT : public WinHttpHandleT<T>
     {
     public:
-        WinHttpRequest()
+        WinHttpRequestT()
         {
 
         }
 
-        ~WinHttpRequest()
+        ~WinHttpRequestT()
         {
 
         }
 
     public:
-        bool Initialize(const WinHttpConnection &connection,
+        template <typename U>
+        bool Initialize(const WinHttpConnectionT<U> &connection,
                         LPCWSTR lpszVerb,
                         LPCWSTR lpszObjectName,
                         LPCWSTR lpszVersion = nullptr,
@@ -293,7 +432,7 @@ namespace xl
                 return false;
             }
 
-            SetStatusCallback(StaticWinHttpStatusCallback, WINHTTP_CALLBACK_FLAG_ALL_COMPLETIONS);
+            SetStatusCallback(WINHTTP_CALLBACK_FLAG_ALL_NOTIFICATIONS);
         
             return true;
         }
@@ -367,7 +506,11 @@ namespace xl
             return true;
         }
 
-        bool SendRequest(LPCWSTR lpszHeaders, DWORD dwHeadersLength, LPVOID lpOptional, DWORD dwOptionalLength, DWORD dwTotalLength)
+        bool SendRequest(LPCWSTR lpszHeaders = nullptr,
+                         DWORD dwHeadersLength = 0,
+                         LPVOID lpOptional = nullptr,
+                         DWORD dwOptionalLength = 0,
+                         DWORD dwTotalLength = 0)
         {
             if (!WinHttpSendRequest(m_hInternet,
                                     lpszHeaders,
@@ -375,7 +518,7 @@ namespace xl
                                     lpOptional,
                                     dwOptionalLength,
                                     dwTotalLength,
-                                    static_cast<T *>(this)))
+                                    reinterpret_cast<DWORD_PTR>(static_cast<WinHttpHandleT<T> *>(this))))
             {
                 return false;
             }
@@ -405,25 +548,233 @@ namespace xl
             }
 
             return true;
+        }    
+    };
+
+    class WinHttpCallback
+    {
+    public:
+        WinHttpCallback()
+        {
+        
         }
 
-    private:
-        static void CALLBACK StaticWinHttpStatusCallback(HINTERNET hInternet,
-                                                         DWORD_PTR dwContext,
-                                                         DWORD dwInternetStatus,
-                                                         LPVOID lpvStatusInformation,
-                                                         DWORD dwStatusInformationLength)
+        ~WinHttpCallback()
         {
-            T *pT = reinterpret_cast<T *>(dwContext);
 
-            if (hInternet == pT->m_hInternet)
+        }
+
+    protected:
+        void OnCallback(DWORD dwInternetStatus,
+                        LPVOID lpvStatusInformation,
+                        DWORD dwStatusInformationLength)
+        {
+            switch (dwInternetStatus)
             {
-                pT->OnCallback(dwInternetStatus,
-                               lpvStatusInformation,
-                               dwStatusInformationLength);
+            case WINHTTP_CALLBACK_STATUS_CLOSING_CONNECTION:
+                OnClosingConnection();
+                break;
+            case WINHTTP_CALLBACK_STATUS_CONNECTED_TO_SERVER:
+                OnConnectedToServer(static_cast<LPCWSTR>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_CONNECTING_TO_SERVER:
+                OnConnectingServer(static_cast<LPCWSTR>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_CONNECTION_CLOSED:
+                OnConnectionClosed();
+                break;
+            case WINHTTP_CALLBACK_STATUS_DATA_AVAILABLE:
+                OnDataAvailable(*static_cast<DWORD *>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_HANDLE_CREATED:
+                OnHandleCreated(static_cast<HINTERNET>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_HANDLE_CLOSING:
+                OnHandleClosing(static_cast<HINTERNET>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_HEADERS_AVAILABLE:
+                OnHeadersAvaiable();
+                break;
+            case WINHTTP_CALLBACK_STATUS_INTERMEDIATE_RESPONSE:
+                OnIntermediateResponse(*static_cast<DWORD *>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_NAME_RESOLVED:
+                OnNameResolved(static_cast<LPCWSTR>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_READ_COMPLETE:
+                OnReadComplete(dwStatusInformationLength);
+                break;
+            case WINHTTP_CALLBACK_STATUS_RECEIVING_RESPONSE:
+                OnReceivingResponse();
+                break;
+            case WINHTTP_CALLBACK_STATUS_REDIRECT:
+                OnRedirect(static_cast<LPCWSTR>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_REQUEST_ERROR:
+                OnRequestError(*static_cast<WINHTTP_ASYNC_RESULT *>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_REQUEST_SENT:
+                OnRequestSent(*static_cast<DWORD *>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_RESOLVING_NAME:
+                OnResolvingName(static_cast<LPCWSTR>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_RESPONSE_RECEIVED:
+                OnResponseReceived(*static_cast<DWORD *>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_SECURE_FAILURE:
+                OnSecureFailure();
+                break;
+            case WINHTTP_CALLBACK_STATUS_SENDING_REQUEST:
+                OnSendingRequest();
+                break;
+            case WINHTTP_CALLBACK_STATUS_SENDREQUEST_COMPLETE:
+                OnSendRequestComplete();
+                break;
+            case WINHTTP_CALLBACK_STATUS_WRITE_COMPLETE:
+                OnWriteComplete(*static_cast<DWORD *>(lpvStatusInformation));
+                break;
+            case WINHTTP_CALLBACK_STATUS_GETPROXYFORURL_COMPLETE:
+                OnGetProxyForUrlComplete();
+                break;
+            case WINHTTP_CALLBACK_STATUS_CLOSE_COMPLETE:
+                OnCloseComplete();
+                break;
+            case WINHTTP_CALLBACK_STATUS_SHUTDOWN_COMPLETE:
+                OnShutdownComplete();
+                break;
+            default:
+                break;
             }
         }
+
+    protected:
+        virtual void OnClosingConnection()
+        {
+
+        }
+
+        virtual void OnConnectedToServer(LPCWSTR lpszIpAddress)
+        {
+        
+        }
+
+        virtual void OnConnectingServer(LPCWSTR lpszIpAddress)
+        {
+        
+        }
+
+        virtual void OnConnectionClosed()
+        {
+        
+        }
+
+        virtual void OnDataAvailable(DWORD cbSize)
+        {
+        
+        }
+
+        virtual void OnHandleCreated(HINTERNET hInternet)
+        {
+        
+        }
+
+        virtual void OnHandleClosing(HINTERNET hInternet)
+        {
+        
+        }
+
+        virtual void OnHeadersAvaiable()
+        {
+        
+        }
+        
+        virtual void OnIntermediateResponse(DWORD dwStatusCode)
+        {
+        
+        }
+
+        virtual void OnNameResolved(LPCWSTR lpszName)
+        {
+
+        }
+
+        virtual void OnReadComplete(DWORD cbSizeRead)
+        {
+
+        }
+
+        virtual void OnReceivingResponse()
+        {
+
+        }
+
+        virtual void OnRedirect(LPCWSTR lpszNewUrl)
+        {
+        
+        }
+        
+        virtual void OnRequestError(const WINHTTP_ASYNC_RESULT &result)
+        {
+
+        }
+
+        virtual void OnRequestSent(DWORD cbSent)
+        {
+        
+        }
+
+        virtual void OnResolvingName(LPCWSTR lpszServerName)
+        {
+        
+        }
+
+        virtual void OnResponseReceived(DWORD cbReceived)
+        {
+        
+        }
+
+        virtual void OnSecureFailure()
+        {
+        
+        }
+
+        virtual void OnSendingRequest()
+        {
+        
+        }
+
+        virtual void OnSendRequestComplete()
+        {
+        
+        }
+
+        virtual void OnWriteComplete(DWORD cbWritten)
+        {
+        
+        }
+
+        virtual void OnGetProxyForUrlComplete()
+        {
+        
+        }
+
+        virtual void OnCloseComplete()
+        {
+        
+        }
+
+        virtual void OnShutdownComplete()
+        {
+        
+        }
     };
+
+    typedef WinHttpHandleT<WinHttpCallback>         WinHttpHandle;
+    typedef WinHttpSessionT<WinHttpCallback>        WinHttpSession;
+    typedef WinHttpProxyResolverT<WinHttpCallback>  WinHttpProxyResolver;
+    typedef WinHttpConnectionT<WinHttpCallback>     WinHttpConnection;
+    typedef WinHttpRequestT<WinHttpCallback>        WinHttpRequest;
 
 } // namespace xl
 
