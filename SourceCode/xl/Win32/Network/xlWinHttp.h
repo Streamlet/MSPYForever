@@ -193,7 +193,7 @@ namespace xl
 
         WINHTTP_STATUS_CALLBACK SetStatusCallback(DWORD dwNotificationFlags)
         {
-            return WinHttpSetStatusCallback(m_hInternet, StatusCallback, dwNotificationFlags, 0);
+            return WinHttpSetStatusCallback(m_hInternet, &WinHttpHandleT::StatusCallback, dwNotificationFlags, 0);
         }
 
         bool SetTimeouts(int dwResolveTimeout, int dwConnectTimeout, int dwSendTimeout, int dwReceiveTimeout)
@@ -223,13 +223,14 @@ namespace xl
                                             LPVOID lpvStatusInformation,
                                             DWORD dwStatusInformationLength)
         {
-            WinHttpHandleT<T> *pHandle = reinterpret_cast<WinHttpHandleT<T> *>(dwContext);
+            T *pT = reinterpret_cast<T *>(dwContext);
+            WinHttpHandleT<T> *pHandle = dynamic_cast<WinHttpHandleT<T> *>(pT);
 
-            if (hInternet == pHandle->m_hInternet)
+            if (pHandle != nullptr && hInternet == pHandle->m_hInternet)
             {
-               pHandle->OnCallback(dwInternetStatus,
-                                   lpvStatusInformation,
-                                   dwStatusInformationLength);
+                pHandle->OnCallback(dwInternetStatus,
+                                    lpvStatusInformation,
+                                    dwStatusInformationLength);
             }
         }
 
@@ -338,7 +339,7 @@ namespace xl
             return WinHttpGetProxyForUrlEx(m_hInternet,
                                            lpszUrl,
                                            pAutoProxyOptions,
-                                           reinterpret_cast<DWORD_PTR>(static_cast<WinHttpHandleT<T> *>(this)));
+                                           reinterpret_cast<DWORD_PTR>(static_cast<T *>(this)));
         }
 
         DWORD GetProxyResult(WinHttpProxyResult &result)
@@ -518,7 +519,7 @@ namespace xl
                                     lpOptional,
                                     dwOptionalLength,
                                     dwTotalLength,
-                                    reinterpret_cast<DWORD_PTR>(static_cast<WinHttpHandleT<T> *>(this))))
+                                    reinterpret_cast<DWORD_PTR>(static_cast<T *>(this))))
             {
                 return false;
             }
