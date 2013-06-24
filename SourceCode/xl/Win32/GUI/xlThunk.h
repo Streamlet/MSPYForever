@@ -22,7 +22,7 @@
 
 namespace xl
 {
-
+    template <typename T>
     class Thunk
     {
     private:
@@ -90,8 +90,8 @@ namespace xl
             }
         }
 
-        template <typename T>
-        void SetObject(const T *pObject)
+        template <typename U>
+        void SetObject(const U *pObject)
         {
 #ifdef _WIN64
             m_pThunk->m_this = (ULONG64)pObject;
@@ -100,22 +100,23 @@ namespace xl
 #endif
         }
 
-        void SetRealWndProc(WNDPROC pWndProc)
+        void SetRealProc(T pProc)
         {
 #ifdef _WIN64
-            m_pThunk->m_relproc = (ULONG64)pWndProc;
+            m_pThunk->m_relproc = (ULONG64)pProc;
 #else
-            m_pThunk->m_relproc = (ULONG64)pWndProc - ((ULONG64)m_pThunk + sizeof(StdCallThunk));
+            m_pThunk->m_relproc = (ULONG64)pProc - ((ULONG64)m_pThunk + sizeof(StdCallThunk));
 #endif
         }
 
-        WNDPROC GetThunkWndProc()
+        T GetThunkProc()
         {
-            return (WNDPROC)m_pThunk;
+            return (T)m_pThunk;
         }
     };
 
-    __declspec(selectany) Heap Thunk::ms_Heap;
+    template <typename T>
+    __declspec(selectany) Heap Thunk<T>::ms_Heap;
 
 } // namespace xl
 

@@ -229,7 +229,7 @@ namespace xl
         WNDPROC       m_fnDefaultProc;
 
     private:
-        Thunk m_thunk;
+        Thunk<WNDPROC> m_thunk;
 
     private:
         static LRESULT CALLBACK StartWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -237,11 +237,11 @@ namespace xl
             WindowBase *pThis = (WindowBase *)ms_Tls.Get();
 
             pThis->m_thunk.SetObject(pThis);
-            pThis->m_thunk.SetRealWndProc(&WindowBase::StaticWndProc);
+            pThis->m_thunk.SetRealProc(&WindowBase::StaticWndProc);
 
             pThis->m_hWnd = hWnd;
 
-            WNDPROC pWndProc = pThis->m_thunk.GetThunkWndProc();
+            WNDPROC pWndProc = pThis->m_thunk.GetThunkProc();
 
 #ifdef _WIN64
             SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pWndProc);
