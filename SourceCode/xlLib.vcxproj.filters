@@ -287,6 +287,9 @@
     <ClInclude Include="xl\Win32\Network\xlHttpIO.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\Timer\xlTimer.h">
+      <Filter>Win32\Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -348,6 +351,9 @@
     </Filter>
     <Filter Include="Algorithm">
       <UniqueIdentifier>{9a154b06-b8b6-4e85-9813-711631db359e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Timer">
+      <UniqueIdentifier>{af76c0df-7b0f-4f0b-a3c0-b0cdc8fe3861}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
