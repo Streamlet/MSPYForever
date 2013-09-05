@@ -428,6 +428,11 @@ namespace xl
         StringT<T> strRet;
         strRet.m_aData.PopBack();
 
+        if (nLength < 0)
+        {
+			nLength = m_aData.Size() - 1 - nStart;
+        }
+
         if (nLength > 0)
         {
             strRet.m_aData.Insert(strRet.m_aData.End(), m_aData.Begin() + nStart, m_aData.Begin() + nStart + nLength);
