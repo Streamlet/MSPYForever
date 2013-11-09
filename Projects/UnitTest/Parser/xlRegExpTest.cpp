@@ -25,13 +25,13 @@ namespace
     {
         RegExp r;
 
-        XL_TEST_ASSERT(r.Parse(L""));
-        XL_TEST_ASSERT(r.Parse(L"||"));
-        XL_TEST_ASSERT(r.Parse(L"()"));
-        XL_TEST_ASSERT(r.Parse(L"|"));
-        XL_TEST_ASSERT(r.Parse(L"(|)"));
-        XL_TEST_ASSERT(r.Parse(L"(||)"));
-        XL_TEST_ASSERT(r.Parse(L"()|()"));
+        XL_TEST_ASSERT(!r.Parse(L""));
+        XL_TEST_ASSERT(!r.Parse(L"||"));
+        XL_TEST_ASSERT(!r.Parse(L"()"));
+        XL_TEST_ASSERT(!r.Parse(L"|"));
+        XL_TEST_ASSERT(!r.Parse(L"(|)"));
+        XL_TEST_ASSERT(!r.Parse(L"(||)"));
+        XL_TEST_ASSERT(!r.Parse(L"()|()"));
         XL_TEST_ASSERT(!r.Parse(L"("));
         XL_TEST_ASSERT(!r.Parse(L")"));
     }
@@ -40,12 +40,7 @@ namespace
     {
         RegExp r;
         int nPos = 0;
-
-        XL_TEST_ASSERT(r.Parse(L""));
-        XL_TEST_ASSERT(r.Match(L""));
-        XL_TEST_ASSERT(!r.Match(L"a"));
-        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 0);
-
+        
         XL_TEST_ASSERT(r.Parse(L"a"));
         XL_TEST_ASSERT(r.Match(L"a"));
         XL_TEST_ASSERT(!r.Match(L"ab"));
@@ -188,8 +183,8 @@ namespace
     XL_TEST_CASE()
     {
         RegExp r;
-        XL_TEST_ASSERT(r.Parse(L"[]"));
-        XL_TEST_ASSERT(r.Parse(L"[^]"));
+        XL_TEST_ASSERT(!r.Parse(L"[]"));
+        XL_TEST_ASSERT(!r.Parse(L"[^]"));
         XL_TEST_ASSERT(!r.Parse(L"[(]"));
         XL_TEST_ASSERT(!r.Parse(L"[|]"));
 

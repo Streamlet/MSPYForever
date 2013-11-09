@@ -292,17 +292,25 @@ namespace xl
         };
 
     private:
-        //
-        // EBNF:
-        //
-        // Expr             -> SubExpr { "|" SubExpr }
-        // SubExpr          -> { Phrase }
-        // Phrase           -> Word [ Repeater ]
-        // Repeater         -> ( "?" | "+" | "*" ) [ "?" ]
-        // Word             -> OrdinaryChar | "[" Collection "]" | "(" Expr ")"
-        // Collection       -> [ "^" ] { OrdinaryChar | OrdinaryChar "-" OrdinaryChar }
-        // OrdinaryChar     -> All ordinary characters
-        //
+        /*
+            EBNF:
+            
+            Expr         -> SubExpr Expr'
+            Expr'        -> "|" SubExpr Expr' | ¦Å
+            SubExpr      -> Phrase SubExpr'
+            SubExpr'     -> Phrase SubExpr' | ¦Å
+            Phrase       -> Word Repeater
+            Repeater     -> Counter Greeder | ¦Å
+            Counter      -> "?" | "+" | "*"
+            Greeder      -> "?" | ¦Å
+            Word         -> Char | "[" Collection "]" | "(" Expr ")"
+            Collection   -> Reverser InvervalSet
+            Reverser     -> "^" | ¦Å
+            InvervalSet  -> Inverval IntervalSet'
+            IntervalSet' -> Interval IntervalSet' | ¦Å
+            Interver     -> Char RangeSuffix
+            RangeSuffix  -> "-" Char | ¦Å
+        */
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
         {
@@ -320,48 +328,104 @@ namespace xl
 
         StateMachine::NodePtr ParseExpr(StateMachine::NodePtr pNode)
         {
-            StateMachine::NodePtr pCurrent = ParseSubExpr(pNode);
+            StateMachine::NodePtr pSubExpr = ParseSubExpr(pNode);
 
-            if (pCurrent == nullptr)
+            if (pSubExpr == nullptr)
             {
                 return nullptr;
             }
 
-            while (true)
+            StateMachine::NodePtr pExprPrime = ParseExprPrime(pNode);
+
+            if (pExprPrime == nullptr)
             {
-                Token token = LookAhead();
-
-                if (token.type != TT_VerticalBar)
-                {
-                    Backward(token);
-                    return pCurrent;
-                }
-
-                StateMachine::NodePtr pNewNode = ParseSubExpr(pNode);
-                StateMachine::EdgePtr pEdge = NewEdge();
-                m_spStateMachine->AddEdge(pEdge, pNewNode, pCurrent);
+                return nullptr;
             }
 
-            return nullptr;
+            StateMachine::NodePtr pCurrent = NewNode();
+            m_spStateMachine->AddNode(pCurrent);
+            m_spStateMachine->AddEdge(NewEdge(), pSubExpr, pCurrent);
+
+            if (pExprPrime != pNode)
+            {
+                m_spStateMachine->AddEdge(NewEdge(), pExprPrime, pCurrent);
+            }
+
+            return pCurrent;
+        }
+
+        StateMachine::NodePtr ParseExprPrime(StateMachine::NodePtr pNode)
+        {
+            Token token = LookAhead();
+
+            if (token.type != TT_VerticalBar)
+            {
+                Backward(token);
+                return pNode;
+            }
+
+            StateMachine::NodePtr pSubExpr = ParseSubExpr(pNode);
+
+            if (pSubExpr == nullptr)
+            {
+                return nullptr;
+            }
+
+            StateMachine::NodePtr pExprPrime = ParseExprPrime(pNode);
+
+            if (pExprPrime == nullptr)
+            {
+                return nullptr;
+            }
+
+            StateMachine::NodePtr pCurrent = NewNode();
+            m_spStateMachine->AddNode(pCurrent);
+            m_spStateMachine->AddEdge(NewEdge(), pSubExpr, pCurrent);
+
+            if (pExprPrime != pNode)
+            {
+                m_spStateMachine->AddEdge(NewEdge(), pExprPrime, pCurrent);
+            }
+
+            return pCurrent;
         }
 
         StateMachine::NodePtr ParseSubExpr(StateMachine::NodePtr pNode)
         {
-            StateMachine::NodePtr pCurrent = pNode;
+            StateMachine::NodePtr pPhrase = ParsePhrase(pNode);
 
-            while (true)
+            if (pPhrase == nullptr)
             {
-                StateMachine::NodePtr pNewNode = ParsePhrase(pCurrent);
-
-                if (pNewNode == pCurrent || pNewNode == nullptr)
-                {
-                    return pNewNode;
-                }
-
-                pCurrent = pNewNode;
+                return nullptr;
             }
 
-            return nullptr;
+            StateMachine::NodePtr pSubExprPrime = ParseSubExprPrime(pPhrase);
+
+            if (pSubExprPrime == nullptr)
+            {
+                return nullptr;
+            }
+
+            return pSubExprPrime;
+        }
+
+        StateMachine::NodePtr ParseSubExprPrime(StateMachine::NodePtr pNode)
+        {
+            StateMachine::NodePtr pPhrase = ParsePhrase(pNode);
+
+            if (pPhrase == nullptr)
+            {
+                return pNode;
+            }
+        
+            StateMachine::NodePtr pSubExprPrime = ParseSubExprPrime(pPhrase);
+
+            if (pSubExprPrime == nullptr)
+            {
+                return nullptr;
+            }
+
+            return pSubExprPrime;
         }
 
         StateMachine::NodePtr ParsePhrase(StateMachine::NodePtr pNode)
@@ -371,11 +435,6 @@ namespace xl
             if (pCurrent == nullptr)
             {
                 return nullptr;
-            }
-
-            if (pCurrent == pNode)
-            {
-                return pNode;
             }
 
             Repeator r = ParseRepeater();
@@ -461,8 +520,21 @@ namespace xl
 
         Repeator ParseRepeater()
         {
-            Repeator r;
+            Repeator r = ParseCounter();
 
+            if (r.type == RT_None)
+            {
+                return r;
+            }
+
+            r.bGreedy = ParseGreeder();
+
+            return r;
+        }
+
+        Repeator ParseCounter()
+        {
+            Repeator r;
             Token token = LookAhead();
 
             switch (token.type)
@@ -481,28 +553,29 @@ namespace xl
                 break;
             }
 
+            return r;
+        }
+
+        bool ParseGreeder()
+        {
             bool bGreedy = true;
+            Token token = LookAhead();
 
-            if (r.type != RT_None)
+            if (token.type == TT_QuestionMark)
             {
-                token = LookAhead();
-
-                if (token.type == TT_QuestionMark)
-                {
-                    r.bGreedy = false;
-                }
-                else
-                {
-                    Backward(token);
-                }
+                bGreedy = false;
+            }
+            else
+            {
+                Backward(token);
             }
 
-            return r;
+            return bGreedy;
         }
 
         StateMachine::NodePtr ParseWord(StateMachine::NodePtr pNode)
         {
-            StateMachine::NodePtr pCurrent = pNode;
+            StateMachine::NodePtr pCurrent = nullptr;
 
             Token token = LookAhead();
 
@@ -510,7 +583,7 @@ namespace xl
             {
             case TT_OpenParen:
                 {
-                    pCurrent = ParseExpr(pCurrent);
+                    pCurrent = ParseExpr(pNode);
 
                     if (pCurrent == nullptr)
                     {
@@ -527,7 +600,7 @@ namespace xl
                 break;
             case TT_OpenBracket:
                 {
-                    pCurrent = ParseCollection(pCurrent);
+                    pCurrent = ParseCollection(pNode);
 
                     if (pCurrent == nullptr)
                     {
@@ -544,7 +617,7 @@ namespace xl
                 break;
             case TT_OrdinaryChar:
                 {
-                    pCurrent = AddNormalNode(pCurrent, token.ch);
+                    pCurrent = AddNormalNode(pNode, token.ch);
 
                     if (pCurrent == nullptr)
                     {
@@ -562,74 +635,15 @@ namespace xl
 
         StateMachine::NodePtr ParseCollection(StateMachine::NodePtr pNode)
         {
-            bool bFirst = true;
-            bool bInHyphen = false;
-            bool bAcceptHyphen = false;
-            Char chLastChar = 0;
+            bool bReverse = ParseReverser();
+            IntervalSet<Char> is = ParseIntervalSet();
 
-            bool bOpposite = false;
-            IntervalSet<Char> is;
-
-            bool bContinue = true;
-
-            while (bContinue)
+            if (is.IsEmpty())
             {
-                Token token = LookAhead();
-
-                switch (token.type)
-                {
-                case TT_Caret:
-                    {
-                        if (!bFirst)
-                        {
-                            return nullptr;
-                        }
-                        else
-                        {
-                            bOpposite = true;
-                        }
-                    }
-                    break;
-                case TT_Hyphen:
-                    {
-                        if (bInHyphen || !bAcceptHyphen)
-                        {
-                            return nullptr;
-                        }
-                        else
-                        {
-                            bInHyphen = true;
-                        }
-                    }
-                    break;
-                case TT_OrdinaryChar:
-                    {
-                        if (bInHyphen)
-                        {
-                            is.Union(Interval<Char>(chLastChar, token.ch));
-                            bInHyphen = false;
-                            bAcceptHyphen = false;
-                        }
-                        else
-                        {
-                            is.Union(Interval<Char>(token.ch, token.ch));
-                            chLastChar = token.ch;
-                            bAcceptHyphen = true;
-                        }
-                    }
-                    break;
-                default:
-                    {
-                        Backward(token);
-                        bContinue = false;
-                    }
-                    break;
-                }
-
-                bFirst = false;
+                return nullptr;
             }
 
-            if (bOpposite)
+            if (bReverse)
             {
                 IntervalSet<Char> u;
                 u.Union(Interval<Char>(0, -1));
@@ -637,14 +651,7 @@ namespace xl
                 is.MakeClose(1);
             }
 
-            StateMachine::NodePtr pCurrent = pNode;
-
-            if (is.IsEmpty())
-            {
-                return pCurrent;
-            }
-
-            pCurrent = NewNode();
+            StateMachine::NodePtr pCurrent = NewNode();
             Set<Interval<Char>> intervals = is.GetIntervals();
 
             for (auto it = intervals.Begin(); it != intervals.End(); ++it)
@@ -656,6 +663,102 @@ namespace xl
             m_spStateMachine->AddNode(pCurrent);
 
             return pCurrent;
+        }
+
+        bool ParseReverser()
+        {
+            bool bReverse = false;
+            Token token = LookAhead();
+
+            if (token.type == TT_Caret)
+            {
+                bReverse = true;
+            }
+            else
+            {
+                Backward(token);
+            }
+
+            return bReverse;
+        }
+
+        IntervalSet<Char> ParseIntervalSet()
+        {
+            IntervalSet<Char> is;
+            Interval<Char> i = ParseInterval();
+
+            if (i.IsEmpty())
+            {
+                return is;
+            }
+
+            is.Union(i);
+            IntervalSet<Char> isPrime = ParseIntervalSetPrime();
+            is = is.Union(isPrime);
+
+            return is;
+        }
+
+        IntervalSet<Char> ParseIntervalSetPrime()
+        {
+            IntervalSet<Char> is;
+            Interval<Char> i = ParseInterval();
+
+            if (i.IsEmpty())
+            {
+                return is;
+            }
+
+            is.Union(i);
+            IntervalSet<Char> isPrime = ParseIntervalSetPrime();
+            is = is.Union(isPrime);
+
+            return is;
+        }
+
+        Interval<Char> ParseInterval()
+        {
+            Interval<Char> i;
+            Token token = LookAhead();
+
+            if (token.type != TT_OrdinaryChar)
+            {
+                Backward(token);
+                return i;
+            }
+
+            i = Interval<Char>(token.ch, token.ch);
+            Interval<Char> iSuffix = ParseRangseSuffix();
+
+            if (!iSuffix.IsEmpty())
+            {
+                i.right = iSuffix.right;
+            }
+
+            return i;
+        }
+
+        Interval<Char> ParseRangseSuffix()
+        {
+            Interval<Char> i;
+            Token token = LookAhead();
+
+            if (token.type != TT_Hyphen)
+            {
+                Backward(token);
+                return i;
+            }
+
+            token = LookAhead();
+
+            if (token.type != TT_OrdinaryChar)
+            {
+                Backward(token);
+                return i;
+            }
+
+            i = Interval<Char>(token.ch, token.ch);
+            return i;
         }
 
     private:
