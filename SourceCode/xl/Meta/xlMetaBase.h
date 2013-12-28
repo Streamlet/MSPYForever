@@ -17,8 +17,6 @@
 #define __XLMETABASE_H_5432C693_BF0D_45B0_BB18_FA38C6913B74_INCLUDED__
 
 
-#include <xl/xlDef.h>
-
 namespace xl
 {
     struct NullType;

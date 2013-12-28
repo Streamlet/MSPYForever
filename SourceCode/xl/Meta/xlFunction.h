@@ -17,10 +17,9 @@
 #define __XLFUNCTION_H_83D86772_25B2_4625_8A4F_0C5EAAF1E93C_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Memory/xlSmartPtr.h>
-#include <xl/Meta/xlMacros.h>
-#include <xl/Meta/xlTypeList.h>
+#include "../Memory/xlSmartPtr.h"
+#include "../Meta/xlMacros.h"
+#include "../Meta/xlTypeList.h"
 
 namespace xl
 {

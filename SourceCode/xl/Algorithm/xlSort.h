@@ -16,8 +16,8 @@
 #define __XLSORT_H_3810AA26_E81D_4108_9831_D3EBD08B4449_INCLUDED__
 
 
-#include <xl/Meta/xlFunction.h>
-#include <xl/Memory/xlMemory.h>
+#include "../Memory/xlMemory.h"
+#include "../Meta/xlFunction.h"
 
 namespace xl
 {

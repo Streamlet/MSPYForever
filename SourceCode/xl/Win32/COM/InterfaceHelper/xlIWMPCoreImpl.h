@@ -16,8 +16,9 @@
 #define __XLIWMPCOREIMPL_H_DD8CA807_093F_4DD8_BD06_46191EA16371_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIDispatchImpl.h"
 #include <wmp.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
 
 namespace xl
 {

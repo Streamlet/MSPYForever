@@ -17,8 +17,6 @@
 #define __XLMACROS_H_83436072_95E5_4500_A129_49EBFD0899E5_INCLUDED__
 
 
-#include <xl/xlDef.h>
-
 namespace xl
 {
 #define XL_NIL

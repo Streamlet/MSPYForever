@@ -272,9 +272,6 @@
     <ClInclude Include="xl\Algorithm\xlSort.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComPtr.h">
-      <Filter>Win32\COM\Objects</Filter>
-    </ClInclude>
     <ClInclude Include="xl\Win32\Network\xlWinHttp.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
@@ -289,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="xl\Win32\Timer\xlTimer.h">
       <Filter>Win32\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComPtr.h">
+      <Filter>Win32\COM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

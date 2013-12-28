@@ -17,10 +17,8 @@
 #define __XLSCOPEEXIT_H_8093BA2C_C4CA_4DB4_99C6_BAA42C6380F0_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Meta/xlMacros.h>
-#include <xl/Meta/xlFunction.h>
-#include <xl/Meta/xlBind.h>
+#include "../Meta/xlBind.h"
+#include "../Meta/xlMacros.h"
 
 namespace xl
 {

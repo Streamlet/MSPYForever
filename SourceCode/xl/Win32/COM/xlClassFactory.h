@@ -16,8 +16,8 @@
 #define __XLCLASSFACTORY_H_30C5A972_4508_453D_AC45_B489268F1183_INCLUDED__
 
 
-#include <xl/Win32/COM/xlComClass.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIClassFactoryImpl.h>
+#include "xlComClass.h"
+#include "InterfaceHelper/xlIClassFactoryImpl.h"
 
 namespace xl
 {

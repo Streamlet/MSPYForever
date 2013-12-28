@@ -17,10 +17,9 @@
 #define __XLWEBBROWSER_H_CFE7C075_AA18_441D_AE2C_86773A6479B0_INCLUDED__
 
 
-#include <xl/Win32/COM/Objects/xlOleContainer.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIDocHostUIHandlerImpl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlDWebBrowserEvents2Impl.h>
-
+#include "../InterfaceHelper/xlDWebBrowserEvents2Impl.h"
+#include "../InterfaceHelper/xlIDocHostUIHandlerImpl.h"
+#include "xlOleContainer.h"
 
 namespace xl
 {

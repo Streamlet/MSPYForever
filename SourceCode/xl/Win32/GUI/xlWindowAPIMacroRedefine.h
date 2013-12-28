@@ -17,6 +17,7 @@
 #define __XLWINDOWAPIMACROREDEFINE_H_61336F01_F8A8_4FA6_8762_1F60789DBC99_INCLUDED__
 
 
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 
 #ifdef GetClassName

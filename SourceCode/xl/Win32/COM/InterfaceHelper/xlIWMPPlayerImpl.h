@@ -16,8 +16,9 @@
 #define __XLIWMPPLAYERIMPL_H_1346CAD0_4217_46CB_A45A_C7C6525000FF_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIWMPCoreImpl.h"
 #include <wmp.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIWMPCoreImpl.h>
 
 namespace xl
 {

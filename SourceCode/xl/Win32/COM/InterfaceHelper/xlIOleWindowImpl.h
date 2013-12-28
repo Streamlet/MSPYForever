@@ -15,8 +15,10 @@
 #ifndef __XLIOLEOBJECTIMPL_H_2BA5B8AA_904B_41C5_AFA8_23A51DEECC4E_INCLUDED__
 #define __XLIOLEOBJECTIMPL_H_2BA5B8AA_904B_41C5_AFA8_23A51DEECC4E_INCLUDED__
 
+
+#include "../../xlWin32Ver.h"
+#include "xlIUnknownImpl.h"
 #include <oleidl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
 {

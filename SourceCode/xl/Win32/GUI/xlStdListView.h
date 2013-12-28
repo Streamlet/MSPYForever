@@ -17,7 +17,7 @@
 #define __XLSTDLISTVIEW_H_B10B42A8_92B6_4122_B473_8A529A3093FF_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindow.h>
+#include "xlWindow.h"
 
 namespace xl
 {

@@ -17,7 +17,7 @@
 #define __XLSTDCOMBOBOX_H_D16DAB9C_78E5_4C3F_89B2_6FDFC33E8B97_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindow.h>
+#include "xlWindow.h"
 
 namespace xl
 {

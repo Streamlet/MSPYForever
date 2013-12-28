@@ -17,9 +17,9 @@
 #define __XLMAP_H_793F2C3D_4121_413E_B70F_E7A686081AC4_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Containers/xlRBTree.h>
-#include <xl/Containers/xlPair.h>
+#include "../xlDef.h"
+#include "xlPair.h"
+#include "xlRBTree.h"
 
 namespace xl
 {

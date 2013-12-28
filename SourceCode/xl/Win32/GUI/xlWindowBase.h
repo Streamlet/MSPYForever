@@ -17,17 +17,17 @@
 #define __XLWINDOWBASE_H_93972CEE_2D67_4A8B_927D_E327BDE8D4A4_INCLUDED__
 
 
-#include <xl/Win32/xlWin32Ver.h>
-#include <xl/Containers/xlMap.h>
-#include <xl/Containers/xlList.h>
-#include <xl/Meta/xlFunction.h>
-#include <xl/Meta/xlUtility.h>
-#include <xl/Win32/GUI/xlThunk.h>
-#include <xl/Win32/Threads/xlTls.h>
-#include <xl/Win32/Threads/xlCriticalSection.h>
+#include "../../Containers/xlList.h"
+#include "../../Containers/xlMap.h"
+#include "../../Meta/xlFunction.h"
+#include "../../Meta/xlUtility.h"
+#include "../Threads/xlCriticalSection.h"
+#include "../Threads/xlTls.h"
+#include "../xlWin32Ver.h"
+#include "xlThunk.h"
+#include <CommCtrl.h>
 #include <Windows.h>
 #include <tchar.h>
-#include <CommCtrl.h>
 
 namespace xl
 {

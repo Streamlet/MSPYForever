@@ -16,12 +16,13 @@
 #define __XLCOMLOADER_H_7E18A233_B52A_4C75_BCF0_AD9F78C0DC2C_INCLUDED__
 
 
-#include <xl/String/xlString.h>
-#include <xl/Containers/xlMap.h>
-#include <xl/Win32/COM/xlComClass.h>
-#include <xl/Win32/COM/xlDispatcher.h>
-#include <xl/Win32/Threads/xlCriticalSection.h>
-#include <xl/Win32/File/xlIniFile.h>
+#include "../../Containers/xlMap.h"
+#include "../../String/xlString.h"
+#include "../File/xlIniFile.h"
+#include "../Threads/xlCriticalSection.h"
+#include "../xlWin32Ver.h"
+#include "xlComClass.h"
+#include "xlDispatcher.h"
 #include <Windows.h>
 #include <tchar.h>
 

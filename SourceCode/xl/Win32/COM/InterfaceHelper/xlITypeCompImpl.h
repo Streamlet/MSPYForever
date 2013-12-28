@@ -16,8 +16,9 @@
 #define __XLITYPECOMPIMPL_H_04D4952F_296C_4D54_9FEA_9E9D46F3A2A6_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIUnknownImpl.h"
 #include <oaidl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
 {

@@ -17,9 +17,8 @@
 #define __XLTYPETRAITS_H_F84DEF1B_BC39_41ED_A130_A31D78520A8A_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Meta/xlMetaBase.h>
-#include <xl/Meta/xlTypeList.h>
+#include "../Meta/xlMetaBase.h"
+#include "../Meta/xlTypeList.h"
 
 namespace xl
 {

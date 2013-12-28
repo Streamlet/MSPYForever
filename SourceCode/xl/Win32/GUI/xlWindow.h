@@ -17,11 +17,12 @@
 #define __XLWINDOW_H_0646591E_8D6A_44AA_A773_084A53A0B190_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindowBaseEx.h>
-#include <xl/Win32/GUI/xlWindowAPIMacroRedefine.h>
-#include <xl/Win32/GUI/xlCommCtrlInitializer.h>
-#include <xl/String/xlString.h>
-#include <xl/Memory/xlSmartPtr.h>
+#include "../../Memory/xlSmartPtr.h"
+#include "../../String/xlString.h"
+#include "../xlWin32Ver.h"
+#include "xlCommCtrlInitializer.h"
+#include "xlWindowAPIMacroRedefine.h"
+#include "xlWindowBaseEx.h"
 #include <ShellAPI.h>
 
 namespace xl

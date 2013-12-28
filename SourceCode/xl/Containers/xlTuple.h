@@ -17,10 +17,10 @@
 #define __XLTUPLE_H_4720D247_760A_43F2_9611_6673153C5C68_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Meta/xlMacros.h>
-#include <xl/Meta/xlMetaBase.h>
-#include <xl/Meta/xlStaticAssert.h>
+#include "../Meta/xlMacros.h"
+#include "../Meta/xlMetaBase.h"
+#include "../Meta/xlStaticAssert.h"
+#include "../xlDef.h"
 
 namespace xl
 {

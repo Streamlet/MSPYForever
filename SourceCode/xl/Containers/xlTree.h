@@ -17,8 +17,8 @@
 #define __XLTREE_H_E8CDF772_F44E_4CB4_B760_DEC9AE4878A0_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Containers/xlArray.h>
+#include "../xlDef.h"
+#include "xlArray.h"
 
 namespace xl
 {

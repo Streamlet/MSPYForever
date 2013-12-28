@@ -16,8 +16,9 @@
 #define __XLHANDLE_H_39C0A466_0EB3_4D32_879B_1984722D3AED_INCLUDED__
 
 
-#include <xl/Meta/xlFunction.h>
-#include <xl/Win32/GUI/xlThunk.h>
+#include "../../Meta/xlFunction.h"
+#include "../GUI/xlThunk.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl

@@ -17,8 +17,8 @@
 #define __XLINTERVALSET_H_0D40B708_46DD_4421_A698_83BFE8AA4066_INCLUDED__
 
 
-#include <xl/Containers/xlSet.h>
-#include <xl/Math/xlInterval.h>
+#include "../Containers/xlSet.h"
+#include "../Math/xlInterval.h"
 
 namespace xl
 {

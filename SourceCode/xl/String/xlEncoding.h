@@ -17,9 +17,9 @@
 #define __XLENCODING_H_EB12014E_ED0F_4198_8DAC_37836BAD9483_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
-#include <xl/Memory/xlMemory.h>
-#include <xl/String/xlString.h>
+#include "../Memory/xlMemory.h"
+#include "../Meta/xlUtility.h"
+#include "../String/xlString.h"
 
 namespace xl
 {

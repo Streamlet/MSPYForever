@@ -17,8 +17,8 @@
 #define __XLMENU_H_AE31B303_4262_49A0_99BA_A03D67B0C6E5_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlMenuBase.h>
-#include <xl/Win32/GUI/xlWindowAPIMacroRedefine.h>
+#include "xlMenuBase.h"
+#include "xlWindowAPIMacroRedefine.h"
 
 namespace xl
 {

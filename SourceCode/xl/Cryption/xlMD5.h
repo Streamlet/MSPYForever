@@ -17,7 +17,7 @@
 #define __XLMD5_H_9F168AAD_4EE5_4F50_A910_E9280F1CBA2E_INCLUDED__
 
 
-#include <xl/Memory/xlMemory.h>
+#include "../Memory/xlMemory.h"
 
 namespace xl
 {

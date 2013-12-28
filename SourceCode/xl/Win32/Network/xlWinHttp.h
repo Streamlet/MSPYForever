@@ -16,8 +16,9 @@
 #define __XLWINHTTP_H_AABABE1B_FA77_496D_AE29_1FE0DDDF7436_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
-#include <xl/String/xlString.h>
+#include "../../Meta/xlUtility.h"
+#include "../../String/xlString.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 #include <WinHttp.h>
 #include <tchar.h>

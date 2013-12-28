@@ -17,8 +17,8 @@
 #define __XLINTERVAL_H_14F2C212_AFD1_4E01_8F71_60E67EACC903_INCLUDED__
 
 
-#include <xl/Containers/xlSet.h>
-#include <xl/Math/xlMathBase.h>
+#include "../Containers/xlSet.h"
+#include "../Math/xlMathBase.h"
 
 namespace xl
 {

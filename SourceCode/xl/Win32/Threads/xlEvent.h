@@ -16,7 +16,8 @@
 #define __XLEVENT_H_7BC8461C_EA45_496E_B383_023E9D4FFCD7_INCLUDED__
 
 
-#include <xl/Win32/xlHandle.h>
+#include "../xlHandle.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl

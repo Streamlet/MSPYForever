@@ -16,13 +16,13 @@
 #define __XLHTTPIO_H_460379E8_2E79_435E_BFD9_C6B5E2F28A66_INCLUDED__
 
 
-#include <xl/Win32/Network/xlWinHttp.h>
-#include <xl/Containers/xlArray.h>
-#include <xl/String/xlString.h>
-#include <xl/Meta/xlFunction.h>
-#include <xl/Win32/Threads/xlEvent.h>
-#include <xl/Memory/xlSmartPtr.h>
-#include <xl/Meta/xlScopeExit.h>
+#include "../../Containers/xlArray.h"
+#include "../../Memory/xlSmartPtr.h"
+#include "../../Meta/xlFunction.h"
+#include "../../Meta/xlScopeExit.h"
+#include "../../String/xlString.h"
+#include "../Threads/xlEvent.h"
+#include "xlWinHttp.h"
 
 namespace xl
 {

@@ -16,8 +16,9 @@
 #define __XLIDOCHOSTUIHANDLERIMPL_H_2BC6BA59_38F5_435F_A863_FEC9D1C1CD6F_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIUnknownImpl.h"
 #include <Mshtmhst.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
 {

@@ -17,8 +17,7 @@
 #define __XLBINTREE_H_6C3F6F71_DCAC_4B1D_9BAC_1333FB803DEE_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Memory/xlMemory.h>
+#include "../Memory/xlMemory.h"
 
 namespace xl
 {

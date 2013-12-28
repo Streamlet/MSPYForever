@@ -17,8 +17,6 @@
 #define __XLPAIR_H_E7935E32_4626_4FB9_B582_4D3DA2D9CF69_INCLUDED__
 
 
-#include <xl/xlDef.h>
-
 namespace xl
 {
     template <typename K, typename V>

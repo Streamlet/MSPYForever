@@ -17,7 +17,7 @@
 #define __XLSTDSTATIC_H_1715D513_4BF0_431F_BC57_C347432395BB_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindow.h>
+#include "xlWindow.h"
 
 namespace xl
 {

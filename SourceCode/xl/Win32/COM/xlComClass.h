@@ -16,8 +16,9 @@
 #define __XLCOMCLASS_H_EE07A885_D300_4CA6_81BE_DDFD9296BABE_INCLUDED__
 
 
+#include "../xlWin32Ver.h"
+#include "xlComDef.h"
 #include <Windows.h>
-#include <xl/Win32/COM/xlComDef.h>
 
 namespace xl
 {

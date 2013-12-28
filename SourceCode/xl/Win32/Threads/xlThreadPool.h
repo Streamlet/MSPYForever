@@ -17,12 +17,12 @@
 #define __XLTHREADPOOL_H_EF483C0F_09BB_436D_907C_DD8D0444D386_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
-#include <xl/Meta/xlFunction.h>
-#include <xl/Containers/xlArray.h>
-#include <xl/Containers/xlSet.h>
-#include <xl/Win32/Threads/xlCriticalSection.h>
-#include <xl/Win32/Threads/xlThread.h>
+#include "../../Containers/xlArray.h"
+#include "../../Containers/xlSet.h"
+#include "../../Meta/xlFunction.h"
+#include "../../Meta/xlUtility.h"
+#include "xlCriticalSection.h"
+#include "xlThread.h"
 
 namespace xl
 {

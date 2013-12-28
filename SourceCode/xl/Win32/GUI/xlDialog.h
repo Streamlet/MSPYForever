@@ -17,7 +17,7 @@
 #define __XLDIALOG_H_FB784537_F2A1_43D5_B337_1882AB81D19F_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindow.h>
+#include "xlWindow.h"
 
 namespace xl
 {

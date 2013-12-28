@@ -16,6 +16,7 @@
 #define __XLIUNKNOWNIMPL_H_02B7268E_6F8B_47E7_BF44_1EDB0C545C42_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
 #include <Unknwn.h>
 #include <Windows.h>
 

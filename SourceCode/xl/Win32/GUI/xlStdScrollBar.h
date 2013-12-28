@@ -17,7 +17,7 @@
 #define __XLSTDSCROLLBAR_H_CE421D01_3A90_4DFA_A59F_74C911033E2A_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindow.h>
+#include "xlWindow.h"
 
 namespace xl
 {

@@ -17,7 +17,7 @@
 #define __XLSTDLISTBOX_H_76D859F1_40EE_4ABE_B0F0_6A0CFB8865F8_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindow.h>
+#include "xlWindow.h"
 
 namespace xl
 {

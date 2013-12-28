@@ -16,10 +16,10 @@
 #ifndef __XLBIND_H_E78F97BF_251C_4570_B0C4_0F876ADED799_INCLUDED__
 #define __XLBIND_H_E78F97BF_251C_4570_B0C4_0F876ADED799_INCLUDED__
 
-#include <xl/xlDef.h>
-#include <xl/Meta/xlMacros.h>
-#include <xl/Meta/xlTypeList.h>
-#include <xl/Meta/xlFunction.h>
+
+#include "../Meta/xlFunction.h"
+#include "../Meta/xlMacros.h"
+#include "../Meta/xlTypeList.h"
 
 namespace xl
 {

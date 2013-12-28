@@ -17,10 +17,9 @@
 #define __XLGRAPH_H_B9B90B34_ED59_4649_9500_6CA42EDE704C_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Containers/xlArray.h>
-#include <xl/Containers/xlSet.h>
-#include <xl/Containers/xlMap.h>
+#include "xlArray.h"
+#include "xlMap.h"
+#include "xlSet.h"
 
 namespace xl
 {

@@ -17,10 +17,10 @@
 #define __XLREGEXP_H_0FCC5122_D6F3_4E9E_AAB0_5D268E87ED44_INCLUDED__
 
 
-#include <xl/Containers/xlGraph.h>
-#include <xl/String/xlString.h>
-#include <xl/Memory/xlSmartPtr.h>
-#include <xl/Math/xlIntervalSet.h>
+#include "../Containers/xlGraph.h"
+#include "../Math/xlIntervalSet.h"
+#include "../Memory/xlSmartPtr.h"
+#include "../String/xlString.h"
 
 namespace xl
 {

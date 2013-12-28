@@ -16,7 +16,7 @@
 #define __XLCOMPTR_H_E52D7EAE_DC76_4D71_8CB0_A22C1AAB5463_INCLUDED__
 
 
-#include <xl/Win32/xlWin32Ver.h>
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl

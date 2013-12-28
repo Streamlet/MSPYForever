@@ -17,8 +17,8 @@
 #define __XLWINDOWBASEEX_H_AC4BA307_1739_4573_90E1_B080A8D1AB1E_INCLUDED__
 
 
-#include <xl/Containers/xlTuple.h>
-#include <xl/Win32/GUI/xlWindowBase.h>
+#include "../../Containers/xlTuple.h"
+#include "xlWindowBase.h"
 
 namespace xl
 {

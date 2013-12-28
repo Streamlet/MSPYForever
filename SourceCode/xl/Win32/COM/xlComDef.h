@@ -16,6 +16,7 @@
 #define __XLCOMDEF_H_4B89206D_F947_4052_B92D_FD7B1E00CB8F_INCLUDED__
 
 
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 #include <Unknwn.h>
 

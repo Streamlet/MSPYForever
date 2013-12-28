@@ -17,8 +17,9 @@
 #define __XLTHUNK_H_41B69CAE_F597_427A_88C1_193B95C8AB06_INCLUDED__
 
 
+#include "../Memory/xlHeap.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
-#include <xl/Win32/Memory/xlHeap.h>
 
 namespace xl
 {

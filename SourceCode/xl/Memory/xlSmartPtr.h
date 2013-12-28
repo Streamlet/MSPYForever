@@ -17,8 +17,6 @@
 #define __XLSMARTPTR_H_0020004E_79A8_4C64_B292_F102DBE1BF96_INCLUDED__
 
 
-#include <xl/xlDef.h>
-
 namespace xl
 {
     struct ElementDeleter

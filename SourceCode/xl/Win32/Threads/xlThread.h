@@ -17,10 +17,10 @@
 #define __XLTHREAD_H_7019B92A_520D_4235_8B24_9334EF47B92A_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
-#include <xl/Meta/xlFunction.h>
-#include <xl/Win32/xlWin32Ver.h>
-#include <xl/Win32/Threads/xlCriticalSection.h>
+#include "../../Meta/xlFunction.h"
+#include "../../Meta/xlUtility.h"
+#include "../xlWin32Ver.h"
+#include "xlCriticalSection.h"
 #include <Windows.h>
 #include <process.h>
 

@@ -17,14 +17,14 @@
 #define __XLMESSAGEBUS_H_AAE36D41_9C3A_48F0_8316_7746219BCC1A_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
-#include <xl/Meta/xlFunction.h>
-#include <xl/Containers/xlArray.h>
-#include <xl/Containers/xlMap.h>
-#include <xl/Win32/Memory/xlSafeSmartPtr.h>
-#include <xl/Win32/Threads/xlThreadPool.h>
-#include <xl/Win32/Threads/xlCriticalSection.h>
-#include <xl/Win32/xlWin32Ver.h>
+#include "../../Containers/xlArray.h"
+#include "../../Containers/xlMap.h"
+#include "../../Meta/xlFunction.h"
+#include "../../Meta/xlUtility.h"
+#include "../Memory/xlSafeSmartPtr.h"
+#include "../Threads/xlCriticalSection.h"
+#include "../Threads/xlThreadPool.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl

@@ -16,11 +16,12 @@
 #define __XLREGISTRY_H_75705091_0710_47A5_8543_92548C6AAF46_INCLUDED__
 
 
-#include <xl/String/xlString.h>
-#include <xl/Containers/xlArray.h>
-#include <xl/Meta/xlScopeExit.h>
-#include <xl/Meta/xlUtility.h>
-#include <xl/Memory/xlSmartPtr.h>
+#include "../../Containers/xlArray.h"
+#include "../../Memory/xlSmartPtr.h"
+#include "../../Meta/xlScopeExit.h"
+#include "../../Meta/xlUtility.h"
+#include "../../String/xlString.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 #include <tchar.h>
 

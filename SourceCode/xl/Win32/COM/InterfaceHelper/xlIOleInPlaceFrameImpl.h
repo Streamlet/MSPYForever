@@ -16,8 +16,9 @@
 #define __XLIOLEINPLACEFRAMEIMPL_H_2A1FC107_C15E_4C42_B807_69FF9E40419C_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIOleInPlaceUIWindowImpl.h"
 #include <oleidl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceUIWindowImpl.h>
 
 namespace xl
 {

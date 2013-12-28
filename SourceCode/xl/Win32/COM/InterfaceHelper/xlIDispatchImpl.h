@@ -16,8 +16,9 @@
 #define __XLIDISPATCHIMPL_H_7A443B6E_EA9F_486C_B4D3_771DB7560CF8_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIUnknownImpl.h"
 #include <oaidl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
 {

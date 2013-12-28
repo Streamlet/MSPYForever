@@ -16,9 +16,10 @@
 #define __XLMEDIAPLAYER_H_90C6295E_B667_44F2_98D6_BA0F435FECB0_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "../InterfaceHelper/xlIDispatchImpl.h"
+#include "xlOleContainer.h"
 #include <wmp.h>
-#include <xl/Win32/COM/Objects/xlOleContainer.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
 
 namespace xl
 {

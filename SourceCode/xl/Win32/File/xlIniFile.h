@@ -16,11 +16,12 @@
 #define __INIFILE_H_2AFF6877_40F9_4A15_B2ED_4355AD5A2963_INCLUDED__
 
 
-#include <xl/String/xlString.h>
-#include <xl/Containers/xlArray.h>
-#include <xl/Meta/xlScopeExit.h>
-#include <xl/Meta/xlUtility.h>
-#include <xl/Memory/xlSmartPtr.h>
+#include "../../Containers/xlArray.h"
+#include "../../Memory/xlSmartPtr.h"
+#include "../../Meta/xlScopeExit.h"
+#include "../../Meta/xlUtility.h"
+#include "../../String/xlString.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 #include <tchar.h>
 

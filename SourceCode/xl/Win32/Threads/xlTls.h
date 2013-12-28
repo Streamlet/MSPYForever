@@ -17,7 +17,8 @@
 #define __XLTLS_H_227ED6E5_E819_4DAF_8ACB_51EBFA717AFC_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
+#include "../../Meta/xlUtility.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl

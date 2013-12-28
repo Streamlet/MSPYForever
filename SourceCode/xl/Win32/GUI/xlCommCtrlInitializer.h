@@ -17,7 +17,8 @@
 #define __XLCOMMCTRLINITIALIZER_H_D4ADA173_6B10_43C9_A817_E1BB6F16BC5F_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
+#include "../../Meta/xlUtility.h"
+#include "../xlWin32Ver.h"
 #include <CommCtrl.h>
 #pragma comment(lib, "Comctl32.lib")
 

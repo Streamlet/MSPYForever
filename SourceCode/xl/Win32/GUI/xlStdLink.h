@@ -17,7 +17,7 @@
 #define __XLSTDLINK_H_FEA6F574_15DC_4178_8DFA_83C8226EC770_INCLUDED__
 
 
-#include <xl/Win32/GUI/xlWindow.h>
+#include "xlWindow.h"
 
 namespace xl
 {

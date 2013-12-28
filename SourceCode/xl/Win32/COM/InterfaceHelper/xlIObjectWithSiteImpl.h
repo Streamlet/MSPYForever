@@ -16,8 +16,9 @@
 #define __XLIOBJECTWITHSITEIMPL_H_11E45695_BD45_422C_9222_FE0892155057_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIUnknownImpl.h"
 #include <Ocidl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIUnknownImpl.h>
 
 namespace xl
 {

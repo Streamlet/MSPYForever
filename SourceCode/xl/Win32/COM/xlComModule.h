@@ -16,14 +16,15 @@
 #define __XLCOMMODULE_H_89C4A369_6CBD_4316_947D_122F6E6C3F55_INCLUDED__
 
 
-#include <xl/Meta/xlAssert.h>
-#include <xl/Meta/xlUtility.h>
-#include <xl/Meta/xlScopeExit.h>
-#include <xl/String/xlString.h>
-#include <xl/Win32/Registry/xlRegistry.h>
-#include <xl/Win32/File/xlIniFile.h>
-#include <xl/Win32/COM/xlComDef.h>
-#include <xl/Win32/COM/xlClassFactory.h>
+#include "../../Meta/xlAssert.h"
+#include "../../Meta/xlScopeExit.h"
+#include "../../Meta/xlUtility.h"
+#include "../../String/xlString.h"
+#include "../File/xlIniFile.h"
+#include "../Registry/xlRegistry.h"
+#include "../xlWin32Ver.h"
+#include "xlComDef.h"
+#include "xlClassFactory.h"
 #include <Windows.h>
 #include <Shlwapi.h>
 #pragma comment(lib, "Shlwapi.lib")

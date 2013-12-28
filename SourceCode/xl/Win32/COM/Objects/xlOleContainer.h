@@ -17,10 +17,10 @@
 #define __XLOLECONTAINER_H_0B2334C9_4006_47C0_A940_CE8A19BE3568_INCLUDED__
 
 
-#include <xl/Win32/COM/xlComInclude.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIOleClientSiteImpl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceSiteImpl.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIOleInPlaceFrameImpl.h>
+#include "../InterfaceHelper/xlIOleClientSiteImpl.h"
+#include "../InterfaceHelper/xlIOleInPlaceFrameImpl.h"
+#include "../InterfaceHelper/xlIOleInPlaceSiteImpl.h"
+#include "../xlComInclude.h"
 
 namespace xl
 {

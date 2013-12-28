@@ -17,8 +17,8 @@
 #define __XLSET_H_11EAD852_068B_4809_B06D_F0FDF1E34E48_INCLUDED__
 
 
-#include <xl/xlDef.h>
-#include <xl/Containers/xlRBTree.h>
+#include "../xlDef.h"
+#include "xlRBTree.h"
 
 namespace xl
 {

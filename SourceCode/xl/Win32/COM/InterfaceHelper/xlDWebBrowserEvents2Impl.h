@@ -16,8 +16,9 @@
 #define __XLDWEBBROWSEREVENTS2IMPL_H_EA31A245_A931_42E6_9D29_E0C24E2B1ADC_INCLUDED__
 
 
+#include "../../xlWin32Ver.h"
+#include "xlIDispatchImpl.h"
 #include <ExDisp.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
 
 namespace xl
 {

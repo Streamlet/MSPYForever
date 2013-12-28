@@ -16,10 +16,11 @@
 #define __XLDISPATCHER_H_E1D7EF30_0567_480C_A31C_C0463DD8EC33_INCLUDED__
 
 
+#include "../xlWin32Ver.h"
+#include "xlComDef.h"
+#include "InterfaceHelper/xlIDispatchImpl.h"
 #include <oaidl.h>
 #include <oleauto.h>
-#include <xl/Win32/COM/InterfaceHelper/xlIDispatchImpl.h>
-#include <xl/Win32/COM/xlComDef.h>
 
 namespace xl
 {

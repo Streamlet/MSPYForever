@@ -17,8 +17,8 @@
 #define __XLMENUBASE_H_C208C619_17E7_4147_BBFD_C815FAFA7324_INCLUDED__
 
 
-#include <xl/Meta/xlUtility.h>
-#include <xl/Win32/xlWin32Ver.h>
+#include "../..//Meta/xlUtility.h"
+#include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl
