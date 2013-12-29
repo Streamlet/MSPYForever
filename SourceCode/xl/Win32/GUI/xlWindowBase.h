@@ -25,8 +25,8 @@
 #include "../Threads/xlTls.h"
 #include "../xlWin32Ver.h"
 #include "xlThunk.h"
-#include <CommCtrl.h>
 #include <Windows.h>
+#include <CommCtrl.h>
 #include <tchar.h>
 
 namespace xl

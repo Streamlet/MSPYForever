@@ -17,12 +17,12 @@
 #define __XLSOCKET_H_49FA92F6_46FC_4CB6_A9D2_924EF442467D_INCLUDED__
 
 
+#include <WinSock2.h>   // Must include WinSock2.h before Windows.h
+#pragma comment(lib, "Ws2_32.lib")
 #include "../../Memory/xlMemory.h"
 #include "../../String/xlString.h"
 #include "../Memory/xlSafeSmartPtr.h"
 #include "../xlWin32Ver.h"
-#include <WinSock2.h>
-#pragma comment(lib, "Ws2_32.lib")
 
 namespace xl
 {
