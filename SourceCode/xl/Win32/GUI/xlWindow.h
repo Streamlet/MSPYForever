@@ -30,23 +30,13 @@ namespace xl
     class Window : public WindowBaseEx
     {
     public:
-        Window() :
-//          m_hFontCaption(nullptr),
-//          m_hFontSmallCaption(nullptr),
-//          m_hFontMenu(nullptr),
-//          m_hFontStatus(nullptr),
-            m_hFontMessage(nullptr)
+        Window()
         {
 
         }
 
         Window(HWND hWnd) :
-            WindowBaseEx(hWnd),
-//          m_hFontCaption(nullptr),
-//          m_hFontSmallCaption(nullptr),
-//          m_hFontMenu(nullptr),
-//          m_hFontStatus(nullptr),
-            m_hFontMessage(nullptr)
+            WindowBaseEx(hWnd)
         {
 
         }
@@ -64,28 +54,28 @@ namespace xl
 
     public:
         bool Create(int x = CW_USEDEFAULT,
-                    int y = CW_USEDEFAULT,
-                    int nWidth = CW_USEDEFAULT,
-                    int nHeight = CW_USEDEFAULT,
-                    Window *pParent = nullptr,
-                    LPCTSTR lpszClassName = GetClassName(),
-                    DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
-                    DWORD dwExStyle = WS_EX_CONTROLPARENT,
-                    HMENU hMenu = nullptr,
-                    HINSTANCE hInstance = nullptr)
+            int y = CW_USEDEFAULT,
+            int nWidth = CW_USEDEFAULT,
+            int nHeight = CW_USEDEFAULT,
+            Window *pParent = nullptr,
+            LPCTSTR lpszClassName = GetClassName(),
+            DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
+            DWORD dwExStyle = WS_EX_CONTROLPARENT,
+            HMENU hMenu = nullptr,
+            HINSTANCE hInstance = nullptr)
         {
             if (!WindowBase::Create(lpszClassName,
-                                    nullptr,
-                                    dwStyle,
-                                    dwExStyle,
-                                    x,
-                                    y,
-                                    nWidth,
-                                    nHeight,
-                                    pParent,
-                                    hMenu,
-                                    hInstance,
-                                    nullptr))
+                nullptr,
+                dwStyle,
+                dwExStyle,
+                x,
+                y,
+                nWidth,
+                nHeight,
+                pParent,
+                hMenu,
+                hInstance,
+                nullptr))
             {
                 return false;
             }
@@ -95,25 +85,38 @@ namespace xl
 
             SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &m_tagNONCLIENTMETRICSW, 0);
 
-//          m_hFontCaption      = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfCaptionFont);
-//          m_hFontSmallCaption = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfSmCaptionFont);
-//          m_hFontMenu         = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMenuFont);
-//          m_hFontStatus       = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfStatusFont);
-            m_hFontMessage      = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMessageFont);
+            if (ms_hFontCaption == nullptr)
+            {
+                ms_hFontCaption = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfCaptionFont);
+            }
 
-            SetFont(m_hFontMessage, FALSE);
+            if (ms_hFontSmallCaption == nullptr)
+            {
+                ms_hFontSmallCaption = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfSmCaptionFont);
+            }
+
+            if (ms_hFontMenu == nullptr)
+            {
+                ms_hFontMenu = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMenuFont);
+            }
+
+            if (ms_hFontStatus == nullptr)
+            {
+                ms_hFontStatus = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfStatusFont);
+            }
+
+            if (ms_hFontMessage == nullptr)
+            {
+                ms_hFontMessage = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMessageFont);
+            }
+
+            SetFont(ms_hFontMessage, FALSE);
 
             return true;
         }
 
         bool Destroy()
         {
-//          DeleteObject(m_hFontCaption);
-//          DeleteObject(m_hFontSmallCaption);
-//          DeleteObject(m_hFontMenu);
-//          DeleteObject(m_hFontStatus);
-            DeleteObject(m_hFontMessage);
-
             if (!WindowBase::Destroy())
             {
                 return false;
@@ -124,11 +127,11 @@ namespace xl
 
     protected:
         NONCLIENTMETRICS m_tagNONCLIENTMETRICSW;
-//      HFONT m_hFontCaption;
-//      HFONT m_hFontSmallCaption;
-//      HFONT m_hFontMenu;
-//      HFONT m_hFontStatus;
-        HFONT m_hFontMessage;
+        static HFONT ms_hFontCaption;
+        static HFONT ms_hFontSmallCaption;
+        static HFONT ms_hFontMenu;
+        static HFONT ms_hFontStatus;
+        static HFONT ms_hFontMessage;
 
     private:
         CommCtrlInitializer ms_cci;
@@ -892,6 +895,12 @@ namespace xl
             return ::SetDlgItemText(m_hWnd, nID, lpszString);
         }
     };
+
+    __declspec(selectany) HFONT Window::ms_hFontCaption = nullptr;
+    __declspec(selectany) HFONT Window::ms_hFontSmallCaption = nullptr;
+    __declspec(selectany) HFONT Window::ms_hFontMenu = nullptr;
+    __declspec(selectany) HFONT Window::ms_hFontStatus = nullptr;
+    __declspec(selectany) HFONT Window::ms_hFontMessage = nullptr;
 
 } // namespace xl
 
