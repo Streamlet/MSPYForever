@@ -70,7 +70,7 @@ namespace xl
                 return true;
             }
 
-            if (!CloseHandle(m_hHandle))
+            if (!HandleCloser::CloseHandle(m_hHandle))
             {
                 return false;
             }

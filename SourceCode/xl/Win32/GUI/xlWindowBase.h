@@ -31,30 +31,6 @@
 
 namespace xl
 {
-
-// Standard class names accepted by CreateWindow/CreateWindowEx
-#define STD_CONTROL_CLASSNAME_STATIC        _T("STATIC")    // WC_STATIC
-#define STD_CONTROL_CLASSNAME_BUTTON        _T("BUTTON")    // WC_BUTTON
-#define STD_CONTROL_CLASSNAME_EDIT          _T("EDIT")      // WC_EDIT
-#define STD_CONTROL_CLASSNAME_COMBOBOX      _T("COMBOBOX")  // WC_COMBOBOX
-#define STD_CONTROL_CLASSNAME_LISTBOX       _T("LISTBOX")   // WC_LISTBOX
-#define STD_CONTROL_CLASSNAME_SCROLLBAR     _T("SCROLLBAR") // WC_SCROLLBAR
-#define STD_CONTROL_CLASSNAME_RICHEDIT1     _T("RichEdit")
-#define STD_CONTROL_CLASSNAME_RICHEDIT2     _T("RICHEDIT_CLASS")
-#define STD_CONTROL_CLASSNAME_MDICLIENT     _T("MDICLIENT")
-
-// Controls defined in CommCtrl.h
-#define STD_CONTROL_CLASSNAME_PROGRESSBAR   PROGRESS_CLASS
-#define STD_CONTROL_CLASSNAME_HEADER        WC_HEADER
-#define STD_CONTROL_CLASSNAME_LINK          WC_LINK
-#define STD_CONTROL_CLASSNAME_LISTVIEW      WC_LISTVIEW
-#define STD_CONTROL_CLASSNAME_TREEVIEW      WC_TREEVIEW
-#define STD_CONTROL_CLASSNAME_COMBOBOXEX    WC_COMBOBOXEX
-#define STD_CONTROL_CLASSNAME_TABCONTROL    WC_TABCONTROL
-#define STD_CONTROL_CLASSNAME_IPADDRESS     WC_IPADDRESS
-#define STD_CONTROL_CLASSNAME_PAGESCROLLER  WC_PAGESCROLLER
-#define STD_CONTROL_CLASSNAME_NATIVEFONTCTL WC_NATIVEFONTCTL
-
     class WindowBase : public NonCopyable
     {
     public:
@@ -104,34 +80,13 @@ namespace xl
                 return false;
             }
 
-            bool bStdControl = false;
-
-            if (CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_STATIC       , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_BUTTON       , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_EDIT         , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_COMBOBOX     , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_LISTBOX      , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_SCROLLBAR    , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_RICHEDIT1    , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_RICHEDIT2    , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_MDICLIENT    , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_HEADER       , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_PROGRESSBAR  , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_LINK         , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_LISTVIEW     , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_TREEVIEW     , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_COMBOBOXEX   , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_TABCONTROL   , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_IPADDRESS    , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_PAGESCROLLER , -1) == CSTR_EQUAL ||
-                CompareString(LOCALE_INVARIANT, NORM_IGNORECASE, lpClassName, -1, STD_CONTROL_CLASSNAME_NATIVEFONTCTL, -1) == CSTR_EQUAL)
-            {
-                bStdControl = true;
-            }
+            WNDCLASSEX wcex = { sizeof(WNDCLASSEX) };
+            bool bStdControl = !!GetClassInfoEx(nullptr, lpClassName, &wcex);
 
             if (!bStdControl)
             {
-                WNDCLASSEX wcex    = { sizeof(WNDCLASSEX) };
+                ZeroMemory(&wcex, sizeof(WNDCLASSEX));
+                wcex.cbSize        = sizeof(WNDCLASSEX);
                 wcex.lpfnWndProc   = StartWndProc;
                 wcex.hInstance     = hInstance;
                 wcex.lpszClassName = lpClassName;

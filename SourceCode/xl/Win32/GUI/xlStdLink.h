@@ -43,7 +43,7 @@ namespace xl
     protected:
         static LPCTSTR GetClassName()
         {
-            return STD_CONTROL_CLASSNAME_LINK;
+            return WC_LINK;
         }
 
     public:

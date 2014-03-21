@@ -43,7 +43,7 @@ namespace xl
     protected:
         static LPCTSTR GetClassName()
         {
-            return STD_CONTROL_CLASSNAME_COMBOBOX;
+            return WC_COMBOBOX;
         }
 
     public:

@@ -2,7 +2,7 @@
 //
 //    Copyright (C) Streamlet. All rights reserved.
 //
-//    File Name:   xlHandle.h
+//    File Name:   xlTimer.h
 //    Author:      Streamlet
 //    Create Time: 2013-05-15
 //    Description: 
@@ -12,8 +12,8 @@
 //
 //--------------------------------------------------------------------
 
-#ifndef __XLHANDLE_H_39C0A466_0EB3_4D32_879B_1984722D3AED_INCLUDED__
-#define __XLHANDLE_H_39C0A466_0EB3_4D32_879B_1984722D3AED_INCLUDED__
+#ifndef __XLTIMER_H_39C0A466_0EB3_4D32_879B_1984722D3AEE_INCLUDED__
+#define __XLTIMER_H_39C0A466_0EB3_4D32_879B_1984722D3AEE_INCLUDED__
 
 
 #include "../../Meta/xlFunction.h"
@@ -83,4 +83,4 @@ namespace xl
 
 } // namespace xl
 
-#endif // #ifndef __XLHANDLE_H_39C0A466_0EB3_4D32_879B_1984722D3AED_INCLUDED__
+#endif // #ifndef __XLTIMER_H_39C0A466_0EB3_4D32_879B_1984722D3AEE_INCLUDED__

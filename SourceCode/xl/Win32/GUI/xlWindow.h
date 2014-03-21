@@ -25,6 +25,21 @@
 #include "xlWindowBaseEx.h"
 #include <ShellAPI.h>
 
+//
+// Controls TODO List:
+//
+// _T("RichEdit")
+// _T("RICHEDIT_CLASS")
+// _T("MDICLIENT")
+// WC_HEADER
+// WC_TREEVIEW
+// WC_COMBOBOXEX
+// WC_TABCONTROL
+// WC_IPADDRESS
+// WC_PAGESCROLLER
+// WC_NATIVEFONTCTL
+//
+
 namespace xl
 {
     class Window : public WindowBaseEx
