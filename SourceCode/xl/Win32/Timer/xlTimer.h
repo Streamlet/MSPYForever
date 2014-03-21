@@ -4,7 +4,7 @@
 //
 //    File Name:   xlTimer.h
 //    Author:      Streamlet
-//    Create Time: 2013-05-15
+//    Create Time: 2013-06-24
 //    Description: 
 //
 //    Version history:
