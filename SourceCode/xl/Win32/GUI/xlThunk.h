@@ -58,14 +58,23 @@ namespace xl
 #endif
 
     private:
-        static Heap ms_Heap;
+        static HANDLE ms_hThunkHeap;
+        HeapHandle m_Heap;
         StdCallThunk *m_pThunk;
 
     public:
         Thunk()
             : m_pThunk(nullptr)
         {
-            m_pThunk = (StdCallThunk *)ms_Heap.Alloc(sizeof(StdCallThunk));
+            m_Heap.Attach(ms_hThunkHeap);
+
+            if (!m_Heap.IsValid())
+            {
+                m_Heap.Create(HEAP_CREATE_ENABLE_EXECUTE);
+            }
+
+
+            m_pThunk = (StdCallThunk *)m_Heap.Alloc(sizeof(StdCallThunk));
 
 #ifdef _WIN64
             m_pThunk->m_mov_rcx = 0xb948;   // mov rcx, pThis
@@ -86,9 +95,11 @@ namespace xl
         {
             if (m_pThunk != nullptr)
             {
-                ms_Heap.Free(m_pThunk);
+                m_Heap.Free(m_pThunk);
                 m_pThunk = nullptr;
             }
+
+            m_Heap.Detach();
         }
 
         template <typename U>
@@ -117,7 +128,7 @@ namespace xl
     };
 
     template <typename T>
-    __declspec(selectany) Heap Thunk<T>::ms_Heap;
+    __declspec(selectany) HANDLE Thunk<T>::ms_hThunkHeap = nullptr;
 
 } // namespace xl
 

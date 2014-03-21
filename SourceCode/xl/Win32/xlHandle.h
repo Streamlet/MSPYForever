@@ -20,7 +20,15 @@
 
 namespace xl
 {
-    template <bool bManaged = true>
+    struct DefaultHandleCloser
+    {
+        static bool CloseHandle(HANDLE hHandle)
+        {
+            return !!::CloseHandle(hHandle);
+        }
+    };
+
+    template <bool bManaged = true, typename HandleCloser = DefaultHandleCloser>
     class HandleT
     {
     public:
@@ -30,7 +38,7 @@ namespace xl
         
         }
 
-        ~HandleT()
+        virtual ~HandleT()
         {
             if (bManaged)
             {
@@ -45,7 +53,7 @@ namespace xl
     public:
         HANDLE Attach(HANDLE hHandle)
         {
-            HINTERNET hPrevious = m_hHandle;
+            HANDLE hPrevious = m_hHandle;
             m_hHandle = hHandle;
             return hPrevious;
         }
@@ -78,6 +86,10 @@ namespace xl
             return m_hHandle;
         }
 
+        bool IsValid() const
+        {
+            return m_hHandle != nullptr && m_hHandle != INVALID_HANDLE_VALUE;
+        }
     
     protected:
         HANDLE m_hHandle;

@@ -111,7 +111,7 @@ namespace xl
             return *this;
         }
 
-        ~SmartPtr()
+        virtual ~SmartPtr()
         {
             Release();
         }

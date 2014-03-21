@@ -18,27 +18,39 @@
 
 
 #include "../../Meta/xlUtility.h"
+#include "../xlHandle.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl
 {
-    class Heap : public NonCopyable
+    struct HeapDestroyer
+    {
+        static bool CloseHandle(HANDLE hHandle)
+        {
+            return !!::HeapDestroy(hHandle);
+        }
+    };
+
+    template <bool bManaged = true>
+    class HeapT : public NonCopyable, public HandleT<bManaged, HeapDestroyer>
     {
     public:
-        Heap() :
-            m_hHeap(NULL)
+        HeapT(HANDLE hHeap = nullptr) : HandleT(hHeap)
         {
-            m_hHeap = HeapCreate(HEAP_CREATE_ENABLE_EXECUTE, 0, 0);
+
         }
 
-        ~Heap()
+        ~HeapT()
         {
-            if (m_hHeap != NULL)
-            {
-                HeapDestroy(m_hHeap);
-                m_hHeap = NULL;
-            }
+
+        }
+
+    public:
+        bool Create(DWORD dwOptions, DWORD_PTR dwInitialSize = 0, DWORD_PTR dwMaximumSize = 0)
+        {
+            m_hHeap = HeapCreate(dwOptions, dwInitialSize, dwMaximumSize);
+            return IsValid();
         }
 
     public:
@@ -65,6 +77,9 @@ namespace xl
     private:
         HANDLE m_hHeap;
     };
+
+    typedef HeapT<> Heap;
+    typedef HeapT<false> HeapHandle;
 
 } // namespace xl
 
