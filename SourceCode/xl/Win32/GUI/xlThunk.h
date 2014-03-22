@@ -73,7 +73,6 @@ namespace xl
                 m_Heap.Create(HEAP_CREATE_ENABLE_EXECUTE);
             }
 
-
             m_pThunk = (StdCallThunk *)m_Heap.Alloc(sizeof(StdCallThunk));
 
 #ifdef _WIN64
@@ -82,7 +81,6 @@ namespace xl
             m_pThunk->m_mov_rax = 0xb848;   // mov rax, target
             m_pThunk->m_relproc = 0;
             m_pThunk->m_jmp = 0xe0ff;       // jmp rax
-
 #else
             m_pThunk->m_mov     = 0x042444c7;   // mov dword ptr [esp+4], pThis
             m_pThunk->m_this    = 0;
