@@ -2,6 +2,7 @@
 #include "RegKeyPrivilege.h"
 #include "Utility.h"
 #include "TraceLog.h"
+#include "resource.h"
 #include <tchar.h>
 #include <xl/Win32/Registry/xlRegistry.h>
 
@@ -17,7 +18,8 @@
 
 enum
 {
-    ID_BUTTON,
+    ID_STATIC = -1,
+    ID_BUTTON = 1,
 };
 
 MainWindow::MainWindow()
@@ -32,6 +34,12 @@ MainWindow::~MainWindow()
 
 bool MainWindow::OnInitDialog()
 {
+    HICON hIcon = LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_APP));
+    SetIcon(hIcon);
+    SetIcon(hIcon, FALSE);
+
+    m_staticIcon.Create(ID_STATIC, this, 12, 10, 32, 32, WS_CHILD | WS_VISIBLE | SS_ICON);
+    m_staticIcon.SetIcon(hIcon);
     m_button.Create(ID_BUTTON, this, 100, 100, 100, 25);
     m_button.SetWindowText(_T("¿ªÊ¼"));
 
@@ -159,10 +167,10 @@ bool MainWindow::GetMspyForWin81()
         XL_ERROR(_T("Failed to set IME display description."));
         return false;
     }
-    if (!xl::Registry::SetString(HKEY_LOCAL_MACHINE,
-                                 REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_NE,
-                                 REG_MSPY_NE_KEY_ICON,
-                                 REG_MSPY_NE_VALUE_ICON_NE))
+    if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
+                                       REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_NE,
+                                       REG_MSPY_NE_KEY_ICON,
+                                       REG_MSPY_NE_VALUE_ICON_NE))
     {
         XL_ERROR(_T("Failed to set IME icon."));
         return false;
