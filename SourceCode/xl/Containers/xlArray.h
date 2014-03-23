@@ -608,17 +608,17 @@ namespace xl
     template <typename T>
     inline void Array<T>::CopyData(const T *pMem, size_t nCount, T *pNewMem)
     {
-         if (pNewMem >= pMem && pNewMem < pMem + m_nSize)
-         {
-             MoveData(const_cast<T *>(pMem), nCount, (int)(pNewMem - pMem));
-         }
-         else
-         {
-             for (size_t i = 0; i < nCount; ++i)
-             {
-                 *pNewMem++ = pMem[i];
-             }
-         }
+        if (pNewMem >= pMem && pNewMem < pMem + nCount)
+        {
+            MoveData(const_cast<T *>(pMem), nCount, (int)(pNewMem - pMem));
+        }
+        else
+        {
+            for (size_t i = 0; i < nCount; ++i)
+            {
+                *pNewMem++ = pMem[i];
+            }
+        }
     }
 
     // Iterator
