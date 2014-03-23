@@ -430,7 +430,7 @@ namespace xl
 
         if (nLength < 0)
         {
-			nLength = m_aData.Size() - 1 - nStart;
+			nLength = (int)m_aData.Size() - 1 - nStart;
         }
 
         if (nLength > 0)

@@ -106,6 +106,25 @@ namespace xl
             return true;
         }
 
+	    static bool SetExpandString(HKEY hRootKey, const String &strPath, const String &strName, const String &strValue)
+        {
+            HKEY hKey = nullptr;
+
+            if (RegCreateKeyEx(hRootKey, strPath.GetAddress(), 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
+            {
+                return false;
+            }
+
+            XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
+
+            if (RegSetValueEx(hKey, strName.GetAddress(), 0, REG_EXPAND_SZ, (LPCBYTE)strValue.GetAddress(), (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 	    static bool GetDWORD(HKEY hRootKey, const String &strPath, const String &strName, DWORD *pValue)
         {
             if (pValue == nullptr)
