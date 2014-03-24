@@ -19,7 +19,11 @@
 enum
 {
     ID_STATIC = -1,
-    ID_BUTTON = 1,
+    ID_NULL = 0,
+
+    ID_START = 100,
+
+    ID_BUTTON,
 };
 
 MainWindow::MainWindow()
