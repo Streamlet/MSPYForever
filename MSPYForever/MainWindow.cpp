@@ -91,6 +91,16 @@ bool MainWindow::GetMspyForWin8()
         return false;
     }
 
+#ifdef _WIN64
+    strPath = Utility::GetSysWow64Dir() + _T("\\IME\\IMESC\\IMSCTIP.dll");
+
+    if (!Utility::RegisterComDll(strPath.GetAddress()))
+    {
+        XL_ERROR(_T("Failed to register IMSCTIP.dll."));
+        return false;
+    }
+#endif
+
     if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
                                        REG_MSPY_ROOT_80 REG_MSPY_NE_PATH_NE,
                                        REG_MSPY_NE_KEY_DESC,
@@ -154,6 +164,19 @@ bool MainWindow::GetMspyForWin81()
         }
     }
 
+#ifdef _WIN64
+    strPath = Utility::GetSysWow64Dir() + _T("\\IME\\IMESC");
+
+    for (int i = 0; i < _countof(lpszDllFiles); ++i)
+    {
+        if (!Utility::RegisterComDll((strPath + lpszDllFiles[i]).GetAddress()))
+        {
+            XL_ERROR(_T("Failed to register %s."), (strPath + lpszDllFiles[i]).GetAddress());
+            return false;
+        }
+    }
+#endif
+
     if (!xl::Registry::DeleteKeyRecursion(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_SF))
     {
         XL_ERROR(_T("Failed to delete MSPY SimpleFast."));
@@ -176,16 +199,9 @@ bool MainWindow::GetMspyForWin81()
         return false;
     }
 
-    xl::String strRegCmd = Utility::GetWinDir() + _T("\\regedit.exe");
-    xl::String strParam = _T("/s \"");
-    strParam += strExePath + _T("\\Files\\Dict.reg");
-    strParam += _T("\"");
-
-    int iErrorCode = (int)ShellExecute(m_hWnd, _T("open"), strRegCmd.GetAddress(), strParam.GetAddress(), nullptr, SW_SHOW);
-
-    if (iErrorCode <= 32)
+    if (!Utility::MergeRegFile((strExePath + _T("\\Files\\Dict.reg")).GetAddress()))
     {
-        XL_ERROR(_T("Failed to register dictionaries."));
+        XL_WARNING(_T("Failed to register dictionaries."));
     }
 
     return true;
