@@ -24,11 +24,20 @@ enum
     ID_START = 100,
 
     ID_BUTTON,
+    ID_LINK,
 };
+
+void MainWindow::Show()
+{
+    MainWindow dlg;
+    dlg.Create(600, 400, nullptr);
+    dlg.DoModal();
+}
 
 MainWindow::MainWindow()
 {
     AppendCommandMsgHandler(ID_BUTTON, BN_CLICKED, CommandMsgHandler(this, &MainWindow::OnButtonClicked));
+    AppendNotifyMsgHandler(ID_LINK, NM_CLICK, NotifyMsgHandler(this, &MainWindow::OnLinkWebsiteClick));
 }
 
 MainWindow::~MainWindow()
@@ -38,20 +47,42 @@ MainWindow::~MainWindow()
 
 bool MainWindow::OnInitDialog()
 {
-    HICON hIcon = LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_APP));
-    SetIcon(hIcon);
-    SetIcon(hIcon, FALSE);
+    HICON hLargeIcon = (HICON)LoadImage(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_APP), IMAGE_ICON, 48, 48, 0);
+    HICON hSmallIcon = (HICON)LoadImage(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDI_APP), IMAGE_ICON, 16, 16, 0);
+    SetIcon(hLargeIcon);
+    SetIcon(hSmallIcon, FALSE);
 
-    m_staticIcon.Create(ID_STATIC, this, 12, 10, 32, 32, WS_CHILD | WS_VISIBLE | SS_ICON);
-    m_staticIcon.SetIcon(hIcon);
-    m_button.Create(ID_BUTTON, this, 100, 100, 100, 25);
-    m_button.SetWindowText(_T("开始"));
+    SetWindowText(_T("纪念逝去的的微拼长句模式"));
+
+    m_staticIcon.Create(ID_STATIC, this, 20, 20, 48, 48, WS_CHILD | WS_VISIBLE | SS_ICON);
+    m_staticIcon.SetIcon(hLargeIcon);
+
+    m_staticWatchword.Create(ID_STATIC, this, 80, 20, 490, 300, WS_CHILD | WS_VISIBLE);
+    m_staticWatchword.SetFont(ms_hFontCaption);
+    m_staticWatchword.SetWindowText(_T("来，跟我念台词:\r\n")
+                                    _T("\r\n")
+                                    _T("　　众所周知，长句模式是微软拼音输入法诞生以来的经典模式，是神圣不可放弃的精髓模式。\r\n")
+                                    _T("\r\n")
+                                    _T("　　近年来，随着词组输入法的兴起与流入，傻逼大微软终究没有抵制住词组输入法这个糖衣炮")
+                                    _T("弹的诱惑，竟然毅然决然地在 Windows 8 中放弃了长句模式。\r\n")
+                                    _T("\r\n")
+                                    _T("　　如此倒行逆施，广大朝鲜人民不答应！阿佤人民不答应！大韩宇宙后裔不答应！\r\n")
+                                    _T("\r\n")
+                                    _T("　　望傻逼大微软悬崖勒马，在下一个升级中改正，勿谓言之不预也。\r\n"));
+
+    m_lineWebSite.Create(ID_LINK, this, 80, 324, 120, 16, WS_CHILD | WS_VISIBLE);
+    m_lineWebSite.SetWindowText(_T("<a>溪流软件工作室出品</a>"));
+
+    m_button.Create(ID_BUTTON, this, 360, 320, 210, 30);
+    m_button.SetWindowText(_T("猛击此处找回长句模式"));
 
     return true;
 }
 
 LRESULT MainWindow::OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
 {
+    m_button.EnableWindow(FALSE);
+
     OSVersion osv = Utility::GetOSVersion();
 
     switch (osv)
@@ -59,7 +90,7 @@ LRESULT MainWindow::OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hContr
     case OSV_Win8:
         if (GetMspyForWin8())
         {
-            MessageBox(_T("已经帮您找回 Win8 下的微软拼音新体验模式，请打开控制面板设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+            MessageBox(_T("已经帮您找回 Win8 下的微软拼音长句模式，请打开控制面板进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
         }
         else
         {
@@ -69,7 +100,7 @@ LRESULT MainWindow::OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hContr
     case OSV_Win81:
         if (GetMspyForWin81())
         {
-            MessageBox(_T("已经帮您找回 Win8.1 下的微软拼音新体验模式，请打开控制面板设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+            MessageBox(_T("已经帮您找回 Win8.1 下的微拼长句模式，请打开控制面板进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
         }
         else
         {
@@ -81,6 +112,12 @@ LRESULT MainWindow::OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hContr
     }
 
     return 0;
+}
+
+LRESULT MainWindow::OnLinkWebsiteClick(HWND hWnd, UINT_PTR uID, UINT uCode, HWND hControl, BOOL &bHandled)
+{
+    ShellExecute(m_hWnd, _T("open"), _T("http://www.streamlet.org/"), NULL, NULL, SW_SHOW);
+    return FALSE;
 }
 
 bool MainWindow::GetMspyForWin8()

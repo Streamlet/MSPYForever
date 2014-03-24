@@ -30,9 +30,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return 0;
     }
 
-    MainWindow dlg;
-    dlg.Create(400, 300, nullptr);
-    dlg.DoModal();
+    MainWindow::Show();
 
     return 0;
 }
