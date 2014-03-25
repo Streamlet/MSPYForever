@@ -1,9 +1,21 @@
 #include "Utility.h"
+#include "TraceLog.h"
+#include "RegKeyPrivilege.h"
 #include <VersionHelpers.h>
 #include <ShlObj.h>
 #include <tchar.h>
 #include <xl/Meta/xlScopeExit.h>
-#include "TraceLog.h"
+#include <xl/Win32/Registry/xlRegistry.h>
+
+
+#define REG_MSPY_ROOT_80          _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}")
+#define REG_MSPY_ROOT_81          _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}")
+#define REG_MSPY_NE_PATH_SF       _T("\\LanguageProfile\\0x00000804\\{FA550B04-5AD7-411f-A5AC-CA038EC515D7}")
+#define REG_MSPY_NE_PATH_NE       _T("\\LanguageProfile\\0x00000804\\{F3BA9077-6C7E-11D4-97FA-0080C882687E}")
+#define REG_MSPY_NE_KEY_DESC      _T("Display Description")
+#define REG_MSPY_NE_VALUE_DESC_NE _T("@%SystemRoot%\\SYSTEM32\\input.dll,-5091")
+#define REG_MSPY_NE_KEY_ICON      _T("IconFile")
+#define REG_MSPY_NE_VALUE_ICON_NE _T("%SystemRoot%\\SYSTEM32\\InputMethod\\Shared\\ResourceDll.dll")
 
 
 bool Utility::IsWow64()
@@ -134,6 +146,14 @@ xl::String Utility::GetWinDir()
 
 xl::String Utility::GetExeDir()
 {
+    xl::String strPath = GetExePath();
+    int iPos = strPath.LastIndexOf(_T("\\"));
+
+    return strPath.SubString(0, iPos);
+}
+
+xl::String Utility::GetExePath()
+{
     TCHAR szPath[MAX_PATH] = {};
 
     if (GetModuleFileName(nullptr, szPath, _countof(szPath)) == 0)
@@ -142,10 +162,7 @@ xl::String Utility::GetExeDir()
         return _T("");
     }
 
-    xl::String strPath = szPath;
-    int iPos = strPath.LastIndexOf(_T("\\"));
-
-    return strPath.SubString(0, iPos);
+    return szPath;
 }
 
 bool Utility::SHCopyDir(HWND hWnd, LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir)
@@ -226,6 +243,134 @@ bool Utility::MergeRegFile(LPCTSTR lpszFileName)
     if (!RunProcess(strCmdLine.GetAddress()))
     {
         return false;
+    }
+
+    return true;
+}
+
+bool Utility::GetMspyForWin8()
+{
+    RegKeyOwnerDaclAquireRestoreRec r(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_80);
+
+    xl::String strPath = Utility::GetSystemDir() + _T("\\IME\\IMESC\\IMSCTIP.dll");
+
+    if (!Utility::RegisterComDll(strPath.GetAddress()))
+    {
+        XL_ERROR(_T("Failed to register IMSCTIP.dll."));
+        return false;
+    }
+
+#ifdef _WIN64
+    strPath = Utility::GetSysWow64Dir() + _T("\\IME\\IMESC\\IMSCTIP.dll");
+
+    if (!Utility::RegisterComDll(strPath.GetAddress()))
+    {
+        XL_ERROR(_T("Failed to register IMSCTIP.dll."));
+        return false;
+    }
+#endif
+
+    if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
+                                       REG_MSPY_ROOT_80 REG_MSPY_NE_PATH_NE,
+                                       REG_MSPY_NE_KEY_DESC,
+                                       REG_MSPY_NE_VALUE_DESC_NE))
+    {
+        XL_ERROR(_T("Failed to set IME display description."));
+        return false;
+    }
+
+    return true;
+}
+
+bool Utility::GetMspyForWin81()
+{
+    xl::String strExePath = Utility::GetExeDir();
+
+    struct SourceDestFolder
+    {
+        xl::String strSource;
+        xl::String strDest;
+    };
+
+    SourceDestFolder folderMap[] =
+    {
+        { strExePath + _T("\\Files\\Windows\\IME\\IMESC\0"),           Utility::GetWinDir() + _T("\\IME\\\0") },
+#ifdef _WIN64
+        { strExePath + _T("\\Files\\Windows\\System32\\IME\\IMESC\0"), Utility::GetSystemDir() + _T("\\IME\\\0") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"), Utility::GetSysWow64Dir() + _T("\\IME\\\0") },
+#else
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"), Utility::GetSystemDir() + _T("\\IME\\\0") },
+#endif
+    };
+
+    for (int i = 0; i < _countof(folderMap); ++i)
+    {
+        if (!Utility::SHCopyDir(nullptr, folderMap[i].strSource.GetAddress(), folderMap[i].strDest.GetAddress()))
+        {
+            XL_ERROR(_T("Failed to copy folder %s."), folderMap[i].strSource.GetAddress());
+            return false;
+        }
+    }
+
+    LPCTSTR lpszDllFiles[] =
+    {
+        _T("\\ImSCCfg.dll"),
+        _T("\\ImSCCore.dll"),
+        _T("\\IMSCDICB.dll"),
+        _T("\\IMSCTIP.dll"),
+        _T("\\applets\\PINTLCSA.dll"),
+        _T("\\applets\\PINTLMBX.dll"),
+    };
+
+    xl::String strPath = Utility::GetSystemDir() + _T("\\IME\\IMESC");
+
+    for (int i = 0; i < _countof(lpszDllFiles); ++i)
+    {
+        if (!Utility::RegisterComDll((strPath + lpszDllFiles[i]).GetAddress()))
+        {
+            XL_ERROR(_T("Failed to register %s."), (strPath + lpszDllFiles[i]).GetAddress());
+            return false;
+        }
+    }
+
+#ifdef _WIN64
+    strPath = Utility::GetSysWow64Dir() + _T("\\IME\\IMESC");
+
+    for (int i = 0; i < _countof(lpszDllFiles); ++i)
+    {
+        if (!Utility::RegisterComDll((strPath + lpszDllFiles[i]).GetAddress()))
+        {
+            XL_ERROR(_T("Failed to register %s."), (strPath + lpszDllFiles[i]).GetAddress());
+            return false;
+        }
+    }
+#endif
+
+    if (!xl::Registry::DeleteKeyRecursion(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_SF))
+    {
+        XL_ERROR(_T("Failed to delete MSPY SimpleFast."));
+    }
+
+    if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
+                                       REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_NE,
+                                       REG_MSPY_NE_KEY_DESC,
+                                       REG_MSPY_NE_VALUE_DESC_NE))
+    {
+        XL_ERROR(_T("Failed to set IME display description."));
+        return false;
+    }
+    if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
+                                       REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_NE,
+                                       REG_MSPY_NE_KEY_ICON,
+                                       REG_MSPY_NE_VALUE_ICON_NE))
+    {
+        XL_ERROR(_T("Failed to set IME icon."));
+        return false;
+    }
+
+    if (!Utility::MergeRegFile((strExePath + _T("\\Files\\Dict.reg")).GetAddress()))
+    {
+        XL_WARNING(_T("Failed to register dictionaries."));
     }
 
     return true;

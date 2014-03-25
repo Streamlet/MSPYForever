@@ -5,6 +5,8 @@
 #include <xl/Win32/GUI/xlStdLink.h>
 
 
+#define MAINWINDOW_CLASSNAME    _T("MSPYForeverMainWindowByStreamlet")
+
 class MainWindow : public xl::Dialog
 {
 public:
@@ -20,10 +22,6 @@ private:
 private:
     LRESULT OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled);
     LRESULT OnLinkWebsiteClick(HWND hWnd, UINT_PTR uID, UINT uCode, HWND hControl, BOOL &bHandled);
-
-private:
-    bool GetMspyForWin8();
-    bool GetMspyForWin81();
 
 private:
     xl::StdStatic m_staticIcon;

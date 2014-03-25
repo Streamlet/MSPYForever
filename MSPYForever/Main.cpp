@@ -30,7 +30,41 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return 0;
     }
 
-    MainWindow::Show();
+    if (_tcsicmp(lpCmdLine, _T("/do")) == 0)
+    {
+        HWND hModalOwner = FindWindow(MAINWINDOW_CLASSNAME, nullptr);
+        OSVersion osv = Utility::GetOSVersion();
+
+        switch (osv)
+        {
+        case OSV_Win8:
+            if (Utility::GetMspyForWin8())
+            {
+                MessageBox(hModalOwner, _T("已经帮您找回 Win8 下的微软拼音长句模式，请打开控制面板进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+            }
+            else
+            {
+                MessageBox(hModalOwner, _T("操作失败。再见。"), nullptr, MB_OK | MB_ICONWARNING);
+            }
+            break;
+        case OSV_Win81:
+            if (Utility::GetMspyForWin81())
+            {
+                MessageBox(hModalOwner, _T("已经帮您找回 Win8.1 下的微拼长句模式，请打开控制面板进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+            }
+            else
+            {
+                MessageBox(hModalOwner, _T("操作失败。再见。"), nullptr, MB_OK | MB_ICONWARNING);
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    else
+    {
+        MainWindow::Show();
+    }
 
     return 0;
 }

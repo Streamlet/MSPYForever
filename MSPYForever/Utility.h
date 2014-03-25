@@ -21,6 +21,7 @@ namespace Utility
     xl::String GetSysWow64Dir();
     xl::String GetWinDir();
     xl::String GetExeDir();
+    xl::String GetExePath();
 
     bool SHCopyDir(HWND hWnd, LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir);
 
@@ -28,4 +29,7 @@ namespace Utility
 
     bool RegisterComDll(LPCTSTR lpszFileName);
     bool MergeRegFile(LPCTSTR lpszFileName);
+
+    bool GetMspyForWin8();
+    bool GetMspyForWin81();
 }
