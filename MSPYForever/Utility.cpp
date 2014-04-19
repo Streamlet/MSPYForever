@@ -8,15 +8,26 @@
 #include <xl/Win32/Registry/xlRegistry.h>
 
 
-#define REG_MSPY_ROOT_80          _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}")
-#define REG_MSPY_ROOT_81          _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}")
-#define REG_MSPY_NE_PATH_SF       _T("\\LanguageProfile\\0x00000804\\{FA550B04-5AD7-411f-A5AC-CA038EC515D7}")
-#define REG_MSPY_NE_PATH_NE       _T("\\LanguageProfile\\0x00000804\\{F3BA9077-6C7E-11D4-97FA-0080C882687E}")
-#define REG_MSPY_NE_KEY_DESC      _T("Display Description")
-#define REG_MSPY_NE_VALUE_DESC_NE _T("@%SystemRoot%\\SYSTEM32\\input.dll,-5091")
-#define REG_MSPY_NE_KEY_ICON      _T("IconFile")
-#define REG_MSPY_NE_VALUE_ICON_NE _T("%SystemRoot%\\SYSTEM32\\InputMethod\\Shared\\ResourceDll.dll")
+// Win8
+#define REG_MSPY_ROOT_80       _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}")  // 总路径，要改权限
 
+// Win8.1
+#define REG_MSPY_ROOT_81       _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}")  // 总路径
+#define REG_MSPY_PATH_SF       _T("\\LanguageProfile\\0x00000804\\{FA550B04-5AD7-411f-A5AC-CA038EC515D7}")  // 微软拼音简拼，注册后要删除
+#define REG_MSPY_PATH_NE       _T("\\LanguageProfile\\0x00000804\\{F3BA9077-6C7E-11D4-97FA-0080C882687E}")  // 微软拼音新体验
+
+// 声明支持 Metro 应用的 GUID，见 http://msdn.microsoft.com/zh-cn/library/windows/apps/hh967425.aspx#SET_COMPATIBILITY_FLAG
+#define REG_MSPY_PATH_CATEGORY_IMMERSIVESUPPORT      _T("\\Category\\Category\\{13A016DF-560B-46CD-947A-4C3AF1E0E35D}\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}") 
+#define REG_MSPY_PATH_CATEGORY_ITEM_IMMERSIVESUPPORT _T("\\Category\\Item\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}\\{13A016DF-560B-46CD-947A-4C3AF1E0E35D}")
+// 声明支持托盘图标
+#define REG_MSPY_PATH_CATEGORY_SYSTRAYSUPPORT        _T("\\Category\\Category\\{25504FB4-7BAB-4BC1-9C69-CF81890F0EF5}\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}")
+#define REG_MSPY_PATH_CATEGORY_ITEM_SYSTRAYSUPPORT   _T("\\Category\\Item\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}\\{25504FB4-7BAB-4BC1-9C69-CF81890F0EF5}")
+
+// Win8、Win8.1 公用
+#define REG_MSPY_KEY_DESC      _T("Display Description")
+#define REG_MSPY_VALUE_DESC_NE _T("@%SystemRoot%\\SYSTEM32\\input.dll,-5091")
+#define REG_MSPY_KEY_ICON      _T("IconFile")
+#define REG_MSPY_VALUE_ICON_NE _T("%SystemRoot%\\SYSTEM32\\InputMethod\\Shared\\ResourceDll.dll")
 
 bool Utility::IsWow64()
 {
@@ -271,9 +282,9 @@ bool Utility::GetMspyForWin8()
 #endif
 
     if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
-                                       REG_MSPY_ROOT_80 REG_MSPY_NE_PATH_NE,
-                                       REG_MSPY_NE_KEY_DESC,
-                                       REG_MSPY_NE_VALUE_DESC_NE))
+                                       REG_MSPY_ROOT_80 REG_MSPY_PATH_NE,
+                                       REG_MSPY_KEY_DESC,
+                                       REG_MSPY_VALUE_DESC_NE))
     {
         XL_ERROR(_T("Failed to set IME display description."));
         return false;
@@ -346,26 +357,37 @@ bool Utility::GetMspyForWin81()
     }
 #endif
 
-    if (!xl::Registry::DeleteKeyRecursion(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_SF))
+    if (!xl::Registry::DeleteKeyRecursion(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_SF))
     {
         XL_ERROR(_T("Failed to delete MSPY SimpleFast."));
     }
 
     if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
-                                       REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_NE,
-                                       REG_MSPY_NE_KEY_DESC,
-                                       REG_MSPY_NE_VALUE_DESC_NE))
+                                       REG_MSPY_ROOT_81 REG_MSPY_PATH_NE,
+                                       REG_MSPY_KEY_DESC,
+                                       REG_MSPY_VALUE_DESC_NE))
     {
         XL_ERROR(_T("Failed to set IME display description."));
         return false;
     }
     if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
-                                       REG_MSPY_ROOT_81 REG_MSPY_NE_PATH_NE,
-                                       REG_MSPY_NE_KEY_ICON,
-                                       REG_MSPY_NE_VALUE_ICON_NE))
+                                       REG_MSPY_ROOT_81 REG_MSPY_PATH_NE,
+                                       REG_MSPY_KEY_ICON,
+                                       REG_MSPY_VALUE_ICON_NE))
     {
         XL_ERROR(_T("Failed to set IME icon."));
         return false;
+    }
+
+    if (!xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_IMMERSIVESUPPORT) ||
+        !xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_ITEM_IMMERSIVESUPPORT))
+    {
+        XL_WARNING(_T("Failed to declare Metro compatibility."));
+    }
+    if (!xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_SYSTRAYSUPPORT) ||
+        !xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_ITEM_SYSTRAYSUPPORT))
+    {
+        XL_WARNING(_T("Failed to declare systray support."));
     }
 
     if (!Utility::MergeRegFile((strExePath + _T("\\Files\\Dict.reg")).GetAddress()))
