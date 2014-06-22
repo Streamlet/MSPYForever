@@ -17,7 +17,7 @@
 
 
 #include "../../xlWin32Ver.h"
-#include "xlIUnknownImpl.h"
+#include "xlIOleWindowImpl.h"
 #include <oleidl.h>
 
 namespace xl
