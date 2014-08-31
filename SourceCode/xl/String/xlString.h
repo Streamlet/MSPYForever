@@ -36,17 +36,23 @@ namespace xl
         StringT<T> &operator = (const StringT<T> &that);
         bool operator == (const StringT<T> &that) const;
         bool operator != (const StringT<T> &that) const;
-        bool operator < (const StringT<T> &that) const;
-        bool operator > (const StringT<T> &that) const;
+        bool operator <  (const StringT<T> &that) const;
+        bool operator >  (const StringT<T> &that) const;
         bool operator <= (const StringT<T> &that) const;
         bool operator >= (const StringT<T> &that) const;
-        StringT<T> operator + (const StringT<T> &that) const;
+		bool operator == (const T *that) const;
+		bool operator != (const T *that) const;
+		bool operator <  (const T *that) const;
+		bool operator >  (const T *that) const;
+		bool operator <= (const T *that) const;
+		bool operator >= (const T *that) const;
+		StringT<T> operator + (const StringT<T> &that) const;
         StringT<T> &operator += (const StringT<T> &that);
         T &operator [] (int nIndex);
         const T &operator [] (int nIndex) const;
 
     public:
-        const T *GetAddress() const;
+		operator const T*() const;
 
     public:
         int Length() const;
@@ -213,6 +219,42 @@ namespace xl
         return !(*this < that);
     }
 
+	template <typename T>
+	inline bool StringT<T>::operator == (const T *that) const
+	{
+		return *this == StringT(that);
+	}
+
+	template <typename T>
+	inline bool StringT<T>::operator != (const T *that) const
+	{
+		return *this != StringT(that);
+	}
+
+	template <typename T>
+	inline bool StringT<T>::operator < (const T *that) const
+	{
+		return *this < StringT(that);
+	}
+	
+	template <typename T>
+	inline bool StringT<T>::operator > (const T *that) const
+	{
+		return *this > StringT(that);
+	}
+
+	template <typename T>
+	inline bool StringT<T>::operator <= (const T *that) const
+	{
+		return *this <= StringT(that);
+	}
+
+	template <typename T>
+	inline bool StringT<T>::operator >= (const T *that) const
+	{
+		return *this >= StringT(that);
+	}
+	
     template <typename T>
     inline StringT<T> StringT<T>::operator + (const StringT<T> &that) const
     {
@@ -248,7 +290,7 @@ namespace xl
     }
 
     template <typename T>
-    inline const T *StringT<T>::GetAddress() const
+	StringT<T>::operator const T*() const
     {
         return &m_aData[0];
     }

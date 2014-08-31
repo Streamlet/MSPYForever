@@ -99,7 +99,7 @@ namespace
     XL_TEST_CASE()
     {
         String a(L"123");
-        XL_TEST_ASSERT(a.GetAddress() == &a[0]);
+        XL_TEST_ASSERT((const wchar_t *)a == &a[0]);
     }
 
     XL_TEST_CASE()

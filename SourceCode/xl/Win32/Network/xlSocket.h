@@ -114,7 +114,7 @@ namespace xl
         bool Bind(const String &strAddress, WORD wPort)
         {
             SafeSharedArray<Char> szAddress = new Char[strAddress.Length() + 1];
-            Memory::Copy(szAddress.RawPointer(), strAddress.GetAddress(), (strAddress.Length() + 1) * sizeof(Char));
+            Memory::Copy(szAddress.RawPointer(), (const wchar_t *)strAddress, (strAddress.Length() + 1) * sizeof(Char));
 
             sockaddr_in &sin = (sockaddr_in &)m_addr;
             int sinSize = sizeof(sin);
@@ -167,7 +167,7 @@ namespace xl
         bool Connect(const String &strAddress, WORD wPort)
         {
             SafeSharedArray<Char> szAddress = new Char[strAddress.Length() + 1];
-            Memory::Copy(szAddress.RawPointer(), strAddress.GetAddress(), (strAddress.Length() + 1) * sizeof(Char));
+            Memory::Copy(szAddress.RawPointer(), (const wchar_t *)strAddress, (strAddress.Length() + 1) * sizeof(Char));
 
             sockaddr_in &sin = (sockaddr_in &)m_addr;
             int sinSize = sizeof(sin);

@@ -36,7 +36,7 @@ namespace
     xl::StringA StringMD5(const xl::StringA &str)
     {
         xl::MD5::Digest digest;
-        xl::MD5::Calculate(str.GetAddress(), str.Length(), digest);
+        xl::MD5::Calculate(str, str.Length(), digest);
 
         return MD5DigestToString(digest);
     }

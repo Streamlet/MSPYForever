@@ -36,7 +36,7 @@ namespace
     xl::StringA StringSHA1(const xl::StringA &str)
     {
         xl::SHA1::Digest digest;
-        xl::SHA1::Calculate(str.GetAddress(), str.Length(), digest);
+        xl::SHA1::Calculate(str, str.Length(), digest);
 
         return SHA1DigestToString(digest);
     }

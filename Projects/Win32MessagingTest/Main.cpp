@@ -112,7 +112,7 @@ private:
 private:
     void OnMessageTextComing(HANDLE hQuit, UINT nMessageId, StringPtr pMsgParam)
     {
-        m_editText.AppendText(pMsgParam ->GetAddress());
+        m_editText.AppendText(*pMsgParam);
         m_editText.AppendText(_T("\r\n"));
     }
 
