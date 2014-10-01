@@ -242,7 +242,7 @@ namespace xl
         {
             XL_SCOPED_CRITICAL_SECTION(m_cs);
 
-            HMODULE hModule = LoadLibrary(strFileName.GetAddress());
+            HMODULE hModule = LoadLibrary(strFileName);
 
             if (hModule == nullptr)
             {

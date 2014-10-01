@@ -39,7 +39,7 @@ namespace xl
 
             TCHAR szFileNameAbsolute[MAX_PATH] = {};
 
-            if (GetFullPathName(strFilePath.GetAddress(), MAX_PATH, szFileNameAbsolute, nullptr) == 0)
+            if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
 	        {
 		        return false;
 	        }
@@ -83,7 +83,7 @@ namespace xl
 
             TCHAR szFileNameAbsolute[MAX_PATH] = {};
 
-            if (GetFullPathName(strFilePath.GetAddress(), MAX_PATH, szFileNameAbsolute, nullptr) == 0)
+            if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
 	        {
 		        return false;
 	        }
@@ -95,7 +95,7 @@ namespace xl
 	        {
 		        spKeyNames = new TCHAR[dwSize];
 
-                DWORD dwSizeUsed = GetPrivateProfileSection(strSectionName.GetAddress(), spKeyNames.RawPointer(), dwSize, szFileNameAbsolute);
+                DWORD dwSizeUsed = GetPrivateProfileSection(strSectionName, spKeyNames.RawPointer(), dwSize, szFileNameAbsolute);
 
 		        if (dwSizeUsed < dwSize - 2)
 		        {
@@ -174,7 +174,7 @@ namespace xl
 
             TCHAR szFileNameAbsolute[MAX_PATH] = {};
 
-            if (GetFullPathName(strFilePath.GetAddress(), MAX_PATH, szFileNameAbsolute, nullptr) == 0)
+            if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
 	        {
 		        return false;
 	        }
@@ -186,8 +186,8 @@ namespace xl
 	        {
 		        spValue = new TCHAR[dwSize];
 
-                DWORD dwSizeUsed = GetPrivateProfileString(strSectionName.GetAddress(),
-                                                           strKeyName.GetAddress(),
+                DWORD dwSizeUsed = GetPrivateProfileString(strSectionName,
+                                                           strKeyName,
                                                            nullptr,
                                                            spValue.RawPointer(),
                                                            dwSize,
@@ -210,7 +210,7 @@ namespace xl
         {
             TCHAR szFileNameAbsolute[MAX_PATH] = {};
 
-            if (GetFullPathName(strFilePath.GetAddress(), MAX_PATH, szFileNameAbsolute, nullptr) == 0)
+            if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
 	        {
 		        return false;
 	        }
@@ -225,9 +225,9 @@ namespace xl
                 CloseHandle(hFile);
             }
 
-            if (!WritePrivateProfileString(strSectionName.GetAddress(),
-                                           strKeyName.GetAddress(),
-                                           strValue.GetAddress(),
+            if (!WritePrivateProfileString(strSectionName,
+                                           strKeyName,
+                                           strValue,
                                            szFileNameAbsolute))
             {
                 return false;
@@ -240,13 +240,13 @@ namespace xl
         {
             TCHAR szFileNameAbsolute[MAX_PATH] = {};
 
-            if (GetFullPathName(strFilePath.GetAddress(), MAX_PATH, szFileNameAbsolute, nullptr) == 0)
+            if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
 	        {
 		        return false;
 	        }
 
-            if (!WritePrivateProfileString(strSectionName.GetAddress(),
-                                           strKeyName.GetAddress(),
+            if (!WritePrivateProfileString(strSectionName,
+                                           strKeyName,
                                            nullptr,
                                            szFileNameAbsolute))
             {
@@ -260,12 +260,12 @@ namespace xl
         {
             TCHAR szFileNameAbsolute[MAX_PATH] = {};
 
-            if (GetFullPathName(strFilePath.GetAddress(), MAX_PATH, szFileNameAbsolute, nullptr) == 0)
+            if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
 	        {
 		        return false;
 	        }
 
-            if (!WritePrivateProfileString(strSectionName.GetAddress(),
+            if (!WritePrivateProfileString(strSectionName,
                                            nullptr,
                                            nullptr,
                                            szFileNameAbsolute))

@@ -57,7 +57,7 @@ namespace xl
             urlComp.dwUrlPathLength   = (DWORD)-1;
             urlComp.dwExtraInfoLength = (DWORD)-1;
 
-            if (!CrackUrl(strUrl.GetAddress(), 0, 0, &urlComp))
+            if (!CrackUrl(strUrl, 0, 0, &urlComp))
             {
                 return false;
             }

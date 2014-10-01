@@ -47,7 +47,7 @@ namespace xl
 
             HKEY hKey = nullptr;
 
-	        if (RegOpenKeyEx(hRootKey, strPath.GetAddress(), 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
+	        if (RegOpenKeyEx(hRootKey, strPath, 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -56,7 +56,7 @@ namespace xl
 
 	        DWORD dwType = REG_NONE;
 	        DWORD cbSize = 0;
-	        LONG lRet = RegQueryValueEx(hKey, strName.GetAddress(), nullptr, &dwType, nullptr, &cbSize);
+	        LONG lRet = RegQueryValueEx(hKey, strName, nullptr, &dwType, nullptr, &cbSize);
 
             if (dwType != REG_SZ && dwType != REG_EXPAND_SZ)
             {
@@ -75,7 +75,7 @@ namespace xl
             }
 
 	        SharedPtr<TCHAR> spBuffer = new TCHAR[cbSize / sizeof(TCHAR)];
-	        lRet = RegQueryValueEx(hKey, strName.GetAddress(), nullptr, nullptr, (LPBYTE)spBuffer.RawPointer(), &cbSize);
+	        lRet = RegQueryValueEx(hKey, strName, nullptr, nullptr, (LPBYTE)spBuffer.RawPointer(), &cbSize);
 
 	        if (lRet != ERROR_SUCCESS)
 	        {
@@ -91,14 +91,14 @@ namespace xl
         {
             HKEY hKey = nullptr;
 
-            if (RegCreateKeyEx(hRootKey, strPath.GetAddress(), 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
+            if (RegCreateKeyEx(hRootKey, strPath, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
             {
                 return false;
             }
 
             XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-            if (RegSetValueEx(hKey, strName.GetAddress(), 0, REG_SZ, (LPCBYTE)strValue.GetAddress(), (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
+            if (RegSetValueEx(hKey, strName, 0, REG_SZ, (LPCBYTE)(LPCTSTR)strValue, (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
             {
                 return false;
             }
@@ -110,14 +110,14 @@ namespace xl
         {
             HKEY hKey = nullptr;
 
-            if (RegCreateKeyEx(hRootKey, strPath.GetAddress(), 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
+            if (RegCreateKeyEx(hRootKey, strPath, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
             {
                 return false;
             }
 
             XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-            if (RegSetValueEx(hKey, strName.GetAddress(), 0, REG_EXPAND_SZ, (LPCBYTE)strValue.GetAddress(), (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
+            if (RegSetValueEx(hKey, strName, 0, REG_EXPAND_SZ, (LPCBYTE)strValue, (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
             {
                 return false;
             }
@@ -134,7 +134,7 @@ namespace xl
 
             HKEY hKey = nullptr;
 
-	        if (RegOpenKeyEx(hRootKey, strPath.GetAddress(), 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
+	        if (RegOpenKeyEx(hRootKey, strPath, 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -145,7 +145,7 @@ namespace xl
 	        DWORD cbSize = sizeof(DWORD);
 	        DWORD dwType = REG_NONE;
 
-	        if (RegQueryValueEx(hKey, strName.GetAddress(), nullptr, &dwType, (LPBYTE)&dwValue, &cbSize) != ERROR_SUCCESS)
+	        if (RegQueryValueEx(hKey, strName, nullptr, &dwType, (LPBYTE)&dwValue, &cbSize) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -164,14 +164,14 @@ namespace xl
         {
 	        HKEY hKey = nullptr;
 
-	        if (RegCreateKeyEx(hRootKey, strPath.GetAddress(), 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
+	        if (RegCreateKeyEx(hRootKey, strPath, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
 
 	        XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-	        if (RegSetValueEx(hKey, strName.GetAddress(), nullptr, REG_DWORD, (LPCBYTE)&dwValue, sizeof(DWORD)) != ERROR_SUCCESS)
+	        if (RegSetValueEx(hKey, strName, nullptr, REG_DWORD, (LPCBYTE)&dwValue, sizeof(DWORD)) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -188,14 +188,14 @@ namespace xl
 
 	        HKEY hKey = nullptr;
 
-	        if (RegOpenKeyEx(hRootKey, strPath.GetAddress(), 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
+	        if (RegOpenKeyEx(hRootKey, strPath, 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
 
 	        DWORD dwType = REG_NONE;
 	        DWORD cbSize = 0;
-	        LONG lRet = RegQueryValueEx(hKey, strName.GetAddress(), nullptr, &dwType, nullptr, &cbSize);
+	        LONG lRet = RegQueryValueEx(hKey, strName, nullptr, &dwType, nullptr, &cbSize);
 
             if (dwType != REG_BINARY)
             {
@@ -214,7 +214,7 @@ namespace xl
             }
 
 	        pValue->Resize(cbSize);
-	        lRet = RegQueryValueEx(hKey, strName.GetAddress(), nullptr, nullptr, (LPCBYTE)&(*pValue)[0], &cbSize);
+	        lRet = RegQueryValueEx(hKey, strName, nullptr, nullptr, (LPCBYTE)&(*pValue)[0], &cbSize);
 
 	        if (lRet != ERROR_SUCCESS)
 	        {
@@ -229,14 +229,14 @@ namespace xl
         {
 	        HKEY hKey = nullptr;
 
-	        if (RegCreateKeyEx(hRootKey, strPath.GetAddress(), 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
+	        if (RegCreateKeyEx(hRootKey, strPath, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
 
 	        XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-	        if (RegSetValueEx(hKey, strName.GetAddress(), nullptr, REG_BINARY, (LPBYTE)lpbyBuffer, dwSize) != ERROR_SUCCESS)
+	        if (RegSetValueEx(hKey, strName, nullptr, REG_BINARY, (LPBYTE)lpbyBuffer, dwSize) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -248,7 +248,7 @@ namespace xl
         {
 	        HKEY hKey = nullptr;
 
-	        if (RegCreateKeyEx(hRootKey, strPath.GetAddress(), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_QUERY_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
+	        if (RegCreateKeyEx(hRootKey, strPath, 0, NULL, REG_OPTION_NON_VOLATILE, KEY_QUERY_VALUE | GetExtraFlags(), NULL, &hKey, NULL) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -267,7 +267,7 @@ namespace xl
 
 	        HKEY hKey = nullptr;
 
-	        if (RegOpenKeyEx(hRootKey, strPath.GetAddress(), 0, KEY_ENUMERATE_SUB_KEYS | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
+	        if (RegOpenKeyEx(hRootKey, strPath, 0, KEY_ENUMERATE_SUB_KEYS | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -307,7 +307,7 @@ namespace xl
 
             HKEY hKey = nullptr;
 
-	        if (RegOpenKeyEx(hRootKey, strPath.GetAddress(), 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
+	        if (RegOpenKeyEx(hRootKey, strPath, 0, KEY_QUERY_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
 	        {
 		        return FALSE;
 	        }
@@ -320,7 +320,7 @@ namespace xl
 	        for (int i = 0; true; ++i)
 	        {
 		        DWORD dwSize = sizeof(szName);
-		        lRet = RegEnumValue(hKey, i, szName.GetAddress(), &dwSize, NULL, NULL, NULL, NULL);
+		        lRet = RegEnumValue(hKey, i, szName, &dwSize, NULL, NULL, NULL, NULL);
 
 		        if (lRet == ERROR_NO_MORE_ITEMS)
 		        {
@@ -342,14 +342,14 @@ namespace xl
         {
 	        HKEY hKey = nullptr;
 
-	        if (RegOpenKeyEx(hRootKey, strPath.GetAddress(), 0, KEY_SET_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
+	        if (RegOpenKeyEx(hRootKey, strPath, 0, KEY_SET_VALUE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
 
 	        XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-	        if (RegDeleteValue(hKey, strName.GetAddress()) != ERROR_SUCCESS)
+	        if (RegDeleteValue(hKey, strName) != ERROR_SUCCESS)
 	        {
 		        return false;
 	        }
@@ -384,7 +384,7 @@ namespace xl
                     strName = strPath.SubString(nPos + 1, nLastPos - nPos);
                     String strSuperPath = strPath.SubString(0, nPos);
 
-                    if (RegOpenKeyEx(hRootKey, strSuperPath.GetAddress(), 0, DELETE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
+                    if (RegOpenKeyEx(hRootKey, strSuperPath, 0, DELETE | GetExtraFlags(), &hKey) != ERROR_SUCCESS)
 		            {
 			            return false;
 		            }
@@ -398,7 +398,7 @@ namespace xl
                 break;
             }
 
-            LONG lRet = RegDeleteKey(hKey, strName.GetAddress());
+            LONG lRet = RegDeleteKey(hKey, strName);
 
 	        if (hKey != hRootKey)
 	        {
@@ -417,7 +417,7 @@ namespace xl
         {
 	        Array<String> arrKeys;
 
-            if (!EnumSubKey(hRootKey, strPath.GetAddress(), &arrKeys))
+            if (!EnumSubKey(hRootKey, strPath, &arrKeys))
 	        {
 		        return false;
 	        }

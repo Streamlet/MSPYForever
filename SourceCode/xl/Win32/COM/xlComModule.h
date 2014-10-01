@@ -57,7 +57,7 @@ namespace xl
                 m_strModulePath = szModulePath;
             }
 
-            HRESULT hr = LoadTypeLib(m_strModulePath.GetAddress(), &m_pTypeLib);
+            HRESULT hr = LoadTypeLib(m_strModulePath, &m_pTypeLib);
 
             if (FAILED(hr) || m_pTypeLib == nullptr)
             {
@@ -462,12 +462,12 @@ namespace xl
                     return false;
                 }
 
-                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T(""), m_strLibID.GetAddress()))
+                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T(""), m_strLibID))
                 {
                     return false;
                 }
 
-                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T("Version"), m_strLibVersion.GetAddress()))
+                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T("Version"), m_strLibVersion))
                 {
                     return false;
                 }
@@ -863,14 +863,14 @@ namespace xl
         {
             TCHAR szIniPathAbsolute[MAX_PATH] = {};
             
-            if (GetFullPathName(strIniFileName.GetAddress(), ARRAYSIZE(szIniPathAbsolute), szIniPathAbsolute, nullptr) == 0)
+            if (GetFullPathName(strIniFileName, ARRAYSIZE(szIniPathAbsolute), szIniPathAbsolute, nullptr) == 0)
             {
                 return m_strModulePath;
             }
 
             TCHAR szModuleRelativePath[MAX_PATH] = {};
 
-            if (!PathRelativePathTo(szModuleRelativePath, szIniPathAbsolute, 0, m_strModulePath.GetAddress(), 0))
+            if (!PathRelativePathTo(szModuleRelativePath, szIniPathAbsolute, 0, m_strModulePath, 0))
             {
                 return m_strModulePath;
             }

@@ -199,7 +199,7 @@ namespace xl
 
             if (!strContentLength.Empty())
             {
-                _stscanf_s(strContentLength.GetAddress(), _T("%llu"), &qwContentLength);
+                _stscanf_s(strContentLength, _T("%llu"), &qwContentLength);
             }
 
             if (fnWrite == nullptr)
@@ -586,7 +586,7 @@ namespace xl
         WinHttpConnection connection;
 
         if (!connection.Initialize(session,
-                                   strHostName.GetAddress(),
+                                   strHostName,
                                    bSecure ? INTERNET_DEFAULT_HTTPS_PORT : INTERNET_DEFAULT_HTTP_PORT,
                                    bSecure))
         {
@@ -597,7 +597,7 @@ namespace xl
 
         if (!request.Initialize(connection,
                                 lpVerb,
-                                strUrlPath.GetAddress()))
+                                strUrlPath))
         {
             return false;
         }
@@ -636,7 +636,7 @@ namespace xl
         WinHttpConnection connection;
 
         if (!connection.Initialize(session,
-                                   strHostName.GetAddress(),
+                                   strHostName,
                                    bSecure ? INTERNET_DEFAULT_HTTPS_PORT : INTERNET_DEFAULT_HTTP_PORT,
                                    bSecure))
         {
@@ -647,7 +647,7 @@ namespace xl
 
         if (!request.Initialize(connection,
                                 lpVerb,
-                                strUrlPath.GetAddress()))
+                                strUrlPath))
         {
             return false;
         }
@@ -687,7 +687,7 @@ namespace xl
         WinHttpConnection connection;
 
         if (!connection.Initialize(session,
-                                   strHostName.GetAddress(),
+                                   strHostName,
                                    bSecure ? INTERNET_DEFAULT_HTTPS_PORT : INTERNET_DEFAULT_HTTP_PORT,
                                    bSecure))
         {
@@ -698,7 +698,7 @@ namespace xl
 
         if (!request.Initialize(connection,
                                 lpVerb,
-                                strUrlPath.GetAddress()))
+                                strUrlPath))
         {
             return false;
         }
