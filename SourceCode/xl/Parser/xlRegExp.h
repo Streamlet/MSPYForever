@@ -178,30 +178,15 @@ namespace xl
         }
 
     private:
-        enum TokenType
-        {
-            TT_Eof,
-            TT_VerticalBar,     // |
-            TT_QuestionMark,    // ?
-            TT_Plus,            // +
-            TT_Star,            // *
-            TT_OpenBracket,     // [
-            TT_CloseBracket,    // ]
-            TT_Hyphen,          // -
-            TT_Caret,           // ^
-            TT_OpenParen,       // (
-            TT_CloseParen,      // )
-            TT_OrdinaryChar,
-        };
 
         struct Token 
         {
-            TokenType type;
-            Char ch;
+            Char type;
             size_t length;
+            bool bControlChar;
 
-            Token(TokenType type = TT_OrdinaryChar, Char ch = 0, size_t length = 1)
-                : ch(ch), type(type), length(length)
+            Token(Char type = -1, bool bControlChar = true,  size_t length = 1)
+                : type(type), bControlChar(bControlChar), length(length)
             {
 
             }
@@ -212,57 +197,42 @@ namespace xl
         {
             if (m_nCurrentPosition >= m_strRegExp.Length())
             {
-                return Token(TT_Eof, 0, 0);
+                return Token(L'\0', true, 0);
             }
 
             Char ch = m_strRegExp[m_nCurrentPosition++];
-            TokenType type = TT_OrdinaryChar;
 
             if (ch == L'\\')
             {
                 if (m_nCurrentPosition < m_strRegExp.Length())
                 {
-                    return Token(TT_OrdinaryChar, m_strRegExp[m_nCurrentPosition++], 2);
+                    return Token(m_strRegExp[m_nCurrentPosition++], false, 2);
                 }
             }
 
+            bool bControlChar = false;
             switch (ch)
             {
             case L'|':
-                type = TT_VerticalBar;
-                break;
             case L'[':
-                type = TT_OpenBracket;
-                break;
             case L']':
-                type = TT_CloseBracket;
-                break;
             case L'-':
-                type = TT_Hyphen;
-                break;
             case L'^':
-                type = TT_Caret;
-                break;
             case L'?':
-                type = TT_QuestionMark;
-                break;
             case L'+':
-                type = TT_Plus;
-                break;
             case L'*':
-                type = TT_Star;
-                break;
             case L'(':
-                type = TT_OpenParen;
-                break;
             case L')':
-                type = TT_CloseParen;
+            case L'{':
+            case L'}':
+            case L',':
+                bControlChar = true;
                 break;
             default:
                 break;
             }
 
-            return Token(type, ch);
+            return Token(ch, bControlChar);
         }
 
         void Backward(const Token &token)
@@ -271,23 +241,49 @@ namespace xl
         }
 
     private:
-        enum RepeatorType
-        {
-            RT_None,
-            RT_ZeroOrOne,
-            RT_OnePlus,
-            RT_ZeroPlus
-        };
-
         struct Repeator
         {
-            RepeatorType type;
             bool bGreedy;
+            int iMinRepeats;
+            int iMaxRepeats;
 
             Repeator()
-                : type(RT_None), bGreedy(true)
+                : bGreedy(true), iMinRepeats(-1), iMaxRepeats(-1)
             {
 
+            }
+        };
+
+        struct Integer
+        {
+            int iValue; // > 0: OK; -1: ¦Å ; Other: Error
+            int iNextFactor;
+
+            Integer()
+                : iValue(-1), iNextFactor(0)
+            {
+
+            }
+
+            void AddHighDigit(int i)
+            {
+                i = i % 10;
+
+                if (iValue < 0)
+                {
+                    iValue = i;
+                    iNextFactor = 1;
+                }
+                else
+                {
+                    iValue += i * iNextFactor;
+                    iNextFactor *= 10;
+                }
+            }
+
+            operator int () const
+            {
+                return iValue;
             }
         };
 
@@ -295,21 +291,23 @@ namespace xl
         /*
             EBNF:
             
-            Expr         -> SubExpr Expr'
-            Expr'        -> "|" SubExpr Expr' | ¦Å
-            SubExpr      -> Phrase SubExpr'
-            SubExpr'     -> Phrase SubExpr' | ¦Å
-            Phrase       -> Word Repeater
-            Repeater     -> Counter Greeder | ¦Å
-            Counter      -> "?" | "+" | "*"
-            Greeder      -> "?" | ¦Å
-            Word         -> Char | "[" Collection "]" | "(" Expr ")"
-            Collection   -> Reverser InvervalSet
-            Reverser     -> "^" | ¦Å
-            InvervalSet  -> Inverval IntervalSet'
-            IntervalSet' -> Interval IntervalSet' | ¦Å
-            Interver     -> Char RangeSuffix
-            RangeSuffix  -> "-" Char | ¦Å
+            Expr            -> SubExpr Expr'
+            Expr'           -> "|" SubExpr Expr' | ¦Å
+            SubExpr         -> Phrase SubExpr'
+            SubExpr'        -> Phrase SubExpr' | ¦Å
+            Phrase          -> Word Repeater
+            Repeater        -> Counter Greeder | ¦Å
+            Counter         -> "?" | "+" | "*" | "{" RangeCounter "}"
+            RangeCounter    -> Integer "," Integer
+            Integer         -> Digit Integer | ¦Å
+            Greeder         -> "?" | ¦Å
+            Word            -> Char | "[" Collection "]" | "(" Expr ")"
+            Collection      -> Reverser InvervalSet
+            Reverser        -> "^" | ¦Å
+            InvervalSet     -> Inverval IntervalSet'
+            IntervalSet'    -> Interval IntervalSet' | ¦Å
+            Interver        -> Char RangeSuffix
+            RangeSuffix     -> "-" Char | ¦Å
         */
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
@@ -318,7 +316,7 @@ namespace xl
 
             Token token = LookAhead();
 
-            if (token.type != TT_Eof)
+            if (token.type != L'\0')
             {
                 return nullptr;
             }
@@ -358,7 +356,7 @@ namespace xl
         {
             Token token = LookAhead();
 
-            if (token.type != TT_VerticalBar)
+            if (token.type != L'|')
             {
                 Backward(token);
                 return pNode;
@@ -439,80 +437,70 @@ namespace xl
 
             Repeator r = ParseRepeater();
 
-            switch (r.type)
+            if (r.iMinRepeats == 0 && r.iMaxRepeats == 1)
             {
-            case RT_None:
-                break;
-            case RT_ZeroOrOne:
-                {
-                    StateMachine::EdgePtr pEdgeNodeToCurrent = NewEdge();
-                    m_spStateMachine->AddEdge(pEdgeNodeToCurrent);
-                    pEdgeNodeToCurrent->pPrevious = pNode;
-                    pEdgeNodeToCurrent->pNext     = pCurrent;
+                StateMachine::EdgePtr pEdgeNodeToCurrent = NewEdge();
+                m_spStateMachine->AddEdge(pEdgeNodeToCurrent);
+                pEdgeNodeToCurrent->pPrevious = pNode;
+                pEdgeNodeToCurrent->pNext     = pCurrent;
 
-                    if (r.bGreedy)
-                    {
-                        pNode->arrNext.PushBack(pEdgeNodeToCurrent);
-                        pCurrent->arrPrevious.PushBack(pEdgeNodeToCurrent);
-                    }
-                    else
-                    {
-                        pNode->arrNext.PushFront(pEdgeNodeToCurrent);
-                        pCurrent->arrPrevious.PushFront(pEdgeNodeToCurrent);
-                    }
+                if (r.bGreedy)
+                {
+                    pNode->arrNext.PushBack(pEdgeNodeToCurrent);
+                    pCurrent->arrPrevious.PushBack(pEdgeNodeToCurrent);
                 }
-                break;
-            case RT_OnePlus:
+                else
                 {
-                    StateMachine::NodePtr pTo = NewNode();
-                    m_spStateMachine->AddNode(pTo);
-
-                    StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
-                    StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
-
-                    if (r.bGreedy)
-                    {
-                        m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
-                        m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
-                    }
-                    else
-                    {
-                        m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
-                        m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
-                    }
-
-                    pCurrent = pTo;
+                    pNode->arrNext.PushFront(pEdgeNodeToCurrent);
+                    pCurrent->arrPrevious.PushFront(pEdgeNodeToCurrent);
                 }
-                break;
-            case RT_ZeroPlus:
-                {
-                    StateMachine::NodePtr pTo = NewNode();
-                    m_spStateMachine->AddNode(pTo);
+            }
+            else if (r.iMinRepeats == 1 && r.iMaxRepeats == -1)
+            {
+                StateMachine::NodePtr pTo = NewNode();
+                m_spStateMachine->AddNode(pTo);
 
-                    StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
+                StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
+                StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
+
+                if (r.bGreedy)
+                {
                     m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
-
-                    StateMachine::EdgePtr pEdgeNodeToTo = NewEdge();
-                    m_spStateMachine->AddEdge(pEdgeNodeToTo);
-                    pEdgeNodeToTo->pPrevious = pNode;
-                    pEdgeNodeToTo->pNext     = pTo;
-
-                    if (r.bGreedy)
-                    {
-                        pNode->arrNext.PushBack(pEdgeNodeToTo);
-                        pTo->arrPrevious.PushBack(pEdgeNodeToTo);
-                    }
-                    else
-                    {
-                        pNode->arrNext.PushFront(pEdgeNodeToTo);
-                        pTo->arrPrevious.PushFront(pEdgeNodeToTo);
-                    }
-
-                    pCurrent = pTo;
+                    m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
                 }
-                break;
-            default:
-                break;
+                else
+                {
+                    m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
+                    m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
+                }
+
+                pCurrent = pTo;
+            }
+            else if (r.iMinRepeats == 0 && r.iMaxRepeats == -1)
+            {
+                StateMachine::NodePtr pTo = NewNode();
+                m_spStateMachine->AddNode(pTo);
+
+                StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
+                m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
+
+                StateMachine::EdgePtr pEdgeNodeToTo = NewEdge();
+                m_spStateMachine->AddEdge(pEdgeNodeToTo);
+                pEdgeNodeToTo->pPrevious = pNode;
+                pEdgeNodeToTo->pNext     = pTo;
+
+                if (r.bGreedy)
+                {
+                    pNode->arrNext.PushBack(pEdgeNodeToTo);
+                    pTo->arrPrevious.PushBack(pEdgeNodeToTo);
+                }
+                else
+                {
+                    pNode->arrNext.PushFront(pEdgeNodeToTo);
+                    pTo->arrPrevious.PushFront(pEdgeNodeToTo);
+                }
+
+                pCurrent = pTo;
             }
 
             return pCurrent;
@@ -522,7 +510,7 @@ namespace xl
         {
             Repeator r = ParseCounter();
 
-            if (r.type == RT_None)
+            if (r.iMinRepeats < 0)
             {
                 return r;
             }
@@ -539,14 +527,27 @@ namespace xl
 
             switch (token.type)
             {
-            case TT_QuestionMark:
-                r.type = RT_ZeroOrOne;
+            case L'?':
+                r.iMinRepeats = 0;
+                r.iMaxRepeats = 1;
                 break;
-            case TT_Plus:
-                r.type = RT_OnePlus;
+            case L'+':
+                r.iMinRepeats = 1;
+                r.iMaxRepeats = -1;
                 break;
-            case TT_Star:
-                r.type = RT_ZeroPlus;
+            case L'*':
+                r.iMinRepeats = 0;
+                r.iMaxRepeats = -1;
+                break;
+            case L'{':
+                r = ParseRangeCounter();
+                token = LookAhead();
+                if (token.type != L'}')
+                {
+                    Backward(token);
+                    r.iMinRepeats = -1;
+                    r.iMaxRepeats = -1;
+                }
                 break;
             default:
                 Backward(token);
@@ -556,12 +557,79 @@ namespace xl
             return r;
         }
 
+        Repeator ParseRangeCounter()
+        {
+            Repeator r;
+
+            r.iMinRepeats = ParseInteger();
+
+            if (r.iMinRepeats == -1)
+            {
+                r.iMinRepeats = 0;
+            }
+
+            Token token = LookAhead();
+
+            if (!token.bControlChar || token.type != L',')
+            {
+                r.iMinRepeats = -1;
+                Backward(token);
+            }
+
+            r.iMaxRepeats = ParseInteger();
+
+            if (r.iMaxRepeats < -1)
+            {
+                r.iMinRepeats = -1;
+            }
+
+            return r;
+        }
+
+        Integer ParseInteger()
+        {
+            Integer i = ParseDigit();
+
+            if (i >= 0)
+            {
+                Integer iSubInteger = ParseInteger();
+
+                if (iSubInteger >= 0)
+                {
+                    i.AddHighDigit(iSubInteger);
+                }
+                else if (iSubInteger < -1)
+                {
+                    i.iValue = iSubInteger;
+                }
+            }
+
+            return i;
+        }
+
+        Integer ParseDigit()
+        {
+            Token token = LookAhead();
+            Integer i;
+
+            if (!token.bControlChar && token.type >= L'0' && token.type <= L'9')
+            {
+                i.AddHighDigit(token.type - L'0');
+            }
+            else
+            {
+                Backward(token);
+            }
+
+            return i;
+        }
+
         bool ParseGreeder()
         {
             bool bGreedy = true;
             Token token = LookAhead();
 
-            if (token.type == TT_QuestionMark)
+            if (token.type == L'?')
             {
                 bGreedy = false;
             }
@@ -579,55 +647,57 @@ namespace xl
 
             Token token = LookAhead();
 
-            switch (token.type)
+            if (token.bControlChar)
             {
-            case TT_OpenParen:
+                switch (token.type)
                 {
-                    pCurrent = ParseExpr(pNode);
-
-                    if (pCurrent == nullptr)
+                case L'(':
                     {
-                        return nullptr;
+                        pCurrent = ParseExpr(pNode);
+
+                        if (pCurrent == nullptr)
+                        {
+                            return nullptr;
+                        }
+
+                        token = LookAhead();
+
+                        if (token.type != L')')
+                        {
+                            return nullptr;
+                        }
                     }
-
-                    token = LookAhead();
-
-                    if (token.type != TT_CloseParen)
+                    break;
+                case L'[':
                     {
-                        return nullptr;
+                        pCurrent = ParseCollection(pNode);
+
+                        if (pCurrent == nullptr)
+                        {
+                            return nullptr;
+                        }
+
+                        token = LookAhead();
+
+                        if (token.type != L']')
+                        {
+                            return nullptr;
+                        }
                     }
+                    break;
+                default:
+                    Backward(token);
+                    break;
                 }
-                break;
-            case TT_OpenBracket:
+            }
+            else
+            {
+                pCurrent = AddNormalNode(pNode, token.type);
+
+                if (pCurrent == nullptr)
                 {
-                    pCurrent = ParseCollection(pNode);
-
-                    if (pCurrent == nullptr)
-                    {
-                        return nullptr;
-                    }
-
-                    token = LookAhead();
-
-                    if (token.type != TT_CloseBracket)
-                    {
-                        return nullptr;
-                    }
+                    return nullptr;
                 }
-                break;
-            case TT_OrdinaryChar:
-                {
-                    pCurrent = AddNormalNode(pNode, token.ch);
-
-                    if (pCurrent == nullptr)
-                    {
-                        return nullptr;
-                    }
-                }
-                break;
-            default:
-                Backward(token);
-                return pCurrent;
             }
 
             return pCurrent;
@@ -670,7 +740,7 @@ namespace xl
             bool bReverse = false;
             Token token = LookAhead();
 
-            if (token.type == TT_Caret)
+            if (token.type == L'^')
             {
                 bReverse = true;
             }
@@ -721,13 +791,13 @@ namespace xl
             Interval<Char> i;
             Token token = LookAhead();
 
-            if (token.type != TT_OrdinaryChar)
+            if (token.bControlChar)
             {
                 Backward(token);
                 return i;
             }
 
-            i = Interval<Char>(token.ch, token.ch);
+            i = Interval<Char>(token.type, token.type);
             Interval<Char> iSuffix = ParseRangseSuffix();
 
             if (!iSuffix.IsEmpty())
@@ -743,7 +813,7 @@ namespace xl
             Interval<Char> i;
             Token token = LookAhead();
 
-            if (token.type != TT_Hyphen)
+            if (token.type != L'-')
             {
                 Backward(token);
                 return i;
@@ -751,13 +821,13 @@ namespace xl
 
             token = LookAhead();
 
-            if (token.type != TT_OrdinaryChar)
+            if (token.bControlChar)
             {
                 Backward(token);
                 return i;
             }
 
-            i = Interval<Char>(token.ch, token.ch);
+            i = Interval<Char>(token.type, token.type);
             return i;
         }
 
