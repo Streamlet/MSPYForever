@@ -40,12 +40,18 @@ namespace xl
     private:
         struct Node
         {
-            Node() : m_nIdentify(++ms_nCounter)
+            Node() : m_nIdentify(++ms_nCounter), m_nPasses(0)
             {
 
             }
 
+            void ClearState()
+            {
+                m_nPasses = 0;
+            }
+
             int m_nIdentify;
+            int m_nPasses;
 
             static int ms_nCounter;
         };
@@ -53,19 +59,19 @@ namespace xl
         struct Edge
         {
             Edge()
-                : bEpsilon(true), chBegin(0), chEnd(0)
+                : bEpsilon(true), chBegin(0), chEnd(0), nMinNodePasses(0), nMaxNodePasses(-1)
             {
 
             }
 
             Edge(Char ch)
-                : bEpsilon(false), chBegin(ch), chEnd(ch)
+                : bEpsilon(false), chBegin(ch), chEnd(ch), nMinNodePasses(0), nMaxNodePasses(-1)
             {
 
             }
 
             Edge(Char chBegin, Char chEnd)
-                : bEpsilon(false), chBegin(chBegin), chEnd(chEnd)
+                : bEpsilon(false), chBegin(chBegin), chEnd(chEnd), nMinNodePasses(0), nMaxNodePasses(-1)
             {
 
             }
@@ -80,9 +86,28 @@ namespace xl
                 return (ch >= chBegin && ch <= chEnd);
             }
 
+            bool IsMatchRule(Node *pNode)
+            {
+                if (nMinNodePasses < 0 || pNode->m_nPasses < nMinNodePasses)
+                {
+                    return false;
+                }
+
+                if (nMaxNodePasses >= 0 && pNode->m_nPasses > nMaxNodePasses)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
             bool bEpsilon;
             Char chBegin;
             Char chEnd;
+
+            // Rules
+            int nMinNodePasses;
+            int nMaxNodePasses;
         };
 
     private:
@@ -117,6 +142,11 @@ namespace xl
 
         bool Match(const String &s, int *pnPos = nullptr)
         {
+            for (auto it = m_spStateMachine->GetNodes().Begin(); it != m_spStateMachine->GetNodes().End(); ++it)
+            {
+                (*it)->tValue.ClearState();
+            }
+
             return Match(s, 0, m_pBegin, pnPos);
         }
 
@@ -144,8 +174,15 @@ namespace xl
                 return true;
             }
 
+            ++pNode->tValue.m_nPasses;
+
             for (auto it = pNode->arrNext.Begin(); it != pNode->arrNext.End(); ++it)
             {
+                if (!(*it)->tValue.IsMatchRule(&pNode->tValue))
+                {
+                    continue;
+                }
+
                 if (Match(s, i, *it, pnPos))
                 {
                     return true;
@@ -437,57 +474,20 @@ namespace xl
 
             Repeator r = ParseRepeater();
 
-            if (r.iMinRepeats == 0 && r.iMaxRepeats == 1)
+            if (r.iMinRepeats < 0)
             {
-                StateMachine::EdgePtr pEdgeNodeToCurrent = NewEdge();
-                m_spStateMachine->AddEdge(pEdgeNodeToCurrent);
-                pEdgeNodeToCurrent->pPrevious = pNode;
-                pEdgeNodeToCurrent->pNext     = pCurrent;
-
-                if (r.bGreedy)
-                {
-                    pNode->arrNext.PushBack(pEdgeNodeToCurrent);
-                    pCurrent->arrPrevious.PushBack(pEdgeNodeToCurrent);
-                }
-                else
-                {
-                    pNode->arrNext.PushFront(pEdgeNodeToCurrent);
-                    pCurrent->arrPrevious.PushFront(pEdgeNodeToCurrent);
-                }
+                return pCurrent;
             }
-            else if (r.iMinRepeats == 1 && r.iMaxRepeats == -1)
+
+            StateMachine::NodePtr pTo = NewNode();
+            m_spStateMachine->AddNode(pTo);
+
+            if (r.iMinRepeats == 0)
             {
-                StateMachine::NodePtr pTo = NewNode();
-                m_spStateMachine->AddNode(pTo);
-
-                StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
-                StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
-
-                if (r.bGreedy)
-                {
-                    m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
-                    m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
-                }
-                else
-                {
-                    m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
-                    m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
-                }
-
-                pCurrent = pTo;
-            }
-            else if (r.iMinRepeats == 0 && r.iMaxRepeats == -1)
-            {
-                StateMachine::NodePtr pTo = NewNode();
-                m_spStateMachine->AddNode(pTo);
-
-                StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
-                m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
-
                 StateMachine::EdgePtr pEdgeNodeToTo = NewEdge();
                 m_spStateMachine->AddEdge(pEdgeNodeToTo);
                 pEdgeNodeToTo->pPrevious = pNode;
-                pEdgeNodeToTo->pNext     = pTo;
+                pEdgeNodeToTo->pNext = pTo;
 
                 if (r.bGreedy)
                 {
@@ -499,11 +499,40 @@ namespace xl
                     pNode->arrNext.PushFront(pEdgeNodeToTo);
                     pTo->arrPrevious.PushFront(pEdgeNodeToTo);
                 }
-
-                pCurrent = pTo;
             }
 
-            return pCurrent;
+            {
+                StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
+                StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
+
+                if (r.bGreedy)
+                {
+                    if (r.iMaxRepeats != 0)
+                    {
+                        m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
+                    }
+
+                    m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
+                }
+                else
+                {
+                    if (r.iMaxRepeats != 0)
+                    {
+                        m_spStateMachine->AddEdge(pEdgeCurrentToTo, pCurrent, pTo);
+                    }
+
+                    m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
+                }
+
+                if (r.iMaxRepeats > 0)
+                {
+                    pEdgeCurrentToNode->tValue.nMaxNodePasses = r.iMaxRepeats - 1;
+                }
+
+                pEdgeCurrentToTo->tValue.nMinNodePasses = r.iMinRepeats;
+            }
+
+            return pTo;
         }
 
         Repeator ParseRepeater()

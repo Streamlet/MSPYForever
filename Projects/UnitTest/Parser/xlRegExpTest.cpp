@@ -467,6 +467,32 @@ namespace
     XL_TEST_CASE()
     {
         RegExp r;
+        int nPos = 0;
+
+        XL_TEST_ASSERT(r.Parse(L"a{1,2}"));
+        XL_TEST_ASSERT(!r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"aa"));
+        XL_TEST_ASSERT(!r.Match(L"aaa"));
+        XL_TEST_ASSERT(!r.Match(L"", &nPos));
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 2);
+        XL_TEST_ASSERT(r.Match(L"aaa", &nPos) && nPos == 2);
+
+        XL_TEST_ASSERT(r.Parse(L"a{1,2}?"));
+        XL_TEST_ASSERT(!r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"aa"));
+        XL_TEST_ASSERT(!r.Match(L"aaa"));
+        XL_TEST_ASSERT(!r.Match(L"", &nPos));
+        XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 1);
+        XL_TEST_ASSERT(r.Match(L"aaa", &nPos) && nPos == 1);
+    }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
 
         XL_TEST_ASSERT(r.Parse(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/"));
         XL_TEST_ASSERT(r.Match(L"http://streamlet.org/"));
