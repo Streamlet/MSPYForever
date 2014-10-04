@@ -291,13 +291,19 @@ namespace xl
             }
         };
 
+        enum SpecialIntegerValue
+        {
+            Integer_Blank   = -1,
+            Integer_None    = -2,
+        };
+
         struct Integer
         {
-            int iValue; // > 0: OK; -1: ¦Å ; Other: Error
+            int iValue; // > 0 or SpecialIntegerValue
             int iNextFactor;
 
             Integer()
-                : iValue(-1), iNextFactor(0)
+                : iValue(Integer_Blank), iNextFactor(0)
             {
 
             }
@@ -328,23 +334,24 @@ namespace xl
         /*
             EBNF:
             
-            Expr            -> SubExpr Expr'
-            Expr'           -> "|" SubExpr Expr' | ¦Å
-            SubExpr         -> Phrase SubExpr'
-            SubExpr'        -> Phrase SubExpr' | ¦Å
-            Phrase          -> Word Repeater
-            Repeater        -> Counter Greeder | ¦Å
-            Counter         -> "?" | "+" | "*" | "{" RangeCounter "}"
-            RangeCounter    -> Integer "," Integer
-            Integer         -> Digit Integer | ¦Å
-            Greeder         -> "?" | ¦Å
-            Word            -> Char | "[" Collection "]" | "(" Expr ")"
-            Collection      -> Reverser InvervalSet
-            Reverser        -> "^" | ¦Å
-            InvervalSet     -> Inverval IntervalSet'
-            IntervalSet'    -> Interval IntervalSet' | ¦Å
-            Interver        -> Char RangeSuffix
-            RangeSuffix     -> "-" Char | ¦Å
+            Expr                -> SubExpr Expr'
+            Expr'               -> "|" SubExpr Expr' | ¦Å
+            SubExpr             -> Phrase SubExpr'
+            SubExpr'            -> Phrase SubExpr' | ¦Å
+            Phrase              -> Word Repeater
+            Repeater            -> Counter Greeder | ¦Å
+            Counter             -> "?" | "+" | "*" | "{" RangeCounter "}"
+            RangeCounter        -> Integer RangeCounterSuffix
+            RangeCounterSuffix  -> "," Integer | ¦Å
+            Integer             -> Digit Integer | ¦Å
+            Greeder             -> "?" | ¦Å
+            Word                -> Char | "[" Collection "]" | "(" Expr ")"
+            Collection          -> Reverser IntervalSet
+            Reverser            -> "^" | ¦Å
+            IntervalSet         -> Inverval IntervalSet'
+            IntervalSet'        -> Interval IntervalSet' | ¦Å
+            Interver            -> Char InterverSuffix
+            InterverSuffix      -> "-" Char | ¦Å
         */
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
@@ -501,26 +508,19 @@ namespace xl
                 }
             }
 
+            if (r.iMaxRepeats != 0)
             {
                 StateMachine::EdgePtr pEdgeCurrentToNode = NewEdge();
                 StateMachine::EdgePtr pEdgeCurrentToTo   = NewEdge();
 
                 if (r.bGreedy)
                 {
-                    if (r.iMaxRepeats != 0)
-                    {
-                        m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
-                    }
-
+                    m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
                     m_spStateMachine->AddEdge(pEdgeCurrentToTo,   pCurrent, pTo);
                 }
                 else
                 {
-                    if (r.iMaxRepeats != 0)
-                    {
-                        m_spStateMachine->AddEdge(pEdgeCurrentToTo, pCurrent, pTo);
-                    }
-
+                    m_spStateMachine->AddEdge(pEdgeCurrentToTo, pCurrent, pTo);
                     m_spStateMachine->AddEdge(pEdgeCurrentToNode, pCurrent, pNode);
                 }
 
@@ -592,27 +592,37 @@ namespace xl
 
             r.iMinRepeats = ParseInteger();
 
-            if (r.iMinRepeats == -1)
+            if (r.iMinRepeats == Integer_Blank)
             {
                 r.iMinRepeats = 0;
             }
 
+            r.iMaxRepeats = ParseRangeCounterSuffix();
+
+            if (r.iMaxRepeats == Integer_None)
+            {
+                r.iMaxRepeats = r.iMinRepeats;
+            }
+
+            return r;
+        }
+
+        int ParseRangeCounterSuffix()
+        {
+            int i = Integer_Blank;
             Token token = LookAhead();
 
             if (!token.bControlChar || token.type != L',')
             {
-                r.iMinRepeats = -1;
                 Backward(token);
+                i = Integer_None;
             }
-
-            r.iMaxRepeats = ParseInteger();
-
-            if (r.iMaxRepeats < -1)
+            else
             {
-                r.iMinRepeats = -1;
+                i = ParseInteger();
             }
 
-            return r;
+            return i;
         }
 
         Integer ParseInteger()
@@ -827,7 +837,7 @@ namespace xl
             }
 
             i = Interval<Char>(token.type, token.type);
-            Interval<Char> iSuffix = ParseRangseSuffix();
+            Interval<Char> iSuffix = ParseIntervalSuffix();
 
             if (!iSuffix.IsEmpty())
             {
@@ -837,7 +847,7 @@ namespace xl
             return i;
         }
 
-        Interval<Char> ParseRangseSuffix()
+        Interval<Char> ParseIntervalSuffix()
         {
             Interval<Char> i;
             Token token = LookAhead();
