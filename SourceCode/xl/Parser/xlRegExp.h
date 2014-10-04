@@ -354,7 +354,7 @@ namespace xl
             Word                -> Char | "[" Collection "]" | "(" Expr ")"
             Collection          -> Reverser IntervalSet
             Reverser            -> "^" | ¦Å
-            IntervalSet         -> Inverval IntervalSet ¡¤ ¦Å
+            IntervalSet         -> Inverval IntervalSet | ¦Å
             Interver            -> Char InterverSuffix
             InterverSuffix      -> "-" Char | ¦Å
         */
