@@ -230,24 +230,9 @@ namespace xl
         };
 
     private:
-        Token LookAhead()
+
+        bool IsSpecialCharacter(Char ch)
         {
-            if (m_nCurrentPosition >= m_strRegExp.Length())
-            {
-                return Token(L'\0', true, 0);
-            }
-
-            Char ch = m_strRegExp[m_nCurrentPosition++];
-
-            if (ch == L'\\')
-            {
-                if (m_nCurrentPosition < m_strRegExp.Length())
-                {
-                    return Token(m_strRegExp[m_nCurrentPosition++], false, 2);
-                }
-            }
-
-            bool bControlChar = false;
             switch (ch)
             {
             case L'|':
@@ -263,13 +248,34 @@ namespace xl
             case L'{':
             case L'}':
             case L',':
-                bControlChar = true;
+            case L'\\':
+            case L'.':
+                return true;
                 break;
             default:
                 break;
             }
 
-            return Token(ch, bControlChar);
+            return false;
+        }
+
+        Token LookAhead()
+        {
+            if (m_nCurrentPosition >= m_strRegExp.Length())
+            {
+                return Token(L'\0', true, 0);
+            }
+
+            Char ch = m_strRegExp[m_nCurrentPosition++];
+
+            if (ch == L'\\' &&
+                m_nCurrentPosition < m_strRegExp.Length() &&
+                IsSpecialCharacter(m_strRegExp[m_nCurrentPosition]))
+            {
+                return Token(m_strRegExp[m_nCurrentPosition++], false, 2);
+            }
+
+            return Token(ch, IsSpecialCharacter(ch));
         }
 
         void Backward(const Token &token)
@@ -348,8 +354,7 @@ namespace xl
             Word                -> Char | "[" Collection "]" | "(" Expr ")"
             Collection          -> Reverser IntervalSet
             Reverser            -> "^" | ¦Å
-            IntervalSet         -> Inverval IntervalSet'
-            IntervalSet'        -> Interval IntervalSet' | ¦Å
+            IntervalSet         -> Inverval IntervalSet ¡¤ ¦Å
             Interver            -> Char InterverSuffix
             InterverSuffix      -> "-" Char | ¦Å
         */
@@ -802,24 +807,7 @@ namespace xl
             }
 
             is.Union(i);
-            IntervalSet<Char> isPrime = ParseIntervalSetPrime();
-            is = is.Union(isPrime);
-
-            return is;
-        }
-
-        IntervalSet<Char> ParseIntervalSetPrime()
-        {
-            IntervalSet<Char> is;
-            Interval<Char> i = ParseInterval();
-
-            if (i.IsEmpty())
-            {
-                return is;
-            }
-
-            is.Union(i);
-            IntervalSet<Char> isPrime = ParseIntervalSetPrime();
+            IntervalSet<Char> isPrime = ParseIntervalSet();
             is = is.Union(isPrime);
 
             return is;
