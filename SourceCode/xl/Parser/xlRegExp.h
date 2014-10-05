@@ -762,7 +762,7 @@ namespace xl
                 break;
             case L'\\':
                 {
-                    IntervalSet<Char> isCharSet = ParseCharSet();
+                    IntervalSet<Char> isCharSet = ParseCharSetDescriptor();
 
                     if (isCharSet.IsEmpty())
                     {
@@ -872,7 +872,7 @@ namespace xl
                 break;
             case L'\\':
                 {
-                    IntervalSet<Char> isCharSet = ParseCharSet();
+                    IntervalSet<Char> isCharSet = ParseCharSetDescriptor();
 
                     if (isCharSet.IsEmpty())
                     {
@@ -896,7 +896,7 @@ namespace xl
             return is;
         }
 
-        IntervalSet<Char> ParseCharSet()
+        IntervalSet<Char> ParseCharSetDescriptor()
         {
             IntervalSet<Char> is;
             Token token = LookAhead();
