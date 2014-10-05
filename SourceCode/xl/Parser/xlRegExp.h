@@ -216,14 +216,16 @@ namespace xl
 
     private:
 
+        static const Char InvalidChar = -1;
+
         struct Token 
         {
             Char type;
+            Char ch;
             size_t length;
-            bool bControlChar;
 
-            Token(Char type = -1, bool bControlChar = true,  size_t length = 1)
-                : type(type), bControlChar(bControlChar), length(length)
+            Token(Char type = InvalidChar, Char ch = InvalidChar, size_t length = 1)
+                : type(type), ch(ch), length(length)
             {
 
             }
@@ -263,7 +265,7 @@ namespace xl
         {
             if (m_nCurrentPosition >= m_strRegExp.Length())
             {
-                return Token(L'\0', true, 0);
+                return Token(L'\0', InvalidChar, 0);
             }
 
             Char ch = m_strRegExp[m_nCurrentPosition++];
@@ -272,10 +274,17 @@ namespace xl
                 m_nCurrentPosition < m_strRegExp.Length() &&
                 IsSpecialCharacter(m_strRegExp[m_nCurrentPosition]))
             {
-                return Token(m_strRegExp[m_nCurrentPosition++], false, 2);
+                return Token(InvalidChar, m_strRegExp[m_nCurrentPosition++], 2);
             }
 
-            return Token(ch, IsSpecialCharacter(ch));
+            if (IsSpecialCharacter(ch))
+            {
+                return Token(ch);
+            }
+            else
+            {
+                return Token(InvalidChar, ch);
+            }
         }
 
         void Backward(const Token &token)
@@ -351,12 +360,14 @@ namespace xl
             RangeCounterSuffix  -> "," Integer | ¦Å
             Integer             -> Digit Integer | ¦Å
             Greeder             -> "?" | ¦Å
-            Word                -> Char | "[" Collection "]" | "(" Expr ")"
-            Collection          -> Reverser IntervalSet
+            Word                -> "(" Expr ")" | Collection | Char 
+            Collection          -> "[" Reverser IntervalSet "]" | "." | "\" CharSetDescriptor
             Reverser            -> "^" | ¦Å
-            IntervalSet         -> Inverval IntervalSet | ¦Å
+            IntervalSet         -> IntervalSetItem IntervalSet | ¦Å
+            IntervalSetItem     -> "." | "\" CharSetDescriptor | Interver
             Interver            -> Char InterverSuffix
             InterverSuffix      -> "-" Char | ¦Å
+            CharSetDescriptor   -> "s" | "S"
         */
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
@@ -617,7 +628,7 @@ namespace xl
             int i = Integer_Blank;
             Token token = LookAhead();
 
-            if (!token.bControlChar || token.type != L',')
+            if (token.type != L',')
             {
                 Backward(token);
                 i = Integer_None;
@@ -656,9 +667,9 @@ namespace xl
             Token token = LookAhead();
             Integer i;
 
-            if (!token.bControlChar && token.type >= L'0' && token.type <= L'9')
+            if (token.ch >= L'0' && token.ch <= L'9')
             {
-                i.AddHighDigit(token.type - L'0');
+                i.AddHighDigit(token.ch - L'0');
             }
             else
             {
@@ -691,52 +702,40 @@ namespace xl
 
             Token token = LookAhead();
 
-            if (token.bControlChar)
+            if (token.type != InvalidChar)
             {
-                switch (token.type)
+                if (token.type == L'(')
                 {
-                case L'(':
+                    pCurrent = ParseExpr(pNode);
+
+                    if (pCurrent == nullptr)
                     {
-                        pCurrent = ParseExpr(pNode);
-
-                        if (pCurrent == nullptr)
-                        {
-                            return nullptr;
-                        }
-
-                        token = LookAhead();
-
-                        if (token.type != L')')
-                        {
-                            return nullptr;
-                        }
+                        return nullptr;
                     }
-                    break;
-                case L'[':
+
+                    token = LookAhead();
+
+                    if (token.type != L')')
                     {
-                        pCurrent = ParseCollection(pNode);
-
-                        if (pCurrent == nullptr)
-                        {
-                            return nullptr;
-                        }
-
-                        token = LookAhead();
-
-                        if (token.type != L']')
-                        {
-                            return nullptr;
-                        }
+                        Backward(token);
+                        return nullptr;
                     }
-                    break;
-                default:
+                }
+                else
+                {
                     Backward(token);
-                    break;
+
+                    pCurrent = ParseCollection(pNode);
+
+                    if (pCurrent == nullptr)
+                    {
+                        return nullptr;
+                    }
                 }
             }
             else
             {
-                pCurrent = AddNormalNode(pNode, token.type);
+                pCurrent = AddNormalNode(pNode, token.ch);
 
                 if (pCurrent == nullptr)
                 {
@@ -749,20 +748,62 @@ namespace xl
 
         StateMachine::NodePtr ParseCollection(StateMachine::NodePtr pNode)
         {
-            bool bReverse = ParseReverser();
-            IntervalSet<Char> is = ParseIntervalSet();
+            IntervalSet<Char> is;
+            Token token = LookAhead();
 
-            if (is.IsEmpty())
+            switch (token.type)
             {
-                return nullptr;
+            case L'.':
+                {
+                    is.Union(Interval<Char>(0, -1));
+                    is.Exclude(Interval<Char>(L'\n'));
+                    is.MakeClose(1);
             }
+                break;
+            case L'\\':
+                {
+                    IntervalSet<Char> isCharSet = ParseCharSet();
 
-            if (bReverse)
-            {
-                IntervalSet<Char> u;
-                u.Union(Interval<Char>(0, -1));
-                is = u.Exclude(is);
-                is.MakeClose(1);
+                    if (isCharSet.IsEmpty())
+                    {
+                        Backward(token);
+                    }
+                    else
+                    {
+                        is.Union(isCharSet);
+                    }
+                }
+                break;
+            case L'[':
+                {
+                    bool bReverse = ParseReverser();
+                    is = ParseIntervalSet();
+
+                    token = LookAhead();
+
+                    if (token.type != L']')
+                    {
+                        Backward(token);
+                        return nullptr;
+                    }
+
+                    if (is.IsEmpty())
+                    {
+                        return nullptr;
+                    }
+
+                    if (bReverse)
+                    {
+                        IntervalSet<Char> u;
+                        u.Union(Interval<Char>(0, -1));
+                        is = u.Exclude(is);
+                        is.MakeClose(1);
+                    }
+                }
+                break;
+            default:
+                Backward(token);
+                return nullptr;
             }
 
             StateMachine::NodePtr pCurrent = NewNode();
@@ -799,16 +840,81 @@ namespace xl
         IntervalSet<Char> ParseIntervalSet()
         {
             IntervalSet<Char> is;
-            Interval<Char> i = ParseInterval();
 
-            if (i.IsEmpty())
+            IntervalSet<Char> isItem = ParseIntervalSetItem();
+
+            if (isItem.IsEmpty())
             {
                 return is;
             }
 
-            is.Union(i);
+            is = is.Union(isItem);
+
             IntervalSet<Char> isPrime = ParseIntervalSet();
             is = is.Union(isPrime);
+
+            return is;
+        }
+
+        IntervalSet<Char> ParseIntervalSetItem()
+        {
+            IntervalSet<Char> is;
+            Token token = LookAhead();
+
+            switch (token.type)
+            {
+            case L'.':
+                {
+                    is.Union(Interval<Char>(0, -1));
+                    is.Exclude(Interval<Char>(L'\n'));
+                    is.MakeClose(1);
+            }
+                break;
+            case L'\\':
+                {
+                    IntervalSet<Char> isCharSet = ParseCharSet();
+
+                    if (isCharSet.IsEmpty())
+                    {
+                        Backward(token);
+                    }
+                    else
+                    {
+                        is.Union(isCharSet);
+                    }
+                }
+                break;
+            default:
+                {
+                    Backward(token);
+                    Interval<Char> i = ParseInterval();
+                    is.Union(i);
+                }
+                break;
+            }
+
+            return is;
+        }
+
+        IntervalSet<Char> ParseCharSet()
+        {
+            IntervalSet<Char> is;
+            Token token = LookAhead();
+
+            switch (token.ch)
+            {
+            case L's':
+                is.Union(Interval<Char>(L'\x09', L'\x0d'));
+                break;
+            case L'S':
+                is.Union(Interval<Char>(0, -1));
+                is.Exclude(Interval<Char>(L'\x09', L'\x0d'));
+                is.MakeClose(1);
+                break;
+            default:
+                Backward(token);
+                break;
+            }
 
             return is;
         }
@@ -818,13 +924,13 @@ namespace xl
             Interval<Char> i;
             Token token = LookAhead();
 
-            if (token.bControlChar)
+            if (token.type != InvalidChar)
             {
                 Backward(token);
                 return i;
             }
 
-            i = Interval<Char>(token.type, token.type);
+            i = Interval<Char>(token.ch);
             Interval<Char> iSuffix = ParseIntervalSuffix();
 
             if (!iSuffix.IsEmpty())
@@ -848,13 +954,13 @@ namespace xl
 
             token = LookAhead();
 
-            if (token.bControlChar)
+            if (token.type != InvalidChar)
             {
                 Backward(token);
                 return i;
             }
 
-            i = Interval<Char>(token.type, token.type);
+            i = Interval<Char>(token.ch);
             return i;
         }
 
@@ -895,13 +1001,5 @@ namespace xl
     __declspec(selectany) int RegExp::Node::ms_nCounter = 0;
 
 } // namespace xl
-
-
-
-
-
-
-
-
 
 #endif // #ifndef __XLREGEXP_H_0FCC5122_D6F3_4E9E_AAB0_5D268E87ED44_INCLUDED__

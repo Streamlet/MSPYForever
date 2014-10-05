@@ -654,6 +654,51 @@ namespace
     {
         RegExp r;
 
+        XL_TEST_ASSERT(r.Parse(L"."));
+        XL_TEST_ASSERT(!r.Match(L"\n"));
+        XL_TEST_ASSERT(r.Match(L"."));
+        XL_TEST_ASSERT(r.Match(L"\r"));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"A"));
+        XL_TEST_ASSERT(r.Match(L"0"));
+
+        XL_TEST_ASSERT(r.Parse(L".*"));
+        XL_TEST_ASSERT(r.Match(L""));
+        XL_TEST_ASSERT(r.Match(L"1234567890"));
+        XL_TEST_ASSERT(r.Match(L"abcdefg"));
+        XL_TEST_ASSERT(!r.Match(L"\n"));
+        XL_TEST_ASSERT(!r.Match(L"1234567890\n"));
+        XL_TEST_ASSERT(!r.Match(L"abcdefg\n"));
+
+        XL_TEST_ASSERT(r.Parse(L"[.\n]"));
+        XL_TEST_ASSERT(r.Match(L"\n"));
+        XL_TEST_ASSERT(r.Match(L"."));
+        XL_TEST_ASSERT(r.Match(L"\r"));
+        XL_TEST_ASSERT(r.Match(L"a"));
+        XL_TEST_ASSERT(r.Match(L"A"));
+        XL_TEST_ASSERT(r.Match(L"0"));
+
+        XL_TEST_ASSERT(r.Parse(L"[^.\n]"));
+        XL_TEST_ASSERT(!r.Match(L"\n"));
+        XL_TEST_ASSERT(!r.Match(L"."));
+        XL_TEST_ASSERT(!r.Match(L"\r"));
+        XL_TEST_ASSERT(!r.Match(L"a"));
+        XL_TEST_ASSERT(!r.Match(L"A"));
+        XL_TEST_ASSERT(!r.Match(L"0"));
+
+        XL_TEST_ASSERT(r.Parse(L"[^.]"));
+        XL_TEST_ASSERT(r.Match(L"\n"));
+        XL_TEST_ASSERT(!r.Match(L"."));
+        XL_TEST_ASSERT(!r.Match(L"\r"));
+        XL_TEST_ASSERT(!r.Match(L"a"));
+        XL_TEST_ASSERT(!r.Match(L"A"));
+        XL_TEST_ASSERT(!r.Match(L"0"));
+    }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
+
         XL_TEST_ASSERT(r.Parse(L"http://([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]+/"));
         XL_TEST_ASSERT(r.Match(L"http://streamlet.org/"));
         XL_TEST_ASSERT(r.Match(L"http://w-1.streamlet.org/"));

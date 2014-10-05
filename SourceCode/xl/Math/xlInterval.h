@@ -36,6 +36,12 @@ namespace xl
 
         }
 
+        Interval(T value)
+            : left(value), right(value), bIncludeLeft(true), bIncludeRight(true)
+        {
+
+        }
+
         Interval(T left, T right, bool bIncludeLeft = true, bool bIncludeRight = true)
             : left(left), right(right), bIncludeLeft(bIncludeLeft), bIncludeRight(bIncludeRight)
         {
