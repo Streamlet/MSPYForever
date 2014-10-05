@@ -18,6 +18,7 @@
 
 
 #include "../Containers/xlGraph.h"
+#include "../Containers/xlArray.h"
 #include "../Math/xlIntervalSet.h"
 #include "../Memory/xlSmartPtr.h"
 #include "../String/xlString.h"
@@ -253,7 +254,6 @@ namespace xl
             case L'\\':
             case L'.':
                 return true;
-                break;
             default:
                 break;
             }
@@ -367,7 +367,8 @@ namespace xl
             IntervalSetItem     -> "." | "\" CharSetDescriptor | Interver
             Interver            -> Char InterverSuffix
             InterverSuffix      -> "-" Char | ¦Å
-            CharSetDescriptor   -> "d" | "D" | "f" | "n" | "r" | "s" | "S" | "t" | "v" | "w" | "W"
+            CharSetDescriptor   -> "d" | "D" | "f" | "n" | "r" | "s" | "S" | "t" | "v" | "w" | "W" | "x" Hex02 | "u" Hex04
+
         */
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
@@ -766,7 +767,7 @@ namespace xl
 
                     if (isCharSet.IsEmpty())
                     {
-                        Backward(token);
+                        return nullptr;
                     }
                     else
                     {
@@ -948,6 +949,33 @@ namespace xl
                 is.Exclude(Interval<Char>(L'_'));
                 is.MakeClose(1);
                 break;
+            case L'x':
+                {
+                    int iValue = ParseHex0x(2);
+                    if (iValue >= 0)
+                    {
+                        is.Union(Interval<Char>((Char)iValue));
+                    }
+                    else
+                    {
+                        Backward(token);
+                    }
+                }
+                break;
+            case L'u':
+                {
+                    int iValue = ParseHex0x(4);
+                    if (iValue >= 0)
+                    {
+                        is.Union(Interval<Char>((Char)iValue));
+                    }
+                    else
+                    {
+                        Backward(token);
+                    }
+                }
+                break;
+                break;
             default:
                 Backward(token);
                 break;
@@ -999,6 +1027,46 @@ namespace xl
 
             i = Interval<Char>(token.ch);
             return i;
+        }
+
+        int ParseHex0x(int x)
+        {
+            int iValue = 0;
+            Array<Token> arrBackwards;
+
+            for (int i = 0; i < x; ++i)
+            {
+                Token token = LookAhead();
+                arrBackwards.PushFront(token);
+
+                if (token.ch >= L'0' && token.ch <= L'9')
+                {
+                    iValue = iValue * 0x10 + (token.ch - L'0');
+                }
+                else if (token.ch >= L'a' && token.ch <= L'f')
+                {
+                    iValue = iValue * 0x10 + (token.ch - L'a' + 10);
+                }
+                else if (token.ch >= L'A' && token.ch <= L'F')
+                {
+                    iValue = iValue * 0x10 + (token.ch - L'A' + 10);
+                }
+                else
+                {
+                    iValue = -1;
+                    break;
+                }
+            }
+
+            if (iValue < 0)
+            {
+                for (auto it = arrBackwards.Begin(); it < arrBackwards.End(); ++it)
+                {
+                    Backward(*it);
+                }
+            }
+
+            return iValue;
         }
 
     private:

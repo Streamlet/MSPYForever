@@ -708,7 +708,7 @@ namespace
     {
         RegExp r;
 
-        // "d" | "D" | "f" | "n" | "r" | "s" | "S" | "t" | "v" | "w" | "W"
+        // \d \D \f \n \r \s \S \t \v \w\ W
 
         XL_TEST_ASSERT(r.Parse(L"\\d*"));
         XL_TEST_ASSERT(r.Match(L"0123456789"));
@@ -736,6 +736,43 @@ namespace
         XL_TEST_ASSERT(r.Match(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"));
         XL_TEST_ASSERT(r.Parse(L"[^\\W]*"));
         XL_TEST_ASSERT(r.Match(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"));
+    }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
+
+        // \xHH \uHHHH
+
+        XL_TEST_ASSERT(!r.Parse(L"\\x"));
+        XL_TEST_ASSERT(!r.Parse(L"\\x4"));
+        XL_TEST_ASSERT(r.Parse(L"\\x41"));
+        XL_TEST_ASSERT(r.Parse(L"\\x413"));
+        XL_TEST_ASSERT(r.Match(L"A3"));
+
+        XL_TEST_ASSERT(r.Parse(L"\\x41\\x42\\x43\\x44\\x45\\x46\\x47"));
+        XL_TEST_ASSERT(r.Match(L"ABCDEFG"));
+
+        XL_TEST_ASSERT(r.Parse(L"[\\x41\\x42]"));
+        XL_TEST_ASSERT(r.Match(L"A"));
+        XL_TEST_ASSERT(r.Match(L"B"));
+        XL_TEST_ASSERT(!r.Match(L"C"));
+
+        XL_TEST_ASSERT(!r.Parse(L"\\u"));
+        XL_TEST_ASSERT(!r.Parse(L"\\u5"));
+        XL_TEST_ASSERT(!r.Parse(L"\\u59"));
+        XL_TEST_ASSERT(!r.Parse(L"\\u597"));
+        XL_TEST_ASSERT(r.Parse(L"\\u597d"));
+        XL_TEST_ASSERT(r.Parse(L"\\u597de"));
+        XL_TEST_ASSERT(r.Match(L"ºÃe"));
+
+        XL_TEST_ASSERT(r.Parse(L"\\u4f60\\u597d"));
+        XL_TEST_ASSERT(r.Match(L"ÄãºÃ"));
+
+        XL_TEST_ASSERT(r.Parse(L"[\\u4f60\\u597d]"));
+        XL_TEST_ASSERT(r.Match(L"Äã"));
+        XL_TEST_ASSERT(r.Match(L"ºÃ"));
+        XL_TEST_ASSERT(!r.Match(L"Éµ"));
     }
 
     XL_TEST_CASE()
