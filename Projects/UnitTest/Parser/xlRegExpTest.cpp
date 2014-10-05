@@ -699,6 +699,41 @@ namespace
     {
         RegExp r;
 
+        // "d" | "D" | "f" | "n" | "r" | "s" | "S" | "t" | "v" | "w" | "W"
+
+        XL_TEST_ASSERT(r.Parse(L"\\d*"));
+        XL_TEST_ASSERT(r.Match(L"0123456789"));
+        XL_TEST_ASSERT(r.Parse(L"[\\d]*"));
+        XL_TEST_ASSERT(r.Match(L"0123456789"));
+        XL_TEST_ASSERT(r.Parse(L"[^\\D]*"));
+        XL_TEST_ASSERT(r.Match(L"0123456789"));
+
+
+        XL_TEST_ASSERT(r.Parse(L"\\t"));
+        XL_TEST_ASSERT(r.Match(L"\x09"));
+        XL_TEST_ASSERT(r.Parse(L"\\n"));
+        XL_TEST_ASSERT(r.Match(L"\x0a"));
+        XL_TEST_ASSERT(r.Parse(L"\\v"));
+        XL_TEST_ASSERT(r.Match(L"\x0b"));
+        XL_TEST_ASSERT(r.Parse(L"\\f"));
+        XL_TEST_ASSERT(r.Match(L"\x0c"));
+        XL_TEST_ASSERT(r.Parse(L"\\r"));
+        XL_TEST_ASSERT(r.Match(L"\x0d"));
+
+        XL_TEST_ASSERT(r.Parse(L"\\s*"));
+        XL_TEST_ASSERT(r.Match(L"\x09\x0a\x0b\x0c\x0d"));
+        XL_TEST_ASSERT(r.Parse(L"[^\\S]*"));
+        XL_TEST_ASSERT(r.Match(L"\x09\x0a\x0b\x0c\x0d"));
+        XL_TEST_ASSERT(r.Parse(L"\\w*"));
+        XL_TEST_ASSERT(r.Match(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"));
+        XL_TEST_ASSERT(r.Parse(L"[^\\W]*"));
+        XL_TEST_ASSERT(r.Match(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"));
+    }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
+
         XL_TEST_ASSERT(r.Parse(L"http://([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]+/"));
         XL_TEST_ASSERT(r.Match(L"http://streamlet.org/"));
         XL_TEST_ASSERT(r.Match(L"http://w-1.streamlet.org/"));

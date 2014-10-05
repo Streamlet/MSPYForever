@@ -367,7 +367,7 @@ namespace xl
             IntervalSetItem     -> "." | "\" CharSetDescriptor | Interver
             Interver            -> Char InterverSuffix
             InterverSuffix      -> "-" Char | ¦Å
-            CharSetDescriptor   -> "s" | "S"
+            CharSetDescriptor   -> "d" | "D" | "f" | "n" | "r" | "s" | "S" | "t" | "v" | "w" | "W"
         */
 
         StateMachine::NodePtr Parse(StateMachine::NodePtr pNode)
@@ -758,7 +758,7 @@ namespace xl
                     is.Union(Interval<Char>(0, -1));
                     is.Exclude(Interval<Char>(L'\n'));
                     is.MakeClose(1);
-            }
+                }
                 break;
             case L'\\':
                 {
@@ -770,7 +770,7 @@ namespace xl
                     }
                     else
                     {
-                        is.Union(isCharSet);
+                        is = is.Union(isCharSet);
                     }
                 }
                 break;
@@ -880,7 +880,7 @@ namespace xl
                     }
                     else
                     {
-                        is.Union(isCharSet);
+                        is = is.Union(isCharSet);
                     }
                 }
                 break;
@@ -903,12 +903,49 @@ namespace xl
 
             switch (token.ch)
             {
+            case L'd':
+                is.Union(Interval<Char>(L'0', L'9'));
+                break;
+            case L'D':
+                is.Union(Interval<Char>(0, -1));
+                is.Exclude(Interval<Char>(L'0', L'9'));
+                is.MakeClose(1);
+                break;
+            case L'f':
+                is.Union(Interval<Char>(L'\x0c'));
+                break;
+            case L'n':
+                is.Union(Interval<Char>(L'\x0a'));
+                break;
+            case L'r':
+                is.Union(Interval<Char>(L'\x0d'));
+                break;
             case L's':
                 is.Union(Interval<Char>(L'\x09', L'\x0d'));
                 break;
             case L'S':
                 is.Union(Interval<Char>(0, -1));
                 is.Exclude(Interval<Char>(L'\x09', L'\x0d'));
+                is.MakeClose(1);
+                break;
+            case L't':
+                is.Union(Interval<Char>(L'\x09'));
+                break;
+            case L'v':
+                is.Union(Interval<Char>(L'\x0b'));
+                break;
+            case L'w':
+                is.Union(Interval<Char>(L'a', L'z'));
+                is.Union(Interval<Char>(L'A', L'Z'));
+                is.Union(Interval<Char>(L'0', L'9'));
+                is.Union(Interval<Char>(L'_'));
+                break;
+            case L'W':
+                is.Union(Interval<Char>(0, -1));
+                is.Exclude(Interval<Char>(L'a', L'z'));
+                is.Exclude(Interval<Char>(L'A', L'Z'));
+                is.Exclude(Interval<Char>(L'0', L'9'));
+                is.Exclude(Interval<Char>(L'_'));
                 is.MakeClose(1);
                 break;
             default:
