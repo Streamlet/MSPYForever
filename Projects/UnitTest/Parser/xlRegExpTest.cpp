@@ -648,6 +648,15 @@ namespace
         XL_TEST_ASSERT(r.Match(L"a", &nPos) && nPos == 0);
         XL_TEST_ASSERT(r.Match(L"aa", &nPos) && nPos == 0);
         XL_TEST_ASSERT(r.Match(L"aaa", &nPos) && nPos == 0);
+
+        // IPv4 address
+        XL_TEST_ASSERT(r.Parse(L"(([01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[0-9][0-9]|[0-9])\\.){3}"
+                               L"([01][0-9][0-9]|2[0-4][0-9]|25[0-5]|[0-9][0-9]|[0-9])"));
+        XL_TEST_ASSERT(r.Match(L"192.168.1.1"));
+        XL_TEST_ASSERT(r.Match(L"0.0.0.0"));
+        XL_TEST_ASSERT(r.Match(L"255.255.255.255"));
+        XL_TEST_ASSERT(!r.Match(L"0.0.0.256"));
+        XL_TEST_ASSERT(r.Match(L"0.0.0.256", &nPos) && nPos == 8);
     }
 
     XL_TEST_CASE()
@@ -707,7 +716,6 @@ namespace
         XL_TEST_ASSERT(r.Match(L"0123456789"));
         XL_TEST_ASSERT(r.Parse(L"[^\\D]*"));
         XL_TEST_ASSERT(r.Match(L"0123456789"));
-
 
         XL_TEST_ASSERT(r.Parse(L"\\t"));
         XL_TEST_ASSERT(r.Match(L"\x09"));
