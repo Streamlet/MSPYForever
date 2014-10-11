@@ -712,30 +712,66 @@ namespace
 
         XL_TEST_ASSERT(r.Parse(L"\\d*"));
         XL_TEST_ASSERT(r.Match(L"0123456789"));
+        XL_TEST_ASSERT(!r.Match(L"\x29"));
+        XL_TEST_ASSERT(!r.Match(L"\x3a"));
         XL_TEST_ASSERT(r.Parse(L"[\\d]*"));
         XL_TEST_ASSERT(r.Match(L"0123456789"));
+        XL_TEST_ASSERT(!r.Match(L"\x29"));
+        XL_TEST_ASSERT(!r.Match(L"\x3a"));
         XL_TEST_ASSERT(r.Parse(L"[^\\D]*"));
         XL_TEST_ASSERT(r.Match(L"0123456789"));
+        XL_TEST_ASSERT(!r.Match(L"\x29"));
+        XL_TEST_ASSERT(!r.Match(L"\x3a"));
 
         XL_TEST_ASSERT(r.Parse(L"\\t"));
         XL_TEST_ASSERT(r.Match(L"\x09"));
+        XL_TEST_ASSERT(!r.Match(L"\x08"));
+        XL_TEST_ASSERT(!r.Match(L"\x0a"));
         XL_TEST_ASSERT(r.Parse(L"\\n"));
         XL_TEST_ASSERT(r.Match(L"\x0a"));
+        XL_TEST_ASSERT(!r.Match(L"\x09"));
+        XL_TEST_ASSERT(!r.Match(L"\x0b"));
         XL_TEST_ASSERT(r.Parse(L"\\v"));
         XL_TEST_ASSERT(r.Match(L"\x0b"));
+        XL_TEST_ASSERT(!r.Match(L"\x0a"));
+        XL_TEST_ASSERT(!r.Match(L"\x0c"));
         XL_TEST_ASSERT(r.Parse(L"\\f"));
         XL_TEST_ASSERT(r.Match(L"\x0c"));
+        XL_TEST_ASSERT(!r.Match(L"\x0b"));
+        XL_TEST_ASSERT(!r.Match(L"\x0d"));
         XL_TEST_ASSERT(r.Parse(L"\\r"));
         XL_TEST_ASSERT(r.Match(L"\x0d"));
+        XL_TEST_ASSERT(!r.Match(L"\x0c"));
+        XL_TEST_ASSERT(!r.Match(L"\x0e"));
 
         XL_TEST_ASSERT(r.Parse(L"\\s*"));
         XL_TEST_ASSERT(r.Match(L"\x09\x0a\x0b\x0c\x0d"));
+        XL_TEST_ASSERT(!r.Match(L"\x08"));
+        XL_TEST_ASSERT(!r.Match(L"\x0e"));
         XL_TEST_ASSERT(r.Parse(L"[^\\S]*"));
         XL_TEST_ASSERT(r.Match(L"\x09\x0a\x0b\x0c\x0d"));
+        XL_TEST_ASSERT(!r.Match(L"\x08"));
+        XL_TEST_ASSERT(!r.Match(L"\x0e"));
         XL_TEST_ASSERT(r.Parse(L"\\w*"));
         XL_TEST_ASSERT(r.Match(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"));
+        XL_TEST_ASSERT(!r.Match(L"\x60"));
+        XL_TEST_ASSERT(!r.Match(L"\x7b"));
+        XL_TEST_ASSERT(!r.Match(L"\x40"));
+        XL_TEST_ASSERT(!r.Match(L"\x5b"));
+        XL_TEST_ASSERT(!r.Match(L"\x29"));
+        XL_TEST_ASSERT(!r.Match(L"\x3a"));
+        XL_TEST_ASSERT(!r.Match(L"\x5e"));
+        XL_TEST_ASSERT(!r.Match(L"\x60"));
         XL_TEST_ASSERT(r.Parse(L"[^\\W]*"));
         XL_TEST_ASSERT(r.Match(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"));
+        XL_TEST_ASSERT(!r.Match(L"\x60"));
+        XL_TEST_ASSERT(!r.Match(L"\x7b"));
+        XL_TEST_ASSERT(!r.Match(L"\x40"));
+        XL_TEST_ASSERT(!r.Match(L"\x5b"));
+        XL_TEST_ASSERT(!r.Match(L"\x29"));
+        XL_TEST_ASSERT(!r.Match(L"\x3a"));
+        XL_TEST_ASSERT(!r.Match(L"\x5e"));
+        XL_TEST_ASSERT(!r.Match(L"\x60"));
     }
 
     XL_TEST_CASE()
