@@ -360,7 +360,10 @@ namespace xl
             RangeCounterSuffix  -> "," Integer | ¦Å
             Integer             -> Digit Integer | ¦Å
             Greeder             -> "?" | ¦Å
-            Word                -> "(" Expr ")" | Collection | Char 
+            Word                -> "(" GroupFlag Expr ")" | Collection | Char
+            GroupFlag           -> "?" GroupFlagContent | ¦Å
+            GroupFlagContent    -> "=" | "!" | ":" | "<" GroupName ">"
+            GroupName           -> IdChar GroupName | ¦Å
             Collection          -> "[" Reverser IntervalSet "]" | "." | "\" CharSetDescriptor
             Reverser            -> "^" | ¦Å
             IntervalSet         -> IntervalSetItem IntervalSet | ¦Å
