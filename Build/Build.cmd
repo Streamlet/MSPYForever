@@ -38,14 +38,14 @@ Copy "%~dp0%SourceDir%\bin\Win32\Release\%AppName%.exe" "%~dp0%ReleaseDir%\Win32
 Md "%~dp0%ReleaseDir%\Win32\Files"
 XCopy /E /Y "%~dp0%SourceDir%\Files\*" "%~dp0%ReleaseDir%\Win32\Files\"
 RMDir /S /Q "%~dp0%ReleaseDir%\Win32\Files\Windows\System32"
-"%~dp0%ToolsDir%\xlZip.exe" /z "%~dp0%ReleaseDir%\Win32\*" "%~dp0%ReleaseDir%\%AppName%_%Version%_Win32_ForWin81Win10.zip" /utf8
+"%~dp0%ToolsDir%\xlZip.exe" /z "%~dp0%ReleaseDir%\Win32\*" "%~dp0%ReleaseDir%\%AppName%_%Version%_Win32_ForWin81&Win10.zip" /utf8
 
 Md "%~dp0%ReleaseDir%\x64"
 Copy "%~dp0%SourceDir%\bin\x64\Release\%AppName%.exe" "%~dp0%ReleaseDir%\x64"
 "%~dp0%ToolsDir%\xlZip.exe" /z "%~dp0%ReleaseDir%\x64\*" "%~dp0%ReleaseDir%\%AppName%_%Version%_x64_ForWin8.zip" /utf8
 Md "%~dp0%ReleaseDir%\x64\Files"
 XCopy /E /Y "%~dp0%SourceDir%\Files\*" "%~dp0%ReleaseDir%\x64\Files\"
-"%~dp0%ToolsDir%\xlZip.exe" /z "%~dp0%ReleaseDir%\x64\*" "%~dp0%ReleaseDir%\%AppName%_%Version%_x64_ForWin81Win10.zip" /utf8
+"%~dp0%ToolsDir%\xlZip.exe" /z "%~dp0%ReleaseDir%\x64\*" "%~dp0%ReleaseDir%\%AppName%_%Version%_x64_ForWin81&Win10.zip" /utf8
 
 
 Echo Éú³É½áÊø
