@@ -186,8 +186,8 @@ bool Utility::SHCopyDir(HWND hWnd, LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir)
     SHFILEOPSTRUCT op = {};
     op.hwnd = hWnd;
     op.wFunc = FO_COPY;
-    op.pFrom = strSourceDir.GetAddress();
-    op.pTo = strDestDir.GetAddress();
+    op.pFrom = strSourceDir;
+    op.pTo = strDestDir;
 
     int iErrorCode = SHFileOperation(&op);
 
@@ -234,7 +234,7 @@ bool Utility::RegisterComDll(LPCTSTR lpszFileName)
     strCmdLine += lpszFileName;
     strCmdLine += _T("\"");
 
-    if (!RunProcess(strCmdLine.GetAddress()))
+    if (!RunProcess(strCmdLine))
     {
         return false;
     }
@@ -251,7 +251,7 @@ bool Utility::MergeRegFile(LPCTSTR lpszFileName)
     strCmdLine += lpszFileName;
     strCmdLine += _T("\"");
 
-    if (!RunProcess(strCmdLine.GetAddress()))
+    if (!RunProcess(strCmdLine))
     {
         return false;
     }
@@ -265,7 +265,7 @@ bool Utility::GetMspyForWin8()
 
     xl::String strPath = Utility::GetSystemDir() + _T("\\IME\\IMESC\\IMSCTIP.dll");
 
-    if (!Utility::RegisterComDll(strPath.GetAddress()))
+    if (!Utility::RegisterComDll(strPath))
     {
         XL_ERROR(_T("Failed to register IMSCTIP.dll."));
         return false;
@@ -316,9 +316,9 @@ bool Utility::GetMspyForWin81()
 
     for (int i = 0; i < _countof(folderMap); ++i)
     {
-        if (!Utility::SHCopyDir(nullptr, folderMap[i].strSource.GetAddress(), folderMap[i].strDest.GetAddress()))
+        if (!Utility::SHCopyDir(nullptr, folderMap[i].strSource, folderMap[i].strDest))
         {
-            XL_ERROR(_T("Failed to copy folder %s."), folderMap[i].strSource.GetAddress());
+            XL_ERROR(_T("Failed to copy folder %s."), (LPCTSTR)folderMap[i].strSource);
             return false;
         }
     }
@@ -337,9 +337,9 @@ bool Utility::GetMspyForWin81()
 
     for (int i = 0; i < _countof(lpszDllFiles); ++i)
     {
-        if (!Utility::RegisterComDll((strPath + lpszDllFiles[i]).GetAddress()))
+        if (!Utility::RegisterComDll(strPath + lpszDllFiles[i]))
         {
-            XL_ERROR(_T("Failed to register %s."), (strPath + lpszDllFiles[i]).GetAddress());
+            XL_ERROR(_T("Failed to register %s."), (LPCTSTR)(strPath + lpszDllFiles[i]));
             return false;
         }
     }
@@ -351,7 +351,7 @@ bool Utility::GetMspyForWin81()
     {
         if (!Utility::RegisterComDll((strPath + lpszDllFiles[i]).GetAddress()))
         {
-            XL_ERROR(_T("Failed to register %s."), (strPath + lpszDllFiles[i]).GetAddress());
+            XL_ERROR(_T("Failed to register %s."), (LPCTSTR)(strPath + lpszDllFiles[i]));
             return false;
         }
     }
@@ -390,7 +390,7 @@ bool Utility::GetMspyForWin81()
         XL_WARNING(_T("Failed to declare systray support."));
     }
 
-    if (!Utility::MergeRegFile((strExePath + _T("\\Files\\Dict.reg")).GetAddress()))
+    if (!Utility::MergeRegFile((strExePath + _T("\\Files\\Dict.reg"))))
     {
         XL_WARNING(_T("Failed to register dictionaries."));
     }

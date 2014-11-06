@@ -69,7 +69,7 @@ bool MainWindow::OnInitDialog()
 
 LRESULT MainWindow::OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
 {
-    ShellExecute(nullptr, _T("runas"), Utility::GetExePath().GetAddress(), _T("/do"), nullptr, SW_SHOW);
+    ShellExecute(nullptr, _T("runas"), Utility::GetExePath(), _T("/do"), nullptr, SW_SHOW);
     return 0;
 }
 

@@ -32,14 +32,14 @@ bool RegKeyPrivilegeAquireRestore::Restore()
     HKEY hKey = nullptr;
 
     LSTATUS lRes = RegOpenKeyEx(m_hRootKey,
-                   m_strSubKey.GetAddress(),
+                   m_strSubKey,
                    0,
                    m_samDesired,
                    &hKey);
 
     if (lRes != ERROR_SUCCESS || hKey == nullptr)
     {
-        XL_ERROR(_T("Failed to open Key: %s."), m_strSubKey.GetAddress());
+        XL_ERROR(_T("Failed to open Key: %s."), (LPCTSTR)m_strSubKey);
         return false;
     }
 
@@ -50,7 +50,7 @@ bool RegKeyPrivilegeAquireRestore::Restore()
 
     if (lRes != ERROR_SUCCESS)
     {
-        XL_ERROR(_T("Failed to restore security information to Key: %s."), m_strSubKey.GetAddress());
+        XL_ERROR(_T("Failed to restore security information to Key: %s."), (LPCTSTR)m_strSubKey);
         return false;
     }
 
@@ -75,14 +75,14 @@ bool RegKeyPrivilegeAquireRestore::Backup(HKEY hRootKey, LPCTSTR lpszSubKey)
     HKEY hKey = nullptr;
 
     LSTATUS lRes = RegOpenKeyEx(m_hRootKey,
-                                m_strSubKey.GetAddress(),
+                                m_strSubKey,
                                 0,
                                 READ_CONTROL,
                                 &hKey);
 
     if (lRes != ERROR_SUCCESS || hKey == nullptr)
     {
-        XL_ERROR(_T("Failed to open key with READ_CONTROL access. Key: %s."), m_strSubKey.GetAddress());
+        XL_ERROR(_T("Failed to open key with READ_CONTROL access. Key: %s."), (LPCTSTR)m_strSubKey);
         return false;
     }
 
@@ -93,7 +93,7 @@ bool RegKeyPrivilegeAquireRestore::Backup(HKEY hRootKey, LPCTSTR lpszSubKey)
 
     if (lRes != ERROR_INSUFFICIENT_BUFFER)
     {
-        XL_ERROR(_T("Failed to get security information of Key: %s."), m_strSubKey.GetAddress());
+        XL_ERROR(_T("Failed to get security information of Key: %s."), (LPCTSTR)m_strSubKey);
         return false;
     }
 
@@ -103,7 +103,7 @@ bool RegKeyPrivilegeAquireRestore::Backup(HKEY hRootKey, LPCTSTR lpszSubKey)
 
     if (lRes != ERROR_SUCCESS)
     {
-        XL_ERROR(_T("Failed to get security information of Key: %s."), m_strSubKey.GetAddress());
+        XL_ERROR(_T("Failed to get security information of Key: %s."), (LPCTSTR)m_strSubKey);
         return false;
     }
 
@@ -282,7 +282,7 @@ bool RegKeyOwnerDaclAquireRestoreRec::Aquire(HKEY hRootKey, LPCTSTR lpszSubKey)
 
     for (auto it = arrSubKeys.Begin(); it != arrSubKeys.End(); ++it)
     {
-        if (!Aquire(hRootKey, (strPath + L"\\" + *it).GetAddress()))
+        if (!Aquire(hRootKey, (strPath + L"\\" + *it)))
         {
             return false;
         }
