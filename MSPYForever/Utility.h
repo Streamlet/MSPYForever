@@ -7,6 +7,7 @@ enum OSVersion
 {
     OSV_Win8,
     OSV_Win81,
+    OSV_Win10,
     OSV_Other,
 };
 

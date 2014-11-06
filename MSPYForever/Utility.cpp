@@ -64,7 +64,12 @@ OSVersion Utility::GetOSVersion()
             osv = OSV_Win81;
         }
 
-        if (IsWindowsVersionOrGreater(6, 4, 0) || IsWindowsVersionOrGreater(7, 0, 0))
+        if (IsWindowsVersionOrGreater(6, 4, 0))
+        {
+            osv = OSV_Win10;
+        }
+
+        if (IsWindowsVersionOrGreater(6, 5, 0) || IsWindowsVersionOrGreater(7, 0, 0))
         {
             osv = OSV_Other;
         }
@@ -274,7 +279,7 @@ bool Utility::GetMspyForWin8()
 #ifdef _WIN64
     strPath = Utility::GetSysWow64Dir() + _T("\\IME\\IMESC\\IMSCTIP.dll");
 
-    if (!Utility::RegisterComDll(strPath.GetAddress()))
+    if (!Utility::RegisterComDll(strPath))
     {
         XL_ERROR(_T("Failed to register IMSCTIP.dll."));
         return false;
@@ -349,7 +354,7 @@ bool Utility::GetMspyForWin81()
 
     for (int i = 0; i < _countof(lpszDllFiles); ++i)
     {
-        if (!Utility::RegisterComDll((strPath + lpszDllFiles[i]).GetAddress()))
+        if (!Utility::RegisterComDll((strPath + lpszDllFiles[i])))
         {
             XL_ERROR(_T("Failed to register %s."), (LPCTSTR)(strPath + lpszDllFiles[i]));
             return false;

@@ -26,7 +26,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     if (Utility::GetOSVersion() == OSV_Other)
     {
-        MessageBox(nullptr, _T("本工具只支持 Win8、Win8.1。再见。"), nullptr, MB_OK | MB_ICONWARNING);
+        MessageBox(nullptr, _T("本工具只支持 Win8、Win8.1、Win10。再见。"), nullptr, MB_OK | MB_ICONWARNING);
         return 0;
     }
 
@@ -51,6 +51,16 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
             if (Utility::GetMspyForWin81())
             {
                 MessageBox(hModalOwner, _T("已经帮您找回 Win8.1 下的微拼长句模式，请打开控制面板进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+            }
+            else
+            {
+                MessageBox(hModalOwner, _T("操作失败。再见。"), nullptr, MB_OK | MB_ICONWARNING);
+            }
+            break;
+        case OSV_Win10:
+            if (Utility::GetMspyForWin81())
+            {
+                MessageBox(hModalOwner, _T("已经帮您找回 Win10 下的微拼长句模式，请打开控制面板进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
             }
             else
             {
