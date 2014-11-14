@@ -117,7 +117,7 @@ namespace xl
 
             XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-            if (RegSetValueEx(hKey, strName, 0, REG_EXPAND_SZ, (LPCBYTE)strValue, (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
+            if (RegSetValueEx(hKey, strName, 0, REG_EXPAND_SZ, (LPCBYTE)(LPCTSTR)strValue, (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
             {
                 return false;
             }
