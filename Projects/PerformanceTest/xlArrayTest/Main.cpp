@@ -43,16 +43,6 @@ int main()
     PERFORMANCE_TEST_END(xlArrayPushBack100000);
     SECTION_END();
 
-    SECTION_BEGIN(xlArrayPushFront100000);
-    Array<int> a2;
-    PERFORMANCE_TEST_BEGIN(xlArrayPushFront100000);
-    for (int i = 0; i < 100000; ++i)
-    {
-        a2.PushFront(i);
-    }
-    PERFORMANCE_TEST_END(xlArrayPushFront100000);
-    SECTION_END();
-
 
     SECTION_BEGIN(StdVectorPushBack1000000);
     vector<int> v2;
@@ -65,23 +55,13 @@ int main()
     SECTION_END();
 
     SECTION_BEGIN(xlArrayPushBack1000000);
-    Array<int> a3;
+    Array<int> a2;
     PERFORMANCE_TEST_BEGIN(xlArrayPushBack1000000);
     for (int i = 0; i < 1000000; ++i)
     {
-        a3.PushBack(i);
+        a2.PushBack(i);
     }
     PERFORMANCE_TEST_END(xlArrayPushBack1000000);
-    SECTION_END();
-
-    SECTION_BEGIN(xlArrayPushFront1000000);
-    Array<int> a4;
-    PERFORMANCE_TEST_BEGIN(xlArrayPushFront1000000);
-    for (int i = 0; i < 1000000; ++i)
-    {
-        a4.PushFront(i);
-    }
-    PERFORMANCE_TEST_END(xlArrayPushFront1000000);
     SECTION_END();
 
 
@@ -96,23 +76,13 @@ int main()
     SECTION_END();
 
     SECTION_BEGIN(xlArrayPushBack10000000);
-    Array<int> a5;
+    Array<int> a3;
     PERFORMANCE_TEST_BEGIN(xlArrayPushBack10000000);
     for (int i = 0; i < 10000000; ++i)
     {
-        a5.PushBack(i);
+        a3.PushBack(i);
     }
     PERFORMANCE_TEST_END(xlArrayPushBack10000000);
-    SECTION_END();
-
-    SECTION_BEGIN(xlArrayPushFront10000000);
-    Array<int> a6;
-    PERFORMANCE_TEST_BEGIN(xlArrayPushFront10000000);
-    for (int i = 0; i < 10000000; ++i)
-    {
-        a6.PushFront(i);
-    }
-    PERFORMANCE_TEST_END(xlArrayPushFront10000000);
     SECTION_END();
 
     return 0;
