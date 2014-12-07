@@ -74,6 +74,16 @@ OSVersion Utility::GetOSVersion()
             osv = OSV_Other;
         }
 
+        if (IsWindowsVersionOrGreater(10, 0, 0))
+        {
+            osv = OSV_Win10;
+        }
+
+        if (IsWindowsVersionOrGreater(10, 1, 0) || IsWindowsVersionOrGreater(11, 0, 0))
+        {
+            osv = OSV_Other;
+        }
+
     } while (false);
     
     return osv;
