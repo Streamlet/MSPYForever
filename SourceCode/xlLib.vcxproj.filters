@@ -290,6 +290,36 @@
     <ClInclude Include="xl\Win32\COM\xlComPtr.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfCompositionSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionProviderImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFnGetPreferredTouchKeyboardLayoutImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
