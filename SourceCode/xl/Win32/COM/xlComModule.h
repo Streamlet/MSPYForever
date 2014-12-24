@@ -164,6 +164,9 @@ namespace xl
 
         STDMETHODIMP DllRegisterServer()
         {
+            xl::ScopeGuard sgUnregisterTypeLib = xl::MakeGuard(xl::Bind(this, &ComModule::UnregisterTypeLib, HKEY_LOCAL_MACHINE));
+            xl::ScopeGuard sgUnregisterComClassed = xl::MakeGuard(xl::Bind(this, &ComModule::UnregisterComClasses, HKEY_LOCAL_MACHINE));
+
             if (!RegisterTypeLib(HKEY_LOCAL_MACHINE))
             {
                 return E_FAIL;
@@ -174,22 +177,27 @@ namespace xl
                 return E_FAIL;
             }
 
+            sgUnregisterComClassed.Dismiss();
+            sgUnregisterTypeLib.Dismiss();
+
             return S_OK;
         }
 
         STDMETHODIMP DllUnregisterServer()
         {
+            bool bSuccess = true;
+
             if (!UnregisterComClasses(HKEY_LOCAL_MACHINE))
             {
-                return E_FAIL;
+                bSuccess = false;
             }
 
             if (!UnregisterTypeLib(HKEY_LOCAL_MACHINE))
             {
-                return E_FAIL;
+                bSuccess = false;
             }
 
-            return S_OK;
+            return bSuccess ? S_OK : E_FAIL;
         }
 
         STDMETHODIMP DllInstall(BOOL bInstall, LPCTSTR lpszCmdLine)
@@ -206,6 +214,9 @@ namespace xl
             {
                 if (bInstall)
                 {
+                    xl::ScopeGuard sgUnregisterTypeLib = xl::MakeGuard(xl::Bind(this, &ComModule::UnregisterTypeLib, HKEY_CURRENT_USER));
+                    xl::ScopeGuard sgUnregisterComClassed = xl::MakeGuard(xl::Bind(this, &ComModule::UnregisterComClasses, HKEY_CURRENT_USER));
+
                     if (!RegisterTypeLib(HKEY_CURRENT_USER))
                     {
                         return E_FAIL;
@@ -216,21 +227,26 @@ namespace xl
                         return E_FAIL;
                     }
 
+                    sgUnregisterComClassed.Dismiss();
+                    sgUnregisterTypeLib.Dismiss();
+
                     return S_OK;
                 }
                 else
                 {
+                    bool bSuccess = true;
+
                     if (!UnregisterComClasses(HKEY_CURRENT_USER))
                     {
-                        return E_FAIL;
+                        bSuccess = false;
                     }
 
                     if (!UnregisterTypeLib(HKEY_CURRENT_USER))
                     {
-                        return E_FAIL;
+                        bSuccess = false;
                     }
 
-                    return S_OK;
+                    return bSuccess ? S_OK : E_FAIL;
                 }
             }
 
@@ -251,6 +267,9 @@ namespace xl
 
                 if (bInstall)
                 {
+                    xl::ScopeGuard sgUnregisterTypeLib = xl::MakeGuard(xl::Bind(this, &ComModule::UnregisterTypeLibFromIni, strIniFileName));
+                    xl::ScopeGuard sgUnregisterComClassed = xl::MakeGuard(xl::Bind(this, &ComModule::UnregisterComClassesFromIni, strIniFileName));
+
                     if (!RegisterTypeLibToIni(strIniFileName))
                     {
                         return E_FAIL;
@@ -261,21 +280,26 @@ namespace xl
                         return E_FAIL;
                     }
 
+                    sgUnregisterComClassed.Dismiss();
+                    sgUnregisterTypeLib.Dismiss();
+
                     return S_OK;
                 }
                 else
                 {
+                    bool bSuccess = true;
+
                     if (!UnregisterComClassesFromIni(strIniFileName))
                     {
-                        return E_FAIL;
+                        bSuccess = false;
                     }
 
                     if (!UnregisterTypeLibFromIni(strIniFileName))
                     {
-                        return E_FAIL;
+                        bSuccess = false;
                     }
 
-                    return S_OK;
+                    return bSuccess ? S_OK : E_FAIL;
                 }
             }
 

@@ -24,6 +24,8 @@
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 #include <tchar.h>
+#include <winscard.h>
+
 
 namespace xl
 {
