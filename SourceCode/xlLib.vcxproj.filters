@@ -320,6 +320,12 @@
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">

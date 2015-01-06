@@ -71,9 +71,11 @@
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionProviderImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h" />
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h" />
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeCompImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeInfoImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeLibImpl.h" />
