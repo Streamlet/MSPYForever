@@ -106,7 +106,7 @@ namespace xl
 
     public:
 
-        INT_PTR DoModal(int nCmdShow = SW_SHOW)
+        INT_PTR DoModal(int nCmdShow = SW_SHOW, bool bProcessDialogMessage = true)
         {
             HWND hOwner = GetWindow(GW_OWNER);
 
@@ -117,7 +117,7 @@ namespace xl
 
             ShowWindow(nCmdShow);
 
-            INT_PTR nModalResult = RunModalLoop();
+            INT_PTR nModalResult = RunModalLoop(bProcessDialogMessage);
 
             Destroy();
 
@@ -138,7 +138,7 @@ namespace xl
 
     protected:
 
-        INT_PTR RunModalLoop()
+        INT_PTR RunModalLoop(bool bProcessDialogMessage = true)
         {
             m_nModalResult = -1;
             m_bInModal = true;
@@ -161,7 +161,7 @@ namespace xl
                         break;
                     }
 
-                    if (!IsDialogMessage(m_hWnd, &msg))
+                    if (!bProcessDialogMessage || !IsDialogMessage(m_hWnd, &msg))
                     {
                         TranslateMessage(&msg);
                         DispatchMessage(&msg);
