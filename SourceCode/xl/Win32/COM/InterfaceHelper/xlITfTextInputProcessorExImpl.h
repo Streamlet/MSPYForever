@@ -25,7 +25,7 @@ namespace xl
     class ITfTextInputProcessorExImpl : public ITfTextInputProcessorImpl<T>
     {
     public: // ITfTextInputProcessorEx Methods
-        STDMETHOD(ActivateEx)(ITfThreadMgr *ptim, TfClientId tid, DWORD dwFlags)
+        STDMETHODIMP ActivateEx(ITfThreadMgr *ptim, TfClientId tid, DWORD dwFlags)
         {
             return E_NOTIMPL;
         }
