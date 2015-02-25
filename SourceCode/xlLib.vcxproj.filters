@@ -326,6 +326,18 @@
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfSourceImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\App\xlLog.h">
+      <Filter>App</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -390,6 +402,9 @@
     </Filter>
     <Filter Include="Win32\Timer">
       <UniqueIdentifier>{af76c0df-7b0f-4f0b-a3c0-b0cdc8fe3861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{df078fb9-1bfd-4f4f-8d31-dcaa124b02a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

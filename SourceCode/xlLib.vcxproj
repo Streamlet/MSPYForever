@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xl\Algorithm\xlSort.h" />
+    <ClInclude Include="xl\App\xlLog.h" />
     <ClInclude Include="xl\Containers\xlArray.h" />
     <ClInclude Include="xl\Containers\xlBinTree.h" />
     <ClInclude Include="xl\Containers\xlGraph.h" />
@@ -71,6 +72,9 @@
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionProviderImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h" />
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h" />
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemImpl.h" />
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfSourceImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h" />
     <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h" />

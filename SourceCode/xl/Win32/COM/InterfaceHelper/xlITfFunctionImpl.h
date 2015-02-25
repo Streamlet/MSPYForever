@@ -27,7 +27,7 @@ namespace xl
     class ITfFunctionImpl : public IUnknownImpl<T>
     {
     public: // ITfFunction Methods
-        STDMETHODIMP GetDisplayName(_Out_ BSTR *pbstrDisplayName)
+        STDMETHODIMP GetDisplayName(BSTR *pbstrDisplayName)
         {
             return E_NOTIMPL;
         }

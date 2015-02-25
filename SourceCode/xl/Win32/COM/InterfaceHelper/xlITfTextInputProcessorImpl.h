@@ -27,12 +27,12 @@ namespace xl
     class ITfTextInputProcessorImpl : public IUnknownImpl<T>
     {
     public: // ITfTextInputProcessor Methods
-        STDMETHOD(Activate)(ITfThreadMgr *ptim, TfClientId tid)
+        STDMETHODIMP Activate(ITfThreadMgr *ptim, TfClientId tid)
         {
             return E_NOTIMPL;
         }
 
-        STDMETHOD(Deactivate)()
+        STDMETHODIMP Deactivate()
         {
             return E_NOTIMPL;
         }
