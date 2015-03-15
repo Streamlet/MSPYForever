@@ -138,6 +138,15 @@ namespace xl
     };
 
     template <typename T>
+    struct FunctionTraits;
+
+    template <typename R, typename ... Args>
+    struct FunctionTraits < R(Args ...) >
+    {
+        typedef R ReturnType;
+    };
+
+    template <typename T>
     class StdTypeDetect
     {
     private:
