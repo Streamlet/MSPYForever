@@ -129,6 +129,7 @@
     <ClInclude Include="xl\Win32\Threads\xlThreadPool.h" />
     <ClInclude Include="xl\Win32\Threads\xlTls.h" />
     <ClInclude Include="xl\Win32\Timer\xlTimer.h" />
+    <ClInclude Include="xl\Win32\xlDllHelper.h" />
     <ClInclude Include="xl\Win32\xlWin32Ver.h" />
     <ClInclude Include="xl\Win32\xlHandle.h" />
     <ClInclude Include="xl\xlDef.h" />

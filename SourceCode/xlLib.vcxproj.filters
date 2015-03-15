@@ -338,6 +338,9 @@
     <ClInclude Include="xl\App\xlLog.h">
       <Filter>App</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\xlDllHelper.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
