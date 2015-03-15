@@ -47,26 +47,30 @@ namespace xl
         return f(args...);
     }
 
-    template <typename R, typename ... Args>
-    R DllHelperCallFunctionCdecl(LPCTSTR lpLibFileName, LPCSTR lpProcName, Args && ... args)
-    {
-        return DllHelperCallFunctionStrict<R(__cdecl *)(Args...), R>(lpLibFileName, lpProcName, args...);
-    }
-
-    template <typename R, typename ... Args>
-    R DllHelperCallFunctionStdcall(LPCTSTR lpLibFileName, LPCSTR lpProcName, Args && ... args)
-    {
-        return DllHelperCallFunctionStrict<R(__stdcall *)(Args...), R>(lpLibFileName, lpProcName, args...);
-    }
-
-    template <typename R, typename ... Args>
-    R DllHelperCallFunctionFastcall(LPCTSTR lpLibFileName, LPCSTR lpProcName, Args && ... args)
-    {
-        return DllHelperCallFunctionStrict<R(__fastcall *)(Args...), R>(lpLibFileName, lpProcName, args...);
-    }
-
     template <typename S>
     struct DllHelper;
+
+#ifdef _M_X64
+
+    template <typename R, typename ... Args>
+    struct DllHelper<R(&)(Args...)>
+    {
+        static R CallFunction(LPCTSTR lpLibFileName, LPCSTR lpProcName, Args ... args)
+        {
+            return DllHelperCallFunctionStrict<R(__stdcall &)(Args...), R, Args...>(lpLibFileName, lpProcName, args...);
+        }
+    };
+
+    template <typename R, typename ... Args>
+    struct DllHelper<R(*)(Args...)>
+    {
+        static R CallFunction(LPCTSTR lpLibFileName, LPCSTR lpProcName, Args ... args)
+        {
+            return DllHelperCallFunctionStrict<R(__cdecl *)(Args...), R, Args...>(lpLibFileName, lpProcName, args...);
+        }
+    };
+
+#else
 
     template <typename R, typename ... Args>
     struct DllHelper<R(__cdecl &)(Args...)>
@@ -121,6 +125,8 @@ namespace xl
             return DllHelperCallFunctionStrict<R(__fastcall *)(Args...), R, Args...>(lpLibFileName, lpProcName, args...);
         }
     };
+
+#endif
 
 } // namespace xl
 
