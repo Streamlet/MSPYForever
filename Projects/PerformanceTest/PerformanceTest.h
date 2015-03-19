@@ -31,6 +31,6 @@
 #define PERFORMANCE_TEST_END(name)                                                                                            \
         clock_t end_##name = clock();                                                                                         \
         std::cout << "Test ends. Time elasped: " << (double)(end_##name - begin_##name) / CLOCKS_PER_SEC << "." << std::endl; \
-	}
+    }
 
 #endif // #ifndef __PERFORMANCETEST_H_75CF91CF_F93D_480A_B697_E69FF92D0D4A_INCLUDED__
