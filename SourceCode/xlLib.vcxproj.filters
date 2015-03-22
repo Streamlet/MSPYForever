@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="xl\xlDef.h" />
+    <ClInclude Include="xl\Containers\xlArray.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlBinTree.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlGraph.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlList.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlMap.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlPair.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlRBTree.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlSet.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlTree.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Containers\xlTuple.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Cryption\xlCRC32.h">
+      <Filter>Cryption</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Cryption\xlMD5.h">
+      <Filter>Cryption</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Cryption\xlSHA1.h">
+      <Filter>Cryption</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Math\xlBigInt.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Math\xlInterval.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Math\xlIntervalSet.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Math\xlMathBase.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Memory\xlMemory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Memory\xlSmartPtr.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlAssert.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlBind.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlFunction.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlMacros.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlMetaBase.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlScopeExit.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlStaticAssert.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlTypeList.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlTypeTraits.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlUtility.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Parser\xlRegExp.h">
+      <Filter>Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\String\xlBase64.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\String\xlEncoding.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\String\xlString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Test\xlUnitTest.h">
+      <Filter>Test</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\xlWin32Ver.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Threads\xlCriticalSection.h">
+      <Filter>Win32\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Threads\xlThread.h">
+      <Filter>Win32\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Threads\xlThreadPool.h">
+      <Filter>Win32\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Threads\xlTls.h">
+      <Filter>Win32\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Registry\xlRegistry.h">
+      <Filter>Win32\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Network\xlSocket.h">
+      <Filter>Win32\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Messaging\xlMessageBus.h">
+      <Filter>Win32\Messaging</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Memory\xlHeap.h">
+      <Filter>Win32\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Memory\xlSafeSmartPtr.h">
+      <Filter>Win32\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlCommCtrlInitializer.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlDialog.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlMenu.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlMenuBase.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdButton.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdComboBox.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdEdit.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdLink.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdListBox.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdListView.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdScrollBar.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdStatic.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlThunk.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlWindow.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlWindowAPIMacroRedefine.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlWindowBase.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlWindowBaseEx.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComDef.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\Objects\xlMediaPlayer.h">
+      <Filter>Win32\COM\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\Objects\xlOleContainer.h">
+      <Filter>Win32\COM\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\Objects\xlWebBrowser.h">
+      <Filter>Win32\COM\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeCompImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeInfoImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeLibImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComModule.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlClassFactory.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlDispatcher.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComLoader.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\File\xlIniFile.h">
+      <Filter>Win32\File</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComClass.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComInclude.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIObjectWithSiteImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlStdProgressBar.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Algorithm\xlSort.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Network\xlWinHttp.h">
+      <Filter>Win32\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Threads\xlEvent.h">
+      <Filter>Win32\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\xlHandle.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Network\xlHttpIO.h">
+      <Filter>Win32\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Timer\xlTimer.h">
+      <Filter>Win32\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\xlComPtr.h">
+      <Filter>Win32\COM</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfCompositionSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionProviderImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFnGetPreferredTouchKeyboardLayoutImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfSourceImpl.h">
+      <Filter>Win32\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\App\xlLog.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\xlDllHelper.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{3a93af9d-c179-4175-847c-f43fb2dc4b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Cryption">
+      <UniqueIdentifier>{c8517d1b-63ff-4600-8416-6cfd19a23404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{6201884f-405f-4831-90b2-a359c4c11f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{1194ed84-f1a2-409d-ab07-ed1097c885c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Meta">
+      <UniqueIdentifier>{1f91602d-924c-4d46-be04-184bb08d9efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parser">
+      <UniqueIdentifier>{28d0e94a-bb40-46a2-bb31-87fac7a32fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{99b650a2-4bc1-46ce-9e16-af03017153bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Test">
+      <UniqueIdentifier>{1bcb26f3-7836-4b64-b3cb-f461bd8ca6f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32">
+      <UniqueIdentifier>{102cd56f-27ba-4765-8d3d-9a5993bb5adc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Threads">
+      <UniqueIdentifier>{1149c127-8b1f-4d36-acbc-b1738933713f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Registry">
+      <UniqueIdentifier>{079e4256-1fa5-4a71-9ca4-18b3c1027c21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Network">
+      <UniqueIdentifier>{d42b9e83-33dc-4c93-a871-d95f92226422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Messaging">
+      <UniqueIdentifier>{d87186b7-1a23-46fd-823c-6258f4883ca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Memory">
+      <UniqueIdentifier>{598a700a-d958-4be1-a8cc-7534dcb693d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\GUI">
+      <UniqueIdentifier>{b74ade2e-a70f-49d2-97ff-023bd4bc59d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\COM">
+      <UniqueIdentifier>{0f7f3b1d-867d-4ae6-9a28-4eb58181d1c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\COM\InterfaceHelper">
+      <UniqueIdentifier>{bf49ff24-15f8-451b-84e0-2e48d7737e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\COM\Objects">
+      <UniqueIdentifier>{f3ece58d-9f3b-43fd-8e48-78af0d13b73d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\File">
+      <UniqueIdentifier>{09c53fd6-b24b-4251-aedb-7111dd89032a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{9a154b06-b8b6-4e85-9813-711631db359e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Timer">
+      <UniqueIdentifier>{af76c0df-7b0f-4f0b-a3c0-b0cdc8fe3861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{df078fb9-1bfd-4f4f-8d31-dcaa124b02a6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
