@@ -47,8 +47,8 @@ namespace xl
         }
 
     public:
-        bool Create(UINT nID,
-                    Window *pParent,
+        bool Create(HWND hParent,
+                    UINT nID,
                     int x = CW_USEDEFAULT,
                     int y = CW_USEDEFAULT,
                     int nWidth = CW_USEDEFAULT,
@@ -57,14 +57,14 @@ namespace xl
                     DWORD dwExStyle = WS_EX_CLIENTEDGE,
                     HINSTANCE hInstance = nullptr)
         {
-            if (!Window::Create(x,
+            if (!Window::Create(hParent,
+                                x,
                                 y,
                                 nWidth,
                                 nHeight,
-                                pParent,
-                                GetClassName(),
                                 dwStyle,
                                 dwExStyle,
+                                GetClassName(),
                                 (HMENU)nID,
                                 hInstance))
             {

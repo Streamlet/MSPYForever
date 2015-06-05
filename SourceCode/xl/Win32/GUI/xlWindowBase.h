@@ -70,7 +70,7 @@ namespace xl
                     int y,
                     int nWidth,
                     int nHeight,
-                    const WindowBase *pParent,
+                    HWND hParent,
                     HMENU hMenu,
                     HINSTANCE hInstance,
                     LPVOID lpParam)
@@ -107,7 +107,7 @@ namespace xl
                                        y,
                                        nWidth,
                                        nHeight,
-                                       pParent == nullptr ? nullptr : pParent->m_hWnd,
+                                       hParent,
                                        hMenu,
                                        hInstance,
                                        lpParam);

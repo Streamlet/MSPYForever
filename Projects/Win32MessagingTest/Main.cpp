@@ -63,10 +63,10 @@ private:
     {
         ++g_nWindows;
 
-        m_editText.Create(ID_EDIT_TEXT,   this, 10,  10,  200, 120, WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL | ES_AUTOHSCROLL | ES_MULTILINE | ES_READONLY);
-        m_editInput.Create(ID_EDIT_INPUT,  this, 10,  140, 120, 20);
-        m_buttonSend.Create(ID_BUTTON_SEND, this, 140, 138, 40,  24);
-        m_buttonCloseAll.Create(ID_BUTTON_CLOSE_ALL, this, 190, 138, 24,  24);
+        m_editText.Create(m_hWnd, ID_EDIT_TEXT, 10, 10,  200, 120, WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_VSCROLL | ES_AUTOHSCROLL | ES_MULTILINE | ES_READONLY);
+        m_editInput.Create(m_hWnd, ID_EDIT_INPUT, 10, 140, 120, 20);
+        m_buttonSend.Create(m_hWnd, ID_BUTTON_SEND, 140, 138, 40, 24);
+        m_buttonCloseAll.Create(m_hWnd, ID_BUTTON_CLOSE_ALL, 190, 138, 24, 24);
         m_editInput.SetLimitText(MAX_PATH - 1);
         m_buttonSend.SetWindowText(_T("Send"));
         m_buttonCloseAll.SetWindowText(_T("X"));
@@ -157,7 +157,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
             break;
         }
 
-        pWindows[i].Create(nLeft, nTop, WIDTH, HEIGHT);
+        pWindows[i].Create(nullptr, nLeft, nTop, WIDTH, HEIGHT, WS_OVERLAPPEDWINDOW, 0);
         pWindows[i].SetWindowText(_T("Messaging Test Window"));
         pWindows[i].ShowWindow();
 

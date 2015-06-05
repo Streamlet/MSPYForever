@@ -68,29 +68,40 @@ namespace xl
         }
 
     public:
-        bool Create(int x = CW_USEDEFAULT,
-            int y = CW_USEDEFAULT,
-            int nWidth = CW_USEDEFAULT,
-            int nHeight = CW_USEDEFAULT,
-            Window *pParent = nullptr,
-            LPCTSTR lpszClassName = GetClassName(),
-            DWORD dwStyle = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
-            DWORD dwExStyle = WS_EX_CONTROLPARENT,
-            HMENU hMenu = nullptr,
-            HINSTANCE hInstance = nullptr)
+        bool Create(HWND hParent,
+                    int x,
+                    int y,
+                    int nWidth,
+                    int nHeight,
+                    DWORD dwStyle,
+                    DWORD dwExStyle)
+        {
+            return Create(hParent, x, y, nWidth, nHeight, dwStyle, dwExStyle, GetClassName(), nullptr, nullptr);
+        }
+
+        bool Create(HWND hParent,
+                    int x,
+                    int y,
+                    int nWidth,
+                    int nHeight,
+                    DWORD dwStyle,
+                    DWORD dwExStyle,
+                    LPCTSTR lpszClassName,
+                    HMENU hMenu = nullptr,
+                    HINSTANCE hInstance = nullptr)
         {
             if (!WindowBase::Create(lpszClassName,
-                nullptr,
-                dwStyle,
-                dwExStyle,
-                x,
-                y,
-                nWidth,
-                nHeight,
-                pParent,
-                hMenu,
-                hInstance,
-                nullptr))
+                                    nullptr,
+                                    dwStyle,
+                                    dwExStyle,
+                                    x,
+                                    y,
+                                    nWidth,
+                                    nHeight,
+                                    hParent,
+                                    hMenu,
+                                    hInstance,
+                                    nullptr))
             {
                 return false;
             }
@@ -153,7 +164,7 @@ namespace xl
 
     public: // Attributes
 
-        HWND GetHWND()
+        operator HWND() const
         {
             return m_hWnd;
         }

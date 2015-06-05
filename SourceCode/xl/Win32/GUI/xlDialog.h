@@ -63,9 +63,9 @@ namespace xl
         }
 
     public:
-        bool Create(int nWidth = CW_USEDEFAULT,
-                    int nHeight = CW_USEDEFAULT,
-                    Window *pParent = nullptr,
+        bool Create(HWND hOwner,
+                    int nWidth,
+                    int nHeight,
                     LPCTSTR lpszClassName = GetClassName(),
                     DWORD dwStyle = WS_POPUPWINDOW | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
                     DWORD dwExStyle = WS_EX_CONTROLPARENT,
@@ -74,9 +74,9 @@ namespace xl
         {
             RECT rect = {};
 
-            if (pParent != nullptr)
+            if (hOwner != nullptr)
             {
-                pParent->GetWindowRect(&rect);
+                ::GetWindowRect(hOwner, &rect);
             }
             else
             {
@@ -87,14 +87,14 @@ namespace xl
             int x = (rect.left + rect.right - nWidth)  / 2;
             int y = (rect.top + rect.bottom - nHeight) / 2;
 
-            if (!Window::Create(x,
+            if (!Window::Create(hOwner,
+                                x,
                                 y,
                                 nWidth,
                                 nHeight,
-                                pParent,
-                                lpszClassName,
                                 dwStyle,
                                 dwExStyle,
+                                lpszClassName,
                                 hMenu,
                                 hInstance))
             {

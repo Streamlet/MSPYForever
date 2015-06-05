@@ -47,23 +47,23 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     mainMenu.AppendMenu(MF_STRING, 102, _T("&Help"));
 
     xl::Window wnd;
-    wnd.Create(300, 240, 500, 400);
+    wnd.Create(nullptr, 300, 240, 500, 400, WS_OVERLAPPEDWINDOW, 0);
     wnd.SetWindowText(_T("MyWindow"));
     wnd.SetMenu(mainMenu.GetHMENU());
 
     xl::StdStatic label;
-    label.Create(1, &wnd, 80, 30, 200, 18);
+    label.Create(wnd, 1, 80, 30, 200, 18);
     label.SetWindowText(_T("Please input:"));
 
     xl::StdEdit edit;
-    edit.Create(2, &wnd, 80, 50, 200, 24);
+    edit.Create(wnd, 2, 80, 50, 200, 24);
 
     xl::StdButton button;
-    button.Create(3, &wnd, 80, 80, 200, 24);
+    button.Create(wnd, 3, 80, 80, 200, 24);
     button.SetWindowText(_T("Show Dialog"));
 
     xl::StdComboBox combo;
-    combo.Create(4, &wnd, 80, 110, 200, 100);
+    combo.Create(wnd, 4, 80, 110, 200, 100);
     combo.AddString(_T("Please select"));
     combo.AddString(_T("Item1"));
     combo.AddString(_T("Item2"));
@@ -71,17 +71,17 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     combo.SetCurSel(0);
 
     xl::StdListBox list;
-    list.Create(5, &wnd, 80, 140, 200, 100);
+    list.Create(wnd, 5, 80, 140, 200, 100);
     list.AddString(_T("ListItem1"));
     list.AddString(_T("ListItem2"));
     list.AddString(_T("ListItem3"));
 
     xl::StdScrollBar scroll;
-    scroll.Create(6, &wnd, 474, 0, 20, 372);
+    scroll.Create(wnd, 6, 474, 0, 20, 372);
     scroll.SetScrollRange(0, 100);
 
     xl::StdListView listview;
-    listview.Create(7, &wnd, 300, 30, 160, 150);
+    listview.Create(wnd, 7, 300, 30, 160, 150);
     listview.AddColumn(_T("Column0"), 0);
     listview.AddColumn(_T("Column1"), 1);
     listview.AddItem(0, 0, _T("R0C0"));
@@ -91,11 +91,11 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     listview.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT);
 
     xl::StdLink link;
-    link.Create(8, &wnd, 300, 200, 160, 20);
+    link.Create(wnd, 8, 300, 200, 160, 20);
     link.SetWindowText(_T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
 
     xl::StdProgressBar progressbar;
-    progressbar.Create(9, &wnd, 300, 240, 160, 20);
+    progressbar.Create(wnd, 9, 300, 240, 160, 20);
     progressbar.OffsetPos(60);
 
     wnd.AppendMsgHandler(WM_RBUTTONUP, [&popupMenu](HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled) -> LRESULT
@@ -126,7 +126,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     wnd.AppendCommandMsgHandler(3, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
         xl::Dialog dlg;
-        dlg.Create(400, 400, &wnd);
+        dlg.Create(wnd, 400, 400);
         dlg.SetWindowText(_T("MyDialog"));
 
         INT_PTR nID = dlg.DoModal();
@@ -218,7 +218,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     while (GetMessage(&msg, NULL, 0, 0))
     {
-        if (!IsDialogMessage(wnd.GetHWND(), &msg))
+        if (!IsDialogMessage(wnd, &msg))
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
