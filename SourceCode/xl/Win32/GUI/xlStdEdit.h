@@ -311,7 +311,7 @@ namespace xl
 
         void AppendText(LPCTSTR lpstrText, BOOL bNoScroll = FALSE, BOOL bCanUndo = FALSE)
         {
-            InsertText(GetWindowTextLength(), lpstrText, bNoScroll, bCanUndo);
+            InsertText(GetWindowTextLength(m_hWnd), lpstrText, bNoScroll, bCanUndo);
         }
 
 #if (_WIN32_WINNT >= 0x0501)

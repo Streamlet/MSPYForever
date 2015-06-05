@@ -176,9 +176,6 @@
     <ClInclude Include="xl\Win32\GUI\xlWindow.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlWindowAPIMacroRedefine.h">
-      <Filter>Win32\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="xl\Win32\GUI\xlWindowBase.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>

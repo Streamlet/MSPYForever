@@ -108,14 +108,14 @@ namespace xl
 
         INT_PTR DoModal(int nCmdShow = SW_SHOW, bool bProcessDialogMessage = true)
         {
-            HWND hOwner = GetWindow(GW_OWNER);
+            HWND hOwner = GetWindow(m_hWnd, GW_OWNER);
 
             if (hOwner != nullptr)
             {
                 ::EnableWindow(hOwner, FALSE);
             }
 
-            ShowWindow(nCmdShow);
+            ShowWindow(m_hWnd, nCmdShow);
 
             INT_PTR nModalResult = RunModalLoop(bProcessDialogMessage);
 
@@ -209,7 +209,7 @@ namespace xl
             HDC hDC = (HDC)wParam;
 
             RECT rect;
-            GetClientRect(&rect);
+            GetClientRect(m_hWnd, &rect);
 
             SetDCBrushColor(hDC, GetSysColor(COLOR_3DFACE));
             HBRUSH hBrush = (HBRUSH)GetStockObject(DC_BRUSH);

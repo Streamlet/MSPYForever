@@ -34,33 +34,33 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 {
     xl::Menu popupMenu;
     popupMenu.CreatePopup();
-    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 103, _T("&New"));
-    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 104, _T("&Open"));
-    popupMenu.AppendMenu(MF_POPUP | MF_SEPARATOR, 0, nullptr);
-    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 105, _T("&Quit"));
+    AppendMenu(popupMenu, MF_POPUP | MF_STRING, 103, _T("&New"));
+    AppendMenu(popupMenu, MF_POPUP | MF_STRING, 104, _T("&Open"));
+    AppendMenu(popupMenu, MF_POPUP | MF_SEPARATOR, 0, nullptr);
+    AppendMenu(popupMenu, MF_POPUP | MF_STRING, 105, _T("&Quit"));
 
     xl::Menu mainMenu;
     mainMenu.Create();
-    mainMenu.AppendMenu(MF_POPUP, (UINT_PTR)popupMenu.GetHMENU(), _T("&File"));
-    mainMenu.AppendMenu(MF_STRING, 101, _T("&Edit"));
-    mainMenu.AppendMenu(MF_SEPARATOR, 0, nullptr);
-    mainMenu.AppendMenu(MF_STRING, 102, _T("&Help"));
+    AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)(HMENU)popupMenu, _T("&File"));
+    AppendMenu(mainMenu, MF_STRING, 101, _T("&Edit"));
+    AppendMenu(mainMenu, MF_SEPARATOR, 0, nullptr);
+    AppendMenu(mainMenu, MF_STRING, 102, _T("&Help"));
 
     xl::Window wnd;
     wnd.Create(nullptr, 300, 240, 500, 400, WS_OVERLAPPEDWINDOW, 0);
-    wnd.SetWindowText(_T("MyWindow"));
-    wnd.SetMenu(mainMenu.GetHMENU());
+    SetWindowText(wnd, _T("MyWindow"));
+    SetMenu(wnd, mainMenu);
 
     xl::StdStatic label;
     label.Create(wnd, 1, 80, 30, 200, 18);
-    label.SetWindowText(_T("Please input:"));
+    SetWindowText(label, _T("Please input:"));
 
     xl::StdEdit edit;
     edit.Create(wnd, 2, 80, 50, 200, 24);
 
     xl::StdButton button;
     button.Create(wnd, 3, 80, 80, 200, 24);
-    button.SetWindowText(_T("Show Dialog"));
+    SetWindowText(button, _T("Show Dialog"));
 
     xl::StdComboBox combo;
     combo.Create(wnd, 4, 80, 110, 200, 100);
@@ -92,7 +92,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     xl::StdLink link;
     link.Create(wnd, 8, 300, 200, 160, 20);
-    link.SetWindowText(_T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
+    SetWindowText(link, _T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
 
     xl::StdProgressBar progressbar;
     progressbar.Create(wnd, 9, 300, 240, 160, 20);
@@ -102,14 +102,14 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     {
         POINT point = {};
         GetCursorPos(&point);
-        popupMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, hWnd);
+        TrackPopupMenu(popupMenu, TPM_LEFTALIGN, point.x, point.y, 0, hWnd, nullptr);
 
         return FALSE;
     });
 
     wnd.AppendMenuCommandMsgHandler(103, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
-        wnd.MessageBox(_T("Menu"));
+        MessageBox(wnd, _T("Menu"), NULL, MB_OK);
 
         return FALSE;
     });
@@ -117,8 +117,8 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
         TCHAR szText[MAX_PATH];
-        edit.GetWindowText(szText, MAX_PATH);
-        label.SetWindowText(szText);        
+        GetWindowText(edit, szText, MAX_PATH);
+        SetWindowText(label, szText);
 
         return FALSE;
     });
@@ -127,7 +127,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     {
         xl::Dialog dlg;
         dlg.Create(wnd, 400, 400);
-        dlg.SetWindowText(_T("MyDialog"));
+        SetWindowText(dlg, _T("MyDialog"));
 
         INT_PTR nID = dlg.DoModal();
 
@@ -137,8 +137,8 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     wnd.AppendCommandMsgHandler(4, CBN_SELCHANGE, [&edit, &combo](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) ->LRESULT
     {
         TCHAR szText[MAX_PATH];
-        combo.GetWindowText(szText, MAX_PATH);
-        edit.SetWindowText(szText);
+        GetWindowText(combo, szText, MAX_PATH);
+        SetWindowText(edit, szText);
 
         return FALSE;
     });
@@ -147,7 +147,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     {
         TCHAR szText[MAX_PATH];
         list.GetText(list.GetCurSel(), szText);
-        edit.SetWindowText(szText);
+        SetWindowText(edit, szText);
 
         return FALSE;
     });
@@ -212,9 +212,9 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.ShowWindow();
+    ShowWindow(wnd, SW_SHOW);
 
-    MSG msg;
+    MSG msg = {};
 
     while (GetMessage(&msg, NULL, 0, 0))
     {

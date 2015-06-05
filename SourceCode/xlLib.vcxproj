@@ -113,7 +113,6 @@
     <ClInclude Include="xl\Win32\GUI\xlStdStatic.h" />
     <ClInclude Include="xl\Win32\GUI\xlThunk.h" />
     <ClInclude Include="xl\Win32\GUI\xlWindow.h" />
-    <ClInclude Include="xl\Win32\GUI\xlWindowAPIMacroRedefine.h" />
     <ClInclude Include="xl\Win32\GUI\xlWindowBase.h" />
     <ClInclude Include="xl\Win32\GUI\xlWindowBaseEx.h" />
     <ClInclude Include="xl\Win32\Memory\xlHeap.h" />
