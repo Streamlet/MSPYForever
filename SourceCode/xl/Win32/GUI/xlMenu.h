@@ -13,41 +13,120 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef __XLMENU_H_AE31B303_4262_49A0_99BA_A03D67B0C6E5_INCLUDED__
-#define __XLMENU_H_AE31B303_4262_49A0_99BA_A03D67B0C6E5_INCLUDED__
+#ifndef __XLMENU_H_C208C619_17E7_4147_BBFD_C815FAFA7324_INCLUDED__
+#define __XLMENU_H_C208C619_17E7_4147_BBFD_C815FAFA7324_INCLUDED__
 
 
-#include "xlMenuBase.h"
+#include "../../Meta/xlUtility.h"
+#include "../xlWin32Ver.h"
+#include <Windows.h>
 
 namespace xl
 {
-    class Menu : public MenuBase
+    class Menu : public NonCopyable
     {
     public:
-        Menu()
+        Menu() :
+            m_hMenu(nullptr)
         {
 
         }
 
         Menu(HMENU hMenu) :
-            MenuBase(hMenu)
+            m_hMenu(nullptr)
         {
-
+            Attach(hMenu);
         }
 
         ~Menu()
         {
-
+            Destroy();
+            Detach();
         }
 
-    public: // Attributes
+        bool Create()
+        {
+            if (m_hMenu != nullptr)
+            {
+                return false;
+            }
+
+            m_hMenu = CreateMenu();
+
+            if (m_hMenu == nullptr)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool CreatePopup()
+        {
+            if (m_hMenu != nullptr)
+            {
+                return false;
+            }
+
+            m_hMenu = CreatePopupMenu();
+
+            if (m_hMenu == nullptr)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Destroy()
+        {
+            if (m_hMenu == nullptr)
+            {
+                return false;
+            }
+
+            if (!DestroyMenu(m_hMenu))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        bool Attach(HMENU hMenu)
+        {
+            if (m_hMenu != nullptr)
+            {
+                return false;
+            }
+
+            m_hMenu = hMenu;
+
+            return true;
+        }
+
+        HMENU Detach()
+        {
+            HMENU hMenu = m_hMenu;
+
+            if (m_hMenu != nullptr)
+            {
+                m_hMenu = nullptr;
+            }
+
+            return hMenu;
+        }
 
         operator HMENU() const
         {
             return m_hMenu;
         }
+
+    protected:
+        HMENU m_hMenu;
     };
 
 } // namespace xl
 
-#endif // #ifndef __XLMENU_H_AE31B303_4262_49A0_99BA_A03D67B0C6E5_INCLUDED__
+
+#endif // #ifndef __XLMENU_H_C208C619_17E7_4147_BBFD_C815FAFA7324_INCLUDED__

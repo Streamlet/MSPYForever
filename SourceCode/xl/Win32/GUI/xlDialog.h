@@ -56,19 +56,13 @@ namespace xl
 
         }
 
-    protected:
-        static LPCTSTR GetClassName()
-        {
-            return _T("xlDialog");
-        }
-
-    public:
         bool Create(HWND hOwner,
                     int nWidth,
                     int nHeight,
-                    LPCTSTR lpszClassName = GetClassName(),
                     DWORD dwStyle = WS_POPUPWINDOW | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
                     DWORD dwExStyle = WS_EX_CONTROLPARENT,
+                    LPCTSTR lpszClassName = _T("xlDialog"),
+                    LPCTSTR lpWindowName = nullptr,
                     HMENU hMenu = nullptr,
                     HINSTANCE hInstance = nullptr)
         {
@@ -95,6 +89,7 @@ namespace xl
                                 dwStyle,
                                 dwExStyle,
                                 lpszClassName,
+                                lpWindowName,
                                 hMenu,
                                 hInstance))
             {

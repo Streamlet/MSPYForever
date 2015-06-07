@@ -4,7 +4,7 @@
 //
 //    File Name:   xlWindow.h
 //    Author:      Streamlet
-//    Create Time: 2011-02-11
+//    Create Time: 2010-12-20
 //    Description: 
 //
 //    Version history:
@@ -13,69 +13,41 @@
 //
 //------------------------------------------------------------------------------
 
-#ifndef __XLWINDOW_H_0646591E_8D6A_44AA_A773_084A53A0B190_INCLUDED__
-#define __XLWINDOW_H_0646591E_8D6A_44AA_A773_084A53A0B190_INCLUDED__
+#ifndef __XLWINDOW_H_93972CEE_2D67_4A8B_927D_E327BDE8D4A4_INCLUDED__
+#define __XLWINDOW_H_93972CEE_2D67_4A8B_927D_E327BDE8D4A4_INCLUDED__
 
 
-#include "../../Memory/xlSmartPtr.h"
-#include "../../String/xlString.h"
+#include "../../Meta/xlUtility.h"
+#include "../Threads/xlTls.h"
 #include "../xlWin32Ver.h"
-#include "xlCommCtrlInitializer.h"
-#include "xlWindowBaseEx.h"
-#include <ShellAPI.h>
-
-//
-// Controls TODO List:
-//
-// _T("RichEdit")
-// _T("RICHEDIT_CLASS")
-// _T("MDICLIENT")
-// WC_HEADER
-// WC_TREEVIEW
-// WC_COMBOBOXEX
-// WC_TABCONTROL
-// WC_IPADDRESS
-// WC_PAGESCROLLER
-// WC_NATIVEFONTCTL
-//
+#include "xlThunk.h"
+#include "xlWindowMessage.h"
+#include "xlWindowHelper.h"
+#include <Windows.h>
+#include <CommCtrl.h>
+#include <tchar.h>
 
 namespace xl
 {
-    class Window : public WindowBaseEx
+    class Window : public NonCopyable, public WindowMessage, public WindowHelper
     {
     public:
-        Window()
+        Window() :
+            WindowHelper(nullptr), m_fnDefaultProc(::DefWindowProc)
         {
 
         }
 
         Window(HWND hWnd) :
-            WindowBaseEx(hWnd)
+            WindowHelper(nullptr), m_fnDefaultProc(::DefWindowProc)
         {
-
+            Attach(hWnd);
         }
 
         ~Window()
         {
-
-        }
-
-    protected:
-        static LPCTSTR GetClassName()
-        {
-            return _T("xlWindow");
-        }
-
-    public:
-        bool Create(HWND hParent,
-                    int x,
-                    int y,
-                    int nWidth,
-                    int nHeight,
-                    DWORD dwStyle,
-                    DWORD dwExStyle)
-        {
-            return Create(hParent, x, y, nWidth, nHeight, dwStyle, dwExStyle, GetClassName(), nullptr, nullptr);
+            Destroy();
+            Detach();
         }
 
         bool Create(HWND hParent,
@@ -84,25 +56,57 @@ namespace xl
                     int nWidth,
                     int nHeight,
                     DWORD dwStyle,
-                    DWORD dwExStyle,
-                    LPCTSTR lpszClassName,
+                    DWORD dwExStyle = 0,
+                    LPCTSTR lpClassName = _T("xlWindow"),
+                    LPCTSTR lpWindowName = nullptr,
                     HMENU hMenu = nullptr,
-                    HINSTANCE hInstance = nullptr)
+                    HINSTANCE hInstance = nullptr,
+                    LPVOID lpParam = nullptr)
         {
-            if (!WindowBase::Create(lpszClassName,
-                                    nullptr,
-                                    dwStyle,
-                                    dwExStyle,
-                                    x,
-                                    y,
-                                    nWidth,
-                                    nHeight,
-                                    hParent,
-                                    hMenu,
-                                    hInstance,
-                                    nullptr))
+            if (m_hWnd != nullptr)
             {
                 return false;
+            }
+
+            WNDCLASSEX wcex = { sizeof(WNDCLASSEX) };
+            bool bStdControl = !!GetClassInfoEx(nullptr, lpClassName, &wcex);
+
+            if (!bStdControl)
+            {
+                ZeroMemory(&wcex, sizeof(WNDCLASSEX));
+                wcex.cbSize        = sizeof(WNDCLASSEX);
+                wcex.lpfnWndProc   = StartWndProc;
+                wcex.hInstance     = hInstance;
+                wcex.lpszClassName = lpClassName;
+                wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+                wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
+
+                RegisterClassEx(&wcex);
+
+                ms_Tls.Set((LPVOID)this);
+            }
+
+            HWND hWnd = CreateWindowEx(dwExStyle,
+                                       lpClassName,
+                                       lpWindowName,
+                                       dwStyle,
+                                       x,
+                                       y,
+                                       nWidth,
+                                       nHeight,
+                                       hParent,
+                                       hMenu,
+                                       hInstance,
+                                       lpParam);
+
+            if (hWnd == nullptr)
+            {
+                return false;
+            }
+
+            if (bStdControl)
+            {
+                Attach(hWnd);
             }
 
             return true;
@@ -110,7 +114,12 @@ namespace xl
 
         bool Destroy()
         {
-            if (!WindowBase::Destroy())
+            if (m_hWnd == nullptr)
+            {
+                return false;
+            }
+
+            if (!DestroyWindow(m_hWnd))
             {
                 return false;
             }
@@ -118,142 +127,104 @@ namespace xl
             return true;
         }
 
+        bool Attach(HWND hWnd)
+        {
+            if (m_hWnd != nullptr)
+            {
+                return false;
+            }
+
+            ms_Tls.Set((LPVOID)this);
+
+#ifdef _WIN64
+            m_fnDefaultProc = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
+#else
+            m_fnDefaultProc = (WNDPROC)::SetWindowLong(hWnd, GWL_WNDPROC, (LONG)StartWndProc);
+#endif
+
+            // Force the StartWndProc to be called:
+            ::SendMessage(hWnd, WM_NULL, 0, 0);
+
+            return true;
+        }
+
+        HWND Detach()
+        {
+            HWND hWnd = m_hWnd;
+
+            if (m_hWnd != nullptr)
+            {
+#ifdef _WIN64
+                ::SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)m_fnDefaultProc);
+#else
+                ::SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)m_fnDefaultProc);
+#endif
+                m_hWnd = nullptr;
+            }
+
+            return hWnd;
+        }
+
+        LRESULT DefWindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
+        {
+            LRESULT lResult = 0;
+            bHandled = FALSE;
+
+            if (m_fnDefaultProc != nullptr)
+            {
+                bHandled = true;
+                lResult = m_fnDefaultProc(m_hWnd, uMsg, wParam, lParam);
+            }
+
+            return lResult;
+        }
+
     private:
+        static LRESULT CALLBACK StartWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        {
+            Window *pThis = (Window *)ms_Tls.Get();
+
+            pThis->m_thunk.SetObject(pThis);
+            pThis->m_thunk.SetRealProc(&Window::StaticWndProc);
+
+            pThis->m_hWnd = hWnd;
+
+            WNDPROC pWndProc = pThis->m_thunk.GetThunkProc();
+
+#ifdef _WIN64
+            SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pWndProc);
+#else
+            SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pWndProc);
+#endif
+
+            return pWndProc(hWnd, uMsg, wParam, lParam);
+        }
+
+        static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+        {
+            BOOL bHandled = TRUE;
+            Window *pThis = (Window *)hWnd;
+            LRESULT lResult = pThis->ProcessMessage(pThis->m_hWnd, uMsg, wParam, lParam, bHandled);
+
+            if (!bHandled)
+            {
+                lResult = pThis->DefWindowProc(uMsg, wParam, lParam, bHandled);
+            }
+
+            return lResult;
+        }
+
+    private:
+        WNDPROC        m_fnDefaultProc;
+        Thunk<WNDPROC> m_thunk;
+
         CommCtrlInitializer ms_cci;
 
-    public:
-
-        operator HWND() const
-        {
-            return m_hWnd;
-        }
-
-        DWORD GetStyle()
-        {
-            return (DWORD)::GetWindowLong(m_hWnd, GWL_STYLE);
-        }
-
-        DWORD SetStyle(DWORD dwStyle)
-        {
-            return (DWORD)::SetWindowLong(m_hWnd, GWL_STYLE, (LONG)dwStyle);
-        }
-
-        DWORD GetExStyle()
-        {
-            return (DWORD)::GetWindowLong(m_hWnd, GWL_EXSTYLE);
-        }
-
-        DWORD SetExStyle(DWORD dwExStyle)
-        {
-            return (DWORD)::SetWindowLong(m_hWnd, GWL_EXSTYLE, (LONG)dwExStyle);
-        }
-
-        HFONT GetFont()
-        {
-            return (HFONT)::SendMessage(m_hWnd, WM_GETFONT, 0, 0);
-        }
-
-        void SetFont(HFONT hFont, BOOL bRedraw = TRUE)
-        {
-            ::SendMessage(m_hWnd, WM_SETFONT, (WPARAM)hFont, MAKELPARAM(bRedraw, 0));
-        }
-
-        BOOL ClientToScreen(LPPOINT lpPoint)
-        {
-            return ::ClientToScreen(m_hWnd, lpPoint);
-        }
-
-        BOOL ClientToScreen(LPRECT lpRect)
-        {
-            if(!::ClientToScreen(m_hWnd, (LPPOINT)lpRect))
-            {
-                return FALSE;
-            }
-
-            if(!::ClientToScreen(m_hWnd, (LPPOINT)lpRect) + 1)
-            {
-                return FALSE;
-            }
-
-            return TRUE;
-        }
-
-        BOOL ScreenToClient(LPPOINT lpPoint)
-        {
-            return ::ScreenToClient(m_hWnd, lpPoint);
-        }
-
-        BOOL ScreenToClient(LPRECT lpRect)
-        {
-            if(!::ScreenToClient(m_hWnd, (LPPOINT)lpRect))
-            {
-                return FALSE;
-            }
-
-            if(!::ScreenToClient(m_hWnd, (LPPOINT)lpRect) + 1)
-            {
-                return FALSE;
-            }
-
-            return TRUE;
-        }
-
-        void SetRedraw(BOOL bRedraw = TRUE)
-        {
-            ::SendMessage(m_hWnd, WM_SETREDRAW, (WPARAM)bRedraw, 0);
-        }
-
-        HICON SetIcon(HICON hIcon, BOOL bBigIcon = TRUE)
-        {
-            return (HICON)::SendMessage(m_hWnd, WM_SETICON, bBigIcon, (LPARAM)hIcon);
-        }
-
-        HICON GetIcon(BOOL bBigIcon = TRUE)
-        {
-            return (HICON)::SendMessage(m_hWnd, WM_GETICON, bBigIcon, 0);
-        }
-
-        int SetHotKey(WORD wVirtualKeyCode, WORD wModifiers)
-        {
-            return (int)::SendMessage(m_hWnd, WM_SETHOTKEY, MAKEWORD(wVirtualKeyCode, wModifiers), 0);
-        }
-
-        DWORD GetHotKey()
-        {
-            return (DWORD)::SendMessage(m_hWnd, WM_GETHOTKEY, 0, 0);
-        }
-
-        BOOL ModifyStyle(DWORD dwRemove, DWORD dwAdd)
-        {
-            DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_STYLE);
-            DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
-
-            if(dwStyle == dwNewStyle)
-            {
-                return FALSE;
-            }
-
-            ::SetWindowLong(m_hWnd, GWL_STYLE, dwNewStyle);
-
-            return TRUE;
-        }
-
-        BOOL ModifyStyleEx(DWORD dwRemove, DWORD dwAdd)
-        {
-            DWORD dwStyle = ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
-            DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
-
-            if(dwStyle == dwNewStyle)
-            {
-                return FALSE;
-            }
-
-            ::SetWindowLong(m_hWnd, GWL_EXSTYLE, dwNewStyle);
-
-            return TRUE;
-        }
+        static Tls     ms_Tls;
     };
+
+    __declspec(selectany) Tls  Window::ms_Tls;
 
 } // namespace xl
 
-#endif // #ifndef __XLWINDOW_H_0646591E_8D6A_44AA_A773_084A53A0B190_INCLUDED__
+#endif // #ifndef __XLWINDOW_H_93972CEE_2D67_4A8B_927D_E327BDE8D4A4_INCLUDED__

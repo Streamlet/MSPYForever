@@ -40,22 +40,14 @@ namespace xl
 
         }
 
-    protected:
-        static LPCTSTR GetClassName()
-        {
-            return WC_BUTTON;
-        }
-
-    public:
         bool Create(HWND hParent,
                     UINT nID,
-                    int x = CW_USEDEFAULT,
-                    int y = CW_USEDEFAULT,
-                    int nWidth = CW_USEDEFAULT,
-                    int nHeight = CW_USEDEFAULT,
+                    int x,
+                    int y,
+                    int nWidth,
+                    int nHeight,
                     DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_TABSTOP,
-                    DWORD dwExStyle = 0,
-                    HINSTANCE hInstance = nullptr)
+                    DWORD dwExStyle = 0)
         {
             if (!Window::Create(hParent,
                                 x,
@@ -64,9 +56,10 @@ namespace xl
                                 nHeight,
                                 dwStyle,
                                 dwExStyle,
-                                GetClassName(),
+                                WC_BUTTON,
+                                nullptr,
                                 (HMENU)nID,
-                                hInstance))
+                                nullptr))
             {
                 return false;
             }

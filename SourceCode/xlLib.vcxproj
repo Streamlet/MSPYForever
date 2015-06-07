@@ -101,7 +101,6 @@
     <ClInclude Include="xl\Win32\GUI\xlCommCtrlInitializer.h" />
     <ClInclude Include="xl\Win32\GUI\xlDialog.h" />
     <ClInclude Include="xl\Win32\GUI\xlMenu.h" />
-    <ClInclude Include="xl\Win32\GUI\xlMenuBase.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdButton.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdComboBox.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdEdit.h" />
@@ -112,9 +111,9 @@
     <ClInclude Include="xl\Win32\GUI\xlStdScrollBar.h" />
     <ClInclude Include="xl\Win32\GUI\xlStdStatic.h" />
     <ClInclude Include="xl\Win32\GUI\xlThunk.h" />
+    <ClInclude Include="xl\Win32\GUI\xlWindowHelper.h" />
     <ClInclude Include="xl\Win32\GUI\xlWindow.h" />
-    <ClInclude Include="xl\Win32\GUI\xlWindowBase.h" />
-    <ClInclude Include="xl\Win32\GUI\xlWindowBaseEx.h" />
+    <ClInclude Include="xl\Win32\GUI\xlWindowMessage.h" />
     <ClInclude Include="xl\Win32\Memory\xlHeap.h" />
     <ClInclude Include="xl\Win32\Memory\xlSafeSmartPtr.h" />
     <ClInclude Include="xl\Win32\Messaging\xlMessageBus.h" />

@@ -140,12 +140,6 @@
     <ClInclude Include="xl\Win32\GUI\xlDialog.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlMenu.h">
-      <Filter>Win32\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlMenuBase.h">
-      <Filter>Win32\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="xl\Win32\GUI\xlStdButton.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
@@ -171,15 +165,6 @@
       <Filter>Win32\GUI</Filter>
     </ClInclude>
     <ClInclude Include="xl\Win32\GUI\xlThunk.h">
-      <Filter>Win32\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlWindow.h">
-      <Filter>Win32\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlWindowBase.h">
-      <Filter>Win32\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlWindowBaseEx.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
     <ClInclude Include="xl\Win32\COM\xlComDef.h">
@@ -337,6 +322,18 @@
     </ClInclude>
     <ClInclude Include="xl\Win32\xlDllHelper.h">
       <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlWindow.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlWindowMessage.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlWindowHelper.h">
+      <Filter>Win32\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\GUI\xlMenu.h">
+      <Filter>Win32\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
