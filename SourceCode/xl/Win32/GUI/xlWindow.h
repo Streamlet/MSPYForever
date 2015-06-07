@@ -109,6 +109,16 @@ namespace xl
                 Attach(hWnd);
             }
 
+            if (ms_hFont == nullptr)
+            {
+                NONCLIENTMETRICS m_tagNONCLIENTMETRICSW = { sizeof(m_tagNONCLIENTMETRICSW) };
+                SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &m_tagNONCLIENTMETRICSW, 0);
+
+                ms_hFont = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMessageFont);
+            }
+
+            SetFont(ms_hFont, FALSE);
+
             return true;
         }
 
@@ -221,9 +231,11 @@ namespace xl
         CommCtrlInitializer ms_cci;
 
         static Tls     ms_Tls;
+        static HFONT   ms_hFont;
     };
 
     __declspec(selectany) Tls  Window::ms_Tls;
+    __declspec(selectany) HFONT Window::ms_hFont = nullptr;
 
 } // namespace xl
 
