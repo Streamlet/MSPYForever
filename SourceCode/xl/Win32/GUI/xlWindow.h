@@ -221,6 +221,11 @@ namespace xl
                 lResult = pThis->DefWindowProc(uMsg, wParam, lParam, bHandled);
             }
 
+            if (uMsg == WM_NCDESTROY)
+            {
+                pThis->m_hWnd = nullptr;
+            }
+
             return lResult;
         }
 
