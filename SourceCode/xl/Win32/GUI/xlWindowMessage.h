@@ -152,11 +152,16 @@ namespace xl
             if (pMsgHandlers != nullptr)
             {
                 LRESULT lResult = 0;
-                BOOL bHandled = TRUE;
+                bHandled = TRUE;
 
                 for (MsgHandlerList::Iterator it = pMsgHandlers->Begin(); it != pMsgHandlers->End(); ++it)
                 {
                     lResult = (*it)(hWnd, uMsg, wParam, lParam, bHandled);
+
+                    if (bHandled)
+                    {
+                        break;
+                    }
                 }
 
                 if (bHandled)
@@ -186,10 +191,16 @@ namespace xl
             if (pCommandMsgHandlers != nullptr)
             {
                 LRESULT lResult = 0;
+                bHandled = TRUE;
 
                 for (CommandMsgHandlerList::Iterator it = pCommandMsgHandlers->Begin(); it != pCommandMsgHandlers->End(); ++it)
                 {
                     lResult = (*it)(hWnd, wID, wCode, (HWND)lParam, bHandled);
+
+                    if (bHandled)
+                    {
+                        break;
+                    }
                 }
 
                 if (bHandled)
@@ -220,10 +231,16 @@ namespace xl
             if (pNotifyMsgHandlers != nullptr)
             {
                 LRESULT lResult = 0;
+                bHandled = TRUE;
 
                 for (NotifyMsgHandlerList::Iterator it = pNotifyMsgHandlers->Begin(); it != pNotifyMsgHandlers->End(); ++it)
                 {
                     lResult = (*it)(hWnd, uID, uCode, pNMHDR->hwndFrom, bHandled);
+
+                    if (bHandled)
+                    {
+                        break;
+                    }
                 }
 
                 if (bHandled)

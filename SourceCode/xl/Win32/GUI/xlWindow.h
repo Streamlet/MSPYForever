@@ -75,11 +75,12 @@ namespace xl
             {
                 ZeroMemory(&wcex, sizeof(WNDCLASSEX));
                 wcex.cbSize        = sizeof(WNDCLASSEX);
+                wcex.style         = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;
                 wcex.lpfnWndProc   = StartWndProc;
                 wcex.hInstance     = hInstance;
-                wcex.lpszClassName = lpClassName;
-                wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
                 wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
+                wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+                wcex.lpszClassName = lpClassName;
 
                 RegisterClassEx(&wcex);
 
