@@ -37,6 +37,21 @@ namespace xl
         typedef TypeIfFalse Type;
     };
 
+    template <size_t Index, typename... T>
+    struct TypeAt;
+
+    template <typename T0, typename... T>
+    struct TypeAt<0, T0, T...>
+    {
+        typedef T0 Type;
+    };
+
+    template <size_t Index, typename T0, typename... T>
+    struct TypeAt<Index, T0, T...>
+    {
+        typedef typename TypeAt<Index - 1, T...>::Type Type;
+    };
+
     template <typename T>
     struct ConstTraits
     {
