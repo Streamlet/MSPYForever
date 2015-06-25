@@ -191,9 +191,9 @@ namespace xl
     class TupleImpl;
 
     template <typename ImplType, typename... T>
-    struct TupleT<ImplType, T...> : public TupleImpl<ImplType, 0, T...>
+    struct TupleT<ImplType, T...> : public TupleImpl<ImplType, sizeof...(T) - 1, T...>
     {
-        typedef TupleImpl<ImplType, 0, T...> Base;
+        typedef TupleImpl<ImplType, sizeof...(T) - 1, T...> Base;
 
         static const size_t Size = sizeof...(T);
 
@@ -458,17 +458,17 @@ namespace xl
     };
 
     template <typename ImplType, size_t Index, typename Ti, typename... T>
-    class TupleImpl<ImplType, Index, Ti, T...> : public TupleImpl<ImplType, Index + 1, T...>
+    class TupleImpl<ImplType, Index, Ti, T...> : public TupleImpl<ImplType, Index - 1, T...>
     {
     public:
-        typedef TupleImpl<ImplType, Index + 1, T...> Base;
+        typedef TupleImpl<ImplType, Index - 1, T...> Base;
 
         TupleImpl() : m_tValue(), Base()
         {
 
         }
 
-        TupleImpl(Ti ti, T... t) : m_tValue((Ti)ti), Base(t...)
+        TupleImpl(T... t, Ti ti) : m_tValue((Ti)ti), Base(t...)
         {
 
         }
@@ -639,7 +639,7 @@ namespace xl
         ImplType &operator -= (const ImplType &that)
         {
             m_tValue = (Ti)(m_tValue - that.At<Index>());
-            Base::operator += (that);
+            Base::operator -= (that);
             return (ImplType &)*this;
         }
 

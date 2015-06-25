@@ -12,42 +12,70 @@
                    https://msdn.microsoft.com/en-us/library/jj620914.aspx for more information.
     -->
 
-    <Type Name="xl::Tuple&lt;&gt;">
+    <Type Name="xl::TupleT&lt;*&gt;">
         <DisplayString>()</DisplayString>
         <Expand/>
     </Type>
 
-    <Type Name="xl::Tuple&lt;*&gt;">
-        <DisplayString>({((Impl *)this)-&gt;m_tValue})</DisplayString>
+    <Type Name="xl::TupleT&lt;*,*&gt;">
+        <DisplayString>({((Base *)this)-&gt;m_tValue})</DisplayString>
         <Expand>
-            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
+            <Item Name="[0]">((Base *)this)-&gt;m_tValue</Item>
         </Expand>
     </Type>
 
-    <Type Name="xl::Tuple&lt;*,*&gt;">
-        <DisplayString>({((Impl *)this)-&gt;m_tValue}, {((Impl::Base *)this)-&gt;m_tValue})</DisplayString>
+    <Type Name="xl::TupleT&lt;*,*,*&gt;">
+        <DisplayString>({((Base::Base *)this)-&gt;m_tValue}, {((Base *)this)-&gt;m_tValue})</DisplayString>
         <Expand>
-            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
-            <Item Name="[1]">((Impl::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[0]">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[1]">((Base *)this)-&gt;m_tValue</Item>
         </Expand>
     </Type>
 
-    <Type Name="xl::Tuple&lt;*,*,*&gt;">
-        <DisplayString>({((Impl *)this)-&gt;m_tValue}, {((Impl::Base *)this)-&gt;m_tValue}, {((Impl::Base::Base *)this)-&gt;m_tValue})</DisplayString>
+    <Type Name="xl::TupleT&lt;*,*,*,*&gt;">
+        <DisplayString>({{((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue}, ((Base *)this)-&gt;m_tValue})</DisplayString>
         <Expand>
-            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
-            <Item Name="[1]">((Impl::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[2]">((Impl::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[0]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[1]">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[2]">((Base *)this)-&gt;m_tValue</Item>
         </Expand>
     </Type>
 
-    <Type Name="xl::Tuple&lt;*,*,*,*&gt;">
-        <DisplayString>({((Impl *)this)-&gt;m_tValue}, {((Impl::Base *)this)-&gt;m_tValue}, {((Impl::Base::Base *)this)-&gt;m_tValue}, {((Impl::Base::Base::Base *)this)-&gt;m_tValue})</DisplayString>
+    <Type Name="xl::TupleT&lt;*,*,*,*,*&gt;">
+        <DisplayString>({((Base::Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue}, {((Base *)this)-&gt;m_tValue})</DisplayString>
         <Expand>
-            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
-            <Item Name="[1]">((Impl::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[2]">((Impl::Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[3]">((Impl::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[0]">((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[1]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[2]">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[3]">((Base *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::SizeT&lt;*&gt;">
+        <DisplayString>({((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="[width]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[height]">((Base::Base *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::PointT&lt;*&gt;">
+        <DisplayString>({((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="[x]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[y]">((Base::Base *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::RectT&lt;*&gt;">
+        <DisplayString>({((Base::Base::Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="[left]">((Base::Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[top]">((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[right]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[bottom]">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[width]">((Base::Base::Base *)this)-&gt;m_tValue - ((Base::Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[height]">((Base::Base *)this)-&gt;m_tValue - ((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
         </Expand>
     </Type>
 
