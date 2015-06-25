@@ -45,13 +45,13 @@ namespace xl
         }
 
         template <typename U>
-        SizeT(U cx, U cy) : Base(cx, cy)
+        SizeT(U cx, U cy) : Base((T)cx, (T)cy)
         {
 
         }
 
         template <typename U>
-        SizeT(const SizeT<U> &that) : Base(that.cx, that.cy)
+        SizeT(const SizeT<U> &that) : Base((T)that.cx, (T)that.cy)
         {
 
         }
@@ -132,19 +132,19 @@ namespace xl
         }
 
         template <typename U>
-        PointT(U x, U y) : Base(x, y)
+        PointT(U x, U y) : Base((T)x, (T)y)
         {
 
         }
 
         template <typename U>
-        PointT(const PointT<U> &that) : Base(that.cx, that.cy)
+        PointT(const PointT<U> &that) : Base((T)that.cx, (T)that.cy)
         {
 
         }
 
         template <typename U>
-        PointT(const SizeT<U> &that) : Base(that.cx, that.cy)
+        PointT(const SizeT<U> &that) : Base((T)that.cx, (T)that.cy)
         {
 
         }
@@ -193,19 +193,19 @@ namespace xl
         }
 
         template <typename V>
-        RectT(V left, V top, V right, V bottom) : Base(left, top, right, bottom)
+        RectT(V left, V top, V right, V bottom) : Base((U)left, (U)top, (U)right, (U)bottom)
         {
 
         }
 
         template <typename V>
-        RectT(const RectT<V> &that) : Base(that.Left(), that.Top(), that.Right(), that.Bottom())
+        RectT(const RectT<V> &that) : Base((U)that.Left(), (U)that.Top(), (U)that.Right(), (U)that.Bottom())
         {
 
         }
 
         template <typename V>
-        RectT(const PointT<V> &pt, const SizeT<V> &sz) : Base(pt.x, pt.y, pt.x + sz.cx, pt.y + sz.cy)
+        RectT(const PointT<V> &pt, const SizeT<V> &sz) : Base((U)pt.x, (U)pt.y, (U)(pt.x + sz.cx), (U)(pt.y + sz.cy))
         {
 
         }
@@ -423,6 +423,108 @@ namespace xl
         }
     };
 
+    template <typename T>
+    struct ColorT : public TupleT<ColorT<T>, T, T, T, T>
+    {
+        typedef TupleT<ColorT<T>, T, T, T, T> Base;
+
+        ColorT() : Base()
+        {
+
+        }
+
+        ColorT(T a, T r, T g, T b) : Base(b, g, r, a)
+        {
+
+        }
+
+        ColorT(const ColorT<T> &that) : Base(that.B(), that.G(), that.R(), that.A())
+        {
+
+        }
+
+        T &B()
+        {
+            return At<0>();
+        }
+
+        T &G()
+        {
+            return At<1>();
+        }
+
+        T &R()
+        {
+            return At<2>();
+        }
+
+        T &A()
+        {
+            return At<3>();
+        }
+
+        const T &B() const
+        {
+            return At<0>();
+        }
+
+        const T &G() const
+        {
+            return At<1>();
+        }
+
+        const T &R() const
+        {
+            return At<2>();
+        }
+
+        const T &A() const
+        {
+            return At<3>();
+        }
+
+        T &Blue()
+        {
+            return At<0>();
+        }
+
+        T &Green()
+        {
+            return At<1>();
+        }
+
+        T &Red()
+        {
+            return At<2>();
+        }
+
+        T &Alpha()
+        {
+            return At<3>();
+        }
+
+        const T &Blue() const
+        {
+            return At<0>();
+        }
+
+        const T &Green() const
+        {
+            return At<1>();
+        }
+
+        const T &Red() const
+        {
+            return At<2>();
+        }
+
+        const T &Alpha() const
+        {
+            return At<3>();
+        }
+    };
+
+
     typedef SizeT <int> Size;
     typedef PointT<int> Point;
     typedef RectT <int> Rect;
@@ -434,6 +536,9 @@ namespace xl
     typedef SizeT <float> SizeF;
     typedef PointT<float> PointF;
     typedef RectT <float> RectF;
+
+    typedef ColorT<unsigned char> Color;
+    typedef ColorT<float>         ColorF;
 
 } // namespace xl
 

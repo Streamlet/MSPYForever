@@ -54,28 +54,38 @@
     <Type Name="xl::SizeT&lt;*&gt;">
         <DisplayString>({((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue})</DisplayString>
         <Expand>
-            <Item Name="[width]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[height]">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="width">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="height">((Base::Base *)this)-&gt;m_tValue</Item>
         </Expand>
     </Type>
 
     <Type Name="xl::PointT&lt;*&gt;">
         <DisplayString>({((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue})</DisplayString>
         <Expand>
-            <Item Name="[x]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[y]">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="x">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="y">((Base::Base *)this)-&gt;m_tValue</Item>
         </Expand>
     </Type>
 
     <Type Name="xl::RectT&lt;*&gt;">
         <DisplayString>({((Base::Base::Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base::Base *)this)-&gt;m_tValue}, {((Base::Base *)this)-&gt;m_tValue})</DisplayString>
         <Expand>
-            <Item Name="[left]">((Base::Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[top]">((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[right]">((Base::Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[bottom]">((Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[width]">((Base::Base::Base *)this)-&gt;m_tValue - ((Base::Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
-            <Item Name="[height]">((Base::Base *)this)-&gt;m_tValue - ((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="left">((Base::Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="top">((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="right">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="bottom">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="width">((Base::Base::Base *)this)-&gt;m_tValue - ((Base::Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="height">((Base::Base *)this)-&gt;m_tValue - ((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+    
+    <Type Name="xl::ColorT&lt;*&gt;">
+        <DisplayString>(a:{((Base::Base *)this)-&gt;m_tValue}, r:{((Base::Base::Base *)this)-&gt;m_tValue}, g:{((Base::Base::Base::Base *)this)-&gt;m_tValue}, b:{((Base::Base::Base::Base::Base *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="alpha">((Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="red">((Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="green">((Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="blue">((Base::Base::Base::Base::Base *)this)-&gt;m_tValue</Item>
         </Expand>
     </Type>
 
