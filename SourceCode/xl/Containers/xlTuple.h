@@ -190,6 +190,8 @@ namespace xl
     template <typename... T>
     struct Tuple : public TupleImpl<0, T...>
     {
+        typedef TupleImpl<0, T...> Impl;
+
         static const size_t Size = sizeof...(T);
 
         Tuple() : TupleImpl<0, T...>()
@@ -223,6 +225,12 @@ namespace xl
         TupleImpl(const Tuple<U...> &that)
         {
 
+        }
+
+        template <typename... U>
+        TupleImpl &operator = (const Tuple<U...> &that)
+        {
+            return *this;
         }
 
         template <typename... U>
@@ -303,10 +311,99 @@ namespace xl
             return *this;
         }
 
+        template <typename U>
+        TupleImpl operator + (U delta) const
+        {
+            TupleImpl r(*this);
+            r += delta;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator - (U delta) const
+        {
+            TupleImpl r(*this);
+            r -= tdeltahat;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator * (U factor) const
+        {
+            TupleImpl r(*this);
+            r *= factor;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator / (U factor) const
+        {
+            TupleImpl r(*this);
+            r /= factor;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator % (U factor) const
+        {
+            TupleImpl r(*this);
+            r %= factor;
+            return r;
+        }
+
+        template <typename... U>
+        TupleImpl operator + (const Tuple<U...> &that) const
+        {
+            TupleImpl r(*this);
+            r += that;
+            return r;
+        }
+
+        template <typename... U>
+        TupleImpl operator - (const Tuple<U...> &that) const
+        {
+            TupleImpl r(*this);
+            r -= that;
+            return r;
+        }
+
         template <int N>
         const int &&At() const
         {
+            static_assert(false, "Invalid index.");
             return 0;
+        }
+
+        template <int N>
+        int Get() const
+        {
+            static_assert(false, "Invalid index.");
+            return 0;
+        }
+
+        template <int N>
+        void Set(int i)
+        {
+            static_assert(false, "Invalid index.");
+        }
+    };
+
+    template <>
+    struct Tuple<> : public TupleImpl<0>
+    {
+        typedef TupleImpl<0> Impl;
+
+        static const size_t Size = 0;
+
+        Tuple()
+        {
+
+        }
+
+        template <typename... U>
+        Tuple(const Tuple<U...> &that)
+        {
+
         }
     };
 
@@ -314,20 +411,34 @@ namespace xl
     class TupleImpl<Index, Ti, T...> : public TupleImpl<Index + 1, T...>
     {
     public:
-        TupleImpl() : m_tValue(), TupleImpl<Index + 1, T...>()
+        typedef TupleImpl<Index + 1, T...> Base;
+
+        TupleImpl() : m_tValue(), Base()
         {
 
         }
 
-        TupleImpl(Ti ti, T... t) : m_tValue(ti), TupleImpl<Index + 1, T...>(t...)
+        TupleImpl(Ti ti, T... t) : m_tValue((Ti)ti), Base(t...)
         {
 
         }
 
         template <typename... U>
-        TupleImpl(const Tuple<U...> &that) : m_tValue(that.At<Index>()), TupleImpl<Index + 1, T...>(that)
+        TupleImpl(const Tuple<U...> &that) : m_tValue((Ti)that.At<Index>()), Base(that)
         {
 
+        }
+
+        template <typename... U>
+        TupleImpl &operator = (const Tuple<U...> &that)
+        {
+            if (this != &that)
+            {
+                m_tValue = (Ti)that.At<Index>();
+                Base::operator = (that);
+            }
+
+            return *this;
         }
 
         template <typename... U>
@@ -338,7 +449,7 @@ namespace xl
                 return false;
             }
 
-            return TupleImpl<Index + 1, T...>::operator == (that);
+            return Base::operator == (that);
         }
 
         template <typename... U>
@@ -349,7 +460,7 @@ namespace xl
                 return true;
             }
 
-            return TupleImpl<Index + 1, T...>::operator != (that);
+            return Base::operator != (that);
         }
 
         template <typename... U>
@@ -360,7 +471,7 @@ namespace xl
                 return true;
             }
 
-            return TupleImpl<Index + 1, T...>::operator < (that);
+            return Base::operator < (that);
         }
 
         template <typename... U>
@@ -371,7 +482,7 @@ namespace xl
                 return true;
             }
 
-            return TupleImpl<Index + 1, T...>::operator > (that);
+            return Base::operator > (that);
         }
 
         template <typename... U>
@@ -382,7 +493,7 @@ namespace xl
                 return true;
             }
 
-            return TupleImpl<Index + 1, T...>::operator <= (that);
+            return Base::operator <= (that);
         }
 
         template <typename... U>
@@ -393,14 +504,14 @@ namespace xl
                 return true;
             }
 
-            return TupleImpl<Index + 1, T...>::operator >= (that);
+            return Base::operator >= (that);
         }
 
         template <typename U>
         TupleImpl &operator += (U delta)
         {
             m_tValue = (Ti)(m_tValue + delta);
-            TupleImpl<Index + 1, T...>::operator += (delta);
+            Base::operator += (delta);
             return *this;
         }
 
@@ -408,7 +519,7 @@ namespace xl
         TupleImpl &operator -= (U delta)
         {
             m_tValue = (Ti)(m_tValue - delta);
-            TupleImpl<Index + 1, T...>::operator -= (delta);
+            Base::operator -= (delta);
             return *this;
         }
 
@@ -416,7 +527,7 @@ namespace xl
         TupleImpl &operator *= (U factor)
         {
             m_tValue = (Ti)(m_tValue * factor);
-            TupleImpl<Index + 1, T...>::operator *= (factor);
+            Base::operator *= (factor);
             return *this;
         }
 
@@ -424,7 +535,7 @@ namespace xl
         TupleImpl &operator /= (U factor)
         {
             m_tValue = (Ti)(m_tValue / factor);
-            TupleImpl<Index + 1, T...>::operator /= (factor);
+            Base::operator /= (factor);
             return *this;
         }
 
@@ -432,15 +543,7 @@ namespace xl
         TupleImpl &operator %= (U factor)
         {
             m_tValue = (Ti)(m_tValue % factor);
-            TupleImpl<Index + 1, T...>::operator %= (factor);
-            return *this;
-        }
-
-        template <typename... U>
-        TupleImpl &operator = (const Tuple<U...> &that)
-        {
-            m_tValue = (Ti)that.At<Index>();
-            TupleImpl<Index + 1, T...>::operator = (that);
+            Base::operator %= (factor);
             return *this;
         }
 
@@ -448,7 +551,7 @@ namespace xl
         TupleImpl &operator += (const Tuple<U...> &that)
         {
             m_tValue = (Ti)(m_tValue + that.At<Index>());
-            TupleImpl<Index + 1, T...>::operator += (that);
+            Base::operator += (that);
             return *this;
         }
 
@@ -456,20 +559,70 @@ namespace xl
         TupleImpl &operator -= (const Tuple<U...> &that)
         {
             m_tValue = (Ti)(m_tValue - that.At<Index>());
-            TupleImpl<Index + 1, T...>::operator += (that);
+            Base::operator += (that);
             return *this;
+        }
+
+        template <typename U>
+        TupleImpl operator + (U delta) const
+        {
+            TupleImpl r(*this);
+            r += delta;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator - (U delta) const
+        {
+            TupleImpl r(*this);
+            r -= delta;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator * (U factor) const
+        {
+            TupleImpl r(*this);
+            r *= factor;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator / (U factor) const
+        {
+            TupleImpl r(*this);
+            r /= factor;
+            return r;
+        }
+
+        template <typename U>
+        TupleImpl operator % (U factor) const
+        {
+            TupleImpl r(*this);
+            r %= factor;
+            return r;
+        }
+
+        template <typename... U>
+        TupleImpl operator + (const Tuple<U...> &that) const
+        {
+            TupleImpl r(*this);
+            r += that;
+            return r;
+        }
+
+        template <typename... U>
+        TupleImpl operator - (const Tuple<U...> &that) const
+        {
+            TupleImpl r(*this);
+            r -= that;
+            return r;
         }
 
         template <int N>
         Ti &At()
         {
-            return TupleImpl<Index + 1, T...>::At<N>();
-        }
-
-        template <int N>
-        const Ti &At() const
-        {
-            return TupleImpl<Index + 1, T...>::At<N>();
+            return Base::At<N>();
         }
 
         template <>
@@ -478,10 +631,40 @@ namespace xl
             return m_tValue;
         }
 
+        template <int N>
+        const Ti &At() const
+        {
+            return Base::At<N>();
+        }
+
         template <>
         const Ti &At<Index>() const
         {
             return m_tValue;
+        }
+
+        template <int N>
+        const Ti &&Get() const
+        {
+            return Base::Get<N>();
+        }
+
+        template <>
+        const Ti &&Get<Index>() const
+        {
+            return m_tValue;
+        }
+
+        template <int N>
+        void Set(const Ti &ti)
+        {
+            return Base::Set<N>(ti);
+        }
+
+        template <>
+        void Set<Index>(const Ti &ti)
+        {
+            m_tValue = ti;
         }
 
     protected:

@@ -8,9 +8,49 @@
             %USERPROFILE%\My Documents\Visual Studio 2012\Visualizers\
             VS extension folders 
 
-        Please see http://blogs.msdn.com/b/vcblog/archive/2012/07/12/10329460.aspx for more information.
+        Please see http://blogs.msdn.com/b/vcblog/archive/2012/07/12/10329460.aspx
+                   https://msdn.microsoft.com/en-us/library/jj620914.aspx for more information.
     -->
-        
+
+    <Type Name="xl::Tuple&lt;&gt;">
+        <DisplayString>()</DisplayString>
+        <Expand/>
+    </Type>
+
+    <Type Name="xl::Tuple&lt;*&gt;">
+        <DisplayString>({((Impl *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::Tuple&lt;*,*&gt;">
+        <DisplayString>({((Impl *)this)-&gt;m_tValue}, {((Impl::Base *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
+            <Item Name="[1]">((Impl::Base *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::Tuple&lt;*,*,*&gt;">
+        <DisplayString>({((Impl *)this)-&gt;m_tValue}, {((Impl::Base *)this)-&gt;m_tValue}, {((Impl::Base::Base *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
+            <Item Name="[1]">((Impl::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[2]">((Impl::Base::Base *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+
+    <Type Name="xl::Tuple&lt;*,*,*,*&gt;">
+        <DisplayString>({((Impl *)this)-&gt;m_tValue}, {((Impl::Base *)this)-&gt;m_tValue}, {((Impl::Base::Base *)this)-&gt;m_tValue}, {((Impl::Base::Base::Base *)this)-&gt;m_tValue})</DisplayString>
+        <Expand>
+            <Item Name="[0]">((Impl *)this)-&gt;m_tValue</Item>
+            <Item Name="[1]">((Impl::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[2]">((Impl::Base::Base *)this)-&gt;m_tValue</Item>
+            <Item Name="[3]">((Impl::Base::Base::Base *)this)-&gt;m_tValue</Item>
+        </Expand>
+    </Type>
+
     <Type Name="xl::Array&lt;*&gt;">
         <DisplayString>{{ size={m_nEof - m_nStart} }}</DisplayString>
         <Expand>
