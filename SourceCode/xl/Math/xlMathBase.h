@@ -35,8 +35,27 @@ namespace xl
     }
 
     template <typename T>
-    struct SizeT : public Tuple<T, T>
+    struct SizeT : public TupleT<SizeT<T>, T, T>
     {
+        typedef TupleT<SizeT<T>, T, T> Base;
+
+        SizeT() : Base()
+        {
+
+        }
+
+        template <typename U>
+        SizeT(U cx, U cy) : Base(cx, cy)
+        {
+
+        }
+
+        template <typename U>
+        SizeT(const SizeT<U> &that) : Base(that.cx, that.cy)
+        {
+
+        }
+
         T &CX()
         {
             return At<0>();
@@ -47,31 +66,34 @@ namespace xl
             return At<1>();
         }
 
-        const T &&CX() const
+        const T &CX() const
         {
             return At<0>();
         }
 
-        const T &&CY() const
+        const T &CY() const
         {
             return At<1>();
         }
 
-        SizeT() : Tuple<T, T>()
+        T &Width()
         {
-
+            return At<0>();
         }
 
-        template <typename U>
-        SizeT(U cx, U cy) : Tuple<T, T>(cx, cy)
+        T &Height()
         {
-
+            return At<1>();
         }
 
-        template <typename U>
-        SizeT(const SizeT<U> &that) : Tuple<T, T>(that.cx, that.cy)
+        const T &Width() const
         {
+            return At<0>();
+        }
 
+        const T &Height() const
+        {
+            return At<1>();
         }
 
         template <typename U>
@@ -100,8 +122,33 @@ namespace xl
     };
 
     template <typename T>
-    struct PointT : public Tuple<T, T>
+    struct PointT : public TupleT<PointT<T>, T, T>
     {
+        typedef TupleT<PointT<T>, T, T> Base;
+
+        PointT() : Base()
+        {
+
+        }
+
+        template <typename U>
+        PointT(U x, U y) : Base(x, y)
+        {
+
+        }
+
+        template <typename U>
+        PointT(const PointT<U> &that) : Base(that.cx, that.cy)
+        {
+
+        }
+
+        template <typename U>
+        PointT(const SizeT<U> &that) : Base(that.cx, that.cy)
+        {
+
+        }
+
         T &X()
         {
             return At<0>();
@@ -112,259 +159,263 @@ namespace xl
             return At<1>();
         }
 
-        const T &&X() const
+        const T &X() const
         {
             return At<0>();
         }
 
-        const T &&Y() const
+        const T &Y() const
         {
             return At<1>();
         }
 
-        PointT() : x(), y()
-        {
-
-        }
-
         template <typename U>
-        PointT(U x, U y) : Tuple<T, T>(x, y)
-        {
-
-        }
-
-        template <typename U>
-        PointT(const PointT<U> &that) : Tuple<T, T>(that.cx, that.cy)
-        {
-
-        }
-
-        template <typename U>
-        PointT(const SizeT<U> &that) : Tuple<T, T>(that.cx, that.cy)
-        {
-
-        }
-
-        PointT &Offset(T delta)
+        PointT &Offset(U delta)
         {
             return *this += delta;
         }
 
-        PointT &Offset(T dx, T dy)
+        template <typename U>
+        PointT &Offset(U dx, U dy)
         {
             return *this += SizeT(dx, dy);
         }
     };
 
-    template <typename T>
-    struct RectT : Tuple<T, T, T, T>
+    template <typename U>
+    struct RectT : TupleT<RectT<U>, U, U, U, U>
     {
-        T &X()
+        typedef TupleT<RectT<U>, U, U, U, U> Base;
+
+        RectT() : Base()
+        {
+
+        }
+
+        template <typename V>
+        RectT(V left, V top, V right, V bottom) : Base(left, top, right, bottom)
+        {
+
+        }
+
+        template <typename V>
+        RectT(const RectT<V> &that) : Base(that.Left(), that.Top(), that.Right(), that.Bottom())
+        {
+
+        }
+
+        template <typename V>
+        RectT(const PointT<V> &pt, const SizeT<V> &sz) : Base(pt.x, pt.y, pt.x + sz.cx, pt.y + sz.cy)
+        {
+
+        }
+
+        U &L()
         {
             return At<0>();
         }
 
-        T &Y()
+        U &T()
         {
             return At<1>();
         }
 
-        T &W()
+        U &R()
         {
             return At<2>();
         }
 
-        T &H()
+        U &B()
         {
             return At<3>();
         }
 
-        const T &&X() const
+        const U &L() const
         {
             return At<0>();
         }
 
-        const T &&Y() const
+        const U &T() const
         {
             return At<1>();
         }
 
-        const T &&W() const
+        const U &R() const
         {
             return At<2>();
         }
 
-        const T &&H() const
+        const U &B() const
         {
             return At<3>();
         }
 
-        const T &&Left() const
+        U &Left()
         {
-            return X();
+            return At<0>();
         }
 
-        const T &&Top() const
+        U &Top()
         {
-            return Y();
+            return At<1>();
         }
 
-        const T &&Right() const
+        U &Right()
         {
-            return X() + W();
+            return At<2>();
         }
 
-        const T &&Bottom() const
+        U &Bottom()
         {
-            return Y() + H();
+            return At<3>();
         }
 
-        RectT() : Tuple<T, T, T, T>()
+        const U &Left() const
         {
-
+            return At<0>();
         }
 
-        RectT(T x, T y, T w, T h) : Tuple<T, T, T, T>(x, y, w, h)
+        const U &Top() const
         {
-
+            return At<1>();
         }
 
-        RectT(const RectT &that) : Tuple<T, T, T, T>(that.x, that.y, that.w, that.h)
+        const U &Right() const
         {
-
+            return At<2>();
         }
 
-        RectT(const PointT<T> &pt, const SizeT<T> &sz) : Tuple<T, T, T, T>(pt.x, pt.y, sz.cx, sz.cy)
+        const U &Bottom() const
         {
-
+            return At<3>();
         }
 
-        RectT &Offset(T delta)
+        const U &X() const
         {
-            X() += delta;
-            Y() += delta;
-
-            return *this;
+            return L();
         }
 
-        RectT &Offset(T dx, T dy)
+        const U &Y() const
         {
-            X() += dx;
-            Y() += dy;
-
-            return *this;
+            return T();
         }
 
-        RectT Offset(T delta) const
+        const U &&Width() const
+        {
+            return R() - L();
+        }
+
+        const U &&Height() const
+        {
+            return B() - T();
+        }
+
+        template <typename V>
+        RectT &Offset(V delta)
+        {
+            return *this += delta;
+        }
+
+        template <typename V>
+        RectT &Offset(V dx, V dy)
+        {
+            return *this += RectT(dx, dy, dx, dy);
+        }
+
+        template <typename V>
+        RectT Offset(V delta) const
         {
             RectT r(*this);
             r.Offset(delta);
             return r;
         }
 
-        RectT Offset(T dx, T dy) const
+        template <typename V>
+        RectT Offset(V dx, V dy) const
         {
             RectT r(*this);
             r.Offset(dx, dy);
             return r;
         }
 
-        RectT &Inflate(T delta)
+        template <typename V>
+        RectT &Inflate(V delta)
         {
-            X() -= delta;
-            Y() -= delta;
-            W() += delta + delta;
-            H() += delta + delta;
-
-            return *this;
+            return *this += RectT(-delta, -delta, delta, delta);
         }
 
-        RectT &Deflate(T delta)
+        template <typename V>
+        RectT &Deflate(V delta)
         {
-            X() += delta;
-            Y() += delta;
-            W() -= delta + delta;
-            H() -= delta + delta;
-
-            return *this;
+            return *this -= RectT(-delta, -delta, delta, delta);
         }
 
-        RectT &Inflate(T dx, T dy)
+        template <typename V>
+        RectT &Inflate(V dx, V dy)
         {
-            X() -= dx;
-            Y() -= dy;
-            W() += dx + dx;
-            H() += dy + dy;
-
-            return *this;
+            return *this += RectT(-dx, -dy, dx, dy);
         }
 
-        RectT &Deflate(T dx, T dy)
+        template <typename V>
+        RectT &Deflate(V dx, V dy)
         {
-            X() -= dx;
-            Y() -= dy;
-            W() += dx + dx;
-            H() += dy + dy;
-
-            return *this;
+            return *this -= RectT(-dx, -dy, dx, dy);
         }
 
-        RectT &Inflate(T dl, T dt, T dr, T db)
+        template <typename V>
+        RectT &Inflate(V dl, V dt, V dr, V db)
         {
-            X() -= dl;
-            Y() -= dt;
-            W() += dl + dr;
-            H() += dt + db;
-
-            return *this;
+            return *this += RectT(-dl, -dt, dr, db);
         }
 
-        RectT &Deflate(T dl, T dt, T dr, T db)
+        template <typename V>
+        RectT &Deflate(V dl, V dt, V dr, V db)
         {
-            X() += dl;
-            Y() += dt;
-            W() -= dl + dr;
-            H() -= dt + db;
-
-            return *this;
+            return *this -= RectT(-dl, -dt, dr, db);
         }
 
-        RectT Inflate(T delta) const
+        template <typename V>
+        RectT Inflate(V delta) const
         {
             RectT r(*this);
             r.Inflate(delta);
             return r;
         }
 
-        RectT Deflate(T delta) const
+        template <typename V>
+        RectT Deflate(V delta) const
         {
             RectT r(*this);
             r.Deflate(delta);
             return r;
         }
 
-        RectT Inflate(T dx, T dy) const
+        template <typename V>
+        RectT Inflate(V dx, V dy) const
         {
             RectT r(*this);
             r.Inflate(dx, dy);
             return r;
         }
 
-        RectT Deflate(T dx, T dy) const
+        template <typename V>
+        RectT Deflate(V dx, V dy) const
         {
             RectT r(*this);
             r.Deflate(dx, dy);
             return r;
         }
 
-        RectT Inflate(T dl, T dt, T dr, T db) const
+        template <typename V>
+        RectT Inflate(V dl, V dt, V dr, V db) const
         {
             RectT r(*this);
             r.Inflate(dl, dt, dr, db);
             return r;
         }
 
-        RectT Deflate(T dl, T dt, T dr, T db) const
+        template <typename V>
+        RectT Deflate(V dl, V dt, V dr, V db) const
         {
             RectT r(*this);
             r.Deflate(dl, dt, dr, db);
