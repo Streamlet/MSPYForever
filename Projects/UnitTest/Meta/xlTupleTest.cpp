@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Containers/xlTuple.h>
+#include <xl/Meta/xlTuple.h>
 #include <xl/Test/xlUnitTest.h>
 
 namespace

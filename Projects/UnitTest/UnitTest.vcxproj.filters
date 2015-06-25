@@ -63,9 +63,6 @@
     <ClCompile Include="Containers\xlSetTest.cpp">
       <Filter>Source Files\Containers</Filter>
     </ClCompile>
-    <ClCompile Include="Containers\xlTupleTest.cpp">
-      <Filter>Source Files\Containers</Filter>
-    </ClCompile>
     <ClCompile Include="Cryption\xlCRC32Test.cpp">
       <Filter>Source Files\Cryption</Filter>
     </ClCompile>
@@ -110,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Algorithm\xlSortTest.cpp">
       <Filter>Source Files\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="Meta\xlTupleTest.cpp">
+      <Filter>Source Files\Meta</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

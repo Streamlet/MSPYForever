@@ -29,9 +29,6 @@
     <ClInclude Include="xl\Containers\xlTree.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlTuple.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
     <ClInclude Include="xl\Cryption\xlCRC32.h">
       <Filter>Cryption</Filter>
     </ClInclude>
@@ -340,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="xl\Win32\Rendering\xlGraphics.h">
       <Filter>Win32\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Meta\xlTuple.h">
+      <Filter>Meta</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
