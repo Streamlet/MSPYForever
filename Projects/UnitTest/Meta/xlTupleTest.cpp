@@ -23,6 +23,24 @@ namespace
 
     XL_TEST_CASE()
     {
+        Tuple<> a;
+        XL_TEST_ASSERT(a.Size == 0);
+
+        Tuple<int> b;
+        XL_TEST_ASSERT(b.Size == 1);
+
+        Tuple<int, int> c;
+        XL_TEST_ASSERT(c.Size == 2);
+
+        Tuple<int, int, int> d;
+        XL_TEST_ASSERT(d.Size == 3);
+
+        Tuple<int, int, int, int, int, int, int, int, int, int> e;
+        XL_TEST_ASSERT(e.Size == 10);
+    }
+
+    XL_TEST_CASE()
+    {
         Tuple<int, int> a(1, 2);
         XL_TEST_ASSERT(a.At<0>() == 1);
         XL_TEST_ASSERT(a.At<1>() == 2);
