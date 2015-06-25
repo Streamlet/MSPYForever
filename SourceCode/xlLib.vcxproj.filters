@@ -335,6 +335,12 @@
     <ClInclude Include="xl\Win32\GUI\xlMenu.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\xlRenderer.h">
+      <Filter>Win32\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\xlGraphics.h">
+      <Filter>Win32\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -402,6 +408,9 @@
     </Filter>
     <Filter Include="App">
       <UniqueIdentifier>{df078fb9-1bfd-4f4f-8d31-dcaa124b02a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Rendering">
+      <UniqueIdentifier>{337d2ca9-a62b-475d-ab6d-2b8cc81f49dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

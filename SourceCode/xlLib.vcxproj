@@ -121,6 +121,8 @@
     <ClInclude Include="xl\Win32\Network\xlSocket.h" />
     <ClInclude Include="xl\Win32\Network\xlWinHttp.h" />
     <ClInclude Include="xl\Win32\Registry\xlRegistry.h" />
+    <ClInclude Include="xl\Win32\Rendering\xlGraphics.h" />
+    <ClInclude Include="xl\Win32\Rendering\xlRenderer.h" />
     <ClInclude Include="xl\Win32\Threads\xlCriticalSection.h" />
     <ClInclude Include="xl\Win32\Threads\xlEvent.h" />
     <ClInclude Include="xl\Win32\Threads\xlThread.h" />
