@@ -191,9 +191,9 @@ namespace xl
     class TupleImpl;
 
     template <typename ImplType, typename... T>
-    struct TupleT<ImplType, T...> : public TupleImpl<ImplType, sizeof...(T) - 1, T...>
+    struct TupleT<ImplType, T...> : public TupleImpl<ImplType, 0, T...>
     {
-        typedef TupleImpl<ImplType, sizeof...(T) - 1, T...> Base;
+        typedef TupleImpl<ImplType, 0, T...> Base;
 
         static const size_t Size = sizeof...(T);
 
@@ -227,12 +227,10 @@ namespace xl
         }
     };
 
-    template <typename ImplType, typename T0>
-    class TupleImpl<ImplType, 0, T0>
+    template <typename ImplType, size_t Index, typename Tn>
+    class TupleImpl<ImplType, Index, Tn>
     {
     public:
-        typedef TupleImpl<ImplType, -1> Base;
-
         static const size_t Size = 1;
 
         TupleImpl() : m_tValue()
@@ -240,13 +238,13 @@ namespace xl
 
         }
 
-        TupleImpl(T0 t0) : m_tValue((T0)t0)
+        TupleImpl(Tn tn) : m_tValue((Tn)tn)
         {
 
         }
 
         template <typename I, typename... U>
-        TupleImpl(const TupleT<I, U...> &that) : m_tValue((T0)that.At<0>())
+        TupleImpl(const TupleT<I, U...> &that) : m_tValue((Tn)that.At<0>())
         {
 
         }
@@ -265,111 +263,111 @@ namespace xl
         template <typename I, typename... U>
         bool operator == (const TupleT<I, U...> &that) const
         {
-            return m_tValue == that.At<0>();
+            return m_tValue == that.At<Index>();
         }
 
         template <typename I, typename... U>
         bool operator != (const TupleT<I, U...> &that) const
         {
-            return m_tValue != that.At<0>();
+            return m_tValue != that.At<Index>();
         }
 
         template <typename I, typename... U>
         bool operator < (const TupleT<I, U...> &that) const
         {
-            return m_tValue < that.At<0>();
+            return m_tValue < that.At<Index>();
         }
 
         template <typename I, typename... U>
         bool operator >(const TupleT<I, U...> &that) const
         {
-            return m_tValue > that.At<0>();
+            return m_tValue > that.At<Index>();
         }
 
         template <typename I, typename... U>
         bool operator <= (const TupleT<I, U...> &that) const
         {
-            return m_tValue <= that.At<0>();
+            return m_tValue <= that.At<Index>();
         }
 
         template <typename I, typename... U>
         bool operator >= (const TupleT<I, U...> &that) const
         {
-            return m_tValue >= that.At<0>();
+            return m_tValue >= that.At<Index>();
         }
 
         template <typename U>
         ImplType &operator += (U delta)
         {
-            m_tValue = (T0)(m_tValue + delta);
+            m_tValue = (Tn)(m_tValue + delta);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator -= (U delta)
         {
-            m_tValue = (T0)(m_tValue - delta);
+            m_tValue = (Tn)(m_tValue - delta);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator *= (U factor)
         {
-            m_tValue = (T0)(m_tValue * factor);
+            m_tValue = (Tn)(m_tValue * factor);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator /= (U factor)
         {
-            m_tValue = (T0)(m_tValue / factor);
+            m_tValue = (Tn)(m_tValue / factor);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator %= (U factor)
         {
-            m_tValue = (T0)(m_tValue % factor);
+            m_tValue = (Tn)(m_tValue % factor);
             return (ImplType &)*this;
         }
 
         template <typename I, typename... U>
         ImplType &operator += (const TupleT<I, U...> &that)
         {
-            m_tValue = (T0)(m_tValue + that.At<Index>());
+            m_tValue = (Tn)(m_tValue + that.At<Index>());
             return (ImplType &)*this;
         }
 
         template <typename I, typename... U>
         ImplType &operator -= (const TupleT<I, U...> &that)
         {
-            m_tValue = (T0)(m_tValue - that.At<Index>());
+            m_tValue = (Tn)(m_tValue - that.At<Index>());
             return (ImplType &)*this;
         }
 
         template <typename... U>
         ImplType &operator += (const Tuple<U...> &that)
         {
-            m_tValue = (T0)(m_tValue + that.At<0>());
+            m_tValue = (Tn)(m_tValue + that.At<0>());
             return (ImplType &)*this;
         }
 
         template <typename... U>
         ImplType &operator -= (const Tuple<U...> &that)
         {
-            m_tValue = (T0)(m_tValue - that.At<0>());
+            m_tValue = (Tn)(m_tValue - that.At<0>());
             return (ImplType &)*this;
         }
 
         ImplType &operator += (const ImplType &that)
         {
-            m_tValue = (T0)(m_tValue + that.At<0>());
+            m_tValue = (Tn)(m_tValue + that.At<0>());
             return (ImplType &)*this;
         }
 
         ImplType &operator -= (const ImplType &that)
         {
-            m_tValue = (T0)(m_tValue - that.At<0>());
+            m_tValue = (Tn)(m_tValue - that.At<0>());
             return (ImplType &)*this;
         }
 
@@ -430,60 +428,59 @@ namespace xl
         XL_TUPLE_OPERATOR_IMPLEMENT()
 
         template <int N>
-        T0 &At();
+        Tn &At();
 
         template <>
-        T0 &At<0>()
+        Tn &At<Index>()
         {
             return m_tValue;
         }
 
         template <int N>
-        const T0 &At() const;
+        const Tn &At() const;
 
         template <>
-        const T0 &At<0>() const
+        const Tn &At<Index>() const
         {
             return m_tValue;
         }
 
         template <int N>
-        const T0 &&Get() const;
+        Tn Get() const;
 
         template <>
-        const T0 &&Get<0>() const
+        Tn Get<Index>() const
         {
             return m_tValue;
         }
 
         template <int N>
-        void Set(const T0 &ti);
+        void Set(const Tn &ti);
 
         template <>
-        void Set<0>(const T0 &ti)
+        void Set<Index>(const Tn &ti)
         {
             m_tValue = ti;
         }
 
     protected:
-        T0 m_tValue;
+        Tn m_tValue;
     };
 
     template <typename ImplType, size_t Index, typename Ti, typename... T>
-    class TupleImpl<ImplType, Index, Ti, T...> : public TupleImpl<ImplType, Index - 1, T...>
+    class TupleImpl<ImplType, Index, Ti, T...> : public TupleImpl<ImplType, Index + 1, T...>
     {
     public:
-        typedef TupleImpl<ImplType, Index - 1, T...> Base;
+        typedef TupleImpl<ImplType, Index + 1, T...> Base;
 
-        static_assert(sizeof...(T) == Index, "Invalid size of T...");
-        static const size_t Size = Index + 1;
+        static const size_t Size = sizeof...(T) + 1;
 
         TupleImpl() : m_tValue(), Base()
         {
 
         }
 
-        TupleImpl(T... t, Ti ti) : m_tValue((Ti)ti), Base(t...)
+        TupleImpl(Ti ti, T... t) : m_tValue((Ti)ti), Base(t...)
         {
 
         }
@@ -499,8 +496,8 @@ namespace xl
         {
             if (this != &that)
             {
-                Base::operator = (that);
                 m_tValue = (Ti)that.At<Index>();
+                Base::operator = (that);
             }
 
             return (ImplType &)*this;
@@ -509,174 +506,179 @@ namespace xl
         template <typename I, typename... U>
         bool operator == (const TupleT<I, U...> &that) const
         {
-            if (!(Base::operator == (that)))
+            if (!(m_tValue == that.At<Index>()))
             {
                 return false;
             }
-
-            return m_tValue == that.At<Index>();
+            
+            return Base::operator == (that);
         }
 
         template <typename I, typename... U>
         bool operator != (const TupleT<I, U...> &that) const
         {
-            return !(*this == that);
+            if (m_tValue != that.At<Index>())
+            {
+                return true;
+            }
+
+            return Base::operator != (that);
         }
 
         template <typename I, typename... U>
         bool operator < (const TupleT<I, U...> &that) const
         {
-            if (Base::operator < (that))
+            if (m_tValue < that.At<Index>())
             {
                 return true;
             }
 
-            if (Base::operator == (that))
+            if (that.At<Index>() < m_tValue)
             {
                 return false;
             }
 
-            return m_tValue < that.At<Index>();
+            return Base::operator < (that);
         }
 
         template <typename I, typename... U>
         bool operator > (const TupleT<I, U...> &that) const
         {
-            if (Base::operator > (that))
+            if (m_tValue > that.At<Index>())
             {
                 return true;
             }
 
-            if (Base::operator == (that))
+            if (that.At<Index>() > m_tValue)
             {
                 return false;
             }
 
-            return m_tValue > that.At<Index>();
+            return Base::operator < (that);
         }
 
         template <typename I, typename... U>
         bool operator <= (const TupleT<I, U...> &that) const
         {
-            if (Base::operator < (that))
-            {
-                return true;
-            }
-
-            if (Base::operator != (that))
+            if (!(m_tValue <= that.At<Index>()))
             {
                 return false;
             }
 
-            return m_tValue <= that.At<Index>();
+            if (!(that.At<Index>() <= m_tValue))
+            {
+                return true;
+            }
+
+            return Base::operator <= (that);
         }
 
         template <typename I, typename... U>
         bool operator >= (const TupleT<I, U...> &that) const
         {
-            if (Base::operator >= (that))
-            {
-                return true;
-            }
-
-            if (Base::operator != (that))
+            if (!(m_tValue >= that.At<Index>()))
             {
                 return false;
             }
 
-            return m_tValue >= that.At<Index>();
+            if (!(that.At<Index>() >= m_tValue))
+            {
+                return true;
+            }
+
+            return Base::operator >= (that);
         }
 
         template <typename U>
         ImplType &operator += (U delta)
         {
-            Base::operator += (delta);
             m_tValue = (Ti)(m_tValue + delta);
+            Base::operator += (delta);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator -= (U delta)
         {
-            Base::operator -= (delta);
             m_tValue = (Ti)(m_tValue - delta);
+            Base::operator -= (delta);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator *= (U factor)
         {
-            Base::operator *= (factor);
             m_tValue = (Ti)(m_tValue * factor);
+            Base::operator *= (factor);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator /= (U factor)
         {
-            Base::operator /= (factor);
             m_tValue = (Ti)(m_tValue / factor);
+            Base::operator /= (factor);
             return (ImplType &)*this;
         }
 
         template <typename U>
         ImplType &operator %= (U factor)
         {
-            Base::operator %= (factor);
             m_tValue = (Ti)(m_tValue % factor);
+            Base::operator %= (factor);
             return (ImplType &)*this;
         }
 
         template <typename I, typename... U>
         ImplType &operator += (const TupleT<I, U...> &that)
         {
-            Base::operator += (that);
             m_tValue = (Ti)(m_tValue + that.At<Index>());
+            Base::operator += (that);
             return (ImplType &)*this;
         }
 
         template <typename I, typename... U>
         ImplType &operator -= (const TupleT<I, U...> &that)
         {
-            Base::operator += (that);
             m_tValue = (Ti)(m_tValue - that.At<Index>());
+            Base::operator += (that);
             return (ImplType &)*this;
         }
 
         template <typename... U>
         ImplType &operator += (const Tuple<U...> &that)
         {
-            Base::operator += (that);
             m_tValue = (Ti)(m_tValue + that.At<Index>());
+            Base::operator += (that);
             return (ImplType &)*this;
         }
 
         template <typename... U>
         ImplType &operator -= (const Tuple<U...> &that)
         {
-            Base::operator += (that);
             m_tValue = (Ti)(m_tValue - that.At<Index>());
+            Base::operator += (that);
             return (ImplType &)*this;
         }
 
         ImplType &operator += (const ImplType &that)
         {
-            Base::operator += (that);
             m_tValue = (Ti)(m_tValue + that.At<Index>());
+            Base::operator += (that);
             return (ImplType &)*this;
         }
 
         ImplType &operator -= (const ImplType &that)
         {
-            Base::operator -= (that);
             m_tValue = (Ti)(m_tValue - that.At<Index>());
+            Base::operator -= (that);
             return (ImplType &)*this;
         }
 
         XL_TUPLE_OPERATOR_IMPLEMENT()
 
         template <int N>
-        Ti &At()
+        typename TypeAt<N - Index, Ti, T...>::Type &At()
         {
             return Base::At<N>();
         }
@@ -688,7 +690,7 @@ namespace xl
         }
 
         template <int N>
-        const Ti &At() const
+        const typename TypeAt<N - Index, Ti, T...>::Type &At() const
         {
             return Base::At<N>();
         }
@@ -700,19 +702,19 @@ namespace xl
         }
 
         template <int N>
-        const Ti &&Get() const
+        typename TypeAt<N - Index, Ti, T...>::Type Get() const
         {
             return Base::Get<N>();
         }
 
         template <>
-        const Ti &&Get<Index>() const
+        Ti Get<Index>() const
         {
             return m_tValue;
         }
 
         template <int N>
-        void Set(const Ti &ti)
+        void Set(const typename TypeAt<N - Index, Ti, T...>::Type &ti)
         {
             return Base::Set<N>(ti);
         }
