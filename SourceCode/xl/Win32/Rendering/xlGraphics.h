@@ -257,6 +257,11 @@ namespace xl
 
         }
 
+        ColorX(int a, int r, int g, int b) : Color((BYTE)a, (BYTE)r, (BYTE)g, (BYTE)b)
+        {
+
+        }
+
         ColorX(float a, float r, float g, float b) : Color((BYTE)(a * 0xff), (BYTE)(r * 0xff),(BYTE)(g * 0xff), (BYTE)(b * 0xff))
         {
 
@@ -286,7 +291,7 @@ namespace xl
 
         static ColorX FromColorRef(COLORREF color)
         {
-            return ColorX(0xff, GetRValue(color), GetGValue(color), GetBValue(color));
+            return ColorX((BYTE)0xff, (BYTE)GetRValue(color), (BYTE)GetGValue(color), (BYTE)GetBValue(color));
         }
 
         COLORREF ToColorRef() const

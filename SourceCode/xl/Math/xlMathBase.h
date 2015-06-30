@@ -433,69 +433,54 @@ namespace xl
 
         }
 
-        ColorT(T a, T r, T g, T b) : Base(b, g, r, a)
+        ColorT(T a, T r, T g, T b) : Base(a, r, g, b)
         {
 
         }
 
-        ColorT(const ColorT<T> &that) : Base(that.B(), that.G(), that.R(), that.A())
+        ColorT(const ColorT<T> &that) : Base(that.A(), that.R(), that.G(), that.B())
         {
 
-        }
-
-        T &B()
-        {
-            return At<0>();
-        }
-
-        T &G()
-        {
-            return At<1>();
-        }
-
-        T &R()
-        {
-            return At<2>();
         }
 
         T &A()
         {
-            return At<3>();
-        }
-
-        const T &B() const
-        {
             return At<0>();
         }
 
-        const T &G() const
+        T &R()
         {
             return At<1>();
         }
 
-        const T &R() const
+        T &G()
         {
             return At<2>();
+        }
+
+        T &B()
+        {
+            return At<3>();
         }
 
         const T &A() const
         {
-            return At<3>();
-        }
-
-        T &Blue()
-        {
             return At<0>();
         }
 
-        T &Green()
+        const T &R() const
         {
             return At<1>();
         }
 
-        T &Red()
+        const T &G() const
         {
             return At<2>();
+        }
+
+        const T &B() const
+        {
+            return At<3>();
         }
 
         T &Alpha()
@@ -503,14 +488,24 @@ namespace xl
             return At<3>();
         }
 
-        const T &Blue() const
+        T &Red()
+        {
+            return At<2>();
+        }
+
+        T &Green()
+        {
+            return At<1>();
+        }
+
+        T &Blue()
         {
             return At<0>();
         }
 
-        const T &Green() const
+        const T &Alpha() const
         {
-            return At<1>();
+            return At<3>();
         }
 
         const T &Red() const
@@ -518,9 +513,14 @@ namespace xl
             return At<2>();
         }
 
-        const T &Alpha() const
+        const T &Green() const
         {
-            return At<3>();
+            return At<1>();
+        }
+
+        const T &Blue() const
+        {
+            return At<0>();
         }
     };
 
