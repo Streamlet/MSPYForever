@@ -341,6 +341,9 @@
     <ClInclude Include="xl\Meta\xlTuple.h">
       <Filter>Meta</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Meta\xlEnableIf.h">
+      <Filter>Meta</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">

@@ -19,6 +19,7 @@
 
 #include "../Meta/xlStaticAssert.h"
 #include "../Meta/xlTypeTraits.h"
+#include "../Meta/xlEnableIf.h"
 #include "../xlDef.h"
 
 namespace xl
@@ -244,7 +245,13 @@ namespace xl
         }
 
         template <typename I, typename... U>
-        TupleImpl(const TupleT<I, U...> &that) : m_tValue((Tn)that.At<0>())
+        TupleImpl(const TupleT<I, U... > &that, typename EnableIf < Index < TupleT<I, U...>::Size, int>::Type dummy = 0) : m_tValue((Tn)that.At<Index>())
+        {
+
+        }
+
+        template <typename I, typename... U>
+        TupleImpl(const TupleT<I, U... > &that, typename EnableIf<Index >= TupleT<I, U...>::Size, int>::Type dummy = 0) : m_tValue(Tn())
         {
 
         }
@@ -486,7 +493,13 @@ namespace xl
         }
 
         template <typename I, typename... U>
-        TupleImpl(const TupleT<I, U...> &that) : m_tValue((Ti)that.At<Index>()), Base(that)
+        TupleImpl(const TupleT<I, U... > &that, typename EnableIf<Index < TupleT<I, U...>::Size, int>::Type dummy = 0) : m_tValue((Ti)that.At<Index>()), Base(that)
+        {
+
+        }
+
+        template <typename I, typename... U>
+        TupleImpl(const TupleT<I, U... > &that, typename EnableIf<Index >= TupleT<I, U...>::Size, int>::Type dummy = 0) : m_tValue(Ti()), Base(that)
         {
 
         }
@@ -747,7 +760,7 @@ namespace xl
         }
 
         template <typename... U>
-        Tuple(const Tuple<U...> &that) : Base(that)
+        Tuple(const Tuple<U...> &that) : Base((TupleT<Tuple<U...>, U...>)that)
         {
 
         }
@@ -766,7 +779,7 @@ namespace xl
         }
 
         template <typename... U>
-        Tuple(const Tuple<U...> &that) : Base(that)
+        Tuple(const Tuple<U...> &that) : Base((TupleT<Tuple<>>)that)
         {
 
         }

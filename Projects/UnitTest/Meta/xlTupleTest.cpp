@@ -21,6 +21,7 @@ namespace
 {
     using namespace xl;
 
+    // Size
     XL_TEST_CASE()
     {
         Tuple<> a;
@@ -39,24 +40,27 @@ namespace
         XL_TEST_ASSERT(e.Size == 10);
     }
 
+    // Assign
     XL_TEST_CASE()
     {
-        Tuple<int, int> a(1, 2);
+        Tuple<int> a;
+        XL_TEST_ASSERT(a.At<0>() == 0);
+        XL_TEST_ASSERT(a.Get<0>() == 0);
+        a.Set<0>(1);
         XL_TEST_ASSERT(a.At<0>() == 1);
-        XL_TEST_ASSERT(a.At<1>() == 2);
+        XL_TEST_ASSERT(a.Get<0>() == 1);
 
-        Tuple<int, int> b(3, 4);
-        XL_TEST_ASSERT(b.At<0>() == 3);
-        XL_TEST_ASSERT(b.At<1>() == 4);
+        Tuple<double, double> b(a);
+        XL_TEST_ASSERT(b.At<0>() == 1.0);
+        XL_TEST_ASSERT(b.Get<0>() == 1.0);
+        XL_TEST_ASSERT(b.At<1>() == 0.0);
+        XL_TEST_ASSERT(b.Get<1>() == 0.0);
 
-        Tuple<int, int> c(b);
-        XL_TEST_ASSERT(c.At<0>() == 3);
-        XL_TEST_ASSERT(c.At<1>() == 4);
+        Tuple<float> c;
+        c = b;
+        XL_TEST_ASSERT(c.At<0>() == 1.0);
+        XL_TEST_ASSERT(c.Get<0>() == 1.0);
 
-        Tuple<int, int> d;
-        d = c;
-        XL_TEST_ASSERT(d.At<0>() == 3);
-        XL_TEST_ASSERT(c.At<1>() == 4);
     }
 
     XL_TEST_CASE()
@@ -121,8 +125,8 @@ namespace
         Tuple<double, double> b(1.0, 1.0);
 
 //         a = b;  // warning
-        b = a;
-
-        a = a2;
+//         b = a;
+// 
+//         a = a2;
     }
 }
