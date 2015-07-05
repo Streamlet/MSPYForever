@@ -99,6 +99,7 @@
     <ClInclude Include="xl\Win32\COM\xlComPtr.h" />
     <ClInclude Include="xl\Win32\COM\xlDispatcher.h" />
     <ClInclude Include="xl\Win32\File\xlIniFile.h" />
+    <ClInclude Include="xl\Win32\File\xlPath.h" />
     <ClInclude Include="xl\Win32\GUI\xlCommCtrlInitializer.h" />
     <ClInclude Include="xl\Win32\GUI\xlDialog.h" />
     <ClInclude Include="xl\Win32\GUI\xlMenu.h" />
@@ -122,6 +123,14 @@
     <ClInclude Include="xl\Win32\Network\xlSocket.h" />
     <ClInclude Include="xl\Win32\Network\xlWinHttp.h" />
     <ClInclude Include="xl\Win32\Registry\xlRegistry.h" />
+    <ClInclude Include="xl\Win32\Rendering\D2D\xlBitmapD2D1.h" />
+    <ClInclude Include="xl\Win32\Rendering\D2D\xlBitmapD2D1Point1.h" />
+    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlBitmapGDIPlus.h" />
+    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlGDIPlusImports.h" />
+    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlGDIPlusUtility.h" />
+    <ClInclude Include="xl\Win32\Rendering\GDI\xlBitmapGDI.h" />
+    <ClInclude Include="xl\Win32\Rendering\xlBitmap.h" />
+    <ClInclude Include="xl\Win32\Rendering\xlBitmapDef.h" />
     <ClInclude Include="xl\Win32\Rendering\xlGraphics.h" />
     <ClInclude Include="xl\Win32\Rendering\xlRenderer.h" />
     <ClInclude Include="xl\Win32\Threads\xlCriticalSection.h" />

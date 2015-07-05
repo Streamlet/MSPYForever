@@ -70,51 +70,46 @@ namespace xl
         }
 
     public:
-        bool operator==(const ComPtr &that) const
+        bool operator == (const ComPtr &that) const
         {
             return this->m_pData == that.m_pData;
         }
 
-        bool operator!=(const ComPtr &that) const
+        bool operator != (const ComPtr &that) const
         {
             return this->m_pData != that.m_pData;
         }
 
-        bool operator==(const T *pThat) const
+        bool operator == (const T *pThat) const
         {
             return this->m_pData == pThat;
         }
 
-        bool operator!=(const T *pThat) const
+        bool operator != (const T *pThat) const
         {
             return this->m_pData != pThat;
         }
 
     public:
-        T &operator*() const
+        T &operator * () const
         {
             return *this->m_pData;
         }
 
-        T *operator->() const
+        T *operator -> () const
         {
             return this->m_pData;
-        }
-
-        const T &operator[](int i) const
-        {
-            return this->m_pData[i];
-        }
-
-        T &operator[](int i)
-        {
-            return this->m_pData[i];
         }
 
     public:
         operator T * () const
         {
             return this->m_pData;
+        }
+
+        T **operator & ()
+        {
+            return &this->m_pData;
         }
 
     private:

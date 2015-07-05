@@ -344,6 +344,33 @@
     <ClInclude Include="xl\Meta\xlEnableIf.h">
       <Filter>Meta</Filter>
     </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\xlBitmap.h">
+      <Filter>Win32\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\xlBitmapDef.h">
+      <Filter>Win32\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\File\xlPath.h">
+      <Filter>Win32\File</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\D2D\xlBitmapD2D1.h">
+      <Filter>Win32\Rendering\D2D</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\D2D\xlBitmapD2D1Point1.h">
+      <Filter>Win32\Rendering\D2D</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\GDI\xlBitmapGDI.h">
+      <Filter>Win32\Rendering\GDI</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlBitmapGDIPlus.h">
+      <Filter>Win32\Rendering\GDIPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlGDIPlusUtility.h">
+      <Filter>Win32\Rendering\GDIPlus</Filter>
+    </ClInclude>
+    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlGDIPlusImports.h">
+      <Filter>Win32\Rendering\GDIPlus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -414,6 +441,15 @@
     </Filter>
     <Filter Include="Win32\Rendering">
       <UniqueIdentifier>{337d2ca9-a62b-475d-ab6d-2b8cc81f49dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Rendering\D2D">
+      <UniqueIdentifier>{0816c939-3703-4f15-8d74-da21fbb38e5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Rendering\GDI">
+      <UniqueIdentifier>{50367632-1549-4eb4-848d-14ef339cff2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Rendering\GDIPlus">
+      <UniqueIdentifier>{9ff76a17-8e82-4e14-a536-b8857ae0f0f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

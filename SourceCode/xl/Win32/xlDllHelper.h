@@ -25,12 +25,7 @@ namespace xl
     template <typename S, typename R, typename ... Args>
     R DllHelperCallFunctionStrict(LPCTSTR lpLibFileName, LPCSTR lpProcName, Args ... args)
     {
-        static HMODULE hModule = nullptr;
-
-        if (hModule == nullptr)
-        {
-            hModule = LoadLibrary(lpLibFileName);
-        }
+        HMODULE hModule = LoadLibrary(lpLibFileName);
 
         if (hModule == nullptr)
         {
@@ -47,8 +42,28 @@ namespace xl
         return f(args...);
     }
 
-    template <typename S>
-    struct DllHelper;
+    template <typename T>
+    struct DllHelper
+    {
+        static T GetVariable(LPCTSTR lpLibFileName, LPCSTR lpProcName)
+        {
+            HMODULE hModule = LoadLibrary(lpLibFileName);
+
+            if (hModule == nullptr)
+            {
+                return T();
+            }
+
+            T *p = (T *)GetProcAddress(hModule, lpProcName);
+
+            if (p == nullptr)
+            {
+                return T();
+            }
+
+            return *p;
+        }
+    };
 
 #ifdef _M_X64
 
