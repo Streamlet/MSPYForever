@@ -233,7 +233,7 @@ namespace xl
             {
                 xl::String strExtSet = pEncoders[i].FilenameExtension;
                 strExtSet.MakeLower();
-                strExtSet += _T(";");
+                strExtSet.AppendBack(_T(';'));
 
                 if (strExtSet.IndexOf(strExtName) >= 0)
                 {
