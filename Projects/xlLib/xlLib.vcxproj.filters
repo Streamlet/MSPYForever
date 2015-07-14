@@ -1,374 +1,374 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="xl\xlDef.h" />
-    <ClInclude Include="xl\Containers\xlArray.h">
+    <ClInclude Include="..\..\Include\xl\xlDef.h" />
+    <ClInclude Include="..\..\Include\xl\Containers\xlArray.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlBinTree.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlBinTree.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlGraph.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlGraph.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlList.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlList.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlMap.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlMap.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlPair.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlPair.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlRBTree.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlRBTree.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlSet.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlSet.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Containers\xlTree.h">
+    <ClInclude Include="..\..\Include\xl\Containers\xlTree.h">
       <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Cryption\xlCRC32.h">
+    <ClInclude Include="..\..\Include\xl\Cryption\xlCRC32.h">
       <Filter>Cryption</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Cryption\xlMD5.h">
+    <ClInclude Include="..\..\Include\xl\Cryption\xlMD5.h">
       <Filter>Cryption</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Cryption\xlSHA1.h">
+    <ClInclude Include="..\..\Include\xl\Cryption\xlSHA1.h">
       <Filter>Cryption</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Math\xlBigInt.h">
+    <ClInclude Include="..\..\Include\xl\Math\xlBigInt.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Math\xlInterval.h">
+    <ClInclude Include="..\..\Include\xl\Math\xlInterval.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Math\xlIntervalSet.h">
+    <ClInclude Include="..\..\Include\xl\Math\xlIntervalSet.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Math\xlMathBase.h">
+    <ClInclude Include="..\..\Include\xl\Math\xlMathBase.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Memory\xlMemory.h">
+    <ClInclude Include="..\..\Include\xl\Memory\xlMemory.h">
       <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Memory\xlSmartPtr.h">
+    <ClInclude Include="..\..\Include\xl\Memory\xlSmartPtr.h">
       <Filter>Memory</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlAssert.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlAssert.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlBind.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlBind.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlFunction.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlFunction.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlMacros.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlMacros.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlMetaBase.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlMetaBase.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlScopeExit.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlScopeExit.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlStaticAssert.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlStaticAssert.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlTypeList.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlTypeList.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlTypeTraits.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlTypeTraits.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlUtility.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlUtility.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Parser\xlRegExp.h">
+    <ClInclude Include="..\..\Include\xl\Parser\xlRegExp.h">
       <Filter>Parser</Filter>
     </ClInclude>
-    <ClInclude Include="xl\String\xlBase64.h">
+    <ClInclude Include="..\..\Include\xl\String\xlBase64.h">
       <Filter>String</Filter>
     </ClInclude>
-    <ClInclude Include="xl\String\xlEncoding.h">
+    <ClInclude Include="..\..\Include\xl\String\xlEncoding.h">
       <Filter>String</Filter>
     </ClInclude>
-    <ClInclude Include="xl\String\xlString.h">
+    <ClInclude Include="..\..\Include\xl\String\xlString.h">
       <Filter>String</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Test\xlUnitTest.h">
+    <ClInclude Include="..\..\Include\xl\Test\xlUnitTest.h">
       <Filter>Test</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\xlWin32Ver.h">
+    <ClInclude Include="..\..\Include\xl\Win32\xlWin32Ver.h">
       <Filter>Win32</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Threads\xlCriticalSection.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlCriticalSection.h">
       <Filter>Win32\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Threads\xlThread.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlThread.h">
       <Filter>Win32\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Threads\xlThreadPool.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlThreadPool.h">
       <Filter>Win32\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Threads\xlTls.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlTls.h">
       <Filter>Win32\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Registry\xlRegistry.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Registry\xlRegistry.h">
       <Filter>Win32\Registry</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Network\xlSocket.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Network\xlSocket.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Messaging\xlMessageBus.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Messaging\xlMessageBus.h">
       <Filter>Win32\Messaging</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Memory\xlHeap.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Memory\xlHeap.h">
       <Filter>Win32\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Memory\xlSafeSmartPtr.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Memory\xlSafeSmartPtr.h">
       <Filter>Win32\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlCommCtrlInitializer.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlCommCtrlInitializer.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlDialog.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlDialog.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdButton.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdButton.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdComboBox.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdComboBox.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdEdit.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdEdit.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdLink.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdLink.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdListBox.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdListBox.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdListView.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdListView.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdScrollBar.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdScrollBar.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdStatic.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdStatic.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlThunk.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlThunk.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComDef.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComDef.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\Objects\xlMediaPlayer.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\Objects\xlMediaPlayer.h">
       <Filter>Win32\COM\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\Objects\xlOleContainer.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\Objects\xlOleContainer.h">
       <Filter>Win32\COM\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\Objects\xlWebBrowser.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\Objects\xlWebBrowser.h">
       <Filter>Win32\COM\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeCompImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITypeCompImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeInfoImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITypeInfoImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITypeLibImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITypeLibImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComModule.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComModule.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlClassFactory.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlClassFactory.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlDispatcher.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlDispatcher.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComLoader.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComLoader.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\File\xlIniFile.h">
+    <ClInclude Include="..\..\Include\xl\Win32\File\xlIniFile.h">
       <Filter>Win32\File</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComClass.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComClass.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComInclude.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComInclude.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlIObjectWithSiteImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIObjectWithSiteImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlStdProgressBar.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdProgressBar.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Algorithm\xlSort.h">
+    <ClInclude Include="..\..\Include\xl\Algorithm\xlSort.h">
       <Filter>Algorithm</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Network\xlWinHttp.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Network\xlWinHttp.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Threads\xlEvent.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlEvent.h">
       <Filter>Win32\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\xlHandle.h">
+    <ClInclude Include="..\..\Include\xl\Win32\xlHandle.h">
       <Filter>Win32</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Network\xlHttpIO.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Network\xlHttpIO.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Timer\xlTimer.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Timer\xlTimer.h">
       <Filter>Win32\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\xlComPtr.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComPtr.h">
       <Filter>Win32\COM</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfCompositionSinkImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfCompositionSinkImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionProviderImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfFunctionProviderImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFnGetPreferredTouchKeyboardLayoutImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfFnGetPreferredTouchKeyboardLayoutImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfLangBarItemImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\COM\InterfaceHelper\xlITfSourceImpl.h">
+    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfSourceImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="xl\App\xlLog.h">
+    <ClInclude Include="..\..\Include\xl\App\xlLog.h">
       <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\xlDllHelper.h">
+    <ClInclude Include="..\..\Include\xl\Win32\xlDllHelper.h">
       <Filter>Win32</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlWindow.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlWindow.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlWindowMessage.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlWindowMessage.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlWindowHelper.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlWindowHelper.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\GUI\xlMenu.h">
+    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlMenu.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\xlRenderer.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlRenderer.h">
       <Filter>Win32\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\xlGraphics.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlGraphics.h">
       <Filter>Win32\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlTuple.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlTuple.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Meta\xlEnableIf.h">
+    <ClInclude Include="..\..\Include\xl\Meta\xlEnableIf.h">
       <Filter>Meta</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\xlBitmap.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlBitmap.h">
       <Filter>Win32\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\xlBitmapDef.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlBitmapDef.h">
       <Filter>Win32\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\File\xlPath.h">
+    <ClInclude Include="..\..\Include\xl\Win32\File\xlPath.h">
       <Filter>Win32\File</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\D2D\xlBitmapD2D1.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\D2D\xlBitmapD2D1.h">
       <Filter>Win32\Rendering\D2D</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\D2D\xlBitmapD2D1Point1.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\D2D\xlBitmapD2D1Point1.h">
       <Filter>Win32\Rendering\D2D</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\GDI\xlBitmapGDI.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDI\xlBitmapGDI.h">
       <Filter>Win32\Rendering\GDI</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlBitmapGDIPlus.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlBitmapGDIPlus.h">
       <Filter>Win32\Rendering\GDIPlus</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlGDIPlusUtility.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlGDIPlusUtility.h">
       <Filter>Win32\Rendering\GDIPlus</Filter>
     </ClInclude>
-    <ClInclude Include="xl\Win32\Rendering\GDIPlus\xlGDIPlusImports.h">
+    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlGDIPlusImports.h">
       <Filter>Win32\Rendering\GDIPlus</Filter>
     </ClInclude>
   </ItemGroup>

@@ -36,7 +36,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32MessagingTest", "Proje
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlRegExpTest", "Projects\PerformanceTest\xlRegExpTest\xlRegExpTest.vcxproj", "{4122678E-85D4-455A-B431-8B66E4024BD6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlLib", "SourceCode\xlLib.vcxproj", "{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlLib", "Projects\xlLib\xlLib.vcxproj", "{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FeatureTest", "FeatureTest", "{11F0D05E-0CFA-47DB-92C0-723B8F8F9152}"
 EndProject
