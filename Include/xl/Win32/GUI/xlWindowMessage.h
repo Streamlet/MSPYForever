@@ -17,10 +17,10 @@
 #define __XLWINDOWMESSAGE_H_AC4BA307_1739_4573_90E1_B080A8D1AB1E_INCLUDED__
 
 
-#include "../../Meta/xlFunction.h"
-#include "../../Meta/xlTuple.h"
-#include "../../Containers/xlList.h"
-#include "../../Containers/xlMap.h"
+#include "../../Common/Meta/xlFunction.h"
+#include "../../Common/Meta/xlTuple.h"
+#include "../../Common/Containers/xlList.h"
+#include "../../Common/Containers/xlMap.h"
 #include "xlCommCtrlInitializer.h"
 #include <Windows.h>
 

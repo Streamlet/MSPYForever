@@ -17,8 +17,8 @@
 #define __XLTHREAD_H_7019B92A_520D_4235_8B24_9334EF47B92A_INCLUDED__
 
 
-#include "../../Meta/xlFunction.h"
-#include "../../Meta/xlUtility.h"
+#include "../../Common/Meta/xlFunction.h"
+#include "../../Common/Meta/xlUtility.h"
 #include "../xlWin32Ver.h"
 #include "xlCriticalSection.h"
 #include <Windows.h>

@@ -16,7 +16,7 @@
 #define __XLBITMAPDEF_H_727259A4_E1C1_4ED9_9CF2_693486E201B2_INCLUDED__
 
 
-#include "../../String/xlString.h"
+#include "../../Common/String/xlString.h"
 #include "xlGraphics.h"
 
 namespace xl

@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/Containers/xlSet.h"
-#include "../../../Include/xl/CRT/TestFramework/xlUnitTest.h"
+#include "../../../Include/xl/Common/Containers/xlSet.h"
+#include "../../../Include/xl/Framework/xlUnitTest.h"
 
 namespace
 {

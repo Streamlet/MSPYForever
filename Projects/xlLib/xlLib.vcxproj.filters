@@ -2,102 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="..\..\Include\xl\xlDef.h" />
-    <ClInclude Include="..\..\Include\xl\Containers\xlArray.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlBinTree.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlGraph.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlList.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlMap.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlPair.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlRBTree.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlSet.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Containers\xlTree.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Cryption\xlCRC32.h">
-      <Filter>Cryption</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Cryption\xlMD5.h">
-      <Filter>Cryption</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Cryption\xlSHA1.h">
-      <Filter>Cryption</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Math\xlBigInt.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Math\xlInterval.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Math\xlIntervalSet.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Math\xlMathBase.h">
-      <Filter>Math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Memory\xlMemory.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Memory\xlSmartPtr.h">
-      <Filter>Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlAssert.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlBind.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlFunction.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlMacros.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlMetaBase.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlScopeExit.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlStaticAssert.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlTypeList.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlTypeTraits.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlUtility.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Parser\xlRegExp.h">
-      <Filter>Parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\String\xlBase64.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\String\xlEncoding.h">
-      <Filter>String</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\String\xlString.h">
-      <Filter>String</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\xl\Win32\xlWin32Ver.h">
       <Filter>Win32</Filter>
     </ClInclude>
@@ -245,9 +149,6 @@
     <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdProgressBar.h">
       <Filter>Win32\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Algorithm\xlSort.h">
-      <Filter>Algorithm</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\xl\Win32\Network\xlWinHttp.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
@@ -311,9 +212,6 @@
     <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfSourceImpl.h">
       <Filter>Win32\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\App\xlLog.h">
-      <Filter>App</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\xl\Win32\xlDllHelper.h">
       <Filter>Win32</Filter>
     </ClInclude>
@@ -334,12 +232,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlGraphics.h">
       <Filter>Win32\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlTuple.h">
-      <Filter>Meta</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Meta\xlEnableIf.h">
-      <Filter>Meta</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlBitmap.h">
       <Filter>Win32\Rendering</Filter>
@@ -368,32 +260,119 @@
     <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlGDIPlusImports.h">
       <Filter>Win32\Rendering\GDIPlus</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\CRT\TestFramework\xlUnitTest.h">
-      <Filter>CRT\TestFramework</Filter>
+    <ClInclude Include="..\..\Include\xl\Common\Algorithm\xlSort.h">
+      <Filter>Common\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlBinTree.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlGraph.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlList.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlMap.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlPair.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlRBTree.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlSet.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlTree.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlArray.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Cryption\xlMD5.h">
+      <Filter>Common\Cryption</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Cryption\xlSHA1.h">
+      <Filter>Common\Cryption</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Cryption\xlCRC32.h">
+      <Filter>Common\Cryption</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlInterval.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlIntervalSet.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlMathBase.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlBigInt.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Memory\xlMemory.h">
+      <Filter>Common\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Memory\xlSmartPtr.h">
+      <Filter>Common\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlScopeExit.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlStaticAssert.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlTuple.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlTypeList.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlTypeTraits.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlUtility.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlAssert.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlBind.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlEnableIf.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlFunction.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlMacros.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlMetaBase.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Parser\xlRegExp.h">
+      <Filter>Common\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\String\xlEncoding.h">
+      <Filter>Common\String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\String\xlString.h">
+      <Filter>Common\String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\String\xlBase64.h">
+      <Filter>Common\String</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Framework\xlLog.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Framework\xlUnitTest.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Containers">
-      <UniqueIdentifier>{3a93af9d-c179-4175-847c-f43fb2dc4b87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Cryption">
-      <UniqueIdentifier>{c8517d1b-63ff-4600-8416-6cfd19a23404}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Math">
-      <UniqueIdentifier>{6201884f-405f-4831-90b2-a359c4c11f30}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Memory">
-      <UniqueIdentifier>{1194ed84-f1a2-409d-ab07-ed1097c885c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Meta">
-      <UniqueIdentifier>{1f91602d-924c-4d46-be04-184bb08d9efc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Parser">
-      <UniqueIdentifier>{28d0e94a-bb40-46a2-bb31-87fac7a32fda}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="String">
-      <UniqueIdentifier>{99b650a2-4bc1-46ce-9e16-af03017153bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32">
       <UniqueIdentifier>{102cd56f-27ba-4765-8d3d-9a5993bb5adc}</UniqueIdentifier>
     </Filter>
@@ -427,14 +406,8 @@
     <Filter Include="Win32\File">
       <UniqueIdentifier>{09c53fd6-b24b-4251-aedb-7111dd89032a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Algorithm">
-      <UniqueIdentifier>{9a154b06-b8b6-4e85-9813-711631db359e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32\Timer">
       <UniqueIdentifier>{af76c0df-7b0f-4f0b-a3c0-b0cdc8fe3861}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App">
-      <UniqueIdentifier>{df078fb9-1bfd-4f4f-8d31-dcaa124b02a6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Win32\Rendering">
       <UniqueIdentifier>{337d2ca9-a62b-475d-ab6d-2b8cc81f49dd}</UniqueIdentifier>
@@ -448,11 +421,35 @@
     <Filter Include="Win32\Rendering\GDIPlus">
       <UniqueIdentifier>{9ff76a17-8e82-4e14-a536-b8857ae0f0f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CRT">
-      <UniqueIdentifier>{974abefc-643e-44ec-9732-b99218637801}</UniqueIdentifier>
+    <Filter Include="Common">
+      <UniqueIdentifier>{e6ce73e4-4c36-4a16-a3f7-4a56bf0e8a46}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CRT\TestFramework">
-      <UniqueIdentifier>{08eb4625-e70d-4b88-943a-88f41e0d535a}</UniqueIdentifier>
+    <Filter Include="Common\Algorithm">
+      <UniqueIdentifier>{9a154b06-b8b6-4e85-9813-711631db359e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Containers">
+      <UniqueIdentifier>{3a93af9d-c179-4175-847c-f43fb2dc4b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Cryption">
+      <UniqueIdentifier>{c8517d1b-63ff-4600-8416-6cfd19a23404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Math">
+      <UniqueIdentifier>{6201884f-405f-4831-90b2-a359c4c11f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Memory">
+      <UniqueIdentifier>{1194ed84-f1a2-409d-ab07-ed1097c885c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Meta">
+      <UniqueIdentifier>{1f91602d-924c-4d46-be04-184bb08d9efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Parser">
+      <UniqueIdentifier>{28d0e94a-bb40-46a2-bb31-87fac7a32fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\String">
+      <UniqueIdentifier>{99b650a2-4bc1-46ce-9e16-af03017153bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{974abefc-643e-44ec-9732-b99218637801}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

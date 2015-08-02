@@ -17,8 +17,8 @@
 #define __XLCRITICALSECTION_H_C580E922_6ED8_483E_8223_2174E0EF7310_INCLUDED__
 
 
-#include "../../Meta/xlUtility.h"
-#include "../../Meta/xlScopeExit.h"
+#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlScopeExit.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 

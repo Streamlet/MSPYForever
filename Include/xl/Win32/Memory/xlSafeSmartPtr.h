@@ -17,7 +17,7 @@
 #define __XLSAFESMARTPTR_H_E74125A8_C767_44A2_8659_D350F7638ED6_INCLUDED__
 
 
-#include "../../Memory/xlSmartPtr.h"
+#include "../../Common/Memory/xlSmartPtr.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 

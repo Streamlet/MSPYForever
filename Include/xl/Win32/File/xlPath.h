@@ -16,7 +16,7 @@
 #define __XLPATH_H_14B3352D_18F0_4659_AAB7_ED4630B1C004_INCLUDED__
 
 
-#include "../../String/xlString.h"
+#include "../../Common/String/xlString.h"
 #include <Windows.h>
 #include <tchar.h>
 

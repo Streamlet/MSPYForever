@@ -15,7 +15,7 @@
 
 
 #include <stdio.h>
-#include "../../Include/xl/Meta/xlTuple.h"
+#include "../../Include/xl/Common/Meta/xlTuple.h"
 #include "../../Include/xl/Win32/Rendering/xlGraphics.h"
 #include "../../Include/xl/Win32/Rendering/GDI/xlBitmapGDI.h"
 

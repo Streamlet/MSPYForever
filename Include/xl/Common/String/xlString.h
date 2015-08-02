@@ -17,7 +17,7 @@
 #define __XLSTRING_H_27999BE8_99C9_4C06_87AB_AA916A88B287_INCLUDED__
 
 
-#include "../xlDef.h"
+#include "../../xlDef.h"
 #include "../Containers/xlArray.h"
 
 namespace xl

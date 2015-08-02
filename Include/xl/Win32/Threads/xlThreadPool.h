@@ -17,10 +17,10 @@
 #define __XLTHREADPOOL_H_EF483C0F_09BB_436D_907C_DD8D0444D386_INCLUDED__
 
 
-#include "../../Containers/xlArray.h"
-#include "../../Containers/xlSet.h"
-#include "../../Meta/xlFunction.h"
-#include "../../Meta/xlUtility.h"
+#include "../../Common/Containers/xlArray.h"
+#include "../../Common/Containers/xlSet.h"
+#include "../../Common/Meta/xlFunction.h"
+#include "../../Common/Meta/xlUtility.h"
 #include "xlCriticalSection.h"
 #include "xlThread.h"
 

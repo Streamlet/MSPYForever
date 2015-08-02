@@ -15,7 +15,7 @@
 
 
 #include "../PerformanceTest.h"
-#include "../../../Include/xl/Containers/xlSet.h"
+#include "../../../Include/xl/Common/Containers/xlSet.h"
 #include <set>
 
 int main()

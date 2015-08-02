@@ -13,8 +13,8 @@
 //--------------------------------------------------------------------
 
 
-#include "../../../Include/xl/Algorithm/xlSort.h"
-#include "../../../Include/xl/CRT/TestFramework/xlUnitTest.h"
+#include "../../../Include/xl/Common/Algorithm/xlSort.h"
+#include "../../../Include/xl/Framework/xlUnitTest.h"
 
 namespace
 {

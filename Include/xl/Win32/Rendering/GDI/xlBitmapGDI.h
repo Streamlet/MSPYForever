@@ -16,8 +16,8 @@
 #define __XLBITMAPGDI_H_98263866_1B6E_47BF_B731_CB8321F9359C_INCLUDED__
 
 
-#include "../../../Meta/xlUtility.h"
-#include "../../../Memory/xlSmartPtr.h"
+#include "../../../Common/Meta/xlUtility.h"
+#include "../../../Common/Memory/xlSmartPtr.h"
 #include "../xlBitmapDef.h"
 #include "../GDIPlus/xlBitmapGDIPlus.h"
 #include <Windows.h>

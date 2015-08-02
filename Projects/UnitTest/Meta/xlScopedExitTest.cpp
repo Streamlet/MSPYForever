@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/CRT/TestFramework/xlUnitTest.h"
-#include "../../../Include/xl/Meta/xlScopeExit.h"
+#include "../../../Include/xl/Framework/xlUnitTest.h"
+#include "../../../Include/xl/Common/Meta/xlScopeExit.h"
 
 namespace
 {

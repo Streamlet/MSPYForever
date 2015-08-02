@@ -17,8 +17,8 @@
 #define __XLWINDOWHELPER_H_0646591E_8D6A_44AA_A773_084A53A0B190_INCLUDED__
 
 
-#include "../../Memory/xlSmartPtr.h"
-#include "../../String/xlString.h"
+#include "../../Common/Memory/xlSmartPtr.h"
+#include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
 #include <ShellAPI.h>
 

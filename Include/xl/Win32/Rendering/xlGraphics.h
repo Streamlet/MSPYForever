@@ -16,7 +16,7 @@
 #define __XLGRAPHICS_H_E294CF1C_2CFD_4AA9_9531_5BEF7AB8677A_INCLUDED__
 
 
-#include "../../Math/xlMathBase.h"
+#include "../../Common/Math/xlMathBase.h"
 #include <Windows.h>
 #include <d2d1.h>
 #include <GdiPlus.h>

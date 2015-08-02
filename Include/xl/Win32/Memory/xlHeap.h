@@ -17,7 +17,7 @@
 #define __XLHEAP_H_7B115181_B9FB_4BCD_8E2C_2CDE8814D08A_INCLUDED__
 
 
-#include "../../Meta/xlUtility.h"
+#include "../../Common/Meta/xlUtility.h"
 #include "../xlHandle.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>

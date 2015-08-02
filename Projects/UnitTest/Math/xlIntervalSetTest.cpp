@@ -15,8 +15,8 @@
 
 
 
-#include "../../../Include/xl/Math/xlIntervalSet.h"
-#include "../../../Include/xl/CRT/TestFramework/xlUnitTest.h"
+#include "../../../Include/xl/Common/Math/xlIntervalSet.h"
+#include "../../../Include/xl/Framework/xlUnitTest.h"
 
 namespace
 {

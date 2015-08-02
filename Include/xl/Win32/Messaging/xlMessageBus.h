@@ -17,10 +17,10 @@
 #define __XLMESSAGEBUS_H_AAE36D41_9C3A_48F0_8316_7746219BCC1A_INCLUDED__
 
 
-#include "../../Containers/xlArray.h"
-#include "../../Containers/xlMap.h"
-#include "../../Meta/xlFunction.h"
-#include "../../Meta/xlUtility.h"
+#include "../../Common/Containers/xlArray.h"
+#include "../../Common/Containers/xlMap.h"
+#include "../../Common/Meta/xlFunction.h"
+#include "../../Common/Meta/xlUtility.h"
 #include "../Memory/xlSafeSmartPtr.h"
 #include "../Threads/xlCriticalSection.h"
 #include "../Threads/xlThreadPool.h"

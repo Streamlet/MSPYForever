@@ -17,7 +17,7 @@
 #define __XLWINDOW_H_93972CEE_2D67_4A8B_927D_E327BDE8D4A4_INCLUDED__
 
 
-#include "../../Meta/xlUtility.h"
+#include "../../Common/Meta/xlUtility.h"
 #include "../Threads/xlTls.h"
 #include "../xlWin32Ver.h"
 #include "xlThunk.h"

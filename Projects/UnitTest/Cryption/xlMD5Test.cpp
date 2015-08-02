@@ -14,9 +14,9 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/CRT/TestFramework/xlUnitTest.h"
-#include "../../../Include/xl/Cryption/xlMD5.h"
-#include "../../../Include/xl/String/xlString.h"
+#include "../../../Include/xl/Framework/xlUnitTest.h"
+#include "../../../Include/xl/Common/Cryption/xlMD5.h"
+#include "../../../Include/xl/Common/String/xlString.h"
 #include <stdio.h>
 
 namespace

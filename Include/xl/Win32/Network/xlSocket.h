@@ -19,8 +19,8 @@
 
 #include <WinSock2.h>   // Must include WinSock2.h before Windows.h
 #pragma comment(lib, "Ws2_32.lib")
-#include "../../Memory/xlMemory.h"
-#include "../../String/xlString.h"
+#include "../../Common/Memory/xlMemory.h"
+#include "../../Common/String/xlString.h"
 #include "../Memory/xlSafeSmartPtr.h"
 #include "../xlWin32Ver.h"
 

@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../Include/xl/String/xlString.h"
+#include "../../Include/xl/Common/String/xlString.h"
 #include "../../Include/xl/Win32/GUI/xlWindow.h"
 #include "../../Include/xl/Win32/GUI/xlStdButton.h"
 #include "../../Include/xl/Win32/GUI/xlStdEdit.h"

@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/CRT/TestFramework/xlUnitTest.h"
-#include "../../../Include/xl/Meta/xlFunction.h"
+#include "../../../Include/xl/Framework/xlUnitTest.h"
+#include "../../../Include/xl/Common/Meta/xlFunction.h"
 
 namespace
 {

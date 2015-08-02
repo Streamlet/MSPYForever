@@ -17,7 +17,7 @@
 #define __XLMENU_H_C208C619_17E7_4147_BBFD_C815FAFA7324_INCLUDED__
 
 
-#include "../../Meta/xlUtility.h"
+#include "../../Common/Meta/xlUtility.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 

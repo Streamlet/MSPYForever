@@ -17,8 +17,8 @@
 #define __UNITTESTFRAME_H_D6074214_D6DB_4590_9EF3_B25B76DB713D_INCLUDED__
 
 
-#include "../../Meta/xlAssert.h"
-#include "../../Meta/xlMacros.h"
+#include "../Common/Meta/xlAssert.h"
+#include "../Common/Meta/xlMacros.h"
 #include <tchar.h>
 #include <stdio.h>
 
