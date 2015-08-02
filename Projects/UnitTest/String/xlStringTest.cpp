@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Test/xlUnitTest.h>
-#include <xl/String/xlString.h>
+#include "../../../Include/xl/Test/xlUnitTest.h"
+#include "../../../Include/xl/String/xlString.h"
 
 namespace
 {

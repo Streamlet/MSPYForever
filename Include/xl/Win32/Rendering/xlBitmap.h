@@ -17,10 +17,10 @@
 
 
 #include "../../Meta/xlUtility.h"
-#include "xlBitmapGDI.h"
-#include "xlBitmapGDIPlus.h"
-#include "xlBitmapD2D1.h"
-#include "xlBitmapD2D1Point1.h"
+#include "GDI/xlBitmapGDI.h"
+#include "GDIPlus/xlBitmapGDIPlus.h"
+#include "D2D/xlBitmapD2D1.h"
+#include "D2D/xlBitmapD2D1Point1.h"
 
 namespace xl
 {

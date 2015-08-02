@@ -15,7 +15,7 @@
 
 
 #include "../PerformanceTest.h"
-#include <xl/Containers/xlArray.h>
+#include "../../../Include/xl/Containers/xlArray.h"
 #include <vector>
 
 int main()

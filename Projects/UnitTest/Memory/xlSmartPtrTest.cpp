@@ -14,9 +14,9 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Test/xlUnitTest.h>
-#include <xl/xlDef.h>
-#include <xl/Memory/xlSmartPtr.h>
+#include "../../../Include/xl/Test/xlUnitTest.h"
+#include "../../../Include/xl/xlDef.h"
+#include "../../../Include/xl/Memory/xlSmartPtr.h"
 
 namespace
 {

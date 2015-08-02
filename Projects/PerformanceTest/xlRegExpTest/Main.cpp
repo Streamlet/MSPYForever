@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 #include "../PerformanceTest.h"
-#include <xl/Parser/xlRegExp.h>
+#include "../../../Include/xl/Parser/xlRegExp.h"
 #include <regex>
 
 int main()

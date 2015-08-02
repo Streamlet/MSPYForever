@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Parser/xlRegExp.h>
-#include <xl/Test/xlUnitTest.h>
+#include "../../../Include/xl/Parser/xlRegExp.h"
+#include "../../../Include/xl/Test/xlUnitTest.h"
 
 namespace
 {

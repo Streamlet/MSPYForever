@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Test/xlUnitTest.h>
-#include <xl/String/xlEncoding.h>
+#include "../../../Include/xl/Test/xlUnitTest.h"
+#include "../../../Include/xl/String/xlEncoding.h"
 #include <tchar.h>
 #include <Windows.h>
 #include <atlstr.h>

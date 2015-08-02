@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Test/xlUnitTest.h>
-#include <xl/Meta/xlFunction.h>
+#include "../../../Include/xl/Test/xlUnitTest.h"
+#include "../../../Include/xl/Meta/xlFunction.h"
 
 namespace
 {

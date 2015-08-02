@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Containers/xlRBTree.h>
-#include <xl/Test/xlUnitTest.h>
+#include "../../../Include/xl/Containers/xlRBTree.h"
+#include "../../../Include/xl/Test/xlUnitTest.h"
 
 namespace
 {

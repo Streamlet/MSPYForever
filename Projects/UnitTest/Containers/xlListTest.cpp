@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Containers/xlList.h>
-#include <xl/Test/xlUnitTest.h>
+#include "../../../Include/xl/Containers/xlList.h"
+#include "../../../Include/xl/Test/xlUnitTest.h"
 
 namespace
 {

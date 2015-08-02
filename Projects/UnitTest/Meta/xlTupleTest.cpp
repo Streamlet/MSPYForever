@@ -14,8 +14,8 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/Meta/xlTuple.h>
-#include <xl/Test/xlUnitTest.h>
+#include "../../../Include/xl/Meta/xlTuple.h"
+#include "../../../Include/xl/Test/xlUnitTest.h"
 
 namespace
 {

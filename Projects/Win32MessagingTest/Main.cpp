@@ -14,12 +14,12 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/String/xlString.h>
-#include <xl/Win32/GUI/xlWindow.h>
-#include <xl/Win32/GUI/xlStdButton.h>
-#include <xl/Win32/GUI/xlStdEdit.h>
-#include <xl/Win32/Memory/xlSafeSmartPtr.h>
-#include <xl/Win32/Messaging/xlMessageBus.h>
+#include "../../Include/xl/String/xlString.h"
+#include "../../Include/xl/Win32/GUI/xlWindow.h"
+#include "../../Include/xl/Win32/GUI/xlStdButton.h"
+#include "../../Include/xl/Win32/GUI/xlStdEdit.h"
+#include "../../Include/xl/Win32/Memory/xlSafeSmartPtr.h"
+#include "../../Include/xl/Win32/Messaging/xlMessageBus.h"
 
 enum
 {
