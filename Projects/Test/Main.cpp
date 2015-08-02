@@ -15,42 +15,46 @@
 
 
 #include <stdio.h>
-#include "../../Include/xl/Win32/Rendering/xlRenderer.h"
-#include <tuple>
+#include "../../Include/xl/Meta/xlTuple.h"
+#include "../../Include/xl/Win32/Rendering/xlGraphics.h"
+#include "../../Include/xl/Win32/Rendering/GDI/xlBitmapGDI.h"
+
 
 int main()
 {
-//     xl::Bitmap bmp;
-//     HBITMAP h = bmp;
-//     Gdiplus::Bitmap *p = bmp;
-//     ID2D1Bitmap *p1 = bmp;
-//     ID2D1Bitmap1 *p2 = bmp;
-// 
+    using namespace xl;
 
-    xl::SizeX s(10, 20);
 
-    xl::PointX p(100.0f, 200.0f);
+    BitmapGDI bmp;
+    bmp.CreateBlank(10, 10);
 
-    xl::RectX r(1, 1, 200, 200);
-    r.Inflate(1);
-    r.Deflate(2, 2, 2, 2);
+    ColorX *pColor = bmp.Lock(BitmapLockFlag_Write);
 
-    xl::ColorX c = xl::ColorX::Red;
-    c.G() = 15;
-    c.B() = 16;
+    for (int i = 0; i < 10 * 10; ++i)
+    {
+        pColor[i] = ColorX(150 + i, 0xff, 0x00, 0x00);
+    }
 
-    xl::Tuple<> x;
-    xl::Tuple<int> xx(1);
-    xl::Tuple<int, int> xxx(1, 2);
-    xl::Tuple<int, int, int> xxxx(1, 2, 3);
-    xl::Tuple<int, int, int, int> xxxxx(1, 2, 3, 4);
+    bmp.SaveToFile(_T("a.png"));
 
-    xx += xxx;
+    for (int i = 0; i < 10 * 10; ++i)
+    {
+        pColor[i] = ColorX(150 + i, 0x00, 0xff, 0x00);
+    }
 
-    xxxxx.Set<0>(3);
+    bmp.SaveToFile(_T("b.png"));
 
-    std::tuple<int, float, bool> a(100, 2.0f, true);
+    bmp.LoadFromFile(_T("a.png"));
+    bmp.SaveToFile(_T("c.png"));
 
+    size_t cbSize = 0;
+    void *lpBuffer = bmp.SaveToMemory(cbSize);
+
+    bmp.LoadFromFile(_T("b.png"));
+    bmp.SaveToFile(_T("d.png"));
+
+    bmp.LoadFromMemory(lpBuffer, cbSize);
+    bmp.SaveToFile(_T("e.png"));
 
     return 0;
 }

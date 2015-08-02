@@ -98,9 +98,6 @@
     <ClInclude Include="..\..\Include\xl\String\xlString.h">
       <Filter>String</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Test\xlUnitTest.h">
-      <Filter>Test</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\xl\Win32\xlWin32Ver.h">
       <Filter>Win32</Filter>
     </ClInclude>
@@ -371,6 +368,9 @@
     <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlGDIPlusImports.h">
       <Filter>Win32\Rendering\GDIPlus</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\CRT\TestFramework\xlUnitTest.h">
+      <Filter>CRT\TestFramework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Containers">
@@ -393,9 +393,6 @@
     </Filter>
     <Filter Include="String">
       <UniqueIdentifier>{99b650a2-4bc1-46ce-9e16-af03017153bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Test">
-      <UniqueIdentifier>{1bcb26f3-7836-4b64-b3cb-f461bd8ca6f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Win32">
       <UniqueIdentifier>{102cd56f-27ba-4765-8d3d-9a5993bb5adc}</UniqueIdentifier>
@@ -450,6 +447,12 @@
     </Filter>
     <Filter Include="Win32\Rendering\GDIPlus">
       <UniqueIdentifier>{9ff76a17-8e82-4e14-a536-b8857ae0f0f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CRT">
+      <UniqueIdentifier>{974abefc-643e-44ec-9732-b99218637801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CRT\TestFramework">
+      <UniqueIdentifier>{08eb4625-e70d-4b88-943a-88f41e0d535a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

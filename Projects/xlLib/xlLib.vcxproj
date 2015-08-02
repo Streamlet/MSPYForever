@@ -30,6 +30,7 @@
     <ClInclude Include="..\..\Include\xl\Containers\xlRBTree.h" />
     <ClInclude Include="..\..\Include\xl\Containers\xlSet.h" />
     <ClInclude Include="..\..\Include\xl\Containers\xlTree.h" />
+    <ClInclude Include="..\..\Include\xl\CRT\TestFramework\xlUnitTest.h" />
     <ClInclude Include="..\..\Include\xl\Cryption\xlCRC32.h" />
     <ClInclude Include="..\..\Include\xl\Cryption\xlMD5.h" />
     <ClInclude Include="..\..\Include\xl\Cryption\xlSHA1.h" />
@@ -55,7 +56,6 @@
     <ClInclude Include="..\..\Include\xl\String\xlBase64.h" />
     <ClInclude Include="..\..\Include\xl\String\xlEncoding.h" />
     <ClInclude Include="..\..\Include\xl\String\xlString.h" />
-    <ClInclude Include="..\..\Include\xl\Test\xlUnitTest.h" />
     <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h" />
     <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h" />
     <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h" />
