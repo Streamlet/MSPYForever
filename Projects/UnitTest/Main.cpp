@@ -14,7 +14,12 @@
 //------------------------------------------------------------------------------
 
 
+#include <stdlib.h>
+#include <locale>
+
 int main()
 {
+    setlocale(LC_ALL, "");
+    system("pause");
     return 0;
 }
