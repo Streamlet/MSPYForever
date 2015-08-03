@@ -193,11 +193,9 @@ namespace
     {
         Array<char> a;
         a.PushBack('k');
-        a.PushBack('c');
         a.PushFront('s');
 
         XL_TEST_ASSERT(a[0] == 's');
         XL_TEST_ASSERT(a[1] == 'k');
-        XL_TEST_ASSERT(a[2] == 'c');
     }
 }
