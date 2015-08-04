@@ -188,4 +188,14 @@ namespace
         a.Clear();
         XL_TEST_ASSERT(a.Size() == 0);
     }
+
+    XL_TEST_CASE()
+    {
+        Array<char> a;
+        a.PushBack('k');
+        a.PushFront('s');
+
+        XL_TEST_ASSERT(a[0] == 's');
+        XL_TEST_ASSERT(a[1] == 'k');
+    }
 }
