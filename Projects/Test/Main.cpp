@@ -18,12 +18,12 @@
 #include "../../Include/xl/Common/Meta/xlTuple.h"
 #include "../../Include/xl/Win32/Rendering/xlGraphics.h"
 #include "../../Include/xl/Win32/Rendering/GDI/xlBitmapGDI.h"
+#include <Windows.h>
 
 
 int main()
 {
     using namespace xl;
-
 
     BitmapGDI bmp;
     bmp.CreateBlank(10, 10);

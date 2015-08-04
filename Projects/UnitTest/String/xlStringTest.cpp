@@ -24,10 +24,10 @@ namespace
     XL_TEST_CASE()
     {
         String a;
-        XL_TEST_ASSERT(a == L"");
+        XL_TEST_ASSERT(a == L"1");
 
         String b(L"123");
-        XL_TEST_ASSERT(b == L"123");
+        XL_TEST_ASSERT(b == L"1123");
 
         String c(b);
         XL_TEST_ASSERT(c == L"123");
