@@ -21,15 +21,24 @@ void MainWindow::Show()
     dlg.DoModal();
 }
 
-MainWindow::MainWindow()
+MainWindow::MainWindow() : m_hFont(nullptr)
 {
     AppendCommandMsgHandler(ID_BUTTON, BN_CLICKED, CommandMsgHandler(this, &MainWindow::OnButtonClicked));
     AppendNotifyMsgHandler(ID_LINK, NM_CLICK, NotifyMsgHandler(this, &MainWindow::OnLinkWebsiteClick));
+
+    NONCLIENTMETRICS m_tagNONCLIENTMETRICSW = { sizeof(m_tagNONCLIENTMETRICSW) };
+    SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &m_tagNONCLIENTMETRICSW, 0);
+
+    m_hFont = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfCaptionFont);
 }
 
 MainWindow::~MainWindow()
 {
-
+    if (m_hFont != nullptr)
+    {
+        DeleteObject(m_hFont);
+        m_hFont = nullptr;
+    }
 }
 
 bool MainWindow::OnInitDialog()
@@ -40,6 +49,7 @@ bool MainWindow::OnInitDialog()
     SetIcon(hSmallIcon, FALSE);
 
     SetWindowText(m_hWnd, _T("纪念逝去的的微拼长句模式"));
+    SetFont(m_hFont);
 
     m_staticIcon.Create(m_hWnd, ID_STATIC, 20, 20, 48, 48, WS_CHILD | WS_VISIBLE | SS_ICON);
     m_staticIcon.SetIcon(hLargeIcon);

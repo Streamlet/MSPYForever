@@ -28,4 +28,6 @@ private:
     xl::StdStatic m_staticWatchword;
     xl::StdLink m_lineWebSite;
     xl::StdButton m_button;
+
+    HFONT m_hFont;
 };
