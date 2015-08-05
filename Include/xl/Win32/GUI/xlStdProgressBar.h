@@ -57,7 +57,7 @@ namespace xl
                                 dwExStyle,
                                 PROGRESS_CLASS,
                                 nullptr,
-                                (HMENU)nID,
+                                (HMENU)(size_t)nID,
                                 nullptr))
             {
                 return false;

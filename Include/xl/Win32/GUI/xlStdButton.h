@@ -58,7 +58,7 @@ namespace xl
                                 dwExStyle,
                                 WC_BUTTON,
                                 nullptr,
-                                (HMENU)nID,
+                                (HMENU)(size_t)nID,
                                 nullptr))
             {
                 return false;

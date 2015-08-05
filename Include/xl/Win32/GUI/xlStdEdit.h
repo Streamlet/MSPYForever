@@ -58,7 +58,7 @@ namespace xl
                                 dwExStyle,
                                 WC_EDIT,
                                 nullptr,
-                                (HMENU)nID,
+                                (HMENU)(size_t)nID,
                                 nullptr))
             {
                 return false;
