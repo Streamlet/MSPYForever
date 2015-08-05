@@ -35,7 +35,7 @@
 
 #define XL_LOG_POLICY LogPolicy
 #include "xlLog.h"
-#include <xl/String/xlString.h>
+#include <xl/Common/String/xlString.h>
 #include <Windows.h>
 
 class LogPolicy

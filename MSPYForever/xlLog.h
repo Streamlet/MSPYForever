@@ -18,7 +18,7 @@
 #define __XLLOG_H_504F06E0_64F2_484D_8626_C201BBD6F1EB_INCLUDED__
 
 
-#include <xl/String/xlString.h>
+#include <xl/Common/String/xlString.h>
 
 namespace xl
 {
@@ -110,7 +110,7 @@ private:
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <xl/String/xlString.h>
+#include <xl/Common/String/xlString.h>
 
 namespace xl
 {
@@ -135,11 +135,11 @@ public:
         fwprintf(stderr, L"%-7s: <<<<<<<<<< Leave %s (L%s)\n", (LPCTSTR)GetLogLevelString(logLevel), (LPCTSTR)funName, (LPCTSTR)line);
     }
 
-    void Print(LOG_LEVEL logLevel, const xl::String &file, const xl::String &funName, const xl::String &line, const xl::String &format, ...)
+    void Print(LOG_LEVEL logLevel, const xl::String &file, const xl::String &funName, const xl::String &line, const xl::String format, ...)
     {
         wchar_t prefix[10], postfix[10];
         swprintf(prefix, 10, L"%-7s: ", (LPCTSTR)GetLogLevelString(logLevel));
-        swprintf(postfix, 10, L" (L%s)\n", line);
+        swprintf(postfix, 10, L" (L%s)\n", (LPCTSTR)line);
         xl::String newFormat = prefix;
         newFormat += format;
         newFormat += postfix;

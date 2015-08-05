@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include <xl/String/xlString.h>
+#include <xl/Common/String/xlString.h>
 #include <Windows.h>
 #include <tchar.h>
 #include <iostream>

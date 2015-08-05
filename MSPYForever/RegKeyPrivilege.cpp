@@ -1,6 +1,6 @@
 #include "RegKeyPrivilege.h"
-#include <xl/Memory/xlMemory.h>
-#include <xl/Meta/xlScopeExit.h>
+#include <xl/Common/Memory/xlMemory.h>
+#include <xl/Common/Meta/xlScopeExit.h>
 #include <xl/Win32/Registry/xlRegistry.h>
 #include "TraceLog.h"
 
