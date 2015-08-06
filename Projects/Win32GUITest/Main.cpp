@@ -14,18 +14,18 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../Include/xl/Win32/GUI/xlWindow.h"
-#include "../../Include/xl/Win32/GUI/xlMenu.h"
-#include "../../Include/xl/Win32/GUI/xlDialog.h"
-#include "../../Include/xl/Win32/GUI/xlStdStatic.h"
-#include "../../Include/xl/Win32/GUI/xlStdButton.h"
-#include "../../Include/xl/Win32/GUI/xlStdEdit.h"
-#include "../../Include/xl/Win32/GUI/xlStdComboBox.h"
-#include "../../Include/xl/Win32/GUI/xlStdListBox.h"
-#include "../../Include/xl/Win32/GUI/xlStdScrollBar.h"
-#include "../../Include/xl/Win32/GUI/xlStdListView.h"
-#include "../../Include/xl/Win32/GUI/xlStdLink.h"
-#include "../../Include/xl/Win32/GUI/xlStdProgressBar.h"
+#include "../../Include/xl/Windows/GUI/xlWindow.h"
+#include "../../Include/xl/Windows/GUI/xlMenu.h"
+#include "../../Include/xl/Windows/GUI/xlDialog.h"
+#include "../../Include/xl/Windows/GUI/xlStdStatic.h"
+#include "../../Include/xl/Windows/GUI/xlStdButton.h"
+#include "../../Include/xl/Windows/GUI/xlStdEdit.h"
+#include "../../Include/xl/Windows/GUI/xlStdComboBox.h"
+#include "../../Include/xl/Windows/GUI/xlStdListBox.h"
+#include "../../Include/xl/Windows/GUI/xlStdScrollBar.h"
+#include "../../Include/xl/Windows/GUI/xlStdListView.h"
+#include "../../Include/xl/Windows/GUI/xlStdLink.h"
+#include "../../Include/xl/Windows/GUI/xlStdProgressBar.h"
 
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,

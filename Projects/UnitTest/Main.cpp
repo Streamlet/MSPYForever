@@ -14,7 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../Include/xl/Framework/xlUnitTest.h"
+#include "../../Include/xl/AppHelper/xlUnitTest.h"
 #include <stdlib.h>
 #include <locale>
 #include <tchar.h>

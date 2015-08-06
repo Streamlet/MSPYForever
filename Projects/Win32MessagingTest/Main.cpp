@@ -15,11 +15,11 @@
 
 
 #include "../../Include/xl/Common/String/xlString.h"
-#include "../../Include/xl/Win32/GUI/xlWindow.h"
-#include "../../Include/xl/Win32/GUI/xlStdButton.h"
-#include "../../Include/xl/Win32/GUI/xlStdEdit.h"
-#include "../../Include/xl/Win32/Memory/xlSafeSmartPtr.h"
-#include "../../Include/xl/Win32/Messaging/xlMessageBus.h"
+#include "../../Include/xl/Windows/GUI/xlWindow.h"
+#include "../../Include/xl/Windows/GUI/xlStdButton.h"
+#include "../../Include/xl/Windows/GUI/xlStdEdit.h"
+#include "../../Include/xl/Windows/Memory/xlSafeSmartPtr.h"
+#include "../../Include/xl/Windows/Messaging/xlMessageBus.h"
 
 enum
 {

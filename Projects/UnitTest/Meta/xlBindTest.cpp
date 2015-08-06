@@ -14,9 +14,9 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/Framework/xlUnitTest.h"
+#include "../../../Include/xl/AppHelper/xlUnitTest.h"
 #include "../../../Include/xl/Common/Meta/xlBind.h"
-#include "../../../Include/xl/Win32/Threads/xlThread.h"
+#include "../../../Include/xl/Windows/Threads/xlThread.h"
 
 namespace
 {

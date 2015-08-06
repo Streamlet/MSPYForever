@@ -19,8 +19,8 @@
 #include "../Meta/xlMacros.h"
 #include "../Meta/xlScopeExit.h"
 #include "../String/xlString.h"
-#include "../Win32/Threads/xlCriticalSection.h"
-#include "../Win32/xlHandle.h"
+#include "../Windows/Threads/xlCriticalSection.h"
+#include "../Windows/xlHandle.h"
 #include <tchar.h>
 
 // Define following macros before include this file

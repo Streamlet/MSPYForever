@@ -15,7 +15,7 @@
 
 
 #include "../../../Include/xl/Common/Containers/xlList.h"
-#include "../../../Include/xl/Framework/xlUnitTest.h"
+#include "../../../Include/xl/AppHelper/xlUnitTest.h"
 
 namespace
 {
