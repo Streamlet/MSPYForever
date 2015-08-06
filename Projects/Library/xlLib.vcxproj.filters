@@ -2,263 +2,263 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="..\..\Include\xl\xlDef.h" />
-    <ClInclude Include="..\..\Include\xl\Win32\xlWin32Ver.h">
-      <Filter>Win32</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\xlWin32Ver.h">
+      <Filter>Windows</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlCriticalSection.h">
-      <Filter>Win32\Threads</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlCriticalSection.h">
+      <Filter>Windows\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlThread.h">
-      <Filter>Win32\Threads</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlThread.h">
+      <Filter>Windows\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlThreadPool.h">
-      <Filter>Win32\Threads</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlThreadPool.h">
+      <Filter>Windows\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlTls.h">
-      <Filter>Win32\Threads</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlTls.h">
+      <Filter>Windows\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Registry\xlRegistry.h">
-      <Filter>Win32\Registry</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Registry\xlRegistry.h">
+      <Filter>Windows\Registry</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Network\xlSocket.h">
-      <Filter>Win32\Network</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Network\xlSocket.h">
+      <Filter>Windows\Network</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Messaging\xlMessageBus.h">
-      <Filter>Win32\Messaging</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Messaging\xlMessageBus.h">
+      <Filter>Windows\Messaging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Memory\xlHeap.h">
-      <Filter>Win32\Memory</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Memory\xlHeap.h">
+      <Filter>Windows\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Memory\xlSafeSmartPtr.h">
-      <Filter>Win32\Memory</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Memory\xlSafeSmartPtr.h">
+      <Filter>Windows\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlCommCtrlInitializer.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlCommCtrlInitializer.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlDialog.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlDialog.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdButton.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdButton.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdComboBox.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdComboBox.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdEdit.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdEdit.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdLink.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdLink.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdListBox.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdListBox.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdListView.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdListView.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdScrollBar.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdScrollBar.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdStatic.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdStatic.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlThunk.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlThunk.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComDef.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComDef.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\Objects\xlMediaPlayer.h">
-      <Filter>Win32\COM\Objects</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlMediaPlayer.h">
+      <Filter>Windows\COM\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\Objects\xlOleContainer.h">
-      <Filter>Win32\COM\Objects</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlOleContainer.h">
+      <Filter>Windows\COM\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\Objects\xlWebBrowser.h">
-      <Filter>Win32\COM\Objects</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlWebBrowser.h">
+      <Filter>Windows\COM\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIClassFactoryImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIClassFactoryImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIDispatchImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDispatchImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleClientSiteImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleClientSiteImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIOleWindowImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleWindowImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITypeCompImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITypeCompImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITypeInfoImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITypeInfoImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITypeLibImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITypeLibImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIUnknownImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIUnknownImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIWMPCoreImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIWMPCoreImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIWMPPlayerImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIWMPPlayerImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComModule.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComModule.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlClassFactory.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlClassFactory.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlDispatcher.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlDispatcher.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComLoader.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComLoader.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\File\xlIniFile.h">
-      <Filter>Win32\File</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\File\xlIniFile.h">
+      <Filter>Windows\File</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComClass.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComClass.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComInclude.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComInclude.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlIObjectWithSiteImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIObjectWithSiteImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlStdProgressBar.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdProgressBar.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Network\xlWinHttp.h">
-      <Filter>Win32\Network</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Network\xlWinHttp.h">
+      <Filter>Windows\Network</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Threads\xlEvent.h">
-      <Filter>Win32\Threads</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlEvent.h">
+      <Filter>Windows\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\xlHandle.h">
-      <Filter>Win32</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\xlHandle.h">
+      <Filter>Windows</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Network\xlHttpIO.h">
-      <Filter>Win32\Network</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Network\xlHttpIO.h">
+      <Filter>Windows\Network</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Timer\xlTimer.h">
-      <Filter>Win32\Timer</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Timer\xlTimer.h">
+      <Filter>Windows\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\xlComPtr.h">
-      <Filter>Win32\COM</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComPtr.h">
+      <Filter>Windows\COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfCompositionSinkImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfCompositionSinkImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfFunctionProviderImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfFunctionProviderImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfFnGetPreferredTouchKeyboardLayoutImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfFnGetPreferredTouchKeyboardLayoutImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfFunctionImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfFunctionImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfTextEditSinkImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfTextEditSinkImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfLangBarItemImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfLangBarItemImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\COM\InterfaceHelper\xlITfSourceImpl.h">
-      <Filter>Win32\COM\InterfaceHelper</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfSourceImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\xlDllHelper.h">
-      <Filter>Win32</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\xlDllHelper.h">
+      <Filter>Windows</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlWindow.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindow.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlWindowMessage.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindowMessage.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlWindowHelper.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindowHelper.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\GUI\xlMenu.h">
-      <Filter>Win32\GUI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlMenu.h">
+      <Filter>Windows\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlRenderer.h">
-      <Filter>Win32\Rendering</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlRenderer.h">
+      <Filter>Windows\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlGraphics.h">
-      <Filter>Win32\Rendering</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlGraphics.h">
+      <Filter>Windows\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlBitmap.h">
-      <Filter>Win32\Rendering</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlBitmap.h">
+      <Filter>Windows\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\xlBitmapDef.h">
-      <Filter>Win32\Rendering</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlBitmapDef.h">
+      <Filter>Windows\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\File\xlPath.h">
-      <Filter>Win32\File</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\File\xlPath.h">
+      <Filter>Windows\File</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\D2D\xlBitmapD2D1.h">
-      <Filter>Win32\Rendering\D2D</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\D2D\xlBitmapD2D1.h">
+      <Filter>Windows\Rendering\D2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\D2D\xlBitmapD2D1Point1.h">
-      <Filter>Win32\Rendering\D2D</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\D2D\xlBitmapD2D1Point1.h">
+      <Filter>Windows\Rendering\D2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDI\xlBitmapGDI.h">
-      <Filter>Win32\Rendering\GDI</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDI\xlBitmapGDI.h">
+      <Filter>Windows\Rendering\GDI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlBitmapGDIPlus.h">
-      <Filter>Win32\Rendering\GDIPlus</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDIPlus\xlBitmapGDIPlus.h">
+      <Filter>Windows\Rendering\GDIPlus</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlGDIPlusUtility.h">
-      <Filter>Win32\Rendering\GDIPlus</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDIPlus\xlGDIPlusUtility.h">
+      <Filter>Windows\Rendering\GDIPlus</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Win32\Rendering\GDIPlus\xlGDIPlusImports.h">
-      <Filter>Win32\Rendering\GDIPlus</Filter>
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDIPlus\xlGDIPlusImports.h">
+      <Filter>Windows\Rendering\GDIPlus</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Include\xl\Common\Algorithm\xlSort.h">
       <Filter>Common\Algorithm</Filter>
@@ -373,52 +373,52 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Win32">
+    <Filter Include="Windows">
       <UniqueIdentifier>{102cd56f-27ba-4765-8d3d-9a5993bb5adc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Threads">
+    <Filter Include="Windows\Threads">
       <UniqueIdentifier>{1149c127-8b1f-4d36-acbc-b1738933713f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Registry">
+    <Filter Include="Windows\Registry">
       <UniqueIdentifier>{079e4256-1fa5-4a71-9ca4-18b3c1027c21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Network">
+    <Filter Include="Windows\Network">
       <UniqueIdentifier>{d42b9e83-33dc-4c93-a871-d95f92226422}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Messaging">
+    <Filter Include="Windows\Messaging">
       <UniqueIdentifier>{d87186b7-1a23-46fd-823c-6258f4883ca4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Memory">
+    <Filter Include="Windows\Memory">
       <UniqueIdentifier>{598a700a-d958-4be1-a8cc-7534dcb693d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\GUI">
+    <Filter Include="Windows\GUI">
       <UniqueIdentifier>{b74ade2e-a70f-49d2-97ff-023bd4bc59d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\COM">
+    <Filter Include="Windows\COM">
       <UniqueIdentifier>{0f7f3b1d-867d-4ae6-9a28-4eb58181d1c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\COM\InterfaceHelper">
+    <Filter Include="Windows\COM\InterfaceHelper">
       <UniqueIdentifier>{bf49ff24-15f8-451b-84e0-2e48d7737e70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\COM\Objects">
+    <Filter Include="Windows\COM\Objects">
       <UniqueIdentifier>{f3ece58d-9f3b-43fd-8e48-78af0d13b73d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\File">
+    <Filter Include="Windows\File">
       <UniqueIdentifier>{09c53fd6-b24b-4251-aedb-7111dd89032a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Timer">
+    <Filter Include="Windows\Timer">
       <UniqueIdentifier>{af76c0df-7b0f-4f0b-a3c0-b0cdc8fe3861}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Rendering">
+    <Filter Include="Windows\Rendering">
       <UniqueIdentifier>{337d2ca9-a62b-475d-ab6d-2b8cc81f49dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Rendering\D2D">
+    <Filter Include="Windows\Rendering\D2D">
       <UniqueIdentifier>{0816c939-3703-4f15-8d74-da21fbb38e5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Rendering\GDI">
+    <Filter Include="Windows\Rendering\GDI">
       <UniqueIdentifier>{50367632-1549-4eb4-848d-14ef339cff2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Rendering\GDIPlus">
+    <Filter Include="Windows\Rendering\GDIPlus">
       <UniqueIdentifier>{9ff76a17-8e82-4e14-a536-b8857ae0f0f0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common">
@@ -463,8 +463,8 @@
     <Text Include="..\..\Include\xl\AppHelper\Readme.txt">
       <Filter>AppHelper</Filter>
     </Text>
-    <Text Include="..\..\Include\xl\Win32\Readme.txt">
-      <Filter>Win32</Filter>
+    <Text Include="..\..\Include\xl\Windows\Readme.txt">
+      <Filter>Windows</Filter>
     </Text>
     <Text Include="..\..\Include\xl\Linux\Readme.txt">
       <Filter>Linux</Filter>
