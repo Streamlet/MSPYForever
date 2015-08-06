@@ -95,7 +95,7 @@ namespace xl
                 }
                 else
                 {
-                    _tprintf(_T("%d cases succeeded. Following %d cases failed:\r\n"), nSucceededCases, mapFailedCases.Size());
+                    _tprintf(_T("%d cases succeeded. Following %d cases failed:\r\n"), nSucceededCases, (int)mapFailedCases.Size());
 
                     for (auto it = mapFailedCases.Begin(); it != mapFailedCases.End(); ++it)
                     {

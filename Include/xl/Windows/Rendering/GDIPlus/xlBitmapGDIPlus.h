@@ -320,7 +320,7 @@ namespace xl
                 }
 
                 LPBYTE lpBuffer = new BYTE[cbSize];
-                hr = spStream->Read(lpBuffer, cbSize, NULL);
+                hr = spStream->Read(lpBuffer, (ULONG)cbSize, nullptr);
 
                 if (FAILED(hr))
                 {
