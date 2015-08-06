@@ -365,11 +365,11 @@
     <ClInclude Include="..\..\Include\xl\Common\String\xlBase64.h">
       <Filter>Common\String</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Framework\xlLog.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlLog.h">
+      <Filter>AppHelper</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Framework\xlUnitTest.h">
-      <Filter>Framework</Filter>
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlUnitTest.h">
+      <Filter>AppHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -448,8 +448,32 @@
     <Filter Include="Common\String">
       <UniqueIdentifier>{99b650a2-4bc1-46ce-9e16-af03017153bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework">
-      <UniqueIdentifier>{974abefc-643e-44ec-9732-b99218637801}</UniqueIdentifier>
+    <Filter Include="Linux">
+      <UniqueIdentifier>{1d151f47-8c60-4d06-b899-9b20c1fa3bf2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CrossPlatform">
+      <UniqueIdentifier>{c437d697-5a3a-4602-a8e9-c2e4dbc18292}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AppHelper">
+      <UniqueIdentifier>{b01a7a0a-10e7-4c74-b1a3-a625caa563b2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Include\xl\Readme.txt" />
+    <Text Include="..\..\Include\xl\AppHelper\Readme.txt">
+      <Filter>AppHelper</Filter>
+    </Text>
+    <Text Include="..\..\Include\xl\Win32\Readme.txt">
+      <Filter>Win32</Filter>
+    </Text>
+    <Text Include="..\..\Include\xl\Linux\Readme.txt">
+      <Filter>Linux</Filter>
+    </Text>
+    <Text Include="..\..\Include\xl\CrossPlatform\Readme.txt">
+      <Filter>CrossPlatform</Filter>
+    </Text>
+    <Text Include="..\..\Include\xl\Common\Readme.txt">
+      <Filter>Common</Filter>
+    </Text>
   </ItemGroup>
 </Project>

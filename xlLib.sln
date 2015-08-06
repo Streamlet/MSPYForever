@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PerfTest", "PerfTest", "{61
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Projects\Test\Test.vcxproj", "{6620C303-0D70-41AF-82BF-CA7EA66A1B21}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlLib", "Projects\xlLib\xlLib.vcxproj", "{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlLib", "Projects\Library\xlLib.vcxproj", "{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "Projects\UnitTest\UnitTest.vcxproj", "{538AE18F-F369-4B89-B8E0-DBD5EDA379F1}"
 EndProject
