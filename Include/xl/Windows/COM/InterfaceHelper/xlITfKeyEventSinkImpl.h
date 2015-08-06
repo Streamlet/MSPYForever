@@ -20,44 +20,46 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfKeyEventSink>
-    class ITfKeyEventSinkImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfKeyEventSink Methods
-        STDMETHODIMP OnSetFocus(BOOL fForeground)
+        template <typename T = ITfKeyEventSink>
+        class ITfKeyEventSinkImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // ITfKeyEventSink Methods
+            STDMETHODIMP OnSetFocus(BOOL fForeground)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnTestKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP OnTestKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP OnKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnTestKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP OnTestKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP OnKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pIsEaten)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnPreservedKey(ITfContext *pContext, REFGUID rguid, BOOL *pIsEaten)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHODIMP OnPreservedKey(ITfContext *pContext, REFGUID rguid, BOOL *pIsEaten)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

@@ -23,123 +23,126 @@
 
 namespace xl
 {
-    class WebBrowserImpl : public OleContainerImpl,
-                           public IDocHostUIHandlerImpl<>,
-                           public DWebBrowserEvents2Impl<>
+    namespace Windows
     {
-    public:
-        WebBrowserImpl() : m_pWebBrowser(nullptr),
-                           m_pCPC(nullptr),
-                           m_pCP(nullptr)
+        class WebBrowserImpl : public OleContainerImpl,
+                               public IDocHostUIHandlerImpl<>,
+                               public DWebBrowserEvents2Impl<>
         {
+        public:
+            WebBrowserImpl() : m_pWebBrowser(nullptr),
+                               m_pCPC(nullptr),
+                               m_pCP(nullptr)
+            {
 
-        }
+            }
 
-        ~WebBrowserImpl()
+            ~WebBrowserImpl()
+            {
+                DestroyWebBrowser();
+            }
+
+        public:
+            bool CreateWebBrowser(HWND hWnd, LPCRECT lpRect = nullptr)
+            {
+                DestroyWebBrowser();
+
+                if (!CreateOleObject(__uuidof(::WebBrowser)))
+                {
+                    return false;
+                }
+
+                if (!InPlaceActive(hWnd, lpRect))
+                {
+                    return false;
+                }
+
+                HRESULT hr = m_pOleObj->QueryInterface(__uuidof(IWebBrowser2), (LPVOID *)&m_pWebBrowser);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                hr = m_pWebBrowser->QueryInterface(__uuidof(IConnectionPointContainer), (LPVOID *)&m_pCPC);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                hr = m_pCPC->FindConnectionPoint(__uuidof(DWebBrowserEvents2), &m_pCP);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                DWORD dwCookie = 0;
+                hr = m_pCP->Advise((DWebBrowserEvents2 *)this, &dwCookie);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+            void DestroyWebBrowser()
+            {
+                if (m_pCP != nullptr)
+                {
+                    m_pCP->Release();
+                    m_pCP = nullptr;
+                }
+
+                if (m_pCPC != nullptr)
+                {
+                    m_pCPC->Release();
+                    m_pCPC = nullptr;
+                }
+
+                if (m_pWebBrowser != nullptr)
+                {
+                    m_pWebBrowser->Release();
+                    m_pWebBrowser = nullptr;
+                }
+
+                DestroyOleObject();
+            }
+
+        protected:
+            IWebBrowser2              *m_pWebBrowser;
+            IConnectionPointContainer *m_pCPC;
+            IConnectionPoint          *m_pCP;
+        };
+
+        class WebBrowser : public ComClass<WebBrowser>,
+            public WebBrowserImpl
         {
-            DestroyWebBrowser();
-        }
-
-    public:
-        bool CreateWebBrowser(HWND hWnd, LPCRECT lpRect = nullptr)
-        {
-            DestroyWebBrowser();
-
-            if (!CreateOleObject(__uuidof(::WebBrowser)))
+        public:
+            WebBrowser()
             {
-                return false;
+
             }
 
-            if (!InPlaceActive(hWnd, lpRect))
+            ~WebBrowser()
             {
-                return false;
+                DestroyWebBrowser();
             }
 
-            HRESULT hr = m_pOleObj->QueryInterface(__uuidof(IWebBrowser2), (LPVOID *)&m_pWebBrowser);
+        public:
+            XL_COM_INTERFACE_BEGIN(WebBrowser)
+                XL_COM_INTERFACE(IOleClientSite)
+                XL_COM_INTERFACE(IOleInPlaceSite)
+                XL_COM_INTERFACE(IOleInPlaceFrame)
+                XL_COM_INTERFACE(IDocHostUIHandler)
+                XL_COM_INTERFACE(DWebBrowserEvents2)
+            XL_COM_INTERFACE_END()
+        };
 
-            if (FAILED(hr))
-            {
-                return false;
-            }
-
-            hr = m_pWebBrowser->QueryInterface(__uuidof(IConnectionPointContainer), (LPVOID *)&m_pCPC);
-
-            if (FAILED(hr))
-            {
-                return false;
-            }
-
-            hr = m_pCPC->FindConnectionPoint(__uuidof(DWebBrowserEvents2), &m_pCP);
-
-            if (FAILED(hr))
-            {
-                return false;
-            }
-
-            DWORD dwCookie = 0;
-            hr = m_pCP->Advise((DWebBrowserEvents2 *)this, &dwCookie);
-
-            if (FAILED(hr))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        void DestroyWebBrowser()
-        {
-            if (m_pCP != nullptr)
-            {
-                m_pCP->Release();
-                m_pCP = nullptr;
-            }
-
-            if (m_pCPC != nullptr)
-            {
-                m_pCPC->Release();
-                m_pCPC = nullptr;
-            }
-
-            if (m_pWebBrowser != nullptr)
-            {
-                m_pWebBrowser->Release();
-                m_pWebBrowser = nullptr;
-            }
-
-            DestroyOleObject();
-        }
-
-    protected:
-        IWebBrowser2              *m_pWebBrowser;
-        IConnectionPointContainer *m_pCPC;
-        IConnectionPoint          *m_pCP;
-    };
-
-    class WebBrowser : public ComClass<WebBrowser>,
-                       public WebBrowserImpl
-    {
-    public:
-        WebBrowser()
-        {
-
-        }
-
-        ~WebBrowser()
-        {
-            DestroyWebBrowser();
-        }
-
-    public:
-        XL_COM_INTERFACE_BEGIN(WebBrowser)
-            XL_COM_INTERFACE(IOleClientSite)
-            XL_COM_INTERFACE(IOleInPlaceSite)
-            XL_COM_INTERFACE(IOleInPlaceFrame)
-            XL_COM_INTERFACE(IDocHostUIHandler)
-            XL_COM_INTERFACE(DWebBrowserEvents2)
-        XL_COM_INTERFACE_END()
-    };
-
+    } // namespace Windows
 } // namespace xl
 
 

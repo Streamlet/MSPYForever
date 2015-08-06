@@ -16,71 +16,74 @@
 #define __XLTIMER_H_39C0A466_0EB3_4D32_879B_1984722D3AEE_INCLUDED__
 
 
-#include "../../Meta/xlFunction.h"
+#include "../../Common/Meta/xlFunction.h"
 #include "../GUI/xlThunk.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 
 namespace xl
 {
-    typedef Function<void (DWORD dwTime)> TimerCallback;
-
-    class Timer
+    namespace Windows
     {
-    public:
-        Timer() : m_uTimerId(0)
-        {
-        
-        }
+        typedef Function<void(DWORD dwTime)> TimerCallback;
 
-        ~Timer()
+        class Timer
         {
-            Kill();
-        }
-
-    public:
-        bool Set(UINT uElapse, TimerCallback fnCallback)
-        {
-            if (m_uTimerId != 0)
+        public:
+            Timer() : m_uTimerId(0)
             {
-                return false;
+
             }
 
-            m_fnCallback = fnCallback;
-            m_thunk.SetObject(this);
-            m_thunk.SetRealProc(StaticTimerProc);
-
-            m_uTimerId = SetTimer(nullptr, 0, uElapse, m_thunk.GetThunkProc());
-
-            if (m_uTimerId == 0)
+            ~Timer()
             {
-                return false;
+                Kill();
             }
 
-            return true;
-        }
-
-        void Kill()
-        {
-            if (m_uTimerId != 0)
+        public:
+            bool Set(UINT uElapse, TimerCallback fnCallback)
             {
-                KillTimer(nullptr, m_uTimerId);
-                m_uTimerId = 0;
+                if (m_uTimerId != 0)
+                {
+                    return false;
+                }
+
+                m_fnCallback = fnCallback;
+                m_thunk.SetObject(this);
+                m_thunk.SetRealProc(StaticTimerProc);
+
+                m_uTimerId = SetTimer(nullptr, 0, uElapse, m_thunk.GetThunkProc());
+
+                if (m_uTimerId == 0)
+                {
+                    return false;
+                }
+
+                return true;
             }
-        }
 
-    protected:
-        static VOID CALLBACK StaticTimerProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
-        {
-            return ((Timer *)hWnd)->m_fnCallback(dwTime);
-        }
+            void Kill()
+            {
+                if (m_uTimerId != 0)
+                {
+                    KillTimer(nullptr, m_uTimerId);
+                    m_uTimerId = 0;
+                }
+            }
 
-    protected:
-        UINT_PTR m_uTimerId;
-        Thunk<TIMERPROC> m_thunk;
-        TimerCallback m_fnCallback;
-    };
+        protected:
+            static VOID CALLBACK StaticTimerProc(HWND hWnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
+            {
+                return ((Timer *)hWnd)->m_fnCallback(dwTime);
+            }
 
+        protected:
+            UINT_PTR m_uTimerId;
+            Thunk<TIMERPROC> m_thunk;
+            TimerCallback m_fnCallback;
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLTIMER_H_39C0A466_0EB3_4D32_879B_1984722D3AEE_INCLUDED__

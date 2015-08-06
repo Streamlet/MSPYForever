@@ -31,7 +31,7 @@ int _tmain(int argc, TCHAR * argv[])
         lpFilter = argv[1];
     }
 
-    int iRet = XL_RUN_TEST_CASES(lpFilter);
+    int iRet = XL_TEST_RUN_ALL_CASES(lpFilter);
 
     system("pause");
     return iRet;

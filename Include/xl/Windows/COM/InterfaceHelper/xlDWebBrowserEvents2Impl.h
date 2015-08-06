@@ -22,12 +22,15 @@
 
 namespace xl
 {
-    template <typename T = DWebBrowserEvents2>
-    class DWebBrowserEvents2Impl : public IDispatchImpl<T>
+    namespace Windows
     {
+        template <typename T = DWebBrowserEvents2>
+        class DWebBrowserEvents2Impl : public IDispatchImpl<T>
+        {
 
-    };
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

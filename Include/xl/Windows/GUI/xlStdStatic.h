@@ -21,101 +21,104 @@
 
 namespace xl
 {
-    class StdStatic : public Window
+    namespace Windows
     {
-    public:
-        StdStatic()
+        class StdStatic : public Window
         {
-
-        }
-
-        StdStatic(HWND hWnd) :
-            Window(hWnd)
-        {
-
-        }
-
-        ~StdStatic()
-        {
-
-        }
-
-    protected:
-        static LPCTSTR GetClassName()
-        {
-            return WC_STATIC;
-        }
-
-    public:
-        bool Create(HWND hParent,
-                    UINT nID,
-                    int x,
-                    int y,
-                    int nWidth,
-                    int nHeight,
-                    DWORD dwStyle = WS_CHILD | WS_VISIBLE,
-                    DWORD dwExStyle = 0)
-        {
-            if (!Window::Create(hParent,
-                                x,
-                                y,
-                                nWidth,
-                                nHeight,
-                                dwStyle,
-                                dwExStyle,
-                                WC_STATIC,
-                                nullptr,
-                                (HMENU)(size_t)nID,
-                                nullptr))
+        public:
+            StdStatic()
             {
-                return false;
+
             }
 
-            return true;
-        }
+            StdStatic(HWND hWnd) :
+                Window(hWnd)
+            {
 
-    public:
-        HICON GetIcon() const
-        {
-            return (HICON)::SendMessage(m_hWnd, STM_GETICON, 0, 0);
-        }
+            }
 
-        HICON SetIcon(HICON hIcon)
-        {
-            return (HICON)::SendMessage(m_hWnd, STM_SETICON, (WPARAM)hIcon, 0);
-        }
+            ~StdStatic()
+            {
 
-        HENHMETAFILE GetEnhMetaFile() const
-        {
-            return (HENHMETAFILE)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_ENHMETAFILE, 0);
-        }
+            }
 
-        HENHMETAFILE SetEnhMetaFile(HENHMETAFILE hMetaFile)
-        {
-            return (HENHMETAFILE)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_ENHMETAFILE, (LPARAM)hMetaFile);
-        }
+        protected:
+            static LPCTSTR GetClassName()
+            {
+                return WC_STATIC;
+            }
 
-        HBITMAP GetBitmap() const
-        {
-            return (HBITMAP)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_BITMAP, 0);
-        }
+        public:
+            bool Create(HWND hParent,
+                        UINT nID,
+                        int x,
+                        int y,
+                        int nWidth,
+                        int nHeight,
+                        DWORD dwStyle = WS_CHILD | WS_VISIBLE,
+                        DWORD dwExStyle = 0)
+            {
+                if (!Window::Create(hParent,
+                                    x,
+                                    y,
+                                    nWidth,
+                                    nHeight,
+                                    dwStyle,
+                                    dwExStyle,
+                                    WC_STATIC,
+                                    nullptr,
+                                    (HMENU)(size_t)nID,
+                                    nullptr))
+                {
+                    return false;
+                }
 
-        HBITMAP SetBitmap(HBITMAP hBitmap)
-        {
-            return (HBITMAP)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitmap);
-        }
+                return true;
+            }
 
-        HCURSOR GetCursor() const
-        {
-            return (HCURSOR)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_CURSOR, 0);
-        }
+        public:
+            HICON GetIcon() const
+            {
+                return (HICON)::SendMessage(m_hWnd, STM_GETICON, 0, 0);
+            }
 
-        HCURSOR SetCursor(HCURSOR hCursor)
-        {
-            return (HCURSOR)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_CURSOR, (LPARAM)hCursor);
-        }
-    };
+            HICON SetIcon(HICON hIcon)
+            {
+                return (HICON)::SendMessage(m_hWnd, STM_SETICON, (WPARAM)hIcon, 0);
+            }
 
+            HENHMETAFILE GetEnhMetaFile() const
+            {
+                return (HENHMETAFILE)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_ENHMETAFILE, 0);
+            }
+
+            HENHMETAFILE SetEnhMetaFile(HENHMETAFILE hMetaFile)
+            {
+                return (HENHMETAFILE)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_ENHMETAFILE, (LPARAM)hMetaFile);
+            }
+
+            HBITMAP GetBitmap() const
+            {
+                return (HBITMAP)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_BITMAP, 0);
+            }
+
+            HBITMAP SetBitmap(HBITMAP hBitmap)
+            {
+                return (HBITMAP)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBitmap);
+            }
+
+            HCURSOR GetCursor() const
+            {
+                return (HCURSOR)::SendMessage(m_hWnd, STM_GETIMAGE, IMAGE_CURSOR, 0);
+            }
+
+            HCURSOR SetCursor(HCURSOR hCursor)
+            {
+                return (HCURSOR)::SendMessage(m_hWnd, STM_SETIMAGE, IMAGE_CURSOR, (LPARAM)hCursor);
+            }
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLSTDSTATIC_H_1715D513_4BF0_431F_BC57_C347432395BB_INCLUDED__

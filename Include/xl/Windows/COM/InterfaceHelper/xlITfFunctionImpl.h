@@ -20,19 +20,21 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfFunction>
-    class ITfFunctionImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfFunction Methods
-        STDMETHODIMP GetDisplayName(BSTR *pbstrDisplayName)
+        template <typename T = ITfFunction>
+        class ITfFunctionImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
-    };
+        public: // ITfFunction Methods
+            STDMETHODIMP GetDisplayName(BSTR *pbstrDisplayName)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

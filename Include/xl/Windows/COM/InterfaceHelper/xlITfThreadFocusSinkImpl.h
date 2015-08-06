@@ -20,24 +20,26 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfThreadFocusSink>
-    class ITfThreadFocusSinkImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfThreadFocusSink Methods
-        STDMETHODIMP OnSetThreadFocus()
+        template <typename T = ITfThreadFocusSink>
+        class ITfThreadFocusSinkImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // ITfThreadFocusSink Methods
+            STDMETHODIMP OnSetThreadFocus()
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnKillThreadFocus()
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHODIMP OnKillThreadFocus()
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

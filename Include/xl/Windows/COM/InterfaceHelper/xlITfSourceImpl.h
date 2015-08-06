@@ -20,24 +20,26 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfSource>
-    class ITfSourceImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfSource Methods
-        STDMETHODIMP AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie)
+        template <typename T = ITfSource>
+        class ITfSourceImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // ITfSource Methods
+            STDMETHODIMP AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP UnadviseSink(DWORD dwCookie)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHODIMP UnadviseSink(DWORD dwCookie)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLITFSOURCEIMPL_H_D0194DCB_B5EA_4E44_A5AD_A52F68D19A1D_INCLUDED__

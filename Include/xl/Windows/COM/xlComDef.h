@@ -22,40 +22,42 @@
 
 namespace xl
 {
-    struct InterfaceEntry
+    namespace Windows
     {
-    	const IID *piid;
-        DWORD_PTR dwOffset;
-    };
+        struct InterfaceEntry
+        {
+            const IID *piid;
+            DWORD_PTR dwOffset;
+        };
 
-    struct IComModule
-    {
-    public:
-        virtual ULONG STDMETHODCALLTYPE ObjectAddRef() PURE;
-        virtual ULONG STDMETHODCALLTYPE ObjectRelease() PURE;
+        struct IComModule
+        {
+        public:
+            virtual ULONG STDMETHODCALLTYPE ObjectAddRef() PURE;
+            virtual ULONG STDMETHODCALLTYPE ObjectRelease() PURE;
 
-    public:
-        virtual ULONG STDMETHODCALLTYPE LockAddRef() PURE;
-        virtual ULONG STDMETHODCALLTYPE LockRelease() PURE;
+        public:
+            virtual ULONG STDMETHODCALLTYPE LockAddRef() PURE;
+            virtual ULONG STDMETHODCALLTYPE LockRelease() PURE;
 
-    public:
-        STDMETHOD(GetTypeInfo)(REFIID riid, ITypeInfo **ppTinfo) PURE;
+        public:
+            STDMETHOD(GetTypeInfo)(REFIID riid, ITypeInfo **ppTinfo) PURE;
 
-    public:
-        STDMETHOD(DllCanUnloadNow)() PURE;
-        STDMETHOD(DllGetClassObject)(REFCLSID rclsid, REFIID riid, LPVOID *ppv) PURE;
-        STDMETHOD(DllRegisterServer)() PURE;
-        STDMETHOD(DllUnregisterServer)() PURE;
-        STDMETHOD(DllInstall)(BOOL bInstall, LPCTSTR lpszCmdLine) PURE;
+        public:
+            STDMETHOD(DllCanUnloadNow)() PURE;
+            STDMETHOD(DllGetClassObject)(REFCLSID rclsid, REFIID riid, LPVOID *ppv) PURE;
+            STDMETHOD(DllRegisterServer)() PURE;
+            STDMETHOD(DllUnregisterServer)() PURE;
+            STDMETHOD(DllInstall)(BOOL bInstall, LPCTSTR lpszCmdLine) PURE;
 
-    public:
-        STDMETHOD(ExeRegisterServer)() PURE;
-        STDMETHOD(ExeUnregisterServer)() PURE;
-        STDMETHOD(ExeRegisterClassObject)() PURE;
-        STDMETHOD(ExeUnregisterClassObject)() PURE;
-    };
+        public:
+            STDMETHOD(ExeRegisterServer)() PURE;
+            STDMETHOD(ExeUnregisterServer)() PURE;
+            STDMETHOD(ExeRegisterClassObject)() PURE;
+            STDMETHOD(ExeUnregisterClassObject)() PURE;
+        };
 
-    __declspec(selectany) IComModule *g_pComModule = nullptr;
+        __declspec(selectany) IComModule *g_pComModule = nullptr;
 
 #define XL_COM_INTERFACE_BEGIN(c)                                                                       \
                                                                                                         \
@@ -93,28 +95,28 @@ namespace xl
             return InternalRelease();                                                                   \
         }                                                                                               \
 
-    typedef IClassFactory *(*ClassFactoryCreator)(bool);
+        typedef IClassFactory *(*ClassFactoryCreator)(bool);
 
-    struct ClassEntry
-    {
-        const CLSID        *pClsid;
-        ClassFactoryCreator pfnCreator;
-        LPCTSTR             lpszClassDesc;
-        LPCTSTR             lpszProgID;
-        LPCTSTR             lpszVersion;
-    };
+        struct ClassEntry
+        {
+            const CLSID        *pClsid;
+            ClassFactoryCreator pfnCreator;
+            LPCTSTR             lpszClassDesc;
+            LPCTSTR             lpszProgID;
+            LPCTSTR             lpszVersion;
+        };
 
 #pragma section("XL_COM_CLASSES$__a", read)
 #pragma section("XL_COM_CLASSES$__m", read)
 #pragma section("XL_COM_CLASSES$__z", read)
 
-    extern "C"
-    {
-        __declspec(selectany) __declspec(allocate("XL_COM_CLASSES$__a"))
-            const xl::ClassEntry *LP_CLASS_BEGIN = nullptr;
-        __declspec(selectany) __declspec(allocate("XL_COM_CLASSES$__z"))
-            const xl::ClassEntry *LP_CLASS_END = nullptr;
-    }
+        extern "C"
+        {
+            __declspec(selectany) __declspec(allocate("XL_COM_CLASSES$__a"))
+                const xl::Windows::ClassEntry *LP_CLASS_BEGIN = nullptr;
+            __declspec(selectany) __declspec(allocate("XL_COM_CLASSES$__z"))
+                const xl::Windows::ClassEntry *LP_CLASS_END = nullptr;
+        }
 
 #if !defined(_M_IA64)
 #pragma comment(linker, "/merge:XL_COM_CLASSES=.rdata")
@@ -143,6 +145,7 @@ namespace xl
     XL_CLASS_MAP_PRAGMA(class)                                                  \
 
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLCOMDEF_H_4B89206D_F947_4052_B92D_FD7B1E00CB8F_INCLUDED__

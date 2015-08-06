@@ -25,21 +25,24 @@
 
 namespace xl
 {
-    class CommCtrlInitializer : public NonCopyable
+    namespace Windows
     {
-    public:
-        CommCtrlInitializer()
+        class CommCtrlInitializer : public NonCopyable
         {
-            INITCOMMONCONTROLSEX iccx = { sizeof(INITCOMMONCONTROLSEX), 0xffffffff };
-            InitCommonControlsEx(&iccx);
-        }
+        public:
+            CommCtrlInitializer()
+            {
+                INITCOMMONCONTROLSEX iccx = { sizeof(INITCOMMONCONTROLSEX), 0xffffffff };
+                InitCommonControlsEx(&iccx);
+            }
 
-        ~CommCtrlInitializer()
-        {
+            ~CommCtrlInitializer()
+            {
 
-        }
-    };
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #if defined _M_IX86

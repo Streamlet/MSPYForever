@@ -21,6 +21,7 @@
 namespace
 {
     using namespace xl;
+    using namespace xl::Windows;
 
     int __cdecl cdecl0()
     {

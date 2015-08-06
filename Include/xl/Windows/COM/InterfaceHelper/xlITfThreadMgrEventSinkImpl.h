@@ -20,39 +20,41 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfThreadMgrEventSink>
-    class ITfThreadMgrEventSinkImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfThreadMgrEventSink Methods
-        STDMETHODIMP OnInitDocumentMgr(ITfDocumentMgr *pdim)
+        template <typename T = ITfThreadMgrEventSink>
+        class ITfThreadMgrEventSinkImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // ITfThreadMgrEventSink Methods
+            STDMETHODIMP OnInitDocumentMgr(ITfDocumentMgr *pdim)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnUninitDocumentMgr(ITfDocumentMgr *pdim)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP OnUninitDocumentMgr(ITfDocumentMgr *pdim)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnSetFocus(ITfDocumentMgr *pdimFocus, ITfDocumentMgr *pdimPrevFocus)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP OnSetFocus(ITfDocumentMgr *pdimFocus, ITfDocumentMgr *pdimPrevFocus)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnPushContext(ITfContext *pic)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP OnPushContext(ITfContext *pic)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP OnPopContext(ITfContext *pic)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHODIMP OnPopContext(ITfContext *pic)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLITFTHREADMGREVENTSINKIMPL_H_7345FEB4_6F04_49FA_8B02_96FD02309A02_INCLUDED__

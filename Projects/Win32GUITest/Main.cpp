@@ -32,37 +32,37 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
                      __in LPTSTR lpCmdLine,
                      __in int nShowCmd)
 {
-    xl::Menu popupMenu;
+    xl::Windows::Menu popupMenu;
     popupMenu.CreatePopup();
     AppendMenu(popupMenu, MF_POPUP | MF_STRING, 103, _T("&New"));
     AppendMenu(popupMenu, MF_POPUP | MF_STRING, 104, _T("&Open"));
     AppendMenu(popupMenu, MF_POPUP | MF_SEPARATOR, 0, nullptr);
     AppendMenu(popupMenu, MF_POPUP | MF_STRING, 105, _T("&Quit"));
 
-    xl::Menu mainMenu;
+    xl::Windows::Menu mainMenu;
     mainMenu.Create();
     AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)(HMENU)popupMenu, _T("&File"));
     AppendMenu(mainMenu, MF_STRING, 101, _T("&Edit"));
     AppendMenu(mainMenu, MF_SEPARATOR, 0, nullptr);
     AppendMenu(mainMenu, MF_STRING, 102, _T("&Help"));
 
-    xl::Window wnd;
+    xl::Windows::Window wnd;
     wnd.Create(nullptr, 300, 240, 500, 400, WS_OVERLAPPEDWINDOW, 0);
     SetWindowText(wnd, _T("MyWindow"));
     SetMenu(wnd, mainMenu);
 
-    xl::StdStatic label;
+    xl::Windows::StdStatic label;
     label.Create(wnd, 1, 80, 30, 200, 18);
     SetWindowText(label, _T("Please input:"));
 
-    xl::StdEdit edit;
+    xl::Windows::StdEdit edit;
     edit.Create(wnd, 2, 80, 50, 200, 24);
 
-    xl::StdButton button;
+    xl::Windows::StdButton button;
     button.Create(wnd, 3, 80, 80, 200, 24);
     SetWindowText(button, _T("Show Dialog"));
 
-    xl::StdComboBox combo;
+    xl::Windows::StdComboBox combo;
     combo.Create(wnd, 4, 80, 110, 200, 100);
     combo.AddString(_T("Please select"));
     combo.AddString(_T("Item1"));
@@ -70,17 +70,17 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     combo.AddString(_T("Item3"));
     combo.SetCurSel(0);
 
-    xl::StdListBox list;
+    xl::Windows::StdListBox list;
     list.Create(wnd, 5, 80, 140, 200, 100);
     list.AddString(_T("ListItem1"));
     list.AddString(_T("ListItem2"));
     list.AddString(_T("ListItem3"));
 
-    xl::StdScrollBar scroll;
+    xl::Windows::StdScrollBar scroll;
     scroll.Create(wnd, 6, 474, 0, 20, 372);
     scroll.SetScrollRange(0, 100);
 
-    xl::StdListView listview;
+    xl::Windows::StdListView listview;
     listview.Create(wnd, 7, 300, 30, 160, 150);
     listview.AddColumn(_T("Column0"), 0);
     listview.AddColumn(_T("Column1"), 1);
@@ -90,11 +90,11 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     listview.AddItem(1, 1, _T("R1C1"));
     listview.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT);
 
-    xl::StdLink link;
+    xl::Windows::StdLink link;
     link.Create(wnd, 8, 300, 200, 160, 20);
     SetWindowText(link, _T("<a href=\"http://www.streamlet.org/\">·ÃÎÊÏªÁ÷ÍøÕ¾</a>"));
 
-    xl::StdProgressBar progressbar;
+    xl::Windows::StdProgressBar progressbar;
     progressbar.Create(wnd, 9, 300, 240, 160, 20);
     progressbar.OffsetPos(60);
 
@@ -125,7 +125,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     wnd.AppendCommandMsgHandler(3, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
-        xl::Dialog dlg;
+        xl::Windows::Dialog dlg;
         dlg.Create(wnd, 400, 400);
         SetWindowText(dlg, _T("MyDialog"));
 

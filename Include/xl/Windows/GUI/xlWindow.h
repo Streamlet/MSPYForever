@@ -29,220 +29,223 @@
 
 namespace xl
 {
-    class Window : public NonCopyable, public WindowMessage, public WindowHelper
+    namespace Windows
     {
-    public:
-        Window() :
-            WindowHelper(nullptr), m_fnDefaultProc(::DefWindowProc)
+        class Window : public NonCopyable, public WindowMessage, public WindowHelper
         {
-
-        }
-
-        Window(HWND hWnd) :
-            WindowHelper(nullptr), m_fnDefaultProc(::DefWindowProc)
-        {
-            Attach(hWnd);
-        }
-
-        ~Window()
-        {
-            Destroy();
-            Detach();
-        }
-
-        bool Create(HWND hParent,
-                    int x,
-                    int y,
-                    int nWidth,
-                    int nHeight,
-                    DWORD dwStyle,
-                    DWORD dwExStyle = 0,
-                    LPCTSTR lpClassName = _T("xlWindow"),
-                    LPCTSTR lpWindowName = nullptr,
-                    HMENU hMenu = nullptr,
-                    HINSTANCE hInstance = nullptr,
-                    LPVOID lpParam = nullptr)
-        {
-            if (m_hWnd != nullptr)
+        public:
+            Window() :
+                WindowHelper(nullptr), m_fnDefaultProc(::DefWindowProc)
             {
-                return false;
+
             }
 
-            WNDCLASSEX wcex = { sizeof(WNDCLASSEX) };
-            bool bStdControl = !!GetClassInfoEx(nullptr, lpClassName, &wcex);
-
-            if (!bStdControl)
-            {
-                ZeroMemory(&wcex, sizeof(WNDCLASSEX));
-                wcex.cbSize        = sizeof(WNDCLASSEX);
-                wcex.style         = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;
-                wcex.lpfnWndProc   = StartWndProc;
-                wcex.hInstance     = hInstance;
-                wcex.hCursor       = LoadCursor(NULL, IDC_ARROW);
-                wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-                wcex.lpszClassName = lpClassName;
-
-                RegisterClassEx(&wcex);
-
-                ms_Tls.Set((LPVOID)this);
-            }
-
-            HWND hWnd = CreateWindowEx(dwExStyle,
-                                       lpClassName,
-                                       lpWindowName,
-                                       dwStyle,
-                                       x,
-                                       y,
-                                       nWidth,
-                                       nHeight,
-                                       hParent,
-                                       hMenu,
-                                       hInstance,
-                                       lpParam);
-
-            if (hWnd == nullptr)
-            {
-                return false;
-            }
-
-            if (bStdControl)
+            Window(HWND hWnd) :
+                WindowHelper(nullptr), m_fnDefaultProc(::DefWindowProc)
             {
                 Attach(hWnd);
             }
 
-            if (ms_hFont == nullptr)
+            ~Window()
             {
-                NONCLIENTMETRICS m_tagNONCLIENTMETRICSW = { sizeof(m_tagNONCLIENTMETRICSW) };
-                SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &m_tagNONCLIENTMETRICSW, 0);
-
-                ms_hFont = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMessageFont);
+                Destroy();
+                Detach();
             }
 
-            SetFont(ms_hFont, FALSE);
-
-            return true;
-        }
-
-        bool Destroy()
-        {
-            if (m_hWnd == nullptr)
+            bool Create(HWND hParent,
+                        int x,
+                        int y,
+                        int nWidth,
+                        int nHeight,
+                        DWORD dwStyle,
+                        DWORD dwExStyle = 0,
+                        LPCTSTR lpClassName = _T("xlWindow"),
+                        LPCTSTR lpWindowName = nullptr,
+                        HMENU hMenu = nullptr,
+                        HINSTANCE hInstance = nullptr,
+                        LPVOID lpParam = nullptr)
             {
-                return false;
+                if (m_hWnd != nullptr)
+                {
+                    return false;
+                }
+
+                WNDCLASSEX wcex = { sizeof(WNDCLASSEX) };
+                bool bStdControl = !!GetClassInfoEx(nullptr, lpClassName, &wcex);
+
+                if (!bStdControl)
+                {
+                    ZeroMemory(&wcex, sizeof(WNDCLASSEX));
+                    wcex.cbSize = sizeof(WNDCLASSEX);
+                    wcex.style = CS_VREDRAW | CS_HREDRAW | CS_DBLCLKS;
+                    wcex.lpfnWndProc = StartWndProc;
+                    wcex.hInstance = hInstance;
+                    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+                    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+                    wcex.lpszClassName = lpClassName;
+
+                    RegisterClassEx(&wcex);
+
+                    ms_Tls.Set((LPVOID)this);
+                }
+
+                HWND hWnd = CreateWindowEx(dwExStyle,
+                                           lpClassName,
+                                           lpWindowName,
+                                           dwStyle,
+                                           x,
+                                           y,
+                                           nWidth,
+                                           nHeight,
+                                           hParent,
+                                           hMenu,
+                                           hInstance,
+                                           lpParam);
+
+                if (hWnd == nullptr)
+                {
+                    return false;
+                }
+
+                if (bStdControl)
+                {
+                    Attach(hWnd);
+                }
+
+                if (ms_hFont == nullptr)
+                {
+                    NONCLIENTMETRICS m_tagNONCLIENTMETRICSW = { sizeof(m_tagNONCLIENTMETRICSW) };
+                    SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &m_tagNONCLIENTMETRICSW, 0);
+
+                    ms_hFont = CreateFontIndirect(&m_tagNONCLIENTMETRICSW.lfMessageFont);
+                }
+
+                SetFont(ms_hFont, FALSE);
+
+                return true;
             }
 
-            if (!DestroyWindow(m_hWnd))
+            bool Destroy()
             {
-                return false;
+                if (m_hWnd == nullptr)
+                {
+                    return false;
+                }
+
+                if (!DestroyWindow(m_hWnd))
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        bool Attach(HWND hWnd)
-        {
-            if (m_hWnd != nullptr)
+            bool Attach(HWND hWnd)
             {
-                return false;
-            }
+                if (m_hWnd != nullptr)
+                {
+                    return false;
+                }
 
-            ms_Tls.Set((LPVOID)this);
+                ms_Tls.Set((LPVOID)this);
 
 #ifdef _WIN64
-            m_fnDefaultProc = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
+                m_fnDefaultProc = (WNDPROC)::SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)StartWndProc);
 #else
-            m_fnDefaultProc = (WNDPROC)::SetWindowLong(hWnd, GWL_WNDPROC, (LONG)StartWndProc);
+                m_fnDefaultProc = (WNDPROC)::SetWindowLong(hWnd, GWL_WNDPROC, (LONG)StartWndProc);
 #endif
 
-            // Force the StartWndProc to be called:
-            ::SendMessage(hWnd, WM_NULL, 0, 0);
+                // Force the StartWndProc to be called:
+                ::SendMessage(hWnd, WM_NULL, 0, 0);
 
-            return true;
-        }
+                return true;
+            }
 
-        HWND Detach()
-        {
-            HWND hWnd = m_hWnd;
-
-            if (m_hWnd != nullptr)
+            HWND Detach()
             {
+                HWND hWnd = m_hWnd;
+
+                if (m_hWnd != nullptr)
+                {
 #ifdef _WIN64
-                ::SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)m_fnDefaultProc);
+                    ::SetWindowLongPtr(m_hWnd, GWLP_WNDPROC, (LONG_PTR)m_fnDefaultProc);
 #else
-                ::SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)m_fnDefaultProc);
+                    ::SetWindowLong(m_hWnd, GWL_WNDPROC, (LONG)m_fnDefaultProc);
 #endif
-                m_hWnd = nullptr;
+                    m_hWnd = nullptr;
+                }
+
+                return hWnd;
             }
 
-            return hWnd;
-        }
-
-        LRESULT DefWindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
-        {
-            LRESULT lResult = 0;
-            bHandled = FALSE;
-
-            if (m_fnDefaultProc != nullptr)
+            LRESULT DefWindowProc(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)
             {
-                bHandled = true;
-                lResult = m_fnDefaultProc(m_hWnd, uMsg, wParam, lParam);
+                LRESULT lResult = 0;
+                bHandled = FALSE;
+
+                if (m_fnDefaultProc != nullptr)
+                {
+                    bHandled = true;
+                    lResult = m_fnDefaultProc(m_hWnd, uMsg, wParam, lParam);
+                }
+
+                return lResult;
             }
 
-            return lResult;
-        }
+        private:
+            static LRESULT CALLBACK StartWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+            {
+                Window *pThis = (Window *)ms_Tls.Get();
 
-    private:
-        static LRESULT CALLBACK StartWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-        {
-            Window *pThis = (Window *)ms_Tls.Get();
+                pThis->m_thunk.SetObject(pThis);
+                pThis->m_thunk.SetRealProc(&Window::StaticWndProc);
 
-            pThis->m_thunk.SetObject(pThis);
-            pThis->m_thunk.SetRealProc(&Window::StaticWndProc);
+                pThis->m_hWnd = hWnd;
 
-            pThis->m_hWnd = hWnd;
-
-            WNDPROC pWndProc = pThis->m_thunk.GetThunkProc();
+                WNDPROC pWndProc = pThis->m_thunk.GetThunkProc();
 
 #ifdef _WIN64
-            SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pWndProc);
+                SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pWndProc);
 #else
-            SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pWndProc);
+                SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pWndProc);
 #endif
 
-            return pWndProc(hWnd, uMsg, wParam, lParam);
-        }
-
-        static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-        {
-            BOOL bHandled = TRUE;
-            Window *pThis = (Window *)hWnd;
-            LRESULT lResult = pThis->ProcessMessage(pThis->m_hWnd, uMsg, wParam, lParam, bHandled);
-
-            if (!bHandled)
-            {
-                lResult = pThis->DefWindowProc(uMsg, wParam, lParam, bHandled);
+                return pWndProc(hWnd, uMsg, wParam, lParam);
             }
 
-            if (uMsg == WM_NCDESTROY)
+            static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             {
-                pThis->m_hWnd = nullptr;
+                BOOL bHandled = TRUE;
+                Window *pThis = (Window *)hWnd;
+                LRESULT lResult = pThis->ProcessMessage(pThis->m_hWnd, uMsg, wParam, lParam, bHandled);
+
+                if (!bHandled)
+                {
+                    lResult = pThis->DefWindowProc(uMsg, wParam, lParam, bHandled);
+                }
+
+                if (uMsg == WM_NCDESTROY)
+                {
+                    pThis->m_hWnd = nullptr;
+                }
+
+                return lResult;
             }
 
-            return lResult;
-        }
+        private:
+            WNDPROC        m_fnDefaultProc;
+            Thunk<WNDPROC> m_thunk;
 
-    private:
-        WNDPROC        m_fnDefaultProc;
-        Thunk<WNDPROC> m_thunk;
+            CommCtrlInitializer ms_cci;
 
-        CommCtrlInitializer ms_cci;
+            static Tls     ms_Tls;
+            static HFONT   ms_hFont;
+        };
 
-        static Tls     ms_Tls;
-        static HFONT   ms_hFont;
-    };
+        __declspec(selectany) Tls  Window::ms_Tls;
+        __declspec(selectany) HFONT Window::ms_hFont = nullptr;
 
-    __declspec(selectany) Tls  Window::ms_Tls;
-    __declspec(selectany) HFONT Window::ms_hFont = nullptr;
-
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLWINDOW_H_93972CEE_2D67_4A8B_927D_E327BDE8D4A4_INCLUDED__

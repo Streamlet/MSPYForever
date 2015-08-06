@@ -20,19 +20,21 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfActiveLanguageProfileNotifySink>
-    class ITfActiveLanguageProfileNotifySinkImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfActiveLanguageProfileNotifySink Methods
-        STDMETHODIMP OnActivated(_In_ REFCLSID clsid, _In_ REFGUID guidProfile, _In_ BOOL isActivated)
+        template <typename T = ITfActiveLanguageProfileNotifySink>
+        class ITfActiveLanguageProfileNotifySinkImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
-    };
+        public: // ITfActiveLanguageProfileNotifySink Methods
+            STDMETHODIMP OnActivated(_In_ REFCLSID clsid, _In_ REFGUID guidProfile, _In_ BOOL isActivated)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

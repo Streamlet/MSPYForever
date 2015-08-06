@@ -17,66 +17,71 @@
 
 
 #include "../../Common/String/xlString.h"
+#include "../../Common/Meta/xlUtility.h"
 #include <Windows.h>
 #include <tchar.h>
 
 namespace xl
 {
-    namespace Path
+    namespace Windows
     {
-        String GetFileDir(const String &strFilePath)
+        class Path : public NonCopyable
         {
-            int iSlashPos = strFilePath.LastIndexOf(_T("\\"));
-
-            if (iSlashPos < 0)
+        public:
+            static String GetFileDir(const String &strFilePath)
             {
-                return String();
+                int iSlashPos = strFilePath.LastIndexOf(_T("\\"));
+
+                if (iSlashPos < 0)
+                {
+                    return String();
+                }
+
+                return strFilePath.SubString(0, iSlashPos);
             }
 
-            return strFilePath.SubString(0, iSlashPos);
-        }
-
-        String GetFileName(const String &strFilePath)
-        {
-            int iSlashPos = strFilePath.LastIndexOf(_T("\\"));
-
-            if (iSlashPos < 0)
+            static String GetFileName(const String &strFilePath)
             {
-                return strFilePath;
+                int iSlashPos = strFilePath.LastIndexOf(_T("\\"));
+
+                if (iSlashPos < 0)
+                {
+                    return strFilePath;
+                }
+
+                ++iSlashPos;
+
+                return strFilePath.SubString(iSlashPos, strFilePath.Length() - iSlashPos);
             }
 
-            ++iSlashPos;
-
-            return strFilePath.SubString(iSlashPos, strFilePath.Length() - iSlashPos);
-        }
-
-        String GetFileBaseName(const String &strFileName)
-        {
-            int iDotPos = strFileName.LastIndexOf(_T("."));
-
-            if (iDotPos < 0)
+            static String GetFileBaseName(const String &strFileName)
             {
-                return strFileName;
+                int iDotPos = strFileName.LastIndexOf(_T("."));
+
+                if (iDotPos < 0)
+                {
+                    return strFileName;
+                }
+
+                return strFileName.SubString(0, iDotPos);
             }
 
-            return strFileName.SubString(0, iDotPos);
-        }
-
-        String GetFileExtName(const String &strFileName)
-        {
-            int iDotPos = strFileName.LastIndexOf(_T("."));
-
-            if (iDotPos < 0)
+            static String GetFileExtName(const String &strFileName)
             {
-                return String();
+                int iDotPos = strFileName.LastIndexOf(_T("."));
+
+                if (iDotPos < 0)
+                {
+                    return String();
+                }
+
+                ++iDotPos;
+
+                return strFileName.SubString(iDotPos, strFileName.Length() - iDotPos);
             }
+        };
 
-            ++iDotPos;
-
-            return strFileName.SubString(iDotPos, strFileName.Length() - iDotPos);
-        }
-    }
-
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLPATH_H_14B3352D_18F0_4659_AAB7_ED4630B1C004_INCLUDED__

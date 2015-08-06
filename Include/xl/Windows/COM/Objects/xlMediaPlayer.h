@@ -23,83 +23,86 @@
 
 namespace xl
 {
-    class MediaPlayerImpl : public OleContainerImpl,
-                            public IDispatchImpl<>
+    namespace Windows
     {
-    public:
-        MediaPlayerImpl() : m_pWMPPlayer(nullptr)
+        class MediaPlayerImpl : public OleContainerImpl,
+                                public IDispatchImpl<>
         {
-
-        }
-
-        ~MediaPlayerImpl()
-        {
-            DestroyMediaPlayer();
-        }
-
-    public:
-        bool CreateMediaPlayer(HWND hWnd, LPCRECT lpRect = nullptr)
-        {
-            DestroyMediaPlayer();
-
-            if (!CreateOleObject(__uuidof(WindowsMediaPlayer)))
+        public:
+            MediaPlayerImpl() : m_pWMPPlayer(nullptr)
             {
-                return false;
+
             }
 
-            if (!InPlaceActive(hWnd, lpRect))
+            ~MediaPlayerImpl()
             {
-                return false;
+                DestroyMediaPlayer();
             }
 
-            HRESULT hr = m_pOleObj->QueryInterface(__uuidof(IWMPPlayer), (LPVOID *)&m_pWMPPlayer);
-
-            if (FAILED(hr))
+        public:
+            bool CreateMediaPlayer(HWND hWnd, LPCRECT lpRect = nullptr)
             {
-                return false;
+                DestroyMediaPlayer();
+
+                if (!CreateOleObject(__uuidof(WindowsMediaPlayer)))
+                {
+                    return false;
+                }
+
+                if (!InPlaceActive(hWnd, lpRect))
+                {
+                    return false;
+                }
+
+                HRESULT hr = m_pOleObj->QueryInterface(__uuidof(IWMPPlayer), (LPVOID *)&m_pWMPPlayer);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        void DestroyMediaPlayer()
-        {
-            if (m_pWMPPlayer != NULL)
+            void DestroyMediaPlayer()
             {
-                m_pWMPPlayer->Release();
-                m_pWMPPlayer = nullptr;
+                if (m_pWMPPlayer != NULL)
+                {
+                    m_pWMPPlayer->Release();
+                    m_pWMPPlayer = nullptr;
+                }
+
+                DestroyOleObject();
             }
 
-            DestroyOleObject();
-        }
+        protected:
+            IWMPPlayer *m_pWMPPlayer;
+        };
 
-    protected:
-        IWMPPlayer *m_pWMPPlayer;
-    };
-
-    class MediaPlayer : public ComClass<MediaPlayer>,
-                        public MediaPlayerImpl
-    {
-    public:
-        MediaPlayer()
+        class MediaPlayer : public ComClass<MediaPlayer>,
+                            public MediaPlayerImpl
         {
+        public:
+            MediaPlayer()
+            {
 
-        }
+            }
 
-        ~MediaPlayer()
-        {
-            DestroyMediaPlayer();
-        }
+            ~MediaPlayer()
+            {
+                DestroyMediaPlayer();
+            }
 
-    public:
-        XL_COM_INTERFACE_BEGIN(MediaPlayer)
-            XL_COM_INTERFACE(IOleClientSite)
-            XL_COM_INTERFACE(IOleInPlaceSite)
-            XL_COM_INTERFACE(IOleInPlaceFrame)
-            XL_COM_INTERFACE(IDispatch)
-        XL_COM_INTERFACE_END()
-    };
+        public:
+            XL_COM_INTERFACE_BEGIN(MediaPlayer)
+                XL_COM_INTERFACE(IOleClientSite)
+                XL_COM_INTERFACE(IOleInPlaceSite)
+                XL_COM_INTERFACE(IOleInPlaceFrame)
+                XL_COM_INTERFACE(IDispatch)
+            XL_COM_INTERFACE_END()
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLMEDIAPLAYER_H_90C6295E_B667_44F2_98D6_BA0F435FECB0_INCLUDED__

@@ -20,24 +20,26 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfDisplayAttributeProvider>
-    class ITfDisplayAttributeProviderImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfDisplayAttributeProvider Methods
-        STDMETHODIMP EnumDisplayAttributeInfo(IEnumTfDisplayAttributeInfo **ppEnum)
+        template <typename T = ITfDisplayAttributeProvider>
+        class ITfDisplayAttributeProviderImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // ITfDisplayAttributeProvider Methods
+            STDMETHODIMP EnumDisplayAttributeInfo(IEnumTfDisplayAttributeInfo **ppEnum)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP GetDisplayAttributeInfo(REFGUID guidInfo, ITfDisplayAttributeInfo **ppInfo)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHODIMP GetDisplayAttributeInfo(REFGUID guidInfo, ITfDisplayAttributeInfo **ppInfo)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

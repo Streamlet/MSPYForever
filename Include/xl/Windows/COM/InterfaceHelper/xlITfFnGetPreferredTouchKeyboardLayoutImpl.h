@@ -20,19 +20,21 @@
 #include "xlITfFunctionImpl.h"
 #include <ctffunc.h>
 
-
 namespace xl
 {
-    template <typename T = ITfFnGetPreferredTouchKeyboardLayout>
-    class ITfFnGetPreferredTouchKeyboardLayoutImpl : public ITfFunctionImpl<T>
+    namespace Windows
     {
-    public: // ITfFnGetPreferredTouchKeyboardLayout Methods
-        STDMETHODIMP GetLayout(TKBLayoutType *ptkblayoutType, WORD *pwPreferredLayoutId)
+        template <typename T = ITfFnGetPreferredTouchKeyboardLayout>
+        class ITfFnGetPreferredTouchKeyboardLayoutImpl : public ITfFunctionImpl<T>
         {
-            return E_NOTIMPL;
-        }
-    };
+        public: // ITfFnGetPreferredTouchKeyboardLayout Methods
+            STDMETHODIMP GetLayout(TKBLayoutType *ptkblayoutType, WORD *pwPreferredLayoutId)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

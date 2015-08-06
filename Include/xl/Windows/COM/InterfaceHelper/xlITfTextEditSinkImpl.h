@@ -20,19 +20,21 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfTextEditSink>
-    class ITfTextEditSinkImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfTextEditSink Methods
-        STDMETHODIMP OnEndEdit(ITfContext *pic, TfEditCookie ecReadOnly, ITfEditRecord *pEditRecord)
+        template <typename T = ITfTextEditSink>
+        class ITfTextEditSinkImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
-    };
+        public: // ITfTextEditSink Methods
+            STDMETHODIMP OnEndEdit(ITfContext *pic, TfEditCookie ecReadOnly, ITfEditRecord *pEditRecord)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLITFTEXTEDITSINKIMPL_H_9550B0F8_00ED_4203_9D30_B4B8A42510D0_INCLUDED__

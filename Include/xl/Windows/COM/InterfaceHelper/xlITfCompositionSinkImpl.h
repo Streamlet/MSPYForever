@@ -20,19 +20,21 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfCompositionSink>
-    class ITfCompositionSinkImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfCompositionSink Methods
-        STDMETHODIMP OnCompositionTerminated(TfEditCookie ecWrite, _In_ ITfComposition *pComposition)
+        template <typename T = ITfCompositionSink>
+        class ITfCompositionSinkImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
-    };
+        public: // ITfCompositionSink Methods
+            STDMETHODIMP OnCompositionTerminated(TfEditCookie ecWrite, _In_ ITfComposition *pComposition)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

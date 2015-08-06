@@ -22,7 +22,8 @@
 
 namespace xl
 {
-
+    namespace Windows
+    {
 #define _GdiplusStartup(...)                DllHelper<Gdiplus::Status (WINAPI *)(ULONG_PTR *, const Gdiplus::GdiplusStartupInput *, Gdiplus::GdiplusStartupOutput *)>::CallFunction(_T("Gdiplus.dll"), "GdiplusStartup", __VA_ARGS__)
 #define _GdiplusShutdown(...)               DllHelper<VOID (WINAPI *)(ULONG_PTR)>::CallFunction(_T("Gdiplus.dll"), "GdiplusShutdown", __VA_ARGS__)
 #define _GdipCreateBitmapFromScan0(...)     DllHelper<Gdiplus::GpStatus (WINGDIPAPI *)(INT, INT, INT, Gdiplus::PixelFormat, BYTE *, Gdiplus::GpBitmap **)>::CallFunction(_T("Gdiplus.dll"), "GdipCreateBitmapFromScan0", __VA_ARGS__)
@@ -40,6 +41,7 @@ namespace xl
 
 #define _EncoderQuality                     DllHelper<GUID>::GetVariable(_T("Gdiplus.dll"), "EncoderQuality")
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLGDIPLUSIMPORTS_H_ED4930F0_F0E6_4A6E_9B17_5D858632EF53_INCLUDED__

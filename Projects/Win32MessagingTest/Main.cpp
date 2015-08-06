@@ -27,13 +27,13 @@ enum
     ID_MSGBUS_CLOSE,
     ID_MSGBUS_QUIT,
 };
-typedef xl::SafeSharedPtr<xl::String> StringPtr;
-typedef xl::MessageBus<UINT, StringPtr> MsgBus;
+typedef xl::Windows::SafeSharedPtr<xl::String> StringPtr;
+typedef xl::Windows::MessageBus<UINT, StringPtr> MsgBus;
 
 MsgBus g_msgbus;
 UINT   g_nWindows = 0;
 
-class DemoWindow : public xl::Window
+class DemoWindow : public xl::Windows::Window
 {
 public:
     DemoWindow()
@@ -53,10 +53,10 @@ private:
     };
 
 private:
-    xl::StdEdit m_editText;
-    xl::StdEdit m_editInput;
-    xl::StdButton m_buttonSend;
-    xl::StdButton m_buttonCloseAll;
+    xl::Windows::StdEdit m_editText;
+    xl::Windows::StdEdit m_editInput;
+    xl::Windows::StdButton m_buttonSend;
+    xl::Windows::StdButton m_buttonCloseAll;
 
 private:
     LRESULT OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL &bHandled)

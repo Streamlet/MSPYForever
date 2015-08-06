@@ -24,119 +24,122 @@
 
 namespace xl
 {
-    template <typename T = IDispatch>
-    class Dispatcher : public IDispatchImpl<T>
+    namespace Windows
     {
-    public:
-        Dispatcher() : m_pTypeInfo(nullptr)
+        template <typename T = IDispatch>
+        class Dispatcher : public IDispatchImpl<T>
         {
-            if (g_pComModule != nullptr)
+        public:
+            Dispatcher() : m_pTypeInfo(nullptr)
             {
-                g_pComModule->GetTypeInfo(__uuidof(T), &m_pTypeInfo);
-            }
-        }
-
-        ~Dispatcher()
-        {
-            if (m_pTypeInfo != nullptr)
-            {
-                m_pTypeInfo->Release();
-                m_pTypeInfo = nullptr;
-            }
-        
-        }
-
-    public: // IDispatch Methods
-        STDMETHOD(GetTypeInfoCount)(UINT *pctinfo)
-        {
-            if (g_pComModule == nullptr)
-            {
-                return E_NOTIMPL;
+                if (g_pComModule != nullptr)
+                {
+                    g_pComModule->GetTypeInfo(__uuidof(T), &m_pTypeInfo);
+                }
             }
 
-            if (pctinfo == nullptr)
+            ~Dispatcher()
             {
-                return E_INVALIDARG;
+                if (m_pTypeInfo != nullptr)
+                {
+                    m_pTypeInfo->Release();
+                    m_pTypeInfo = nullptr;
+                }
+
             }
 
-            *pctinfo = 1;
-            return S_OK;
-        }
-
-        STDMETHOD(GetTypeInfo)(UINT iTInfo, LCID lcid, ITypeInfo **ppTInfo)
-        {
-            if (g_pComModule == nullptr)
+        public: // IDispatch Methods
+            STDMETHOD(GetTypeInfoCount)(UINT *pctinfo)
             {
-                return E_NOTIMPL;
+                if (g_pComModule == nullptr)
+                {
+                    return E_NOTIMPL;
+                }
+
+                if (pctinfo == nullptr)
+                {
+                    return E_INVALIDARG;
+                }
+
+                *pctinfo = 1;
+                return S_OK;
             }
 
-            if (iTInfo != 0)
+            STDMETHOD(GetTypeInfo)(UINT iTInfo, LCID lcid, ITypeInfo **ppTInfo)
             {
-                return DISP_E_BADINDEX;
+                if (g_pComModule == nullptr)
+                {
+                    return E_NOTIMPL;
+                }
+
+                if (iTInfo != 0)
+                {
+                    return DISP_E_BADINDEX;
+                }
+
+                if (m_pTypeInfo == nullptr)
+                {
+                    return E_FAIL;
+                }
+
+                *ppTInfo = m_pTypeInfo;
+                (*ppTInfo)->AddRef();
+
+                return S_OK;
             }
 
-            if (m_pTypeInfo == nullptr)
+            STDMETHOD(GetIDsOfNames)(REFIID riid, LPOLESTR *rgszNames, UINT cNames, LCID lcid, DISPID *rgDispId)
             {
-                return E_FAIL;
+                if (g_pComModule == nullptr)
+                {
+                    return E_NOTIMPL;
+                }
+
+                if (riid != IID_NULL)
+                {
+                    return E_INVALIDARG;
+                }
+
+                if (m_pTypeInfo == nullptr)
+                {
+                    return E_FAIL;
+                }
+
+                return DispGetIDsOfNames(m_pTypeInfo, rgszNames, cNames, rgDispId);
             }
 
-            *ppTInfo = m_pTypeInfo;
-            (*ppTInfo)->AddRef();
-
-            return S_OK;
-        }
-
-        STDMETHOD(GetIDsOfNames)(REFIID riid, LPOLESTR *rgszNames, UINT cNames, LCID lcid, DISPID *rgDispId)
-        {
-            if (g_pComModule == nullptr)
+            STDMETHOD(Invoke)(DISPID dispIdMember,
+                              REFIID riid,
+                              LCID lcid,
+                              WORD wFlags,
+                              DISPPARAMS *pDispParams,
+                              VARIANT *pVarResult,
+                              EXCEPINFO *pExcepInfo,
+                              UINT *puArgErr)
             {
-                return E_NOTIMPL;
+                if (g_pComModule == nullptr)
+                {
+                    return E_NOTIMPL;
+                }
+
+                if (riid != IID_NULL)
+                {
+                    return E_INVALIDARG;
+                }
+
+                if (m_pTypeInfo == nullptr)
+                {
+                    return E_FAIL;
+                }
+
+                return DispInvoke(this, m_pTypeInfo, dispIdMember, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr);
             }
 
-            if (riid != IID_NULL)
-            {
-                return E_INVALIDARG;
-            }
+        private:
+            ITypeInfo *m_pTypeInfo;
+        };
 
-            if (m_pTypeInfo == nullptr)
-            {
-                return E_FAIL;
-            }
-
-            return DispGetIDsOfNames(m_pTypeInfo, rgszNames, cNames, rgDispId);
-        }
-
-        STDMETHOD(Invoke)(DISPID dispIdMember,
-                          REFIID riid,
-                          LCID lcid,
-                          WORD wFlags,
-                          DISPPARAMS *pDispParams,
-                          VARIANT *pVarResult,
-                          EXCEPINFO *pExcepInfo,
-                          UINT *puArgErr)
-        {
-            if (g_pComModule == nullptr)
-            {
-                return E_NOTIMPL;
-            }
-
-            if (riid != IID_NULL)
-            {
-                return E_INVALIDARG;
-            }
-
-            if (m_pTypeInfo == nullptr)
-            {
-                return E_FAIL;
-            }
-
-            return DispInvoke(this, m_pTypeInfo, dispIdMember, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr); 
-        }
-
-    private:
-        ITypeInfo *m_pTypeInfo;
-    };
-
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLDISPATCHER_H_E1D7EF30_0567_480C_A31C_C0463DD8EC33_INCLUDED__

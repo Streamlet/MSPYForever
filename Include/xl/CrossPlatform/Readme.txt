@@ -1,8 +1,11 @@
 Directory
 	CrossPlatform
 
-namespace:
+Namespace:
 	xl
+
+Macro prefix:
+	XL_
 
 Instruction:
 	Dependent on C++ compile, files from Common/Windows/Linux, CRT header files, STL header files.

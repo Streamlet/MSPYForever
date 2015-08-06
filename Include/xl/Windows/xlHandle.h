@@ -20,83 +20,86 @@
 
 namespace xl
 {
-    struct DefaultHandleCloser
+    namespace Windows
     {
-        static bool CloseHandle(HANDLE hHandle)
+        struct DefaultHandleCloser
         {
-            return !!::CloseHandle(hHandle);
-        }
-    };
-
-    template <bool bManaged = true, typename HandleCloser = DefaultHandleCloser>
-    class HandleT
-    {
-    public:
-        HandleT(HANDLE hHandle = nullptr) :
-            m_hHandle(hHandle)
-        {
-        
-        }
-
-        virtual ~HandleT()
-        {
-            if (bManaged)
+            static bool CloseHandle(HANDLE hHandle)
             {
-                Close();
+                return !!::CloseHandle(hHandle);
             }
-            else
+        };
+
+        template <bool bManaged = true, typename HandleCloser = DefaultHandleCloser>
+        class HandleT
+        {
+        public:
+            HandleT(HANDLE hHandle = nullptr) :
+                m_hHandle(hHandle)
             {
-                Detach();
+
             }
-        }
 
-    public:
-        HANDLE Attach(HANDLE hHandle)
-        {
-            HANDLE hPrevious = m_hHandle;
-            m_hHandle = hHandle;
-            return hPrevious;
-        }
-
-        HANDLE Detach()
-        {
-            return Attach(nullptr);
-        }
-
-        bool Close()
-        {
-            if (m_hHandle == nullptr)
+            virtual ~HandleT()
             {
+                if (bManaged)
+                {
+                    Close();
+                }
+                else
+                {
+                    Detach();
+                }
+            }
+
+        public:
+            HANDLE Attach(HANDLE hHandle)
+            {
+                HANDLE hPrevious = m_hHandle;
+                m_hHandle = hHandle;
+                return hPrevious;
+            }
+
+            HANDLE Detach()
+            {
+                return Attach(nullptr);
+            }
+
+            bool Close()
+            {
+                if (m_hHandle == nullptr)
+                {
+                    return true;
+                }
+
+                if (!HandleCloser::CloseHandle(m_hHandle))
+                {
+                    return false;
+                }
+
+                m_hHandle = nullptr;
+
                 return true;
             }
 
-            if (!HandleCloser::CloseHandle(m_hHandle))
+        public:
+            operator HANDLE() const
             {
-                return false;
+                return m_hHandle;
             }
 
-            m_hHandle = nullptr;
+            bool IsValid() const
+            {
+                return m_hHandle != nullptr && m_hHandle != INVALID_HANDLE_VALUE;
+            }
 
-            return true;
-        }
+        protected:
+            HANDLE m_hHandle;
+        };
 
-    public:
-        operator HANDLE() const
-        {
-            return m_hHandle;
-        }
+        typedef HandleT<> Handle;
 
-        bool IsValid() const
-        {
-            return m_hHandle != nullptr && m_hHandle != INVALID_HANDLE_VALUE;
-        }
-    
-    protected:
-        HANDLE m_hHandle;
-    };
-
-    typedef HandleT<> Handle;
-
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLHANDLE_H_39C0A466_0EB3_4D32_879B_1984722D3AED_INCLUDED__

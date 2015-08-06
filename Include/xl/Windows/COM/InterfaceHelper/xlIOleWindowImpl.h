@@ -22,22 +22,24 @@
 
 namespace xl
 {
-    template <typename T = IOleWindow>
-    class IOleWindowImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // IOleWindow Methods
-        STDMETHOD(GetWindow)(HWND *phwnd)
+        template <typename T = IOleWindow>
+        class IOleWindowImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // IOleWindow Methods
+            STDMETHOD(GetWindow)(HWND *phwnd)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(ContextSensitiveHelp)(BOOL fEnterMode)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHOD(ContextSensitiveHelp)(BOOL fEnterMode)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
-
 
 #endif // #ifndef __XLIOLEOBJECTIMPL_H_2BA5B8AA_904B_41C5_AFA8_23A51DEECC4E_INCLUDED__

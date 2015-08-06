@@ -18,19 +18,21 @@
 
 #include "xlITfTextInputProcessorImpl.h"
 
-
 namespace xl
 {
-    template <typename T = ITfTextInputProcessorEx>
-    class ITfTextInputProcessorExImpl : public ITfTextInputProcessorImpl<T>
+    namespace Windows
     {
-    public: // ITfTextInputProcessorEx Methods
-        STDMETHODIMP ActivateEx(ITfThreadMgr *ptim, TfClientId tid, DWORD dwFlags)
+        template <typename T = ITfTextInputProcessorEx>
+        class ITfTextInputProcessorExImpl : public ITfTextInputProcessorImpl<T>
         {
-            return E_NOTIMPL;
-        }
-    };
+        public: // ITfTextInputProcessorEx Methods
+            STDMETHODIMP ActivateEx(ITfThreadMgr *ptim, TfClientId tid, DWORD dwFlags)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

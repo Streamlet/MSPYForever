@@ -16,10 +16,10 @@
 #define __XLCOMMODULE_H_89C4A369_6CBD_4316_947D_122F6E6C3F55_INCLUDED__
 
 
-#include "../../Meta/xlAssert.h"
-#include "../../Meta/xlScopeExit.h"
-#include "../../Meta/xlUtility.h"
-#include "../../String/xlString.h"
+#include "../../Common/Meta/xlAssert.h"
+#include "../../Common/Meta/xlScopeExit.h"
+#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/String/xlString.h"
 #include "../File/xlIniFile.h"
 #include "../Registry/xlRegistry.h"
 #include "../xlWin32Ver.h"
@@ -35,13 +35,13 @@ namespace xl
     {
     public:
         ComModule(HMODULE hModule = nullptr, LPCTSTR lpLibName = nullptr) :
-            m_hModule(hModule),
-            m_strLibName(lpLibName),
-            m_nObjectRefCount(0),
-            m_nLockRefCount(0),
-            m_pTypeLib(nullptr),
-            m_pTLibAttr(nullptr),
-            m_dwThreadId(0)
+                  m_hModule(hModule),
+                  m_strLibName(lpLibName),
+                  m_nObjectRefCount(0),
+                  m_nLockRefCount(0),
+                  m_pTypeLib(nullptr),
+                  m_pTLibAttr(nullptr),
+                  m_dwThreadId(0)
         {
             TCHAR szModulePath[MAX_PATH] = {};
             GetModuleFileName(m_hModule, szModulePath, ARRAYSIZE(szModulePath));

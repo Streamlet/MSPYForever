@@ -23,86 +23,89 @@
 
 namespace xl
 {
-    class WinSafeRefCounter
+    namespace Windows
     {
-    public:
-        WinSafeRefCounter() :
-            m_nCount(0)
+        class WinSafeRefCounter
         {
+        public:
+            WinSafeRefCounter() :
+                m_nCount(0)
+            {
 
-        }
+            }
 
-        ~WinSafeRefCounter()
+            ~WinSafeRefCounter()
+            {
+
+            }
+
+        public:
+            int Increase()
+            {
+                return (int)InterlockedIncrement(&m_nCount);
+            }
+
+            int Decrease()
+            {
+                return (int)InterlockedDecrement(&m_nCount);
+            }
+
+        private:
+            LONG m_nCount;
+        };
+
+        template <typename T>
+        class SafeSharedPtr : public SmartPtr<T, ElementDeleter, WinSafeRefCounter>
         {
+        protected:
+            typedef SmartPtr<T, ElementDeleter, WinSafeRefCounter> SmartPtrBase;
 
-        }
+        public:
+            SafeSharedPtr()
+            {
 
-    public:
-        int Increase()
+            }
+
+            SafeSharedPtr(T *pData) :
+                SmartPtrBase(pData)
+            {
+
+            }
+
+            SafeSharedPtr(const SafeSharedPtr &that) :
+                SmartPtrBase(that)
+            {
+
+            }
+
+        };
+
+        template <typename T>
+        class SafeSharedArray : public SmartPtr<T, ArrayDeleter, WinSafeRefCounter>
         {
-            return (int)InterlockedIncrement(&m_nCount);
-        }
+        protected:
+            typedef SmartPtr<T, ArrayDeleter, WinSafeRefCounter> SmartPtrBase;
 
-        int Decrease()
-        {
-            return (int)InterlockedDecrement(&m_nCount);
-        }
+        public:
+            SafeSharedArray()
+            {
 
-    private:
-        LONG m_nCount;
-    };
+            }
 
-    template <typename T>
-    class SafeSharedPtr : public SmartPtr<T, ElementDeleter, WinSafeRefCounter>
-    {
-    protected:
-        typedef SmartPtr<T, ElementDeleter, WinSafeRefCounter> SmartPtrBase;
+            SafeSharedArray(T *pData) :
+                SmartPtrBase(pData)
+            {
 
-    public:
-        SafeSharedPtr()
-        {
+            }
 
-        }
+            SafeSharedArray(const SafeSharedArray &that) :
+                SmartPtrBase(that)
+            {
 
-        SafeSharedPtr(T *pData) :
-            SmartPtrBase(pData)
-        {
+            }
+        };
 
-        }
-
-        SafeSharedPtr(const SafeSharedPtr &that) :
-            SmartPtrBase(that)
-        {
-
-        }
-
-    };
-
-    template <typename T>
-    class SafeSharedArray : public SmartPtr<T, ArrayDeleter, WinSafeRefCounter>
-    {
-    protected:
-        typedef SmartPtr<T, ArrayDeleter, WinSafeRefCounter> SmartPtrBase;
-
-    public:
-        SafeSharedArray()
-        {
-
-        }
-
-        SafeSharedArray(T *pData) :
-            SmartPtrBase(pData)
-        {
-
-        }
-
-        SafeSharedArray(const SafeSharedArray &that) :
-            SmartPtrBase(that)
-        {
-
-        }
-    };
-
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLSAFESMARTPTR_H_E74125A8_C767_44A2_8659_D350F7638ED6_INCLUDED__

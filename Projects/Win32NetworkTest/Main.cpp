@@ -17,7 +17,7 @@
 #include "../../Include/xl/Windows/Network/xlSocket.h"
 #include <tchar.h>
 
-using namespace xl;
+using namespace xl::Windows;
 
 int main()
 {

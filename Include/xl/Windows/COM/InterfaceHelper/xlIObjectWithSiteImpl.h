@@ -22,21 +22,24 @@
 
 namespace xl
 {
-    template <typename T = IObjectWithSite>
-    class IObjectWithSiteImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public:
-        STDMETHOD(SetSite)(IUnknown *pUnkSite)
+        template <typename T = IObjectWithSite>
+        class IObjectWithSiteImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
-        
-        STDMETHOD(GetSite)(REFIID riid, void **ppvSite)
-        {
-            return E_NOTIMPL;
-        }
-    };
+        public:
+            STDMETHOD(SetSite)(IUnknown *pUnkSite)
+            {
+                return E_NOTIMPL;
+            }
 
+            STDMETHOD(GetSite)(REFIID riid, void **ppvSite)
+            {
+                return E_NOTIMPL;
+            }
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 

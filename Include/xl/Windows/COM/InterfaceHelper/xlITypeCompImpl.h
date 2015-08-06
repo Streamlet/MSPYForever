@@ -22,29 +22,32 @@
 
 namespace xl
 {
-    template <typename T = ITypeComp>
-    class ITypeCompImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITypeComp Methods
-        STDMETHOD(Bind)(LPOLESTR szName,
-                        ULONG lHashVal,
-                        WORD wFlags,
-                        ITypeInfo **ppTInfo,
-                        DESCKIND *pDescKind,
-                        BINDPTR *pBindPtr)
+        template <typename T = ITypeComp>
+        class ITypeCompImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
-
-        STDMETHOD(BindType)(LPOLESTR szName,
+        public: // ITypeComp Methods
+            STDMETHOD(Bind)(LPOLESTR szName,
                             ULONG lHashVal,
+                            WORD wFlags,
                             ITypeInfo **ppTInfo,
-                            ITypeComp **ppTComp)
-        {
-            return E_NOTIMPL;
-        }
-    };
+                            DESCKIND *pDescKind,
+                            BINDPTR *pBindPtr)
+            {
+                return E_NOTIMPL;
+            }
 
+            STDMETHOD(BindType)(LPOLESTR szName,
+                                ULONG lHashVal,
+                                ITypeInfo **ppTInfo,
+                                ITypeComp **ppTComp)
+            {
+                return E_NOTIMPL;
+            }
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLITYPECOMPIMPL_H_04D4952F_296C_4D54_9FEA_9E9D46F3A2A6_INCLUDED__

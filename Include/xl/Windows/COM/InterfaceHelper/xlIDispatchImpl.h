@@ -22,38 +22,41 @@
 
 namespace xl
 {
-    template <typename T = IDispatch>
-    class IDispatchImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // IDispatch Methods
-        STDMETHOD(GetTypeInfoCount)(UINT *pctinfo)
+        template <typename T = IDispatch>
+        class IDispatchImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // IDispatch Methods
+            STDMETHOD(GetTypeInfoCount)(UINT *pctinfo)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetTypeInfo)(UINT iTInfo, LCID lcid, ITypeInfo **ppTInfo)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetTypeInfo)(UINT iTInfo, LCID lcid, ITypeInfo **ppTInfo)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetIDsOfNames)(REFIID riid, LPOLESTR *rgszNames, UINT cNames, LCID lcid, DISPID *rgDispId)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetIDsOfNames)(REFIID riid, LPOLESTR *rgszNames, UINT cNames, LCID lcid, DISPID *rgDispId)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(Invoke)(DISPID dispIdMember,
-                          REFIID riid,
-                          LCID lcid,
-                          WORD wFlags,
-                          DISPPARAMS *pDispParams,
-                          VARIANT *pVarResult,
-                          EXCEPINFO *pExcepInfo,
-                          UINT *puArgErr)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHOD(Invoke)(DISPID dispIdMember,
+                              REFIID riid,
+                              LCID lcid,
+                              WORD wFlags,
+                              DISPPARAMS *pDispParams,
+                              VARIANT *pVarResult,
+                              EXCEPINFO *pExcepInfo,
+                              UINT *puArgErr)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

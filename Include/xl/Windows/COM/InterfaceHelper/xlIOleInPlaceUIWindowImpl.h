@@ -22,31 +22,34 @@
 
 namespace xl
 {
-    template <typename T = IOleInPlaceUIWindow>
-    class IOleInPlaceUIWindowImpl : public IOleWindowImpl<T>
+    namespace Windows
     {
-    public: // IOleInPlaceUIWindow Methods
-        STDMETHOD(GetBorder)(LPRECT lprectBorder)
+        template <typename T = IOleInPlaceUIWindow>
+        class IOleInPlaceUIWindowImpl : public IOleWindowImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // IOleInPlaceUIWindow Methods
+            STDMETHOD(GetBorder)(LPRECT lprectBorder)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(RequestBorderSpace)(LPCBORDERWIDTHS pborderwidths)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(RequestBorderSpace)(LPCBORDERWIDTHS pborderwidths)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(SetBorderSpace)(LPCBORDERWIDTHS pborderwidths)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(SetBorderSpace)(LPCBORDERWIDTHS pborderwidths)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(SetActiveObject)(IOleInPlaceActiveObject *pActiveObject, LPCOLESTR pszObjName)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHOD(SetActiveObject)(IOleInPlaceActiveObject *pActiveObject, LPCOLESTR pszObjName)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLIOLEINPLACEUIWINDOWIMPL_H_9707BB77_FD58_471B_B7EE_0BCEAF30618D_INCLUDED__

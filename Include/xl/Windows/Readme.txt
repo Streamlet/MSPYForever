@@ -4,6 +4,9 @@ Directory
 namespace:
 	xl::Windows
 
+Macro prefix:
+	XL_
+
 Instruction:
 	Dependent on C++ compile, files from Common, and Windows header files.
 	The using of CRT header files or STL header files is forbidden.

@@ -22,90 +22,93 @@
 
 namespace xl
 {
-    template <typename T = IDocHostUIHandler>
-    class IDocHostUIHandlerImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // IDocHostUIHandler Methods
-        STDMETHOD(ShowContextMenu)(DWORD dwID, POINT *ppt, IUnknown *pcmdtReserved, IDispatch *pdispReserved)
+        template <typename T = IDocHostUIHandler>
+        class IDocHostUIHandlerImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // IDocHostUIHandler Methods
+            STDMETHOD(ShowContextMenu)(DWORD dwID, POINT *ppt, IUnknown *pcmdtReserved, IDispatch *pdispReserved)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetHostInfo)(DOCHOSTUIINFO *pInfo)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetHostInfo)(DOCHOSTUIINFO *pInfo)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(ShowUI)(DWORD dwID,
-                          IOleInPlaceActiveObject *pActiveObject,
-                          IOleCommandTarget *pCommandTarget,
-                          IOleInPlaceFrame *pFrame,
-                          IOleInPlaceUIWindow *pDoc)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(ShowUI)(DWORD dwID,
+                IOleInPlaceActiveObject *pActiveObject,
+                IOleCommandTarget *pCommandTarget,
+                IOleInPlaceFrame *pFrame,
+                IOleInPlaceUIWindow *pDoc)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(HideUI)()
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(HideUI)()
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(UpdateUI)()
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(UpdateUI)()
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(EnableModeless)(BOOL fEnable)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(EnableModeless)(BOOL fEnable)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(OnDocWindowActivate)(BOOL fActivate)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(OnDocWindowActivate)(BOOL fActivate)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(OnFrameWindowActivate)(BOOL fActivate)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(OnFrameWindowActivate)(BOOL fActivate)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(ResizeBorder)(LPCRECT prcBorder, IOleInPlaceUIWindow *pUIWindow, BOOL fRameWindow)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(ResizeBorder)(LPCRECT prcBorder, IOleInPlaceUIWindow *pUIWindow, BOOL fRameWindow)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(TranslateAccelerator)(LPMSG lpMsg, const GUID *pguidCmdGroup, DWORD nCmdID)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(TranslateAccelerator)(LPMSG lpMsg, const GUID *pguidCmdGroup, DWORD nCmdID)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetOptionKeyPath)(LPOLESTR *pchKey, DWORD dw)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetOptionKeyPath)(LPOLESTR *pchKey, DWORD dw)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetDropTarget)(IDropTarget *pDropTarget, IDropTarget **ppDropTarget)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetDropTarget)(IDropTarget *pDropTarget, IDropTarget **ppDropTarget)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetExternal)(IDispatch **ppDispatch)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetExternal)(IDispatch **ppDispatch)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(TranslateUrl)(DWORD dwTranslate, OLECHAR *pchURLIn, OLECHAR **ppchURLOut)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(TranslateUrl)(DWORD dwTranslate, OLECHAR *pchURLIn, OLECHAR **ppchURLOut)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(FilterDataObject)(IDataObject *pDO, IDataObject **ppDORet)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHOD(FilterDataObject)(IDataObject *pDO, IDataObject **ppDORet)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

@@ -20,24 +20,26 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfTextInputProcessor>
-    class ITfTextInputProcessorImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfTextInputProcessor Methods
-        STDMETHODIMP Activate(ITfThreadMgr *ptim, TfClientId tid)
+        template <typename T = ITfTextInputProcessor>
+        class ITfTextInputProcessorImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // ITfTextInputProcessor Methods
+            STDMETHODIMP Activate(ITfThreadMgr *ptim, TfClientId tid)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP Deactivate()
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHODIMP Deactivate()
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLITFTEXTINPUTPROCESSORIMPL_H_57FEFBAA_A653_401C_9696_F62A9DA3DA2E_INCLUDED__

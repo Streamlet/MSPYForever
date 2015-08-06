@@ -24,49 +24,52 @@
 
 namespace xl
 {
-    class CriticalSection : public NonCopyable
+    namespace Windows
     {
-    public:
-        CriticalSection()
+        class CriticalSection : public NonCopyable
         {
-            InitializeCriticalSection(&m_CriticalSection);
-        }
-
-        ~CriticalSection()
-        {
-            DeleteCriticalSection(&m_CriticalSection);
-        }
-
-    public:
-        void Lock()
-        {
-            EnterCriticalSection(&m_CriticalSection);
-        }
-
-        void UnLock()
-        {
-            LeaveCriticalSection(&m_CriticalSection);
-        }
-
-        bool TryLock()
-        {
-            if (!TryEnterCriticalSection(&m_CriticalSection))
+        public:
+            CriticalSection()
             {
-                return false;
+                InitializeCriticalSection(&m_CriticalSection);
             }
 
-            return true;
-        }
+            ~CriticalSection()
+            {
+                DeleteCriticalSection(&m_CriticalSection);
+            }
 
-    private:
-        CRITICAL_SECTION m_CriticalSection;
-    };
+        public:
+            void Lock()
+            {
+                EnterCriticalSection(&m_CriticalSection);
+            }
 
-#define XL_SCOPED_CRITICAL_SECTION(cs)              \
-                                                    \
-    cs.Lock();                                      \
-    XL_ON_BLOCK_EXIT(&cs, &xl::CriticalSection::UnLock)
+            void UnLock()
+            {
+                LeaveCriticalSection(&m_CriticalSection);
+            }
 
+            bool TryLock()
+            {
+                if (!TryEnterCriticalSection(&m_CriticalSection))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
+        private:
+            CRITICAL_SECTION m_CriticalSection;
+        };
+
+#define XL_SCOPED_CRITICAL_SECTION(cs)                          \
+                                                                \
+    cs.Lock();                                                  \
+    XL_ON_BLOCK_EXIT(&cs, &xl::Windows::CriticalSection::UnLock)
+
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLCRITICALSECTION_H_C580E922_6ED8_483E_8223_2174E0EF7310_INCLUDED__

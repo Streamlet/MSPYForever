@@ -22,41 +22,44 @@
 
 namespace xl
 {
-    template <typename T = IOleClientSite>
-    class IOleClientSiteImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // IOleClientSite Methods
-        STDMETHOD(SaveObject)()
+        template <typename T = IOleClientSite>
+        class IOleClientSiteImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // IOleClientSite Methods
+            STDMETHOD(SaveObject)()
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetMoniker)(DWORD dwAssign, DWORD dwWhichMoniker, IMoniker **ppmk)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetMoniker)(DWORD dwAssign, DWORD dwWhichMoniker, IMoniker **ppmk)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(GetContainer)(IOleContainer **ppContainer)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(GetContainer)(IOleContainer **ppContainer)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(ShowObject)()
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(ShowObject)()
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(OnShowWindow)(BOOL fShow)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(OnShowWindow)(BOOL fShow)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(RequestNewObjectLayout)()
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHOD(RequestNewObjectLayout)()
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

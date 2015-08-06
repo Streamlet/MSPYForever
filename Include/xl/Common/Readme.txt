@@ -1,8 +1,11 @@
 Directory
 	Common
 
-namespace:
+Namespace:
 	xl
+
+Macro prefix:
+	XL_
 
 Instruction:
 	Dependent on and only on C++ complie.

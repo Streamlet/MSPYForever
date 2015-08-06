@@ -22,65 +22,68 @@
 
 namespace xl
 {
-    class Event : public Handle
+    namespace Windows
     {
-    public:
-        Event()
+        class Event : public Handle
         {
-        
-        }
-
-        ~Event()
-        {
-        
-        }
-
-    public:
-        bool Create(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCTSTR lpName)
-        {
-            m_hHandle = CreateEvent(lpEventAttributes, bManualReset, bInitialState, lpName);
-
-            if (m_hHandle == nullptr)
+        public:
+            Event()
             {
-                return false;
+
             }
 
-            return true;
-        }
-
-        bool Open(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCTSTR lpName)
-        {
-            m_hHandle = OpenEvent(dwDesiredAccess, bInheritHandle, lpName);
-
-            if (m_hHandle == nullptr)
+            ~Event()
             {
-                return false;
+
             }
 
-            return true;
-        }
-
-        bool Reset()
-        {
-            if (!ResetEvent(m_hHandle))
+        public:
+            bool Create(LPSECURITY_ATTRIBUTES lpEventAttributes, BOOL bManualReset, BOOL bInitialState, LPCTSTR lpName)
             {
-                return false;
+                m_hHandle = CreateEvent(lpEventAttributes, bManualReset, bInitialState, lpName);
+
+                if (m_hHandle == nullptr)
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        bool Set()
-        {
-            if (!SetEvent(m_hHandle))
+            bool Open(DWORD dwDesiredAccess, BOOL bInheritHandle, LPCTSTR lpName)
             {
-                return false;
+                m_hHandle = OpenEvent(dwDesiredAccess, bInheritHandle, lpName);
+
+                if (m_hHandle == nullptr)
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            return true;
-        }
-    };
+            bool Reset()
+            {
+                if (!ResetEvent(m_hHandle))
+                {
+                    return false;
+                }
 
+                return true;
+            }
+
+            bool Set()
+            {
+                if (!SetEvent(m_hHandle))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLEVENT_H_7BC8461C_EA45_496E_B383_023E9D4FFCD7_INCLUDED__

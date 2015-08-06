@@ -22,76 +22,79 @@
 
 namespace xl
 {
-    template <typename T>
-    class ComClass
+    namespace Windows
     {
-    public:
-        ComClass(bool bAddObjRefCount = true) : m_nRefCount(0), m_bAddObjRefCount(bAddObjRefCount)
+        template <typename T>
+        class ComClass
         {
-            if (g_pComModule != nullptr && m_bAddObjRefCount)
+        public:
+            ComClass(bool bAddObjRefCount = true) : m_nRefCount(0), m_bAddObjRefCount(bAddObjRefCount)
             {
-                g_pComModule->ObjectAddRef();
-            }
-        }
-
-        ~ComClass()
-        {
-            if (g_pComModule != nullptr && m_bAddObjRefCount)
-            {
-                g_pComModule->ObjectRelease();
-            }
-        }
-
-    public:
-        STDMETHODIMP InternalQueryInterface(const InterfaceEntry *pEntries, REFIID riid, LPVOID *ppvObject)
-        {
-            *ppvObject = nullptr;
-            T *pThis = (T *)this;
-
-            IUnknown *pUnknown = (IUnknown *)((INT_PTR)pThis + pEntries->dwOffset);
-
-            if (riid == __uuidof(IUnknown))
-            {
-                *ppvObject = pUnknown;
-                pUnknown->AddRef();
-                return S_OK;
-            }
-
-            for (const InterfaceEntry *pEntry = pEntries; pEntry->piid != nullptr; ++pEntry)
-            {
-                if (riid == *pEntry->piid)
+                if (g_pComModule != nullptr && m_bAddObjRefCount)
                 {
-                    *ppvObject = (IUnknown *)((INT_PTR)pThis + pEntry->dwOffset);
-                    pUnknown->AddRef();
-                    return S_OK;
+                    g_pComModule->ObjectAddRef();
                 }
             }
 
-            return E_NOINTERFACE; 
-        }
-
-        ULONG STDMETHODCALLTYPE InternalAddRef()
-        {
-            return (ULONG)InterlockedIncrement(&m_nRefCount);
-        }
-
-        ULONG STDMETHODCALLTYPE InternalRelease()
-        {
-            LONG nRefCount = InterlockedDecrement(&m_nRefCount);
-
-            if (nRefCount <= 0)
+            ~ComClass()
             {
-                delete (T *)this;
+                if (g_pComModule != nullptr && m_bAddObjRefCount)
+                {
+                    g_pComModule->ObjectRelease();
+                }
             }
 
-            return (ULONG)nRefCount;
-        }
+        public:
+            STDMETHODIMP InternalQueryInterface(const InterfaceEntry *pEntries, REFIID riid, LPVOID *ppvObject)
+            {
+                *ppvObject = nullptr;
+                T *pThis = (T *)this;
 
-    protected:
-        LONG m_nRefCount;
-        bool m_bAddObjRefCount;
-    };
+                IUnknown *pUnknown = (IUnknown *)((INT_PTR)pThis + pEntries->dwOffset);
 
+                if (riid == __uuidof(IUnknown))
+                {
+                    *ppvObject = pUnknown;
+                    pUnknown->AddRef();
+                    return S_OK;
+                }
+
+                for (const InterfaceEntry *pEntry = pEntries; pEntry->piid != nullptr; ++pEntry)
+                {
+                    if (riid == *pEntry->piid)
+                    {
+                        *ppvObject = (IUnknown *)((INT_PTR)pThis + pEntry->dwOffset);
+                        pUnknown->AddRef();
+                        return S_OK;
+                    }
+                }
+
+                return E_NOINTERFACE;
+            }
+
+            ULONG STDMETHODCALLTYPE InternalAddRef()
+            {
+                return (ULONG)InterlockedIncrement(&m_nRefCount);
+            }
+
+            ULONG STDMETHODCALLTYPE InternalRelease()
+            {
+                LONG nRefCount = InterlockedDecrement(&m_nRefCount);
+
+                if (nRefCount <= 0)
+                {
+                    delete (T *)this;
+                }
+
+                return (ULONG)nRefCount;
+            }
+
+        protected:
+            LONG m_nRefCount;
+            bool m_bAddObjRefCount;
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 

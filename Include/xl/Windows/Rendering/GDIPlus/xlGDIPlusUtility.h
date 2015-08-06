@@ -20,42 +20,45 @@
 
 namespace xl
 {
-    class GDIPlusStartupShutDown
+    namespace Windows
     {
-    public:
-        GDIPlusStartupShutDown() : m_uToken(0)
+        class GDIPlusStartupShutDown
         {
-            Startup();
-        }
-
-        ~GDIPlusStartupShutDown()
-        {
-            Shutdown();
-        }
-
-    private:
-        bool Startup()
-        {
-            Gdiplus::GdiplusStartupInput gdiplusStartupInput = {};
-
-            if (_GdiplusStartup(&m_uToken, &gdiplusStartupInput, nullptr) != Gdiplus::Ok)
+        public:
+            GDIPlusStartupShutDown() : m_uToken(0)
             {
-                return false;
+                Startup();
             }
 
-            return true;
-        }
+            ~GDIPlusStartupShutDown()
+            {
+                Shutdown();
+            }
 
-        void Shutdown()
-        {
-            _GdiplusShutdown(m_uToken);
-            m_uToken = 0;
-        }
+        private:
+            bool Startup()
+            {
+                Gdiplus::GdiplusStartupInput gdiplusStartupInput = {};
 
-    private:
-        ULONG_PTR m_uToken;
-    };
+                if (_GdiplusStartup(&m_uToken, &gdiplusStartupInput, nullptr) != Gdiplus::Ok)
+                {
+                    return false;
+                }
 
+                return true;
+            }
+
+            void Shutdown()
+            {
+                _GdiplusShutdown(m_uToken);
+                m_uToken = 0;
+            }
+
+        private:
+            ULONG_PTR m_uToken;
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLGDIPLUSUTILITY_H_636F1550_10BE_4B64_B780_66C41ACA77BD_INCLUDED__

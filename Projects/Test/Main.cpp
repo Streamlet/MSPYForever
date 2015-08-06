@@ -24,6 +24,7 @@
 int main()
 {
     using namespace xl;
+    using namespace xl::Windows;
 
     BitmapGDI bmp;
     bmp.CreateBlank(10, 10);

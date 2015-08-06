@@ -23,109 +23,112 @@
 
 namespace xl
 {
-    class Menu : public NonCopyable
+    namespace Windows
     {
-    public:
-        Menu() :
-            m_hMenu(nullptr)
+        class Menu : public NonCopyable
         {
-
-        }
-
-        Menu(HMENU hMenu) :
-            m_hMenu(nullptr)
-        {
-            Attach(hMenu);
-        }
-
-        ~Menu()
-        {
-            Destroy();
-            Detach();
-        }
-
-        bool Create()
-        {
-            if (m_hMenu != nullptr)
+        public:
+            Menu() :
+                m_hMenu(nullptr)
             {
-                return false;
+
             }
 
-            m_hMenu = CreateMenu();
-
-            if (m_hMenu == nullptr)
+            Menu(HMENU hMenu) :
+                m_hMenu(nullptr)
             {
-                return false;
+                Attach(hMenu);
             }
 
-            return true;
-        }
-
-        bool CreatePopup()
-        {
-            if (m_hMenu != nullptr)
+            ~Menu()
             {
-                return false;
+                Destroy();
+                Detach();
             }
 
-            m_hMenu = CreatePopupMenu();
-
-            if (m_hMenu == nullptr)
+            bool Create()
             {
-                return false;
+                if (m_hMenu != nullptr)
+                {
+                    return false;
+                }
+
+                m_hMenu = CreateMenu();
+
+                if (m_hMenu == nullptr)
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        bool Destroy()
-        {
-            if (m_hMenu == nullptr)
+            bool CreatePopup()
             {
-                return false;
+                if (m_hMenu != nullptr)
+                {
+                    return false;
+                }
+
+                m_hMenu = CreatePopupMenu();
+
+                if (m_hMenu == nullptr)
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            if (!DestroyMenu(m_hMenu))
+            bool Destroy()
             {
-                return false;
+                if (m_hMenu == nullptr)
+                {
+                    return false;
+                }
+
+                if (!DestroyMenu(m_hMenu))
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        bool Attach(HMENU hMenu)
-        {
-            if (m_hMenu != nullptr)
+            bool Attach(HMENU hMenu)
             {
-                return false;
+                if (m_hMenu != nullptr)
+                {
+                    return false;
+                }
+
+                m_hMenu = hMenu;
+
+                return true;
             }
 
-            m_hMenu = hMenu;
-
-            return true;
-        }
-
-        HMENU Detach()
-        {
-            HMENU hMenu = m_hMenu;
-
-            if (m_hMenu != nullptr)
+            HMENU Detach()
             {
-                m_hMenu = nullptr;
+                HMENU hMenu = m_hMenu;
+
+                if (m_hMenu != nullptr)
+                {
+                    m_hMenu = nullptr;
+                }
+
+                return hMenu;
             }
 
-            return hMenu;
-        }
+            operator HMENU() const
+            {
+                return m_hMenu;
+            }
 
-        operator HMENU() const
-        {
-            return m_hMenu;
-        }
+        protected:
+            HMENU m_hMenu;
+        };
 
-    protected:
-        HMENU m_hMenu;
-    };
-
+    } // namespace Windows
 } // namespace xl
 
 

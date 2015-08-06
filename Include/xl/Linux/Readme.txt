@@ -1,8 +1,11 @@
 Directory
 	Linux
 
-namespace:
+Namespace:
 	xl::Linux
+
+Macro prefix:
+	XL_
 
 Instruction:
 	Dependent on C++ compile, files from Common, and Linux header files.

@@ -22,41 +22,44 @@
 
 namespace xl
 {
-    template <typename T = IOleInPlaceFrame>
-    class IOleInPlaceFrameImpl : public IOleInPlaceUIWindowImpl<T>
+    namespace Windows
     {
-    public: // IOleInPlaceFrame Methods
-        STDMETHOD(InsertMenus)(HMENU hmenuShared, LPOLEMENUGROUPWIDTHS lpMenuWidths)
+        template <typename T = IOleInPlaceFrame>
+        class IOleInPlaceFrameImpl : public IOleInPlaceUIWindowImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // IOleInPlaceFrame Methods
+            STDMETHOD(InsertMenus)(HMENU hmenuShared, LPOLEMENUGROUPWIDTHS lpMenuWidths)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(SetMenu)(HMENU hmenuShared, HOLEMENU holemenu, HWND hwndActiveObject)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(SetMenu)(HMENU hmenuShared, HOLEMENU holemenu, HWND hwndActiveObject)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(RemoveMenus)(HMENU hmenuShared)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(RemoveMenus)(HMENU hmenuShared)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(SetStatusText)(LPCOLESTR pszStatusText)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(SetStatusText)(LPCOLESTR pszStatusText)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(EnableModeless)(BOOL fEnable)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHOD(EnableModeless)(BOOL fEnable)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHOD(TranslateAccelerator)(LPMSG lpmsg, WORD wID)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHOD(TranslateAccelerator)(LPMSG lpmsg, WORD wID)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLIOLEINPLACEFRAMEIMPL_H_2A1FC107_C15E_4C42_B807_69FF9E40419C_INCLUDED__

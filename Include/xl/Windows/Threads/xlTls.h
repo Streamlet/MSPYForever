@@ -23,49 +23,52 @@
 
 namespace xl
 {
-    class Tls : public NonCopyable
+    namespace Windows
     {
-    public:
-        Tls() :
-            m_dwTlsIndex(TLS_OUT_OF_INDEXES)
+        class Tls : public NonCopyable
         {
-            m_dwTlsIndex = TlsAlloc();
-        }
-
-        ~Tls()
-        {
-            if (m_dwTlsIndex != TLS_OUT_OF_INDEXES)
+        public:
+            Tls() :
+                m_dwTlsIndex(TLS_OUT_OF_INDEXES)
             {
-                TlsFree(m_dwTlsIndex);
-                m_dwTlsIndex = TLS_OUT_OF_INDEXES;
-            }
-        }
-
-    public:
-        BOOL Set(LPVOID lpValue)
-        {
-            if (m_dwTlsIndex == TLS_OUT_OF_INDEXES)
-            {
-                return FALSE;
+                m_dwTlsIndex = TlsAlloc();
             }
 
-            return TlsSetValue(m_dwTlsIndex, lpValue);
-        }
-
-        LPVOID Get()
-        {
-            if (m_dwTlsIndex == TLS_OUT_OF_INDEXES)
+            ~Tls()
             {
-                return NULL;
+                if (m_dwTlsIndex != TLS_OUT_OF_INDEXES)
+                {
+                    TlsFree(m_dwTlsIndex);
+                    m_dwTlsIndex = TLS_OUT_OF_INDEXES;
+                }
             }
 
-            return TlsGetValue(m_dwTlsIndex);
-        }
+        public:
+            BOOL Set(LPVOID lpValue)
+            {
+                if (m_dwTlsIndex == TLS_OUT_OF_INDEXES)
+                {
+                    return FALSE;
+                }
 
-    private:
-        DWORD m_dwTlsIndex;
-    };
+                return TlsSetValue(m_dwTlsIndex, lpValue);
+            }
 
+            LPVOID Get()
+            {
+                if (m_dwTlsIndex == TLS_OUT_OF_INDEXES)
+                {
+                    return NULL;
+                }
+
+                return TlsGetValue(m_dwTlsIndex);
+            }
+
+        private:
+            DWORD m_dwTlsIndex;
+        };
+
+    } // namespace Windows
 } // namespace xl
 
 #endif // #ifndef __XLTLS_H_227ED6E5_E819_4DAF_8ACB_51EBFA717AFC_INCLUDED__

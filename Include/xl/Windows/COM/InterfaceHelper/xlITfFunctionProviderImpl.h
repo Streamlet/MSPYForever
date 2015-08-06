@@ -20,29 +20,31 @@
 #include "xlIUnknownImpl.h"
 #include <msctf.h>
 
-
 namespace xl
 {
-    template <typename T = ITfFunctionProvider>
-    class ITfFunctionProviderImpl : public IUnknownImpl<T>
+    namespace Windows
     {
-    public: // ITfFunctionProvider Methods
-        STDMETHODIMP GetType(GUID *pguid)
+        template <typename T = ITfFunctionProvider>
+        class ITfFunctionProviderImpl : public IUnknownImpl<T>
         {
-            return E_NOTIMPL;
-        }
+        public: // ITfFunctionProvider Methods
+            STDMETHODIMP GetType(GUID *pguid)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP GetDescription(BSTR *pbstrDesc)
-        {
-            return E_NOTIMPL;
-        }
+            STDMETHODIMP GetDescription(BSTR *pbstrDesc)
+            {
+                return E_NOTIMPL;
+            }
 
-        STDMETHODIMP GetFunction(REFGUID rguid, REFIID riid, IUnknown **ppunk)
-        {
-            return E_NOTIMPL;
-        }
-    };
+            STDMETHODIMP GetFunction(REFGUID rguid, REFIID riid, IUnknown **ppunk)
+            {
+                return E_NOTIMPL;
+            }
+        };
 
+    } // namespace Windows
 } // namespace xl
 
 

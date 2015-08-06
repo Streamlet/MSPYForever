@@ -19,7 +19,6 @@
 
 #include "../Meta/xlTuple.h"
 
-
 namespace xl
 {
     template <typename T, typename U>
