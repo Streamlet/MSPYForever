@@ -34,33 +34,33 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 {
     xl::Windows::Menu popupMenu;
     popupMenu.CreatePopup();
-    AppendMenu(popupMenu, MF_POPUP | MF_STRING, 103, _T("&New"));
-    AppendMenu(popupMenu, MF_POPUP | MF_STRING, 104, _T("&Open"));
-    AppendMenu(popupMenu, MF_POPUP | MF_SEPARATOR, 0, nullptr);
-    AppendMenu(popupMenu, MF_POPUP | MF_STRING, 105, _T("&Quit"));
+    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 103, _T("&New"));
+    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 104, _T("&Open"));
+    popupMenu.AppendMenu(MF_POPUP | MF_SEPARATOR, 0, nullptr);
+    popupMenu.AppendMenu(MF_POPUP | MF_STRING, 105, _T("&Quit"));
 
     xl::Windows::Menu mainMenu;
     mainMenu.Create();
-    AppendMenu(mainMenu, MF_POPUP, (UINT_PTR)(HMENU)popupMenu, _T("&File"));
-    AppendMenu(mainMenu, MF_STRING, 101, _T("&Edit"));
-    AppendMenu(mainMenu, MF_SEPARATOR, 0, nullptr);
-    AppendMenu(mainMenu, MF_STRING, 102, _T("&Help"));
+    mainMenu.AppendMenu(MF_POPUP, (UINT_PTR)(HMENU)popupMenu, _T("&File"));
+    mainMenu.AppendMenu(MF_STRING, 101, _T("&Edit"));
+    mainMenu.AppendMenu(MF_SEPARATOR, 0, nullptr);
+    mainMenu.AppendMenu(MF_STRING, 102, _T("&Help"));
 
     xl::Windows::Window wnd;
     wnd.Create(nullptr, 300, 240, 500, 400, WS_OVERLAPPEDWINDOW, 0);
-    SetWindowText(wnd, _T("MyWindow"));
-    SetMenu(wnd, mainMenu);
+    wnd.SetWindowText(_T("MyWindow"));
+    wnd.SetMenu(mainMenu);
 
     xl::Windows::StdStatic label;
     label.Create(wnd, 1, 80, 30, 200, 18);
-    SetWindowText(label, _T("Please input:"));
+    label.SetWindowText(_T("Please input:"));
 
     xl::Windows::StdEdit edit;
     edit.Create(wnd, 2, 80, 50, 200, 24);
 
     xl::Windows::StdButton button;
     button.Create(wnd, 3, 80, 80, 200, 24);
-    SetWindowText(button, _T("Show Dialog"));
+    button.SetWindowText(_T("Show Dialog"));
 
     xl::Windows::StdComboBox combo;
     combo.Create(wnd, 4, 80, 110, 200, 100);
@@ -102,14 +102,14 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     {
         POINT point = {};
         GetCursorPos(&point);
-        TrackPopupMenu(popupMenu, TPM_LEFTALIGN, point.x, point.y, 0, hWnd, nullptr);
+        popupMenu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, hWnd, nullptr);
 
         return FALSE;
     });
 
     wnd.AppendMenuCommandMsgHandler(103, [&wnd](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
-        MessageBox(wnd, _T("Menu"), NULL, MB_OK);
+        wnd.MessageBox(_T("Menu"), NULL, MB_OK);
 
         return FALSE;
     });
@@ -117,8 +117,8 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     wnd.AppendCommandMsgHandler(2, EN_CHANGE, [&label, &edit](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) -> LRESULT
     {
         TCHAR szText[MAX_PATH];
-        GetWindowText(edit, szText, MAX_PATH);
-        SetWindowText(label, szText);
+        edit.GetWindowText(szText, MAX_PATH);
+        label.SetWindowText(szText);
 
         return FALSE;
     });
@@ -127,7 +127,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     {
         xl::Windows::Dialog dlg;
         dlg.Create(wnd, 400, 400);
-        SetWindowText(dlg, _T("MyDialog"));
+        dlg.SetWindowText(_T("MyDialog"));
 
         INT_PTR nID = dlg.DoModal();
 
@@ -137,8 +137,8 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     wnd.AppendCommandMsgHandler(4, CBN_SELCHANGE, [&edit, &combo](HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled) ->LRESULT
     {
         TCHAR szText[MAX_PATH];
-        GetWindowText(combo, szText, MAX_PATH);
-        SetWindowText(edit, szText);
+        combo.GetWindowText(szText, MAX_PATH);
+        edit.SetWindowText(szText);
 
         return FALSE;
     });
@@ -147,7 +147,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
     {
         TCHAR szText[MAX_PATH];
         list.GetText(list.GetCurSel(), szText);
-        SetWindowText(edit, szText);
+        edit.SetWindowText(szText);
 
         return FALSE;
     });
@@ -212,7 +212,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    ShowWindow(wnd, SW_SHOW);
+    wnd.ShowWindow(SW_SHOW);
 
     MSG msg = {};
 

@@ -205,9 +205,9 @@ namespace xl
                 WNDPROC pWndProc = pThis->m_thunk.GetThunkProc();
 
 #ifdef _WIN64
-                SetWindowLongPtr(hWnd, GWLP_WNDPROC, (LONG_PTR)pWndProc);
+                pThis->SetWindowLongPtr(GWLP_WNDPROC, (LONG_PTR)pWndProc);
 #else
-                SetWindowLong(hWnd, GWL_WNDPROC, (LONG)pWndProc);
+                pThis->SetWindowLong(GWL_WNDPROC, (LONG)pWndProc);
 #endif
 
                 return pWndProc(hWnd, uMsg, wParam, lParam);

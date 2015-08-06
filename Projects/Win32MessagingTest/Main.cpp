@@ -68,8 +68,8 @@ private:
         m_buttonSend.Create(m_hWnd, ID_BUTTON_SEND, 140, 138, 40, 24);
         m_buttonCloseAll.Create(m_hWnd, ID_BUTTON_CLOSE_ALL, 190, 138, 24, 24);
         m_editInput.SetLimitText(MAX_PATH - 1);
-        SetWindowText(m_buttonSend, _T("Send"));
-        SetWindowText(m_buttonCloseAll, _T("X"));
+        m_buttonSend.SetWindowText(_T("Send"));
+        m_buttonCloseAll.SetWindowText(_T("X"));
 
         AppendCommandMsgHandler(ID_BUTTON_SEND, CommandMsgHandler(this, &DemoWindow::OnButtonSendClick));
         AppendCommandMsgHandler(ID_BUTTON_CLOSE_ALL, CommandMsgHandler(this, &DemoWindow::OnButtonCloseAllClick));
@@ -96,8 +96,8 @@ private:
     LRESULT OnButtonSendClick(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
     {
         TCHAR szText[MAX_PATH] = {};
-        GetWindowText(m_editInput, szText, MAX_PATH);
-        SetWindowText(m_editInput, _T(""));
+        m_editInput.GetWindowText(szText, MAX_PATH);
+        m_editInput.SetWindowText(_T(""));
         g_msgbus.Notify(ID_MSGBUS_TEXT_COMING, StringPtr(new xl::String(szText)));
 
         return 0;
@@ -118,7 +118,7 @@ private:
 
     void OnMessageQuit(HANDLE hQuit, UINT nMessageId, StringPtr pMsgParam)
     {
-        PostMessage(m_hWnd, WM_CLOSE, 0, 0);
+        PostMessage(WM_CLOSE, 0, 0);
     }
 };
 
@@ -158,8 +158,8 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         }
 
         pWindows[i].Create(nullptr, nLeft, nTop, WIDTH, HEIGHT, WS_OVERLAPPEDWINDOW, 0);
-        SetWindowText(pWindows[i], _T("Messaging Test Window"));
-        ShowWindow(pWindows[i], SW_SHOW);
+        pWindows[i].SetWindowText(_T("Messaging Test Window"));
+        pWindows[i].ShowWindow(SW_SHOW);
 
         nLeft += WIDTH + SPACE;
     }
