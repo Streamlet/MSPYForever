@@ -371,6 +371,9 @@
     <ClInclude Include="..\..\Include\xl\AppHelper\xlUnitTest.h">
       <Filter>AppHelper</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\Console\xlConsole.h">
+      <Filter>Windows\Console</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">
@@ -456,6 +459,9 @@
     </Filter>
     <Filter Include="AppHelper">
       <UniqueIdentifier>{b01a7a0a-10e7-4c74-b1a3-a625caa563b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\Console">
+      <UniqueIdentifier>{7c6784d2-d80f-4db7-84af-caaf8246dc05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

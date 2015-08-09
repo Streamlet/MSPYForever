@@ -24,6 +24,7 @@
 #include "../Common/Containers/xlMap.h"
 #include "../Common/String/xlString.h"
 #include "../Common/Parser/xlRegExp.h"
+#include "../Windows/Console/xlConsole.h"
 #include <tchar.h>
 #include <stdio.h>
 
@@ -31,7 +32,7 @@ namespace xl
 {
     namespace AppHelper
     {
-        typedef Function<void(bool, const String &)> TestAssert;
+        typedef Function<void(bool, const String &, const String &, int)> TestAssert;
         typedef Function<void(TestAssert)> TestCase;
 
         class TestSuite
@@ -47,6 +48,29 @@ namespace xl
 
             }
 
+        protected:
+            struct FailureInfo
+            {
+                String strExpr;
+                String strFile;
+                int nLine;
+
+                FailureInfo() : nLine(0)
+                {
+
+                }
+
+                FailureInfo(const String &strExpr, const String &strFile, int nLine) :
+                    strExpr(strExpr), strFile(strFile), nLine(nLine)
+                {
+
+                }
+            };
+
+            typedef Array<FailureInfo> FailedAsserts;
+            typedef Map<String, FailedAsserts> FailedCases;
+
+        public:
             void AddTestCase(const String &strName, TestCase fnTestCase)
             {
                 m_mapTestCases.Insert(strName, fnTestCase);
@@ -62,7 +86,7 @@ namespace xl
                 }
 
                 int nSucceededCases = 0;
-                Map<String, int> mapFailedCases;
+                FailedCases mapFailedCases;
 
                 for (auto it = m_mapTestCases.Begin(); it != m_mapTestCases.End(); ++it)
                 {
@@ -72,22 +96,39 @@ namespace xl
                     }
 
                     int nSucceededAsserts = 0;
-                    int nFailedAsserts = 0;
+                    FailedAsserts arrFailedAsserts;
 
+                    Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
                     _tprintf(_T("Running test case '%s' ...\r\n"), (const TCHAR *)it->Key);
-                    (it->Value)(Bind(this, &TestSuite::Assert, _1, _2, (int &)nSucceededAsserts, (int &)nFailedAsserts));
-                    _tprintf(_T("%d succeeded, %d failed.\r\n"), nSucceededAsserts, nFailedAsserts);
+                    Windows::StdOutput().SetTextAttribute(0);
+
+                    (it->Value)(Bind(this, &TestSuite::Assert, _1, _2, (int &)nSucceededAsserts, (FailedAsserts &)arrFailedAsserts, _3, _4));
+
+                    Windows::StdOutput().SetTextAttribute(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+                    _tprintf(_T("%d succeeded, "), nSucceededAsserts);
+
+                    if (!arrFailedAsserts.Empty())
+                    {
+                        Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                    }
+
+                    _tprintf(_T("%d failed.\r\n"), (int)arrFailedAsserts.Size());
+
+                    Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+                    _tprintf(_T("\r\n"));
                     _tprintf(_T("\r\n"));
 
-                    if (nFailedAsserts <= 0)
+                    if (arrFailedAsserts.Empty())
                     {
                         ++nSucceededCases;
                     }
                     else
                     {
-                        mapFailedCases[it->Key] = nFailedAsserts;
+                        mapFailedCases[it->Key] = arrFailedAsserts;
                     }
                 }
+
+                Windows::StdOutput().SetTextAttribute(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
                 if (mapFailedCases.Empty())
                 {
@@ -95,29 +136,49 @@ namespace xl
                 }
                 else
                 {
-                    _tprintf(_T("%d cases succeeded. Following %d cases failed:\r\n"), nSucceededCases, (int)mapFailedCases.Size());
+                    _tprintf(_T("%d cases succeeded."), nSucceededCases);
+
+                    Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                    _tprintf(_T(" Following %d cases failed:\r\n"), (int)mapFailedCases.Size());
 
                     for (auto it = mapFailedCases.Begin(); it != mapFailedCases.End(); ++it)
                     {
-                        _tprintf(_T("%s (%d asserts failed.)\r\n"), (const TCHAR *)it->Key, it->Value);
+                        Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                        _tprintf(_T("%s (%d asserts failed):\r\n"), (const TCHAR *)it->Key, (int)it->Value.Size());
+
+                        for (auto itAssers = it->Value.Begin(); itAssers != it->Value.End(); ++itAssers)
+                        {
+                            Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                            _tprintf(_T("    %s"), (const TCHAR *)itAssers->strExpr);
+
+                            Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+                            _tprintf(_T(" (%s, L%d)\r\n"), (const TCHAR *)itAssers->strFile, itAssers->nLine);
+                        }
                     }
                 }
+
+                Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
                 return (int)mapFailedCases.Size();
             }
 
-            void Assert(bool bResult, const String &strAssertExpr, int &nSucceededAsserts, int &nFailedAsserts)
+            void Assert(bool bResult, const String &strAssertExpr, int &nSucceededAsserts, FailedAsserts &arrFailedAsserts, const String &strFile, int nLine)
             {
                 if (bResult)
                 {
                     ++nSucceededAsserts;
-                    _tprintf(_T("[  OK  ] %s\r\n"), (const TCHAR *)strAssertExpr);
+                    Windows::StdOutput().SetTextAttribute(FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+                    _tprintf(_T("[  OK  ]"));
                 }
                 else
                 {
-                    ++nFailedAsserts;
-                    _tprintf(_T("[Failed] %s\r\n"), (const TCHAR *)strAssertExpr);
+                    arrFailedAsserts.PushBack(FailureInfo(strAssertExpr, strFile, nLine));
+                    Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_INTENSITY);
+                    _tprintf(_T("[Failed]"));
                 }
+
+                Windows::StdOutput().SetTextAttribute(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+                _tprintf(_T(" %s\r\n"), (const TCHAR *)strAssertExpr);
             }
 
         protected:
@@ -149,7 +210,7 @@ namespace xl
 #define XL_TEST_CASE()  XL_TEST_NAMED_CASE(XL_CONN(UnnamedTestCase, __LINE__))
 
 #define XL_TEST_ASSERT(expr)    \
-        fnAssert((expr), _T(XL_TOSTR(expr)))
+        fnAssert((expr), _T(XL_TOSTR(expr)), _T(__FILE__), __LINE__)
 
 #define XL_TEST_RUN_ALL_CASES(filter)   \
         xl::AppHelper::g_TestSuite.Run(filter)

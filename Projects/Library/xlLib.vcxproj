@@ -98,6 +98,7 @@
     <ClInclude Include="..\..\Include\xl\Windows\COM\xlComModule.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\xlComPtr.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\xlDispatcher.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Console\xlConsole.h" />
     <ClInclude Include="..\..\Include\xl\Windows\File\xlIniFile.h" />
     <ClInclude Include="..\..\Include\xl\Windows\File\xlPath.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlCommCtrlInitializer.h" />
