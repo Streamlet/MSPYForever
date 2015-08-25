@@ -39,7 +39,26 @@ namespace xl
                 {
                     if (coef[i][i] == 0)
                     {
-                        return false;
+                        for (int j = i + 1; j < N; ++j)
+                        {
+                            if (coef[j][i] == 0)
+                            {
+                                continue;
+                            }
+
+                            // Swap Line i and Line j
+                            T t[N + 1] = {};
+                            Memory::Copy(t, coef[i], sizeof(t));
+                            Memory::Copy(coef[i], coef[j], sizeof(t));
+                            Memory::Copy(coef[j], t, sizeof(t));
+
+                            break;
+                        }
+
+                        if (coef[i][i] == 0)
+                        {
+                            return false;
+                        }
                     }
 
                     for (int j = i + 1; j < N; ++j)
@@ -55,11 +74,6 @@ namespace xl
                 // Upper triangle
                 for (int i = N - 1; i >= 0; --i)
                 {
-                    if (coef[i][i] == 0)
-                    {
-                        return false;
-                    }
-
                     for (int j = i - 1; j >= 0; --j)
                     {
                         coef[j][N] -= coef[i][N] * coef[j][i] / coef[i][i];
