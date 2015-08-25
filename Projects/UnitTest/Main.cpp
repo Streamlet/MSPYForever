@@ -22,17 +22,5 @@
 
 int _tmain(int argc, TCHAR * argv[])
 {
-    setlocale(LC_ALL, "");
-
-    const TCHAR *lpFilter = _T(".*");
-
-    if (argc > 1)
-    {
-        lpFilter = argv[1];
-    }
-
-    int iRet = XL_TEST_RUN_ALL_CASES(lpFilter);
-
-    system("pause");
-    return iRet;
+    return 0;
 }
