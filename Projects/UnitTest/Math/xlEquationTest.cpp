@@ -1,11 +1,14 @@
 //--------------------------------------------------------------------
 //
-//    Copyright (C) YourName. All rights reserved.
+//    Copyright (C) Streamlet. All rights reserved.
 //
 //    File Name:   xlEquationTest.cpp
-//    Author:      YourName
+//    Author:      Streamlet
 //    Create Time: 2015-08-25
 //    Description: 
+//
+//    Version history:
+//
 //
 //--------------------------------------------------------------------
 
