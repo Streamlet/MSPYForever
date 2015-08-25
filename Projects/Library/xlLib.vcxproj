@@ -35,6 +35,7 @@
     <ClInclude Include="..\..\Include\xl\Common\Cryption\xlMD5.h" />
     <ClInclude Include="..\..\Include\xl\Common\Cryption\xlSHA1.h" />
     <ClInclude Include="..\..\Include\xl\Common\Math\xlBigInt.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlEquation.h" />
     <ClInclude Include="..\..\Include\xl\Common\Math\xlInterval.h" />
     <ClInclude Include="..\..\Include\xl\Common\Math\xlIntervalSet.h" />
     <ClInclude Include="..\..\Include\xl\Common\Math\xlMathBase.h" />

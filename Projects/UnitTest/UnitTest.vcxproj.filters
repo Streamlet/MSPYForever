@@ -111,5 +111,8 @@
     <ClCompile Include="Meta\xlTupleTest.cpp">
       <Filter>Source Files\Meta</Filter>
     </ClCompile>
+    <ClCompile Include="Math\xlEquationTest.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
