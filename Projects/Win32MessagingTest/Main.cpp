@@ -68,8 +68,8 @@ private:
         m_buttonSend.Create(m_hWnd, ID_BUTTON_SEND, 140, 138, 40, 24);
         m_buttonCloseAll.Create(m_hWnd, ID_BUTTON_CLOSE_ALL, 190, 138, 24, 24);
         m_editInput.SetLimitText(MAX_PATH - 1);
-        m_buttonSend.SetWindowText(_T("Send"));
-        m_buttonCloseAll.SetWindowText(_T("X"));
+        m_buttonSend.SetWindowText(L"Send");
+        m_buttonCloseAll.SetWindowText(L"X");
 
         AppendCommandMsgHandler(ID_BUTTON_SEND, CommandMsgHandler(this, &DemoWindow::OnButtonSendClick));
         AppendCommandMsgHandler(ID_BUTTON_CLOSE_ALL, CommandMsgHandler(this, &DemoWindow::OnButtonCloseAllClick));
@@ -95,9 +95,9 @@ private:
 
     LRESULT OnButtonSendClick(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled)
     {
-        TCHAR szText[MAX_PATH] = {};
+        wchar_t szText[MAX_PATH] = {};
         m_editInput.GetWindowText(szText, MAX_PATH);
-        m_editInput.SetWindowText(_T(""));
+        m_editInput.SetWindowText(L"");
         g_msgbus.Notify(ID_MSGBUS_TEXT_COMING, StringPtr(new xl::String(szText)));
 
         return 0;
@@ -113,7 +113,7 @@ private:
     void OnMessageTextComing(HANDLE hQuit, UINT nMessageId, StringPtr pMsgParam)
     {
         m_editText.AppendText(*pMsgParam);
-        m_editText.AppendText(_T("\r\n"));
+        m_editText.AppendText(L"\r\n");
     }
 
     void OnMessageQuit(HANDLE hQuit, UINT nMessageId, StringPtr pMsgParam)
@@ -123,7 +123,7 @@ private:
 };
 
 
-int WINAPI _tWinMain(__in HINSTANCE hInstance,
+int WINAPI wWinMain(__in HINSTANCE hInstance,
                      __in_opt HINSTANCE hPrevInstance,
                      __in LPTSTR lpCmdLine,
                      __in int nShowCmd)
@@ -158,7 +158,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
         }
 
         pWindows[i].Create(nullptr, nLeft, nTop, WIDTH, HEIGHT, WS_OVERLAPPEDWINDOW, 0);
-        pWindows[i].SetWindowText(_T("Messaging Test Window"));
+        pWindows[i].SetWindowText(L"Messaging Test Window");
         pWindows[i].ShowWindow(SW_SHOW);
 
         nLeft += WIDTH + SPACE;

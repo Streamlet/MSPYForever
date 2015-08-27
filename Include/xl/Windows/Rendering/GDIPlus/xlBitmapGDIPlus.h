@@ -22,7 +22,6 @@
 #include "../../File/xlPath.h"
 #include "../xlBitmapDef.h"
 #include "xlGDIPlusUtility.h"
-#include <tchar.h>
 
 namespace xl
 {
@@ -215,8 +214,8 @@ namespace xl
 
                 String strExtName = Path::GetFileExtName(strFileName);
                 strExtName.MakeLower();
-                strExtName.AppendFront(_T('.'));
-                strExtName.AppendBack(_T(';'));
+                strExtName.AppendFront(L'.');
+                strExtName.AppendBack(L';');
 
                 if (_GdipGetImageDecodersSize(&nEncoders, &nBytes) != Gdiplus::Ok)
                 {
@@ -235,7 +234,7 @@ namespace xl
                 {
                     xl::String strExtSet = pEncoders[i].FilenameExtension;
                     strExtSet.MakeLower();
-                    strExtSet.AppendBack(_T(';'));
+                    strExtSet.AppendBack(L';');
 
                     if (strExtSet.IndexOf(strExtName) >= 0)
                     {
@@ -275,7 +274,7 @@ namespace xl
 
                 CLSID clsid = {};
 
-                if (!GetEncoderByFileName(_T(".bmp"), &clsid))
+                if (!GetEncoderByFileName(L".bmp", &clsid))
                 {
                     return false;
                 }

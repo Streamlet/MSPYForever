@@ -21,14 +21,13 @@
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
 #include <ShellAPI.h>
-#include <tchar.h>
 
 //
 // Controls TODO List:
 //
-// _T("RichEdit")
-// _T("RICHEDIT_CLASS")
-// _T("MDICLIENT")
+// L"RichEdit"
+// L"RICHEDIT_CLASS"
+// L"MDICLIENT"
 // WC_HEADER
 // WC_TREEVIEW
 // WC_COMBOBOXEX
@@ -156,10 +155,10 @@ namespace xl
 
                 if (nLength <= 0)
                 {
-                    return _T("");
+                    return L"";
                 }
 
-                xl::SharedArray<TCHAR> spBuffer(new TCHAR[++nLength]);
+                xl::SharedArray<wchar_t> spBuffer(new wchar_t[++nLength]);
                 GetWindowText(spBuffer.RawPointer(), nLength);
 
                 return spBuffer.RawPointer();
@@ -556,7 +555,7 @@ namespace xl
                 return ::FlashWindow(m_hWnd, bInvert);
             }
 
-            int MessageBox(LPCTSTR lpszText, LPCTSTR lpszCaption = _T(""), UINT nType = MB_OK)
+            int MessageBox(LPCTSTR lpszText, LPCTSTR lpszCaption = L"", UINT nType = MB_OK)
             {
                 return ::MessageBox(m_hWnd, lpszText, lpszCaption, nType);
             }

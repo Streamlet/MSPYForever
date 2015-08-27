@@ -25,7 +25,6 @@
 #include "xlWindowHelper.h"
 #include <Windows.h>
 #include <CommCtrl.h>
-#include <tchar.h>
 
 namespace xl
 {
@@ -59,7 +58,7 @@ namespace xl
                         int nHeight,
                         DWORD dwStyle,
                         DWORD dwExStyle = 0,
-                        LPCTSTR lpClassName = _T("xlWindow"),
+                        LPCTSTR lpClassName = L"xlWindow",
                         LPCTSTR lpWindowName = nullptr,
                         HMENU hMenu = nullptr,
                         HINSTANCE hInstance = nullptr,

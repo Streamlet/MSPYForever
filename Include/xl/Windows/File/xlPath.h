@@ -19,7 +19,6 @@
 #include "../../Common/String/xlString.h"
 #include "../../Common/Meta/xlUtility.h"
 #include <Windows.h>
-#include <tchar.h>
 
 namespace xl
 {
@@ -30,7 +29,7 @@ namespace xl
         public:
             static String GetFileDir(const String &strFilePath)
             {
-                int iSlashPos = strFilePath.LastIndexOf(_T("\\"));
+                int iSlashPos = strFilePath.LastIndexOf(L"\\");
 
                 if (iSlashPos < 0)
                 {
@@ -42,7 +41,7 @@ namespace xl
 
             static String GetFileName(const String &strFilePath)
             {
-                int iSlashPos = strFilePath.LastIndexOf(_T("\\"));
+                int iSlashPos = strFilePath.LastIndexOf(L"\\");
 
                 if (iSlashPos < 0)
                 {
@@ -56,7 +55,7 @@ namespace xl
 
             static String GetFileBaseName(const String &strFileName)
             {
-                int iDotPos = strFileName.LastIndexOf(_T("."));
+                int iDotPos = strFileName.LastIndexOf(L".");
 
                 if (iDotPos < 0)
                 {
@@ -68,7 +67,7 @@ namespace xl
 
             static String GetFileExtName(const String &strFileName)
             {
-                int iDotPos = strFileName.LastIndexOf(_T("."));
+                int iDotPos = strFileName.LastIndexOf(L".");
 
                 if (iDotPos < 0)
                 {

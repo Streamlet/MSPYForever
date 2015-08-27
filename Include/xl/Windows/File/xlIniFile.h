@@ -23,7 +23,6 @@
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
-#include <tchar.h>
 
 namespace xl
 {
@@ -39,19 +38,19 @@ namespace xl
                     return false;
                 }
 
-                TCHAR szFileNameAbsolute[MAX_PATH] = {};
+                wchar_t szFileNameAbsolute[MAX_PATH] = {};
 
                 if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
                 {
                     return false;
                 }
 
-                SharedPtr<TCHAR> spSectionNames = nullptr;
+                SharedPtr<wchar_t> spSectionNames = nullptr;
                 DWORD dwSize = 1024;
 
                 while (true)
                 {
-                    spSectionNames = new TCHAR[dwSize];
+                    spSectionNames = new wchar_t[dwSize];
 
                     DWORD dwSizeUsed = GetPrivateProfileSectionNames(spSectionNames.RawPointer(), dwSize, szFileNameAbsolute);
 
@@ -66,7 +65,7 @@ namespace xl
                 LPCTSTR lpszName = spSectionNames.RawPointer();
                 pSectionNames->Clear();
 
-                while (lpszName[0] != _T('\0'))
+                while (lpszName[0] != L'\0')
                 {
                     String strSectionName = lpszName;
                     lpszName += strSectionName.Length() + 1;
@@ -83,19 +82,19 @@ namespace xl
                     return false;
                 }
 
-                TCHAR szFileNameAbsolute[MAX_PATH] = {};
+                wchar_t szFileNameAbsolute[MAX_PATH] = {};
 
                 if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
                 {
                     return false;
                 }
 
-                SharedPtr<TCHAR> spKeyNames = nullptr;
+                SharedPtr<wchar_t> spKeyNames = nullptr;
                 DWORD dwSize = 1024;
 
                 while (true)
                 {
-                    spKeyNames = new TCHAR[dwSize];
+                    spKeyNames = new wchar_t[dwSize];
 
                     DWORD dwSizeUsed = GetPrivateProfileSection(strSectionName, spKeyNames.RawPointer(), dwSize, szFileNameAbsolute);
 
@@ -111,7 +110,7 @@ namespace xl
                 pLines->Clear();
 
 
-                while (lpszName[0] != _T('\0'))
+                while (lpszName[0] != L'\0')
                 {
                     String strLine = lpszName;
                     lpszName += strLine.Length() + 1;
@@ -132,7 +131,7 @@ namespace xl
                 {
                     String &strLine = *it;
 
-                    int nPos = strLine.IndexOf(_T("="));
+                    int nPos = strLine.IndexOf(L"=");
 
                     if (nPos >= 0)
                     {
@@ -155,7 +154,7 @@ namespace xl
                 {
                     String &strLine = *it;
 
-                    int nPos = strLine.IndexOf(_T("="));
+                    int nPos = strLine.IndexOf(L"=");
 
                     if (nPos >= 0)
                     {
@@ -174,19 +173,19 @@ namespace xl
                     return false;
                 }
 
-                TCHAR szFileNameAbsolute[MAX_PATH] = {};
+                wchar_t szFileNameAbsolute[MAX_PATH] = {};
 
                 if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
                 {
                     return false;
                 }
 
-                SharedPtr<TCHAR> spValue = nullptr;
+                SharedPtr<wchar_t> spValue = nullptr;
                 DWORD dwSize = 1024;
 
                 while (true)
                 {
-                    spValue = new TCHAR[dwSize];
+                    spValue = new wchar_t[dwSize];
 
                     DWORD dwSizeUsed = GetPrivateProfileString(strSectionName,
                         strKeyName,
@@ -210,7 +209,7 @@ namespace xl
 
             static bool SetValue(const String &strFilePath, const String &strSectionName, const String &strKeyName, const String &strValue)
             {
-                TCHAR szFileNameAbsolute[MAX_PATH] = {};
+                wchar_t szFileNameAbsolute[MAX_PATH] = {};
 
                 if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
                 {
@@ -240,7 +239,7 @@ namespace xl
 
             static bool DeleteKey(const String &strFilePath, const String &strSectionName, const String &strKeyName)
             {
-                TCHAR szFileNameAbsolute[MAX_PATH] = {};
+                wchar_t szFileNameAbsolute[MAX_PATH] = {};
 
                 if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
                 {
@@ -260,7 +259,7 @@ namespace xl
 
             static bool DeleteSection(const String &strFilePath, const String &strSectionName)
             {
-                TCHAR szFileNameAbsolute[MAX_PATH] = {};
+                wchar_t szFileNameAbsolute[MAX_PATH] = {};
 
                 if (GetFullPathName(strFilePath, MAX_PATH, szFileNameAbsolute, nullptr) == 0)
                 {

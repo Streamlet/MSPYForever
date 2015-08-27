@@ -23,7 +23,6 @@
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
-#include <tchar.h>
 #include <winscard.h>
 
 namespace xl
@@ -77,7 +76,7 @@ namespace xl
                     return false;
                 }
 
-                SharedPtr<TCHAR> spBuffer = new TCHAR[cbSize / sizeof(TCHAR)];
+                SharedPtr<wchar_t> spBuffer = new wchar_t[cbSize / sizeof(wchar_t)];
                 lRet = RegQueryValueEx(hKey, strName, nullptr, nullptr, (LPBYTE)spBuffer.RawPointer(), &cbSize);
 
                 if (lRet != ERROR_SUCCESS)
@@ -101,7 +100,7 @@ namespace xl
 
                 XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-                if (RegSetValueEx(hKey, strName, 0, REG_SZ, (LPCBYTE)(LPCTSTR)strValue, (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
+                if (RegSetValueEx(hKey, strName, 0, REG_SZ, (LPCBYTE)(LPCTSTR)strValue, (DWORD)(strValue.Length() + 1) * sizeof(wchar_t)) != ERROR_SUCCESS)
                 {
                     return false;
                 }
@@ -120,7 +119,7 @@ namespace xl
 
                 XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
-                if (RegSetValueEx(hKey, strName, 0, REG_EXPAND_SZ, (LPCBYTE)(LPCTSTR)strValue, (DWORD)(strValue.Length() + 1) * sizeof(TCHAR)) != ERROR_SUCCESS)
+                if (RegSetValueEx(hKey, strName, 0, REG_EXPAND_SZ, (LPCBYTE)(LPCTSTR)strValue, (DWORD)(strValue.Length() + 1) * sizeof(wchar_t)) != ERROR_SUCCESS)
                 {
                     return false;
                 }
@@ -278,7 +277,7 @@ namespace xl
                 XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
                 LONG lRet = ERROR_SUCCESS;
-                TCHAR szName[MAX_PATH] = {};
+                wchar_t szName[MAX_PATH] = {};
 
                 for (int i = 0; true; ++i)
                 {
@@ -318,7 +317,7 @@ namespace xl
                 XL_ON_BLOCK_EXIT(RegCloseKey, hKey);
 
                 LONG lRet = ERROR_SUCCESS;
-                TCHAR szName[MAX_PATH] = {};
+                wchar_t szName[MAX_PATH] = {};
 
                 for (int i = 0; true; ++i)
                 {
@@ -374,7 +373,7 @@ namespace xl
                         return false;
                     }
 
-                    int nPos = strPath.LastIndexOf(_T("\\"), nLastPos);
+                    int nPos = strPath.LastIndexOf(L"\\", nLastPos);
 
                     if (nPos == nLastPos - 1)
                     {
@@ -429,7 +428,7 @@ namespace xl
                 {
                     for (auto it = arrKeys.Begin(); it != arrKeys.End(); ++it)
                     {
-                        if (!DeleteKeyRecursion(hRootKey, strPath + _T("\\") + *it))
+                        if (!DeleteKeyRecursion(hRootKey, strPath + L"\\" + *it))
                         {
                             return false;
                         }

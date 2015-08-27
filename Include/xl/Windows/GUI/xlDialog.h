@@ -63,7 +63,7 @@ namespace xl
                         int nHeight,
                         DWORD dwStyle = WS_POPUPWINDOW | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
                         DWORD dwExStyle = WS_EX_CONTROLPARENT,
-                        LPCTSTR lpszClassName = _T("xlDialog"),
+                        LPCTSTR lpszClassName = L"xlDialog",
                         LPCTSTR lpWindowName = nullptr,
                         HMENU hMenu = nullptr,
                         HINSTANCE hInstance = nullptr)

@@ -144,9 +144,9 @@ namespace xl
                 return (DWORD)::SendMessage(m_hWnd, CB_GETEDITSEL, 0, 0);
             }
 
-            BOOL SetEditSel(int nStartChar, int nEndChar)
+            BOOL SetEditSel(int nStarwchar_t, int nEndChar)
             {
-                return (BOOL)::SendMessage(m_hWnd, CB_SETEDITSEL, 0, MAKELONG(nStartChar, nEndChar));
+                return (BOOL)::SendMessage(m_hWnd, CB_SETEDITSEL, 0, MAKELONG(nStarwchar_t, nEndChar));
             }
 
         public: // for combobox item

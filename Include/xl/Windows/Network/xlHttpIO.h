@@ -182,7 +182,7 @@ namespace xl
                     return false;
                 }
 
-                xl::SharedArray<TCHAR> spBuffer(new TCHAR[dwSize]);
+                xl::SharedArray<wchar_t> spBuffer(new wchar_t[dwSize]);
 
                 if (!QueryHeaders(dwInfoLevel, WINHTTP_HEADER_NAME_BY_INDEX, spBuffer.RawPointer(), &dwSize, WINHTTP_NO_HEADER_INDEX))
                 {
@@ -201,7 +201,7 @@ namespace xl
 
                 if (!strContentLength.Empty())
                 {
-                    _stscanf_s(strContentLength, _T("%llu"), &qwContentLength);
+                    _stscanf_s(strContentLength, L"%llu", &qwContentLength);
                 }
 
                 if (fnWrite == nullptr)

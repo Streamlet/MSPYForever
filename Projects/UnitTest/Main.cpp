@@ -17,10 +17,9 @@
 #include "../../Include/xl/AppHelper/xlUnitTest.h"
 #include <stdlib.h>
 #include <locale>
-#include <tchar.h>
 
 
-int _tmain(int argc, TCHAR * argv[])
+int wmain(int argc, wchar_t *argv[])
 {
     return 0;
 }

@@ -43,10 +43,10 @@ namespace xl
                   m_pTLibAttr(nullptr),
                   m_dwThreadId(0)
         {
-            TCHAR szModulePath[MAX_PATH] = {};
+            wchar_t szModulePath[MAX_PATH] = {};
             GetModuleFileName(m_hModule, szModulePath, ARRAYSIZE(szModulePath));
 
-            TCHAR szModulePathCanonicalized[MAX_PATH] = {};
+            wchar_t szModulePathCanonicalized[MAX_PATH] = {};
             
             if (PathCanonicalize(szModulePathCanonicalized, szModulePath))
             {
@@ -71,12 +71,12 @@ namespace xl
                 XL_ASSERT(false);
             }
 
-            TCHAR szTLibID[40] = {};
+            wchar_t szTLibID[40] = {};
             StringFromGUID2(m_pTLibAttr->guid, szTLibID, ARRAYSIZE(szTLibID));
             m_strLibID = szTLibID;
 
-            TCHAR szVersion[40] = {};
-            _stprintf_s(szVersion, _T("%u.%u"), (DWORD)m_pTLibAttr->wMajorVerNum, (DWORD)m_pTLibAttr->wMinorVerNum);
+            wchar_t szVersion[40] = {};
+            swprintf_s(szVersion, L"%u.%u", (DWORD)m_pTLibAttr->wMajorVerNum, (DWORD)m_pTLibAttr->wMinorVerNum);
             m_strLibVersion = szVersion;
         }
 
@@ -210,7 +210,7 @@ namespace xl
             String strCmdLine = lpszCmdLine;
             String strCmdLineLower = strCmdLine.ToLower();
 
-            if (strCmdLineLower == _T("user"))
+            if (strCmdLineLower == L"user")
             {
                 if (bInstall)
                 {
@@ -250,16 +250,16 @@ namespace xl
                 }
             }
 
-            if (strCmdLineLower == _T("ini") || strCmdLineLower.IndexOf(_T("ini:")) == 0)
+            if (strCmdLineLower == L"ini") || strCmdLineLower.IndexOf(_T("ini:") == 0)
             {
-                LPCTSTR DEFAULT_INI_FILENAME = _T("xlComReg.ini");
+                LPCTSTR DEFAULT_INI_FILENAME = L"xlComReg.ini";
                 String strIniFileName = DEFAULT_INI_FILENAME;
 
                 if (strCmdLine.Length() > 4)
                 {
                     strIniFileName = strCmdLine.SubString(4);
 
-                    if (strIniFileName[strIniFileName.Length() - 1] == _T('\\'))
+                    if (strIniFileName[strIniFileName.Length() - 1] == L'\\')
                     {
                         strIniFileName += DEFAULT_INI_FILENAME;
                     }
@@ -417,24 +417,24 @@ namespace xl
         bool RegisterTypeLib(HKEY hRootKey)
         {
             String strPath;
-            strPath += _T("Software\\Classes\\TypeLib\\");
+            strPath += L"Software\\Classes\\TypeLib\\";
             strPath += m_strLibID;
-            strPath += _T("\\");
+            strPath += L"\\";
             strPath += m_strLibVersion;
 
-            if (!Registry::SetString(hRootKey, strPath, _T(""), m_strLibName))
+            if (!Registry::SetString(hRootKey, strPath, L"", m_strLibName))
             {
                 return false;
             }
 
-            strPath += _T("\\0\\");
+            strPath += L"\\0\\";
 #ifdef _WIN64
-            strPath += _T("Win64");
+            strPath += L"Win64";
 #else
-            strPath += _T("Win32");
+            strPath += L"Win32";
 #endif
 
-            if (!Registry::SetString(hRootKey, strPath, _T(""), m_strModulePath))
+            if (!Registry::SetString(hRootKey, strPath, L"", m_strModulePath))
             {
                 return false;
             }
@@ -474,24 +474,24 @@ namespace xl
 
                 XL_ON_BLOCK_EXIT(pTypeInfo, &ITypeInfo::ReleaseTypeAttr, pAttr);
 
-                TCHAR szInterfaceID[40] = {};
+                wchar_t szInterfaceID[40] = {};
                 StringFromGUID2(pAttr->guid, szInterfaceID, ARRAYSIZE(szInterfaceID));
 
                 String strInterfacePath;
-                strInterfacePath += _T("Software\\Classes\\Interface\\");
+                strInterfacePath += L"Software\\Classes\\Interface\\";
                 strInterfacePath += szInterfaceID;
 
-                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\ProxyStubClsid32"), _T(""), _T("{00020424-0000-0000-C000-000000000046}")))
+                if (!Registry::SetString(hRootKey, strInterfacePath + L"\\ProxyStubClsid32"), _T(""), _T("{00020424-0000-0000-C000-000000000046}"))
                 {
                     return false;
                 }
 
-                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T(""), m_strLibID))
+                if (!Registry::SetString(hRootKey, strInterfacePath + L"\\TypeLib"), _T("", m_strLibID))
                 {
                     return false;
                 }
 
-                if (!Registry::SetString(hRootKey, strInterfacePath + _T("\\TypeLib"), _T("Version"), m_strLibVersion))
+                if (!Registry::SetString(hRootKey, strInterfacePath + L"\\TypeLib"), _T("Version", m_strLibVersion))
                 {
                     return false;
                 }
@@ -537,11 +537,11 @@ namespace xl
 
                 XL_ON_BLOCK_EXIT(pTypeInfo, &ITypeInfo::ReleaseTypeAttr, pAttr);
 
-                TCHAR szInterfaceID[40] = {};
+                wchar_t szInterfaceID[40] = {};
                 StringFromGUID2(pAttr->guid, szInterfaceID, ARRAYSIZE(szInterfaceID));
 
                 String strInterfacePath;
-                strInterfacePath += _T("Software\\Classes\\Interface\\");
+                strInterfacePath += L"Software\\Classes\\Interface\\";
                 strInterfacePath += szInterfaceID;
 
                 if (!Registry::DeleteKeyRecursion(hRootKey, strInterfacePath))
@@ -551,7 +551,7 @@ namespace xl
             }
 
             String strPath;
-            strPath += _T("Software\\Classes\\TypeLib\\");
+            strPath += L"Software\\Classes\\TypeLib\\";
             strPath += m_strLibID;
 
             if (!Registry::DeleteKeyRecursion(hRootKey, strPath))
@@ -571,31 +571,31 @@ namespace xl
                     continue;
                 }
 
-                TCHAR szClassID[40] = {};
+                wchar_t szClassID[40] = {};
                 StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
 
                 String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
-                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+                String strProgID = strVersionIndependentProgID + L"." + (*ppEntry)->lpszVersion;
 
                 String strPath;
-                strPath = _T("Software\\Classes\\");
-                String strClassIDPath = strPath + _T("CLSID\\") + szClassID;
+                strPath = L"Software\\Classes\\";
+                String strClassIDPath = strPath + L"CLSID\\" + szClassID;
 
-                if (!Registry::SetString(hRootKey, strClassIDPath, _T(""), (*ppEntry)->lpszClassDesc))
+                if (!Registry::SetString(hRootKey, strClassIDPath, L"", (*ppEntry)->lpszClassDesc))
                 {
                     return false;
                 }
 
                 if (bInprocServer)
                 {
-                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\InprocServer32"), _T(""), m_strModulePath))
+                    if (!Registry::SetString(hRootKey, strClassIDPath + L"\\InprocServer32"), _T("", m_strModulePath))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\LocalServer32"), _T(""), m_strModulePath))
+                    if (!Registry::SetString(hRootKey, strClassIDPath + L"\\LocalServer32"), _T("", m_strModulePath))
                     {
                         return false;
                     }
@@ -603,7 +603,7 @@ namespace xl
 
                 if (!m_strLibID.Empty())
                 {
-                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\TypeLib"), _T(""), m_strLibID))
+                    if (!Registry::SetString(hRootKey, strClassIDPath + L"\\TypeLib"), _T("", m_strLibID))
                     {
                         return false;
                     }
@@ -611,19 +611,19 @@ namespace xl
 
                 if (!strProgID.Empty())
                 {
-                    if (!Registry::SetString(hRootKey, strClassIDPath + _T("\\ProgID"), _T(""), strProgID))
+                    if (!Registry::SetString(hRootKey, strClassIDPath + L"\\ProgID"), _T("", strProgID))
                     {
                         return false;
                     }
 
                     String strProgIDPath = strPath + strProgID;
 
-                    if (!Registry::SetString(hRootKey, strProgIDPath, _T(""), (*ppEntry)->lpszClassDesc))
+                    if (!Registry::SetString(hRootKey, strProgIDPath, L"", (*ppEntry)->lpszClassDesc))
                     {
                         return false;
                     }
 
-                    if (!Registry::SetString(hRootKey, strProgIDPath + _T("\\CLSID\\"), _T(""), szClassID))
+                    if (!Registry::SetString(hRootKey, strProgIDPath + L"\\CLSID\\"), _T("", szClassID))
                     {
                         return false;
                     }
@@ -633,17 +633,17 @@ namespace xl
                 {
                     String strProgIDPath = strPath + strVersionIndependentProgID;
 
-                    if (!Registry::SetString(hRootKey, strProgIDPath, _T(""), (*ppEntry)->lpszClassDesc))
+                    if (!Registry::SetString(hRootKey, strProgIDPath, L"", (*ppEntry)->lpszClassDesc))
                     {
                         return false;
                     }
 
-                    if (!Registry::SetString(hRootKey, strProgIDPath + _T("\\CurVer\\"), _T(""), strProgID))
+                    if (!Registry::SetString(hRootKey, strProgIDPath + L"\\CurVer\\"), _T("", strProgID))
                     {
                         return false;
                     }
 
-                    if (!Registry::SetString(hRootKey, strProgIDPath + _T("\\CLSID\\"), _T(""), szClassID))
+                    if (!Registry::SetString(hRootKey, strProgIDPath + L"\\CLSID\\"), _T("", szClassID))
                     {
                         return false;
                     }
@@ -662,15 +662,15 @@ namespace xl
                     continue;
                 }
 
-                TCHAR szClassID[40] = {};
+                wchar_t szClassID[40] = {};
                 StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
 
                 String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
-                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+                String strProgID = strVersionIndependentProgID + L"." + (*ppEntry)->lpszVersion;
 
                 String strPath;
-                strPath = _T("Software\\Classes\\");
-                String strClassIDPath = strPath + _T("CLSID\\") + szClassID;
+                strPath = L"Software\\Classes\\";
+                String strClassIDPath = strPath + L"CLSID\\" + szClassID;
 
                 if (!Registry::DeleteKeyRecursion(hRootKey, strClassIDPath))
                 {
@@ -705,12 +705,12 @@ namespace xl
         bool RegisterTypeLibToIni(const String &strIniFileName)
         {
 #if 0   // Do not register TypeLib to INI
-            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("TypeLib"), m_strLibName))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, L"TypeLib", m_strLibName))
             {
                 return false;
             }
 
-            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Version"), m_strLibVersion))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, L"Version", m_strLibVersion))
             {
                 return false;
             }
@@ -718,12 +718,12 @@ namespace xl
             String strModulePath = GetModuleRelativePathToIni(strIniFileName);
 
 #ifdef _WIN64
-            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win64"), strModulePath))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, L"Win64", strModulePath))
             {
                 return false;
             }
 #else
-            if (!IniFile::SetValue(strIniFileName, m_strLibID, _T("Win32"), strModulePath))
+            if (!IniFile::SetValue(strIniFileName, m_strLibID, L"Win32", strModulePath))
             {
                 return false;
             }
@@ -751,13 +751,13 @@ namespace xl
                     continue;
                 }
 
-                TCHAR szClassID[40] = {};
+                wchar_t szClassID[40] = {};
                 StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
 
                 String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
-                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+                String strProgID = strVersionIndependentProgID + L"." + (*ppEntry)->lpszVersion;
 
-                if (!IniFile::SetValue(strIniFileName, szClassID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                if (!IniFile::SetValue(strIniFileName, szClassID, L"Class", (*ppEntry)->lpszClassDesc))
                 {
                     return false;
                 }
@@ -767,12 +767,12 @@ namespace xl
                 if (bInprocServer)
                 {
 #ifdef _WIN64
-                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer64"), strModulePath))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, L"InprocServer64", strModulePath))
                     {
                         return false;
                     }
 #else
-                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("InprocServer32"), strModulePath))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, L"InprocServer32", strModulePath))
                     {
                         return false;
                     }
@@ -781,12 +781,12 @@ namespace xl
                 else
                 {
 #ifdef _WIN64
-                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("LocalServer64"), strModulePath))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, L"LocalServer64", strModulePath))
                     {
                         return false;
                     }
 #else
-                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("LocalServer32"), strModulePath))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, L"LocalServer32", strModulePath))
                     {
                         return false;
                     }
@@ -796,7 +796,7 @@ namespace xl
 #if 0   // Do not register TypeLib and ProgID to INI
                 if (!m_strLibID.Empty())
                 {
-                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("TypeLib"), m_strLibID))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, L"TypeLib", m_strLibID))
                     {
                         return false;
                     }
@@ -804,17 +804,17 @@ namespace xl
 
                 if (!strProgID.Empty())
                 {
-                    if (!IniFile::SetValue(strIniFileName, szClassID, _T("ProgID"), strProgID))
+                    if (!IniFile::SetValue(strIniFileName, szClassID, L"ProgID", strProgID))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(strIniFileName, strProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                    if (!IniFile::SetValue(strIniFileName, strProgID, L"Class", (*ppEntry)->lpszClassDesc))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(strIniFileName, strProgID, _T("CLSID"), szClassID))
+                    if (!IniFile::SetValue(strIniFileName, strProgID, L"CLSID", szClassID))
                     {
                         return false;
                     }
@@ -822,17 +822,17 @@ namespace xl
 
                 if (!strVersionIndependentProgID.Empty())
                 {
-                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, _T("Class"), (*ppEntry)->lpszClassDesc))
+                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, L"Class", (*ppEntry)->lpszClassDesc))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, _T("CurVer"), strProgID))
+                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, L"CurVer", strProgID))
                     {
                         return false;
                     }
 
-                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, _T("CLSID"), szClassID))
+                    if (!IniFile::SetValue(strIniFileName, strVersionIndependentProgID, L"CLSID", szClassID))
                     {
                         return false;
                     }
@@ -852,11 +852,11 @@ namespace xl
                     continue;
                 }
 
-                TCHAR szClassID[40] = {};
+                wchar_t szClassID[40] = {};
                 StringFromGUID2(*(*ppEntry)->pClsid, szClassID, ARRAYSIZE(szClassID));
 
                 String strVersionIndependentProgID = (*ppEntry)->lpszProgID;
-                String strProgID = strVersionIndependentProgID + _T(".") + (*ppEntry)->lpszVersion;
+                String strProgID = strVersionIndependentProgID + L"." + (*ppEntry)->lpszVersion;
 
                 if (!IniFile::DeleteSection(strIniFileName, szClassID))
                 {
@@ -885,14 +885,14 @@ namespace xl
 
         String GetModuleRelativePathToIni(const String &strIniFileName)
         {
-            TCHAR szIniPathAbsolute[MAX_PATH] = {};
+            wchar_t szIniPathAbsolute[MAX_PATH] = {};
             
             if (GetFullPathName(strIniFileName, ARRAYSIZE(szIniPathAbsolute), szIniPathAbsolute, nullptr) == 0)
             {
                 return m_strModulePath;
             }
 
-            TCHAR szModuleRelativePath[MAX_PATH] = {};
+            wchar_t szModuleRelativePath[MAX_PATH] = {};
 
             if (!PathRelativePathTo(szModuleRelativePath, szIniPathAbsolute, 0, m_strModulePath, 0))
             {

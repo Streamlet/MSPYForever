@@ -101,9 +101,9 @@ namespace xl
                 return (DWORD)::SendMessage(m_hWnd, EM_GETSEL, 0, 0);
             }
 
-            void GetSel(int *pnStartChar, int *pnEndChar) const
+            void GetSel(int *pnStarwchar_t, int *pnEndChar) const
             {
-                ::SendMessage(m_hWnd, EM_GETSEL, (WPARAM)pnStartChar, (LPARAM)pnEndChar);
+                ::SendMessage(m_hWnd, EM_GETSEL, (WPARAM)pnStarwchar_t, (LPARAM)pnEndChar);
             }
 
             DWORD GetMargins() const
@@ -142,12 +142,12 @@ namespace xl
                 return (int)::SendMessage(m_hWnd, EM_GETLINE, nIndex, (LPARAM)lpszBuffer);
             }
 
-            TCHAR GetPasswordChar() const
+            wchar_t GetPasswordChar() const
             {
-                return (TCHAR)::SendMessage(m_hWnd, EM_GETPASSWORDCHAR, 0, 0);
+                return (wchar_t)::SendMessage(m_hWnd, EM_GETPASSWORDCHAR, 0, 0);
             }
 
-            void SetPasswordChar(TCHAR ch)
+            void SetPasswordChar(wchar_t ch)
             {
                 ::SendMessage(m_hWnd, EM_SETPASSWORDCHAR, ch, 0);
             }
@@ -253,9 +253,9 @@ namespace xl
                 }
             }
 
-            void SetSel(int nStartChar, int nEndChar, BOOL bNoScroll = FALSE)
+            void SetSel(int nStarwchar_t, int nEndChar, BOOL bNoScroll = FALSE)
             {
-                ::SendMessage(m_hWnd, EM_SETSEL, nStartChar, nEndChar);
+                ::SendMessage(m_hWnd, EM_SETSEL, nStarwchar_t, nEndChar);
 
                 if (!bNoScroll)
                 {
@@ -330,9 +330,9 @@ namespace xl
                 return (DWORD)::SendMessage(m_hWnd, EM_GETHILITE, 0, 0);
             }
 
-            void SetHilight(int nStartChar, int nEndChar)
+            void SetHilight(int nStarwchar_t, int nEndChar)
             {
-                ::SendMessage(m_hWnd, EM_SETHILITE, nStartChar, nEndChar);
+                ::SendMessage(m_hWnd, EM_SETHILITE, nStarwchar_t, nEndChar);
             }
 
 #endif // (_WIN32_WINNT >= 0x0600)

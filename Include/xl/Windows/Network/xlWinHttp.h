@@ -21,7 +21,6 @@
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 #include <WinHttp.h>
-#include <tchar.h>
 #pragma comment(lib, "WinHttp.lib")
 
 namespace xl

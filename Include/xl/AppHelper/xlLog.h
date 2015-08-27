@@ -21,13 +21,12 @@
 #include "../Common/String/xlString.h"
 #include "../Windows/Threads/xlCriticalSection.h"
 #include "../Windows/xlHandle.h"
-#include <tchar.h>
 
 // Define following macros before include this file
-// #define XL_LOG_PREFIX _T("[LogPrefix] ")             // Log prefix
+// #define XL_LOG_PREFIX L"[LogPrefix] "             // Log prefix
 // #define XL_LOG_TARGET_DEBUGGER                       // Output to debugger
 // #define XL_LOG_TARGET_CONSOLE                        // Output to console
-// #define XL_LOG_TARGET_FILE _T("%Temp%\xlLog.log")    // Output to file, supporting environment variables
+// #define XL_LOG_TARGET_FILE L"%Temp%\xlLog.log"    // Output to file, supporting environment variables
 // #define XL_LOG_CONTENT_SOURCEFILE                    // Output source file name
 // #define XL_LOG_CONTENT_FUNCTION                      // Output function name
 // #define XL_LOG_CONTENT_LINE                          // Output line number
@@ -82,7 +81,7 @@ namespace xl
                 static CriticalSection csLogFile;
                 csLogFile.Lock();
 
-                TCHAR szPath[MAX_PATH] = {};
+                wchar_t szPath[MAX_PATH] = {};
                 if (ExpandEnvironmentStrings(XL_LOG_TARGET_FILE, szPath, _countof(szPath)) == 0)
                 {
                     return false;
@@ -129,22 +128,22 @@ namespace xl
                 switch (eLevel)
                 {
                 case LogLevel_Fatal:
-                    lpszLevel = _T("Fatal:  ");
+                    lpszLevel = L"Fatal:  ";
                     break;
                 case LogLevel_Error:
-                    lpszLevel = _T("Error:  ");
+                    lpszLevel = L"Error:  ";
                     break;
                 case LogLevel_Warning:
-                    lpszLevel = _T("Warning:");
+                    lpszLevel = L"Warning:";
                     break;
                 case LogLevel_Info:
-                    lpszLevel = _T("Info:   ");
+                    lpszLevel = L"Info:   ";
                     break;
                 case LogLevel_Verbose:
-                    lpszLevel = _T("Verbose:");
+                    lpszLevel = L"Verbose:";
                     break;
                 default:
-                    lpszLevel = _T("");
+                    lpszLevel = L"";
                     break;
                 }
                 strOutput += lpszLevel;
@@ -152,31 +151,31 @@ namespace xl
                 strOutput += strMessage;
 
 #if defined(XL_LOG_CONTENT_SOURCEFILE) || defined(XL_LOG_CONTENT_FUNCTION) || defined(XL_LOG_CONTENT_LINE)
-                strOutput += _T(" (");
+                strOutput += L" (";
 
 #if defined(XL_LOG_CONTENT_SOURCEFILE)
                 strOutput += strSourceFile;
 #if defined(XL_LOG_CONTENT_FUNCTION) || defined(XL_LOG_CONTENT_LINE)
-                strOutput += _T(", ");
+                strOutput += L", ";
 #endif
 #endif
 
 #if defined(XL_LOG_CONTENT_FUNCTION)
                 strOutput += strFunctionName;
 #if defined(XL_LOG_CONTENT_LINE)
-                strOutput += _T(", ");
+                strOutput += L", ";
 #endif
 #endif
 
 #if defined(XL_LOG_CONTENT_LINE)
-                strOutput += _T("L");
+                strOutput += L"L";
                 strOutput += strLine;
 #endif
 
-                strOutput += _T(")");
+                strOutput += L")";
 #endif
 
-                strOutput += _T("\r\n");
+                strOutput += L"\r\n";
 
 #ifdef XL_LOG_TARGET_DEBUGGER
                 PrintToConsole(strOutput);
@@ -194,7 +193,7 @@ namespace xl
             inline void LogEnterFunction(LogLevel eLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
             {
                 xl::String strMessage;
-                strMessage += _T(">>>>>>>>>> Enter ");
+                strMessage += L">>>>>>>>>> Enter ";
                 strMessage += strFunctionName;
                 PrintMessage(eLevel, strMessage, strSourceFile, strFunctionName, strLine);
             }
@@ -202,7 +201,7 @@ namespace xl
             inline void LogLeaveFunction(LogLevel eLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
             {
                 xl::String strMessage;
-                strMessage += _T("<<<<<<<<<< Leave ");
+                strMessage += L"<<<<<<<<<< Leave ";
                 strMessage += strFunctionName;
                 PrintMessage(eLevel, strMessage, strSourceFile, strFunctionName, strLine);
             }
@@ -214,14 +213,14 @@ namespace xl
 
                 va_list args;
                 va_start(args, strFormat);
-                int iLength = _vstprintf_s(szMessage, MAX_MSG_LENGTH, strFormat, args);
+                int iLength = _vswprintf(szMessage, MAX_MSG_LENGTH, strFormat, args);
                 va_end(args);
 
                 for (int i = iLength - 1; i >= 0; --i)
                 {
-                    if (szMessage[i] == _T('\r') || szMessage[i] == _T('\n'))
+                    if (szMessage[i] == L'\r' || szMessage[i] == L'\n')
                     {
-                        szMessage[i] = _T('\0');
+                        szMessage[i] = L'\0';
                     }
                     else
                     {

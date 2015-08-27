@@ -36,26 +36,26 @@ int main()
         pColor[i] = ColorX(150 + i, 0xff, 0x00, 0x00);
     }
 
-    bmp.SaveToFile(_T("a.png"));
+    bmp.SaveToFile(L"a.png");
 
     for (int i = 0; i < 10 * 10; ++i)
     {
         pColor[i] = ColorX(150 + i, 0x00, 0xff, 0x00);
     }
 
-    bmp.SaveToFile(_T("b.png"));
+    bmp.SaveToFile(L"b.png");
 
-    bmp.LoadFromFile(_T("a.png"));
-    bmp.SaveToFile(_T("c.png"));
+    bmp.LoadFromFile(L"a.png");
+    bmp.SaveToFile(L"c.png");
 
     size_t cbSize = 0;
     void *lpBuffer = bmp.SaveToMemory(cbSize);
 
-    bmp.LoadFromFile(_T("b.png"));
-    bmp.SaveToFile(_T("d.png"));
+    bmp.LoadFromFile(L"b.png");
+    bmp.SaveToFile(L"d.png");
 
     bmp.LoadFromMemory(lpBuffer, cbSize);
-    bmp.SaveToFile(_T("e.png"));
+    bmp.SaveToFile(L"e.png");
 
     return 0;
 }

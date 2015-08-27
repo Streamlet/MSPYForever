@@ -15,7 +15,6 @@
 
 
 #include "../../Include/xl/Windows/Network/xlSocket.h"
-#include <tchar.h>
 
 using namespace xl::Windows;
 
@@ -28,7 +27,7 @@ int main()
     ULONG ulValue = 1;
     b = s.IOControl(FIONBIO, &ulValue);
 
-    b = s.Connect(_T("119.75.218.45"), 80);
+    b = s.Connect(L"119.75.218.45", 80);
     Socket::SelectOption so = s.Select(Socket::SO_WRITE, INFINITE);
 
     const char request[] = "GET / HTTP/1.1\r\n"

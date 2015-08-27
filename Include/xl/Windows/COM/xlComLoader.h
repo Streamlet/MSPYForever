@@ -24,7 +24,6 @@
 #include "xlComClass.h"
 #include "xlDispatcher.h"
 #include <Windows.h>
-#include <tchar.h>
 
 namespace xl
 {
@@ -63,7 +62,7 @@ namespace xl
                                  public Dispatcher<IComLoader>
         {
         public:
-            ComLoaderFromIni(const String &strIniFile = _T("xlComReg.ini")) : m_strIniFile(strIniFile), m_lInitializeCount(0)
+            ComLoaderFromIni(const String &strIniFile = L"xlComReg.ini") : m_strIniFile(strIniFile), m_lInitializeCount(0)
             {
 
             }
@@ -95,7 +94,7 @@ namespace xl
                 {
                     String strClass;
 
-                    if (!IniFile::GetValue(m_strIniFile, *it, _T("Class"), &strClass))
+                    if (!IniFile::GetValue(m_strIniFile, *it, L"Class", &strClass))
                     {
                         continue;
                     }
@@ -103,12 +102,12 @@ namespace xl
                     String strPath;
 
 #ifdef _WIN64
-                    if (!IniFile::GetValue(m_strIniFile, *it, _T("InprocServer64"), &strPath))
+                    if (!IniFile::GetValue(m_strIniFile, *it, L"InprocServer64", &strPath))
                     {
                         continue;
                     }
 #else
-                    if (!IniFile::GetValue(m_strIniFile, *it, _T("InprocServer32"), &strPath))
+                    if (!IniFile::GetValue(m_strIniFile, *it, L"InprocServer32", &strPath))
                     {
                         continue;
                     }
@@ -208,7 +207,7 @@ namespace xl
 
                 *ppModule = nullptr;
 
-                TCHAR szClassID[40] = {};
+                wchar_t szClassID[40] = {};
                 StringFromGUID2(rclsid, szClassID, ARRAYSIZE(szClassID));
 
                 auto itPath = m_mapClassIDToPath.Find(szClassID);
@@ -297,7 +296,7 @@ namespace xl
             CLT_FROM_INI,
         };
 
-        inline IComLoader *CreateComLoader(ComLoadType type, const String &strData = _T("xlComReg.ini"))
+        inline IComLoader *CreateComLoader(ComLoadType type, const String &strData = L"xlComReg.ini")
         {
             IComLoader *pLoader = nullptr;
 
