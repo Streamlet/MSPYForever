@@ -14,12 +14,7 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../Include/xl/AppHelper/xlUnitTest.h"
-#include <stdlib.h>
-#include <locale>
-
-
-int wmain(int argc, wchar_t *argv[])
+int main()
 {
     return 0;
 }
