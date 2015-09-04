@@ -614,7 +614,7 @@ namespace xl
 
             Iterator operator ++ (int)
             {
-                BinTree<T>::Iterator itRet = *this;
+                typename BinTree<T>::Iterator itRet = *this;
 
                 ++*this;
 
@@ -635,7 +635,7 @@ namespace xl
 
             Iterator operator -- (int)
             {
-                BinTree<T>::Iterator itRet = *this;
+                typename BinTree<T>::Iterator itRet = *this;
 
                 --*this;
 
@@ -681,7 +681,7 @@ namespace xl
 
             ReverseIterator operator ++ (int)
             {
-                BinTree<T>::ReverseIterator itRet = *this;
+                typename BinTree<T>::ReverseIterator itRet = *this;
 
                 ++*this;
 
@@ -704,7 +704,7 @@ namespace xl
 
             ReverseIterator operator -- (int)
             {
-                BinTree<T>::ReverseIterator itRet = *this;
+                typename BinTree<T>::ReverseIterator itRet = *this;
 
                 --*this;
 
