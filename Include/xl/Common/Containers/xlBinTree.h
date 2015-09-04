@@ -614,7 +614,7 @@ namespace xl
 
             Iterator operator ++ (int)
             {
-                typename RBTree<T>::Iterator itRet = *this;
+                RBTree<T>::Iterator itRet = *this;
 
                 ++*this;
 
@@ -635,7 +635,7 @@ namespace xl
 
             Iterator operator -- (int)
             {
-                typename RBTree<T>::Iterator itRet = *this;
+                RBTree<T>::Iterator itRet = *this;
 
                 --*this;
 
@@ -681,7 +681,7 @@ namespace xl
 
             ReverseIterator operator ++ (int)
             {
-                typename RBTree<T>::ReverseIterator itRet = *this;
+                RBTree<T>::ReverseIterator itRet = *this;
 
                 ++*this;
 
@@ -704,7 +704,7 @@ namespace xl
 
             ReverseIterator operator -- (int)
             {
-                typename RBTree<T>::ReverseIterator itRet = *this;
+                RBTree<T>::ReverseIterator itRet = *this;
 
                 --*this;
 
