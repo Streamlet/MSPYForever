@@ -44,7 +44,7 @@ namespace xl
         }
     };
 
-    template <typename T, typename NodeType = TreeNode<T> >
+    template <typename T, typename NodeType = TreeNode<T>>
     class Tree
     {
     public:

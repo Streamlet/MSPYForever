@@ -44,7 +44,7 @@ namespace xl
         }
     };
 
-    template <typename T, typename NodeType = BinTreeNode<T> >
+    template <typename T, typename NodeType = BinTreeNode<T>>
     class BinTree
     {
     public:
