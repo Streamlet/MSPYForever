@@ -718,7 +718,7 @@ namespace xl
     public:
         void Delete(const T &tValue)
         {
-            NodePtr pNode = Find(tValue, m_pRoot);
+            NodePtr pNode = Find(tValue, m_tBinTree.Root());
 
             if (pNode != nullptr)
             {
@@ -749,7 +749,7 @@ namespace xl
             }
 
         protected:
-            Iterator(NodePtr pCurrent) : InnerBinTree::Iterator(m_pCurrent)
+            Iterator(NodePtr pCurrent) : InnerBinTree::Iterator(pCurrent)
             {
 
             }

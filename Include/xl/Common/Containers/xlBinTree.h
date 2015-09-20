@@ -44,7 +44,7 @@ namespace xl
         }
     };
 
-    template <typename T, typename NodeType = BinTreeNode<T> >
+    template <typename T, typename NodeType = BinTreeNode<T>>
     class BinTree
     {
     public:
@@ -625,7 +625,7 @@ namespace xl
             {
                 if (m_pCurrent == nullptr)
                 {
-                    return BinTree::ReverseIterator(BinTree::RightmostOf(m_pRoot), m_pHead);
+                    return BinTree::ReverseIterator(BinTree::RightmostOf(m_pHead), m_pHead);
                 }
                 else
                 {
@@ -692,7 +692,7 @@ namespace xl
             {
                 if (m_pCurrent == nullptr)
                 {
-                    return BinTree::ReverseIterator(BinTree::LeftmostOf(m_pRoot), m_pHead);
+                    return BinTree::ReverseIterator(BinTree::LeftmostOf(m_pHead), m_pHead);
                 }
                 else
                 {
