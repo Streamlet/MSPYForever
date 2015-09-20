@@ -23,6 +23,7 @@
 #include "../../Common/String/xlString.h"
 #include "../Threads/xlEvent.h"
 #include "xlWinHttp.h"
+#include <stdio.h>
 
 namespace xl
 {
@@ -201,7 +202,7 @@ namespace xl
 
                 if (!strContentLength.Empty())
                 {
-                    _stscanf_s(strContentLength, L"%llu", &qwContentLength);
+                    swscanf_s(strContentLength, L"%llu", &qwContentLength);
                 }
 
                 if (fnWrite == nullptr)

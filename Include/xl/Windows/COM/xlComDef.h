@@ -63,9 +63,9 @@ namespace xl
                                                                                                         \
         typedef c ComMapClass;                                                                          \
                                                                                                         \
-        static const xl::InterfaceEntry *GetEntries()                                                   \
+        static const xl::Windows::InterfaceEntry *GetEntries()                                          \
         {                                                                                               \
-            static const xl::InterfaceEntry entries[] =                                                 \
+            static const xl::Windows::InterfaceEntry entries[] =                                        \
             {                                                                                           \
 
 #define XL_COM_INTERFACE(i)                                                                             \
@@ -130,19 +130,19 @@ namespace xl
 #error Unknown Platform. define XL_CLASS_MAP_PRAGMA
 #endif
 
-#define XL_DECLARE_COM_CLASS(class, desc, progid, version)                      \
-                                                                                \
-    const xl::ClassEntry CLASS_ENTRY_##class =                                  \
-    {                                                                           \
-        &__uuidof(class),                                                       \
-        &xl::ClassFactory<class>::CreateFactory,                                \
-        desc,                                                                   \
-        progid,                                                                 \
-        version                                                                 \
-    };                                                                          \
-    extern "C" __declspec(allocate("XL_COM_CLASSES$__m")) __declspec(selectany) \
-        const xl::ClassEntry * LP_CLASS_ENTRY_##class = &CLASS_ENTRY_##class;   \
-    XL_CLASS_MAP_PRAGMA(class)                                                  \
+#define XL_DECLARE_COM_CLASS(class, desc, progid, version)                              \
+                                                                                        \
+    const xl::Windows::ClassEntry CLASS_ENTRY_##class =                                 \
+    {                                                                                   \
+        &__uuidof(class),                                                               \
+        &xl::Windows::ClassFactory<class>::CreateFactory,                               \
+        desc,                                                                           \
+        progid,                                                                         \
+        version                                                                         \
+    };                                                                                  \
+    extern "C" __declspec(allocate("XL_COM_CLASSES$__m")) __declspec(selectany)         \
+        const xl::Windows::ClassEntry * LP_CLASS_ENTRY_##class = &CLASS_ENTRY_##class;  \
+    XL_CLASS_MAP_PRAGMA(class)                                                          \
 
 
     } // namespace Windows

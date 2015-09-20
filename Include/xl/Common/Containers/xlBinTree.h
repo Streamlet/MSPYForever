@@ -674,7 +674,7 @@ namespace xl
         public:
             ReverseIterator &operator ++ ()
             {
-                m_pCurrent = BinTree::PreviousOf(m_pCurrent);
+                Iterator::m_pCurrent = BinTree::PreviousOf(m_pCurrent);
 
                 return *this;
             }
