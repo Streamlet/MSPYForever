@@ -103,7 +103,7 @@ namespace xl
 
     private:
         static const size_t BYTE_BITS_LENGTH = 8;
-        static const size_t BUFFER_LIMIT = BUFFER_LENGTH - BYTE_BITS_LENGTH;
+        static const size_t BUFFER_LIMIT = BUFFER_LENGTH - sizeof(unsigned long long);
 
     private:
         CTX m_ctx;
@@ -129,102 +129,45 @@ namespace xl
             unsigned int d = h[3];
             unsigned int e = h[4];
             unsigned int *x = (unsigned int *)ctx.buffer;
-            unsigned int w[80];
+            unsigned int w[80] = {};
 
-            for (int t = 0; t < 16; ++t)
+            for (int i = 0; i < 80; ++i)
             {
-                w[t] = BitSwap(x[t]);
+                if (i < 16)
+                {
+                    w[i] = BitSwap(x[i]);
+                }
+                else
+                {
+                    w[i] = w[i - 3] ^ w[i - 8] ^ w[i - 14] ^ w[i - 16];
+                    w[i] = ROTATE_LEFT(w[i], 1);
+                }
+
+                int t = e + ROTATE_LEFT(a, 5) + w[i];
+
+                if (i < 20)
+                {
+                    t += F1(b, c, d) + K1;
+                }
+                else if (i < 40)
+                {
+                    t += F2(b, c, d) + K2;
+                }
+                else if (i < 60)
+                {
+                    t += F3(b, c, d) + K3;
+                }
+                else /*if (i < 80)*/
+                {
+                    t += F4(b, c, d) + K4;
+                }
+
+                e = d;
+                d = c;
+                c = ROTATE_LEFT(b, 30);
+                b = a;
+                a = t;
             }
-
-            for (int t = 16; t < 80; ++t)
-            {
-                w[t] = w[t - 3] ^ w[t - 8] ^ w[t - 14] ^ w[t - 16];
-                w[t] = ROTATE_LEFT(w[t], 1);
-            }
-
-            R1(a, b, c, d, e, w[ 0]);
-            R1(e, a, b, c, d, w[ 1]);
-            R1(d, e, a, b, c, w[ 2]);
-            R1(c, d, e, a, b, w[ 3]);
-            R1(b, c, d, e, a, w[ 4]);
-            R1(a, b, c, d, e, w[ 5]);
-            R1(e, a, b, c, d, w[ 6]);
-            R1(d, e, a, b, c, w[ 7]);
-            R1(c, d, e, a, b, w[ 8]);
-            R1(b, c, d, e, a, w[ 9]);
-            R1(a, b, c, d, e, w[10]);
-            R1(e, a, b, c, d, w[11]);
-            R1(d, e, a, b, c, w[12]);
-            R1(c, d, e, a, b, w[13]);
-            R1(b, c, d, e, a, w[14]);
-            R1(a, b, c, d, e, w[15]);
-            R1(e, a, b, c, d, w[16]);
-            R1(d, e, a, b, c, w[17]);
-            R1(c, d, e, a, b, w[18]);
-            R1(b, c, d, e, a, w[19]);
-
-            R2(a, b, c, d, e, w[20]);
-            R2(e, a, b, c, d, w[21]);
-            R2(d, e, a, b, c, w[22]);
-            R2(c, d, e, a, b, w[23]);
-            R2(b, c, d, e, a, w[24]);
-            R2(a, b, c, d, e, w[25]);
-            R2(e, a, b, c, d, w[26]);
-            R2(d, e, a, b, c, w[27]);
-            R2(c, d, e, a, b, w[28]);
-            R2(b, c, d, e, a, w[29]);
-            R2(a, b, c, d, e, w[30]);
-            R2(e, a, b, c, d, w[31]);
-            R2(d, e, a, b, c, w[32]);
-            R2(c, d, e, a, b, w[33]);
-            R2(b, c, d, e, a, w[34]);
-            R2(a, b, c, d, e, w[35]);
-            R2(e, a, b, c, d, w[36]);
-            R2(d, e, a, b, c, w[37]);
-            R2(c, d, e, a, b, w[38]);
-            R2(b, c, d, e, a, w[39]);
-
-            R3(a, b, c, d, e, w[40]);
-            R3(e, a, b, c, d, w[41]);
-            R3(d, e, a, b, c, w[42]);
-            R3(c, d, e, a, b, w[43]);
-            R3(b, c, d, e, a, w[44]);
-            R3(a, b, c, d, e, w[45]);
-            R3(e, a, b, c, d, w[46]);
-            R3(d, e, a, b, c, w[47]);
-            R3(c, d, e, a, b, w[48]);
-            R3(b, c, d, e, a, w[49]);
-            R3(a, b, c, d, e, w[50]);
-            R3(e, a, b, c, d, w[51]);
-            R3(d, e, a, b, c, w[52]);
-            R3(c, d, e, a, b, w[53]);
-            R3(b, c, d, e, a, w[54]);
-            R3(a, b, c, d, e, w[55]);
-            R3(e, a, b, c, d, w[56]);
-            R3(d, e, a, b, c, w[57]);
-            R3(c, d, e, a, b, w[58]);
-            R3(b, c, d, e, a, w[59]);
-
-            R4(a, b, c, d, e, w[60]);
-            R4(e, a, b, c, d, w[61]);
-            R4(d, e, a, b, c, w[62]);
-            R4(c, d, e, a, b, w[63]);
-            R4(b, c, d, e, a, w[64]);
-            R4(a, b, c, d, e, w[65]);
-            R4(e, a, b, c, d, w[66]);
-            R4(d, e, a, b, c, w[67]);
-            R4(c, d, e, a, b, w[68]);
-            R4(b, c, d, e, a, w[69]);
-            R4(a, b, c, d, e, w[70]);
-            R4(e, a, b, c, d, w[71]);
-            R4(d, e, a, b, c, w[72]);
-            R4(c, d, e, a, b, w[73]);
-            R4(b, c, d, e, a, w[74]);
-            R4(a, b, c, d, e, w[75]);
-            R4(e, a, b, c, d, w[76]);
-            R4(d, e, a, b, c, w[77]);
-            R4(c, d, e, a, b, w[78]);
-            R4(b, c, d, e, a, w[79]);
 
             h[0] += a;
             h[1] += b;
@@ -269,30 +212,6 @@ namespace xl
         static inline unsigned int ROTATE_LEFT(unsigned int x, unsigned int n)
         {
             return (x << n) | (x >> (32 - n));
-        }
-
-        static inline void R1(unsigned int a, unsigned int &b, unsigned int c, unsigned int d, unsigned int &e, unsigned int x)
-        {
-            e += ROTATE_LEFT(a, 5) + F1(b, c, d) + x + K1; 
-            b = ROTATE_LEFT(b, 30);
-        }
-
-        static inline void R2(unsigned int a, unsigned int &b, unsigned int c, unsigned int d, unsigned int &e, unsigned int x)
-        {
-            e += ROTATE_LEFT(a, 5) + F2(b, c, d) + x + K2; 
-            b = ROTATE_LEFT(b, 30);
-        }
-
-        static inline void R3(unsigned int a, unsigned int &b, unsigned int c, unsigned int d, unsigned int &e, unsigned int x)
-        {
-            e += ROTATE_LEFT(a, 5) + F3(b, c, d) + x + K3; 
-            b = ROTATE_LEFT(b, 30);
-        }
-
-        static inline void R4(unsigned int a, unsigned int &b, unsigned int c, unsigned int d, unsigned int &e, unsigned int x)
-        {
-            e += ROTATE_LEFT(a, 5) + F4(b, c, d) + x + K4; 
-            b = ROTATE_LEFT(b, 30);
         }
 
         static inline unsigned int BitSwap(unsigned int x)

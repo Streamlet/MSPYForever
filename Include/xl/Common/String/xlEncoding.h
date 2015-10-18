@@ -217,9 +217,9 @@ namespace xl
         }
 
     private:
-        static bool CharUtf32ToUtf8(Char32 chUtf32, Char8 chUtf16[6], int *pnCount)
+        static bool CharUtf32ToUtf8(Char32 chUtf32, Char8 chUtf8[6], int *pnCount)
         {
-            if (chUtf16 == nullptr || pnCount == nullptr)
+            if (chUtf8 == nullptr || pnCount == nullptr)
             {
                 return false;
             }
@@ -285,12 +285,12 @@ namespace xl
 
             for (int j = *pnCount - 1; j > 0; --j)
             {
-                chUtf16[j] = (CharA)(chUtf32 & 0x3f) | 0x80;    // Get the lower 6 bits, and set the high 2 bits to "10"
+                chUtf8[j] = (CharA)(chUtf32 & 0x3f) | 0x80;    // Get the lower 6 bits, and set the high 2 bits to "10"
                 chUtf32 >>= 6;
             }
 
             // Solve the first byte. Get the lower value bits, and the set the high bits to "1...10"
-            chUtf16[0] = (Char8)(chUtf32 & chMaskValueBits) | chMaskLeadingBits;
+            chUtf8[0] = (Char8)(chUtf32 & chMaskValueBits) | chMaskLeadingBits;
 
             return true;
         }
