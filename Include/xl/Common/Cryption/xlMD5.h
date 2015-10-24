@@ -101,7 +101,7 @@ namespace xl
 
     private:
         static const size_t BYTE_BITS_LENGTH = 8;
-        static const size_t BUFFER_LIMIT = BUFFER_LENGTH - BYTE_BITS_LENGTH;
+        static const size_t BUFFER_LIMIT = BUFFER_LENGTH - sizeof(unsigned long long);
 
     private:
         CTX m_ctx;
