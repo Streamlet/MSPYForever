@@ -112,6 +112,24 @@ namespace xl
             Copy(&tDest, &tSource, sizeof(T));
         }
 
+        template <typename T>
+        static void Copy(T &tDest, const T &tSource)
+        {
+            Copy(&tDest, &tSource, sizeof(T));
+        }
+
+        template <typename T>
+        static void Copy(T &tDest, T &&tSource)
+        {
+            Copy(&tDest, &tSource, sizeof(T));
+        }
+
+        template <typename T>
+        static void Copy(T &tDest, const T &&tSource)
+        {
+            Copy(&tDest, &tSource, sizeof(T));
+        }
+
 #if defined(_MSC_VER) && (_MSC_VER >= 1600)
 
         template <typename T>

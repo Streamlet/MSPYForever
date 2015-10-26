@@ -14,27 +14,30 @@
 
 
 #include "../../xlDef.h"
+#include "../Memory/xlMemory.h"
 
 namespace xl
 {
     enum ArrayAlignmentPolicy
     {
-        AAP_Head,
-        AAP_Center,
-        AAP_Tail
+        ArrayAlignmentPolicy_Head,
+        ArrayAlignmentPolicy_Center,
+        ArrayAlignmentPolicy_Tail
     };
 
-    template <typename T, ArrayAlignmentPolicy P = AAP_Head>
+    template <typename T, ArrayAlignmentPolicy P = ArrayAlignmentPolicy_Head>
     class Array
     {
     public:
         Array(size_t nSize = 0);
         Array(size_t nSize, const T &tValue);
         Array(const Array<T> &that);
+        Array(Array<T> &&that);
         ~Array();
 
     public:
         Array<T> &operator = (const Array<T> &that);
+        Array<T> &operator = (Array<T> &&that);
         bool operator == (const Array<T> &that) const;
         bool operator != (const Array<T> &that) const;
 
@@ -188,6 +191,13 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
+    inline Array<T, P>::Array(Array<T> &&that)
+        : m_pData(nullptr), m_nSize(0), m_nStart(0), m_nEof(0)
+    {
+        *this = Memory::Move(that);
+    }
+
+    template <typename T, ArrayAlignmentPolicy P>
     inline Array<T, P>::~Array()
     {
         Release();
@@ -203,13 +213,26 @@ namespace xl
 
         Release();
 
-        size_t nSize = that.m_nEof - that.m_nStart;
-        this->m_nSize = GetWellSize(nSize);
-        this->m_nStart = (this->m_nSize - nSize) / 2;
-        this->m_nEof = this->m_nStart + nSize;
+        this->m_nSize = that.m_nSize;
+        this->m_nStart = that.m_nStart;
+        this->m_nEof = that.m_nEof;
         this->m_pData = new T[this->m_nSize];
 
         CopyData(that.m_pData + that.m_nStart, that.m_nEof - that.m_nStart, this->m_pData + this->m_nStart);
+
+        return *this;
+    }
+
+    template <typename T, ArrayAlignmentPolicy P>
+    Array<T> &Array<T, P>::operator = (Array<T> &&that)
+    {
+        if (this == &that)
+        {
+            return *this;
+        }
+
+        Memory::Copy(*this, that);
+        Memory::Zero(that);
 
         return *this;
     }
@@ -432,7 +455,7 @@ namespace xl
 
         while (nWellSize < nNewSize)
         {
-            nWellSize *= P == AAP_Center ? 3 : 2;
+            nWellSize *= P == ArrayAlignmentPolicy_Center ? 3 : 2;
         }
 
         // Not enough spaces, reallocate.
@@ -442,13 +465,13 @@ namespace xl
 
         switch (P)
         {
-        case AAP_Head:
+        case ArrayAlignmentPolicy_Head:
             nNewStart = 0;
             break;
-        case AAP_Center:
+        case ArrayAlignmentPolicy_Center:
             nNewStart = (nWellSize - nNewSize) / 2;
             break;
-        case AAP_Tail:
+        case ArrayAlignmentPolicy_Tail:
             nNewStart = (nWellSize - nNewSize);
             break;
         default:
@@ -480,7 +503,7 @@ namespace xl
             return;
         }
 
-        if (P != AAP_Head && m_nStart >= (size_t)nCount && nIndex <= (m_nEof - m_nStart) / 2)
+        if (P != ArrayAlignmentPolicy_Head && m_nStart >= (size_t)nCount && nIndex <= (m_nEof - m_nStart) / 2)
         {
             // In this case:
             // There are enough spaces at the front,
@@ -500,7 +523,7 @@ namespace xl
         // Else:
         // There is not enough space at the front,
         // or (the position to insert is near the back, and there are enough spaces at the back)
-        else if (P != AAP_Tail && m_nSize - m_nEof >= (size_t)nCount && nIndex >= (m_nEof - m_nStart) / 2)
+        else if (P != ArrayAlignmentPolicy_Tail && m_nSize - m_nEof >= (size_t)nCount && nIndex >= (m_nEof - m_nStart) / 2)
         {
             // There are enough spaces at the back
 
@@ -525,7 +548,7 @@ namespace xl
 
         while (nWellSize < nNewSize)
         {
-            nWellSize *= P == AAP_Center ? 3 : 2;
+            nWellSize *= P == ArrayAlignmentPolicy_Center ? 3 : 2;
         }
 
         // Not enough spaces, reallocate.
@@ -535,13 +558,13 @@ namespace xl
 
         switch (P)
         {
-        case AAP_Head:
+        case ArrayAlignmentPolicy_Head:
             nNewStart = 0;
             break;
-        case AAP_Center:
+        case ArrayAlignmentPolicy_Center:
             nNewStart = (nWellSize - nNewSize) / 2;
             break;
-        case AAP_Tail:
+        case ArrayAlignmentPolicy_Tail:
             nNewStart = (nWellSize - nNewSize);
             break;
         default:
