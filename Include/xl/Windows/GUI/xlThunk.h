@@ -7,10 +7,6 @@
 //    Create Time: 2010-12-20
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLTHUNK_H_41B69CAE_F597_427A_88C1_193B95C8AB06_INCLUDED__

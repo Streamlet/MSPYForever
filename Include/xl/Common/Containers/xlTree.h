@@ -7,10 +7,6 @@
 //    Create Time: 2011-10-15
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLTREE_H_E8CDF772_F44E_4CB4_B760_DEC9AE4878A0_INCLUDED__

@@ -7,10 +7,6 @@
 //    Create Time: 2011-03-02
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTDLISTBOX_H_76D859F1_40EE_4ABE_B0F0_6A0CFB8865F8_INCLUDED__

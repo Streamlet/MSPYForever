@@ -7,10 +7,6 @@
 //    Create Time: 2011-07-23
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSOCKET_H_49FA92F6_46FC_4CB6_A9D2_924EF442467D_INCLUDED__

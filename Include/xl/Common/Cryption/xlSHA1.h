@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-26
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSHA1_H_2D27EEEA_B8E7_46F2_8855_0CDA1C148C4F_INCLUDED__

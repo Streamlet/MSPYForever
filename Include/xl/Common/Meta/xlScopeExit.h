@@ -7,10 +7,6 @@
 //    Create Time: 2012-04-22
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSCOPEEXIT_H_8093BA2C_C4CA_4DB4_99C6_BAA42C6380F0_INCLUDED__

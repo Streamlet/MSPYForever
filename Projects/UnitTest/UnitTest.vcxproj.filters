@@ -114,5 +114,8 @@
     <ClCompile Include="Math\xlEquationTest.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
+    <ClCompile Include="Memory\xlMemoryTest.cpp">
+      <Filter>Source Files\Memory</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-13
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTDSTATIC_H_1715D513_4BF0_431F_BC57_C347432395BB_INCLUDED__

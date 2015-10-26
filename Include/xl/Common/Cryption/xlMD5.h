@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-26
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLMD5_H_9F168AAD_4EE5_4F50_A910_E9280F1CBA2E_INCLUDED__

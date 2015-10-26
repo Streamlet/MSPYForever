@@ -7,10 +7,6 @@
 //    Create Time: 2012-08-12
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLWEBBROWSER_H_CFE7C075_AA18_441D_AE2C_86773A6479B0_INCLUDED__

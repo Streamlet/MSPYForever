@@ -7,10 +7,6 @@
 //    Create Time: 2009-09-26
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLTREE_H_6BB48AA6_133A_4E9F_944E_504B887B6980_INCLUDED__
@@ -214,7 +210,7 @@ namespace xl
         void SwapNode(NodePtr pNode1, NodePtr pNode2)
         {
             m_tBinTree.SwapNode(pNode1, pNode2);
-            Memory::ElementSwap(pNode1->tValue.ncColor, pNode2->tValue.ncColor);
+            Memory::Swap(pNode1->tValue.ncColor, pNode2->tValue.ncColor);
         }
 
     protected:
@@ -404,7 +400,7 @@ namespace xl
             {
                 m_tBinTree.RotateLeft(pParent);
                 pSibling->pRight->tValue.ncColor = NC_BLACK;
-                Memory::ElementSwap(pParent->tValue.ncColor, pSibling->tValue.ncColor);
+                Memory::Swap(pParent->tValue.ncColor, pSibling->tValue.ncColor);
             }
             else
             {
@@ -420,7 +416,7 @@ namespace xl
             {
                 m_tBinTree.RotateRight(pParent);
                 pSibling->pLeft->tValue.ncColor = NC_BLACK;
-                Memory::ElementSwap(pParent->tValue.ncColor, pSibling->tValue.ncColor);
+                Memory::Swap(pParent->tValue.ncColor, pSibling->tValue.ncColor);
             }
             else
             {

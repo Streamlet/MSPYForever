@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-21
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTDBUTTON_H_A3754322_DF44_433F_847E_1A4FE4CA46F7_INCLUDED__

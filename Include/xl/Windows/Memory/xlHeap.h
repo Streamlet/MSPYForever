@@ -7,10 +7,6 @@
 //    Create Time: 2010-12-20
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLHEAP_H_7B115181_B9FB_4BCD_8E2C_2CDE8814D08A_INCLUDED__

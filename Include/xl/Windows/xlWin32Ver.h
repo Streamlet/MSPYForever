@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-27
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLWIN32VER_H_0AF602A1_81D0_4829_88DB_7DD912BD2A35_INCLUDED__

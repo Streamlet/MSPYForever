@@ -7,10 +7,6 @@
 //    Create Time: 2011-03-07
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTDLINK_H_FEA6F574_15DC_4178_8DFA_83C8226EC770_INCLUDED__

@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-27
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTDEDIT_H_5CD8BC6E_A964_41C4_B01F_18F00DBB4A0E_INCLUDED__

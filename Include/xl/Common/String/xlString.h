@@ -7,10 +7,6 @@
 //    Create Time: 2009-03-27
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTRING_H_27999BE8_99C9_4C06_87AB_AA916A88B287_INCLUDED__
@@ -40,19 +36,19 @@ namespace xl
         bool operator >  (const StringT<T> &that) const;
         bool operator <= (const StringT<T> &that) const;
         bool operator >= (const StringT<T> &that) const;
-		bool operator == (const T *that) const;
-		bool operator != (const T *that) const;
-		bool operator <  (const T *that) const;
-		bool operator >  (const T *that) const;
-		bool operator <= (const T *that) const;
-		bool operator >= (const T *that) const;
-		StringT<T> operator + (const StringT<T> &that) const;
+        bool operator == (const T *that) const;
+        bool operator != (const T *that) const;
+        bool operator <  (const T *that) const;
+        bool operator >  (const T *that) const;
+        bool operator <= (const T *that) const;
+        bool operator >= (const T *that) const;
+        StringT<T> operator + (const StringT<T> &that) const;
         StringT<T> &operator += (const StringT<T> &that);
         T &operator [] (int nIndex);
         const T &operator [] (int nIndex) const;
 
     public:
-		operator const T*() const;
+        operator const T*() const;
 
     public:
         int Length() const;
@@ -219,42 +215,42 @@ namespace xl
         return !(*this < that);
     }
 
-	template <typename T>
-	inline bool StringT<T>::operator == (const T *that) const
-	{
-		return *this == StringT(that);
-	}
+    template <typename T>
+    inline bool StringT<T>::operator == (const T *that) const
+    {
+        return *this == StringT(that);
+    }
 
-	template <typename T>
-	inline bool StringT<T>::operator != (const T *that) const
-	{
-		return *this != StringT(that);
-	}
+    template <typename T>
+    inline bool StringT<T>::operator != (const T *that) const
+    {
+        return *this != StringT(that);
+    }
 
-	template <typename T>
-	inline bool StringT<T>::operator < (const T *that) const
-	{
-		return *this < StringT(that);
-	}
-	
-	template <typename T>
-	inline bool StringT<T>::operator > (const T *that) const
-	{
-		return *this > StringT(that);
-	}
+    template <typename T>
+    inline bool StringT<T>::operator < (const T *that) const
+    {
+        return *this < StringT(that);
+    }
+    
+    template <typename T>
+    inline bool StringT<T>::operator > (const T *that) const
+    {
+        return *this > StringT(that);
+    }
 
-	template <typename T>
-	inline bool StringT<T>::operator <= (const T *that) const
-	{
-		return *this <= StringT(that);
-	}
+    template <typename T>
+    inline bool StringT<T>::operator <= (const T *that) const
+    {
+        return *this <= StringT(that);
+    }
 
-	template <typename T>
-	inline bool StringT<T>::operator >= (const T *that) const
-	{
-		return *this >= StringT(that);
-	}
-	
+    template <typename T>
+    inline bool StringT<T>::operator >= (const T *that) const
+    {
+        return *this >= StringT(that);
+    }
+    
     template <typename T>
     inline StringT<T> StringT<T>::operator + (const StringT<T> &that) const
     {
@@ -290,7 +286,7 @@ namespace xl
     }
 
     template <typename T>
-	StringT<T>::operator const T*() const
+    StringT<T>::operator const T*() const
     {
         return &m_aData[0];
     }
@@ -472,7 +468,7 @@ namespace xl
 
         if (nLength < 0)
         {
-			nLength = (int)m_aData.Size() - 1 - nStart;
+            nLength = (int)m_aData.Size() - 1 - nStart;
         }
 
         if (nLength > 0)

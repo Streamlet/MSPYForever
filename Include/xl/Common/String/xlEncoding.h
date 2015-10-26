@@ -7,10 +7,6 @@
 //    Create Time: 2011-06-12
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLENCODING_H_EB12014E_ED0F_4198_8DAC_37836BAD9483_INCLUDED__
@@ -441,7 +437,7 @@ namespace xl
             {
                 if (chLower <= 0xdbff)
                 {
-                    Memory::ElementSwap(ch, chLower);
+                    Memory::Swap(ch, chLower);
                 }
                 else
                 {

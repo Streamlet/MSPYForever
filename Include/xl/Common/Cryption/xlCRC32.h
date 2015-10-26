@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-26
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLCRC32_H_BB025FD4_DA27_4F8F_A8F8_413C98C42FA3_INCLUDED__

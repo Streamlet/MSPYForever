@@ -7,10 +7,6 @@
 //    Create Time: 2011-03-04
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTDSCROLLBAR_H_CE421D01_3A90_4DFA_A59F_74C911033E2A_INCLUDED__

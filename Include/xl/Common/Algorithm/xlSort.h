@@ -46,7 +46,7 @@ namespace xl
                 {
                     if (!fnComparor(tData[j],  tData[j + 1]))
                     {
-                        Memory::ElementSwap(tData[j], tData[j + 1]);
+                        Memory::Swap(tData[j], tData[j + 1]);
                         bExchanged = true;
                     }
                 }
@@ -72,7 +72,7 @@ namespace xl
                     {
                         if (!fnComparor(tData[k],  tData[k + 1]))
                         {
-                            Memory::ElementSwap(tData[k], tData[k + 1]);
+                            Memory::Swap(tData[k], tData[k + 1]);
                             bExchanged = true;
                         }
                     }
@@ -92,7 +92,7 @@ namespace xl
                     {
                         if (!fnComparor(tData[k - 1],  tData[k]))
                         {
-                            Memory::ElementSwap(tData[k - 1], tData[k]);
+                            Memory::Swap(tData[k - 1], tData[k]);
                             bExchanged = true;
                         }
                     }
@@ -145,7 +145,7 @@ namespace xl
 
                 if (nMin != i)
                 {
-                    Memory::ElementSwap(tData[i], tData[nMin]);
+                    Memory::Swap(tData[i], tData[nMin]);
                 }
             }
         }
@@ -203,7 +203,7 @@ namespace xl
 
                 if (nMax != i)
                 {
-                    Memory::ElementSwap(tData[i], tData[nMax]);
+                    Memory::Swap(tData[i], tData[nMax]);
                 }
             }
 
@@ -227,7 +227,7 @@ namespace xl
 
                     if (nMax != i)
                     {
-                        Memory::ElementSwap(tData[i], tData[nMax]);
+                        Memory::Swap(tData[i], tData[nMax]);
                         i = nMax;
                     }
                     else
@@ -237,7 +237,7 @@ namespace xl
                 }
             
                 // Move the root element to the last position
-                Memory::ElementSwap(tData[0], tData[n - 1]);
+                Memory::Swap(tData[0], tData[n - 1]);
             }
         }
 
@@ -252,7 +252,7 @@ namespace xl
                 {
                     if (fnComparor(tData[k], tData[i]))
                     {
-                        Memory::ElementSwap(tData[k], tData[i]);
+                        Memory::Swap(tData[k], tData[i]);
                         k = i++;
                         break;
                     }
@@ -264,7 +264,7 @@ namespace xl
                 {
                     if (fnComparor(tData[j], tData[k]))
                     {
-                        Memory::ElementSwap(tData[j], tData[k]);
+                        Memory::Swap(tData[j], tData[k]);
                         k = j--;
                         break;
                     }

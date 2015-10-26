@@ -7,10 +7,6 @@
 //    Create Time: 2011-05-08
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLMENU_H_C208C619_17E7_4147_BBFD_C815FAFA7324_INCLUDED__

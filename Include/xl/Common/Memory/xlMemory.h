@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-27
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLMEMORY_H_269E94A2_E25E_40CC_A48C_3EA8F354B4BA_INCLUDED__
@@ -18,106 +14,42 @@
 
 
 #include "../../xlDef.h"
+#include "../Meta/xlTypeTraits.h"
 
 namespace xl
 {
-    class Memory
+    namespace Memory
     {
-    private:
-        Memory();
-
-    public:
-        static bool IsEqual(const void *pMemory1, const void *pMemory2, size_t cbSize)
-        {
-            if (pMemory1 == nullptr || pMemory2 == nullptr || cbSize == 0)
-            {
-                return pMemory1 == pMemory2;
-            }
-
-            const unsigned int *pUInt1 = (const unsigned int *)pMemory1;
-            const unsigned int *pUInt2 = (const unsigned int *)pMemory2;
-
-            while (cbSize >= 4)
-            {
-                if (*pUInt1 != *pUInt2)
-                {
-                    return false;
-                }
-
-                cbSize -= 4;
-            }
-
-            const unsigned char *pUChar1 = (const unsigned char *)pUInt1;
-            const unsigned char *pUChar2 = (const unsigned char *)pUInt2;
-
-            while (cbSize > 0)
-            {
-                if (*pUChar1 != *pUChar2)
-                {
-                    return false;
-                }
-
-                --cbSize;
-            }
-
-            return true;
-        }
-
-        static void *Set(void *pMemory, size_t cbSize, unsigned int nValue = 0)
+        template <typename BlockType = unsigned int>
+        static void *Set(void *pMemory, size_t cbSize, BlockType nValue)
         {
             if (pMemory == nullptr || cbSize == 0)
             {
                 return pMemory;
             }
 
-            unsigned int *pUInt = (unsigned int *)pMemory;
+            BlockType *pUBlock = (BlockType *)pMemory;
 
-            while (cbSize >= 4)
+            while (cbSize >= sizeof(BlockType))
             {
-                *pUInt++ = nValue;
-                cbSize -= 4;
+                *pUBlock++ = nValue;
+                cbSize -= sizeof(BlockType);
             }
 
-            unsigned char *pUChar = (unsigned char *)pUInt;
+            unsigned char *pUCharDest = (unsigned char *)pUBlock;
+            unsigned char *pUCharSource = (unsigned char *)&nValue;
 
             while (cbSize > 0)
             {
-                *pUChar++ = (unsigned char)nValue;
+                *pUCharDest++ = *pUCharSource++;
                 --cbSize;
             }
 
             return pMemory;
         }
 
+        template <typename BlockType = unsigned int>
         static void *Copy(void *pDest, const void *pSource, size_t cbSize)
-        {
-            if (pDest == nullptr || pSource == nullptr || pDest == pSource || cbSize == 0)
-            {
-                return pDest;
-            }
-
-            unsigned int *pUIntDest = (unsigned int *)pDest;
-            unsigned int *pUIntSource = (unsigned int *)pSource;
-
-            while (cbSize >= 4)
-            {
-                *pUIntDest++ = *pUIntSource++;
-                cbSize -= 4;
-            }
-
-            unsigned char *pUCharDest = (unsigned char *)pUIntDest;
-            unsigned char *pUCharSource = (unsigned char *)pUIntSource;
-
-            while (cbSize > 0)
-            {
-                *pUCharDest++ = *pUCharSource++;
-                --cbSize;                
-            }
-
-            return pDest;
-        }
-
-        static void *Move(void *pDest, const void *pSource, size_t cbSize)
         {
             if (pDest == nullptr || pSource == nullptr || pDest == pSource || cbSize == 0)
             {
@@ -126,42 +58,42 @@ namespace xl
 
             if (pDest < pSource)
             {
-                unsigned int *pUIntDest = (unsigned int *)pDest;
-                unsigned int *pUIntSource = (unsigned int *)pSource;
+                BlockType *pUBlockDest = (BlockType *)pDest;
+                BlockType *pUBlockSource = (BlockType *)pSource;
 
-                while (cbSize >= 4)
+                while (cbSize >= sizeof(BlockType))
                 {
-                    *pUIntDest++ = *pUIntSource++;
-                    cbSize -= 4;
+                    *pUBlockDest++ = *pUBlockSource++;
+                    cbSize -= sizeof(BlockType);
                 }
 
-                unsigned char *pUCharDest = (unsigned char *)pUIntDest;
-                unsigned char *pUCharSource = (unsigned char *)pUIntSource;
+                unsigned char *pUCharDest = (unsigned char *)pUBlockDest;
+                unsigned char *pUCharSource = (unsigned char *)pUBlockSource;
 
                 while (cbSize > 0)
                 {
                     *pUCharDest++ = *pUCharSource++;
-                    --cbSize;                
+                    --cbSize;
                 }
             }
             else
             {
-                unsigned int *pUIntDest = (unsigned int *)((unsigned char *)pDest + cbSize );
-                unsigned int *pUIntSource = (unsigned int *)((unsigned char *)pSource + cbSize);
+                BlockType *pUBlockDest = (BlockType *)((unsigned char *)pDest + cbSize);
+                BlockType *pUBlockSource = (BlockType *)((unsigned char *)pSource + cbSize);
 
-                while (cbSize >= 4)
+                while (cbSize >= sizeof(BlockType))
                 {
-                    *--pUIntDest = *--pUIntSource;
-                    cbSize -= 4;
+                    *--pUBlockDest = *--pUBlockSource;
+                    cbSize -= sizeof(BlockType);
                 }
 
-                unsigned char *pUCharDest = (unsigned char *)pUIntDest;
-                unsigned char *pUCharSource = (unsigned char *)pUIntSource;
+                unsigned char *pUCharDest = (unsigned char *)pUBlockDest;
+                unsigned char *pUCharSource = (unsigned char *)pUBlockSource;
 
                 while (cbSize > 0)
                 {
                     *--pUCharDest = *--pUCharSource;
-                    --cbSize;                
+                    --cbSize;
                 }
             }
 
@@ -171,21 +103,27 @@ namespace xl
         template <typename T>
         static void Zero(T &tVar)
         {
-            Set(&tVar, sizeof(T));
+            Set(&tVar, sizeof(T), 0);
+        }
+
+        template <typename T>
+        static void Copy(T &tDest, T &tSource)
+        {
+            Copy(&tDest, &tSource, sizeof(T));
         }
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1600)
 
         template <typename T>
-        static T &&ElementMove(T &&t)
+        static typename RemoveRef<T>::Type &&Move(T &&t)
         {
-            return t;
+            return (typename RemoveRef<T>::Type &&)t;
         }
 
 #else
 
         template <typename T>
-        static T &ElementMove(T &t)
+        static T &Move(T &t)
         {
             return t;
         }
@@ -193,11 +131,11 @@ namespace xl
 #endif
 
         template <typename T>
-        static void ElementSwap(T &t1, T &t2)
+        static void Swap(T &t1, T &t2)
         {
-            T t(ElementMove(t1));
-            t1 = ElementMove(t2);
-            t2 = ElementMove(t);
+            T t(Move(t1));
+            t1 = Move(t2);
+            t2 = Move(t);
         }
     };
 

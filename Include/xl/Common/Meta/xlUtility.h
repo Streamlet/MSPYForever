@@ -7,10 +7,6 @@
 //    Create Time: 2011-05-08
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLUTILITY_H_03E2673E_60F5_4875_BC62_73D1FAA5E5E2_INCLUDED__

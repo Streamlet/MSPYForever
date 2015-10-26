@@ -7,10 +7,6 @@
 //    Create Time: 2009-03-27
 //    Description: Dynamic Array
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLARRAY_H_3B18D7E2_B52A_4D57_BE4B_657F9D17320D_INCLUDED__
@@ -49,6 +45,7 @@ namespace xl
     public:
         bool Empty() const;
         size_t Size() const;
+        void Reserve(size_t nSize);
         void Resize(size_t nSize);
         void Resize(size_t nSize, const T &tValue);
 
@@ -290,6 +287,50 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
+    void Array<T, P>::Reserve(size_t nSize)
+    {
+        // Free spaces at the back is enough
+        if (m_nSize - m_nStart >= nSize)
+        {
+            return;
+        }
+
+        // Not enough spaces at the back
+        size_t nWellSize = nSize;
+
+        if (nWellSize <= m_nSize)
+        {
+            // New space size is not larger than current space size
+            // It implies there a lot of spaces wasted at the front
+            // Recalculate the start offset and move the elements
+
+            size_t nNewStart = (m_nSize - nSize) / 2;
+            MoveData(m_pData + m_nStart, m_nEof - m_nStart, m_nStart - nNewStart);
+
+            m_nStart = nNewStart;
+            m_nEof = m_nStart + nSize;
+        }
+        else
+        {
+            // Current space is not large enough, reallocate and move elements
+
+            T *pNewData = new T[nWellSize];
+            size_t nNewStart = (nWellSize - nSize) / 2;
+
+            if (m_pData != nullptr)
+            {
+                CopyData(m_pData + m_nStart, m_nEof - m_nStart, pNewData + nNewStart);
+            }
+            Release();
+
+            m_nEof = nNewStart + (m_nEof - m_nStart);
+            m_nStart = nNewStart;
+            m_nSize = nWellSize;
+            m_pData = pNewData;
+        }
+    }
+
+    template <typename T, ArrayAlignmentPolicy P>
     void Array<T, P>:: Resize(size_t nSize)
     {
         // Free spaces at the back is enough
@@ -439,7 +480,7 @@ namespace xl
             return;
         }
 
-        if (m_nStart >= (size_t)nCount && nIndex <= m_nSize - (m_nStart + nIndex))
+        if (P != AAP_Head && m_nStart >= (size_t)nCount && nIndex <= (m_nEof - m_nStart) / 2)
         {
             // In this case:
             // There are enough spaces at the front,
@@ -459,7 +500,7 @@ namespace xl
         // Else:
         // There is not enough space at the front,
         // or (the position to insert is near the back, and there are enough spaces at the back)
-        else if (m_nSize - m_nEof >= (size_t)nCount && nIndex > m_nSize - (m_nStart + nIndex))
+        else if (P != AAP_Tail && m_nSize - m_nEof >= (size_t)nCount && nIndex >= (m_nEof - m_nStart) / 2)
         {
             // There are enough spaces at the back
 
@@ -607,16 +648,14 @@ namespace xl
     template <typename T, ArrayAlignmentPolicy P>
     size_t Array<T, P>::GetWellSize(size_t nSize) const
     {
-        const size_t BITS_IN_A_BYTE = 8;
+        size_t i = 1;
 
-        nSize -= 1;
-
-        for (size_t i = 1; i < sizeof(size_t) * BITS_IN_A_BYTE; i <<= 1)
+        while (i < nSize)
         {
-            nSize |= nSize >> i;
+            i *= 2;
         }
 
-        return ++nSize;
+        return i;
     }
 
     template <typename T, ArrayAlignmentPolicy P>

@@ -7,10 +7,6 @@
 //    Create Time: 2012-06-11
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #include "../PerformanceTest.h"

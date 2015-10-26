@@ -7,10 +7,6 @@
 //    Create Time: 2011-01-15
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLTYPETRAITS_H_F84DEF1B_BC39_41ED_A130_A31D78520A8A_INCLUDED__
@@ -92,20 +88,38 @@ namespace xl
         typedef T       &RRefType;
     };
 
-	template <typename T>
-	struct RValueRefTraits<T &>
-	{
-		static const bool IsRValueRef = false;
-		typedef NullType RRefToType;
-		typedef T      &&RRefType;
-	};
+    template <typename T>
+    struct RValueRefTraits<T &>
+    {
+        static const bool IsRValueRef = false;
+        typedef NullType RRefToType;
+        typedef T      &&RRefType;
+    };
 
-	template <typename T>
+    template <typename T>
     struct RValueRefTraits<T &&>
     {
         static const bool IsRValueRef = true;
         typedef T   RRefToType;
         typedef T &&RRefType;
+    };
+
+    template <typename T>
+    struct RemoveRef
+    {
+        typedef T Type;
+    };
+
+    template <typename T>
+    struct RemoveRef<T &>
+    {
+        typedef T Type;
+    };
+
+    template <typename T>
+    struct RemoveRef<T &&>
+    {
+        typedef T Type;
     };
 
     template <typename T>

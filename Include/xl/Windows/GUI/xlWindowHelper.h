@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-11
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLWINDOWHELPER_H_0646591E_8D6A_44AA_A773_084A53A0B190_INCLUDED__

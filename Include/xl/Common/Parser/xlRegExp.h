@@ -7,10 +7,6 @@
 //    Create Time: 2012-05-20
 //    Description: Regular Expression
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLREGEXP_H_0FCC5122_D6F3_4E9E_AAB0_5D268E87ED44_INCLUDED__

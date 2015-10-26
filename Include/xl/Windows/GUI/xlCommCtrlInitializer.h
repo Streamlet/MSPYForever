@@ -7,10 +7,6 @@
 //    Create Time: 2011-03-04
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLCOMMCTRLINITIALIZER_H_D4ADA173_6B10_43C9_A817_E1BB6F16BC5F_INCLUDED__

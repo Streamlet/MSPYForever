@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-24
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLBIND_H_E78F97BF_251C_4570_B0C4_0F876ADED799_INCLUDED__

@@ -7,10 +7,6 @@
 //    Create Time: 2011-05-21
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSAFESMARTPTR_H_E74125A8_C767_44A2_8659_D350F7638ED6_INCLUDED__

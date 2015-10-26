@@ -7,10 +7,6 @@
 //    Create Time: 2011-05-21
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSMARTPTR_H_0020004E_79A8_4C64_B292_F102DBE1BF96_INCLUDED__

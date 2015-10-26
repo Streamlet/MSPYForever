@@ -7,10 +7,6 @@
 //    Create Time: 2010-08-08
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLUNITTEST_H_D6074214_D6DB_4590_9EF3_B25B76DB713D_INCLUDED__

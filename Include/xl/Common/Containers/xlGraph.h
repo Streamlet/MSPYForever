@@ -7,10 +7,6 @@
 //    Create Time: 2011-10-15
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLGRAPH_H_B9B90B34_ED59_4649_9500_6CA42EDE704C_INCLUDED__

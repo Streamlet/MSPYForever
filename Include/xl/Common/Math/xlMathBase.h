@@ -7,10 +7,6 @@
 //    Create Time: 2012-06-01
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLMATHBASE_H_C306B62C_2117_45D0_A98E_11BE64AFC603_INCLUDED__

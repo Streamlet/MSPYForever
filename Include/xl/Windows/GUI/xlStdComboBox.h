@@ -7,10 +7,6 @@
 //    Create Time: 2011-02-27
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLSTDCOMBOBOX_H_D16DAB9C_78E5_4C3F_89B2_6FDFC33E8B97_INCLUDED__

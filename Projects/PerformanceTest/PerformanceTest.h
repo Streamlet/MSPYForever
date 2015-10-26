@@ -7,10 +7,6 @@
 //    Create Time: 2012-06-11
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __PERFORMANCETEST_H_75CF91CF_F93D_480A_B697_E69FF92D0D4A_INCLUDED__

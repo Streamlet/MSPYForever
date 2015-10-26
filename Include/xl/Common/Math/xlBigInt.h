@@ -7,10 +7,6 @@
 //    Create Time: 2010-08-05
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLBigIntT_H_4ED560E8_F226_4D72_9016_828D1AA8696E_INCLUDED__
@@ -66,6 +62,8 @@ namespace xl
         BigIntT &Neg();
         BigIntT &Inc();
         BigIntT &Dec();
+        BigIntT &AddAbs(const BigIntT &addend);
+        BigIntT &SubAbs(const BigIntT &subtrahend);
         BigIntT &Add(const BigIntT &addend);
         BigIntT &Sub(const BigIntT &subtrahend);
         BigIntT Mul(const BigIntT &multiplicator) const;
@@ -509,20 +507,12 @@ namespace xl
     }
 
     template <typename T>
-    BigIntT<T> &BigIntT<T>::Add(const BigIntT<T> &addend)
+    BigIntT<T> &BigIntT<T>::AddAbs(const BigIntT<T> &addend)
     {
-        if (this->m_bPositive != addend.m_bPositive)
-        {
-            BigIntT<T> subtrahend = addend;
-            subtrahend.Neg();
-            Sub(subtrahend);
-            return *this;
-        }
-
         const Array<T> &rhs = addend.m_aValue;
         Array<T> &res = this->m_aValue;
 
-        for (size_t i = 0; i < rhs.Size(); ++ i)
+        for (size_t i = 0; i < rhs.Size(); ++i)
         {
             T overflow = 0;
 
@@ -562,16 +552,8 @@ namespace xl
     }
 
     template <typename T>
-    BigIntT<T> &BigIntT<T>::Sub(const BigIntT<T> &subtrahend)
+    BigIntT<T> &BigIntT<T>::SubAbs(const BigIntT<T> &subtrahend)
     {
-        if (this->m_bPositive != subtrahend.m_bPositive)
-        {
-            BigIntT<T> addend = subtrahend;
-            addend.Neg();
-            Add(subtrahend);
-            return *this;
-        }
-
         if (*this == subtrahend)
         {
             m_bPositive = true;
@@ -591,7 +573,7 @@ namespace xl
         const Array<T> &rhs = subtrahend.m_aValue;
         Array<T> &res = this->m_aValue;
 
-        for (size_t i = 0; i < rhs.Size(); ++ i)
+        for (size_t i = 0; i < rhs.Size(); ++i)
         {
             T overflow = 0;
             T original = res[i];
@@ -625,6 +607,28 @@ namespace xl
         }
 
         return *this;
+    }
+
+    template <typename T>
+    BigIntT<T> &BigIntT<T>::Add(const BigIntT<T> &addend)
+    {
+        if (this->m_bPositive != addend.m_bPositive)
+        {
+            return SubAbs(addend);
+        }
+
+        return AddAbs(addend);
+    }
+
+    template <typename T>
+    BigIntT<T> &BigIntT<T>::Sub(const BigIntT<T> &subtrahend)
+    {
+        if (this->m_bPositive != subtrahend.m_bPositive)
+        {
+            return AddAbs(subtrahend);
+        }
+
+        return SubAbs(subtrahend);
     }
 
     template <typename T>

@@ -7,10 +7,6 @@
 //    Create Time: 2011-03-02
 //    Description: 
 //
-//    Version history:
-//
-//
-//
 //------------------------------------------------------------------------------
 
 #ifndef __XLWINDOWMESSAGE_H_AC4BA307_1739_4573_90E1_B080A8D1AB1E_INCLUDED__
