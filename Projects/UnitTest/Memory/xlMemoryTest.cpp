@@ -21,7 +21,7 @@ namespace
     // Memory::Set By KJJ
     XL_TEST_CASE()
     {
-        unsigned char *pChar = new unsigned char[16];
+        unsigned char *pChar = new unsigned char[17] + 1;
         Memory::Set(pChar, 16, 0);
         for (int i = 0; i < 16; ++i)
         {
@@ -70,8 +70,8 @@ namespace
     // Memory::Copy By KJJ
     XL_TEST_CASE()
     {
-        unsigned char *pChar1 = new unsigned char[16];
-        unsigned char *pChar2 = new unsigned char[16];
+        unsigned char *pChar1 = new unsigned char[19] + 3;
+        unsigned char *pChar2 = new unsigned char[19] + 3;
 
         Memory::Set(pChar1, 16, 0x1234567890abcdefull);
         XL_TEST_ASSERT(pChar1[0] == 0xef);

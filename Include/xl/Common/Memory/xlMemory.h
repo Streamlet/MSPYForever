@@ -28,7 +28,30 @@ namespace xl
                 return pMemory;
             }
 
-            BlockType *pUBlock = (BlockType *)pMemory;
+            unsigned char *pUCharDest = (unsigned char *)pMemory;
+            unsigned char *pUCharSource = (unsigned char *)&nValue;
+            size_t cbBytes = (unsigned int)pUCharDest %  sizeof(BlockType) == 0 ? 0 : sizeof(BlockType) - (unsigned int)pUCharDest %  sizeof(BlockType);
+
+            if (cbBytes > cbSize)
+            {
+                cbBytes = cbSize;
+            }
+
+            for (size_t i = 0; i < cbBytes; ++i)
+            {
+                *pUCharDest++ = *pUCharSource++;
+                --cbSize;
+            }
+
+            if (cbBytes > 0)
+            {
+                size_t nShiftRightBits = cbBytes * 8;
+                size_t nShiftLeftBits = (sizeof(BlockType) - cbBytes) * 8;
+                BlockType nMask = ~(((BlockType)-1) << nShiftLeftBits);
+                nValue = ((nValue >> nShiftRightBits) & nMask) | (nValue << nShiftLeftBits);
+            }
+
+            BlockType *pUBlock = (BlockType *)pUCharDest;
 
             while (cbSize >= sizeof(BlockType))
             {
@@ -36,8 +59,8 @@ namespace xl
                 cbSize -= sizeof(BlockType);
             }
 
-            unsigned char *pUCharDest = (unsigned char *)pUBlock;
-            unsigned char *pUCharSource = (unsigned char *)&nValue;
+            pUCharDest = (unsigned char *)pUBlock;
+            pUCharSource = (unsigned char *)&nValue;
 
             while (cbSize > 0)
             {
@@ -58,8 +81,23 @@ namespace xl
 
             if (pDest < pSource)
             {
-                BlockType *pUBlockDest = (BlockType *)pDest;
-                BlockType *pUBlockSource = (BlockType *)pSource;
+                unsigned char *pUCharDest = (unsigned char *)pDest;
+                unsigned char *pUCharSource = (unsigned char *)pSource;
+                size_t cbBytes = (unsigned int)pUCharDest % sizeof(BlockType) == 0 ? 0 : sizeof(BlockType) - (unsigned int)pUCharDest %  sizeof(BlockType);
+
+                if (cbBytes > cbSize)
+                {
+                    cbBytes = cbSize;
+                }
+
+                for (size_t i = 0; i < cbBytes; ++i)
+                {
+                    *pUCharDest++ = *pUCharSource++;
+                    --cbSize;
+                }
+
+                BlockType *pUBlockDest = (BlockType *)pUCharDest;
+                BlockType *pUBlockSource = (BlockType *)pUCharSource;
 
                 while (cbSize >= sizeof(BlockType))
                 {
@@ -67,8 +105,8 @@ namespace xl
                     cbSize -= sizeof(BlockType);
                 }
 
-                unsigned char *pUCharDest = (unsigned char *)pUBlockDest;
-                unsigned char *pUCharSource = (unsigned char *)pUBlockSource;
+                pUCharDest = (unsigned char *)pUBlockDest;
+                pUCharSource = (unsigned char *)pUBlockSource;
 
                 while (cbSize > 0)
                 {
@@ -78,8 +116,23 @@ namespace xl
             }
             else
             {
-                BlockType *pUBlockDest = (BlockType *)((unsigned char *)pDest + cbSize);
-                BlockType *pUBlockSource = (BlockType *)((unsigned char *)pSource + cbSize);
+                unsigned char *pUCharDest = (unsigned char *)pDest + cbSize;
+                unsigned char *pUCharSource = (unsigned char *)pSource + cbSize;
+                size_t cbBytes = (unsigned int)pUCharDest %  sizeof(BlockType);
+
+                if (cbBytes > cbSize)
+                {
+                    cbBytes = cbSize;
+                }
+
+                for (size_t i = 0; i < cbBytes; ++i)
+                {
+                    *--pUCharDest = *--pUCharSource;
+                    --cbSize;
+                }
+
+                BlockType *pUBlockDest = (BlockType *)pUCharDest;
+                BlockType *pUBlockSource = (BlockType *)pUCharSource;
 
                 while (cbSize >= sizeof(BlockType))
                 {
@@ -87,8 +140,8 @@ namespace xl
                     cbSize -= sizeof(BlockType);
                 }
 
-                unsigned char *pUCharDest = (unsigned char *)pUBlockDest;
-                unsigned char *pUCharSource = (unsigned char *)pUBlockSource;
+                pUCharDest = (unsigned char *)pUBlockDest;
+                pUCharSource = (unsigned char *)pUBlockSource;
 
                 while (cbSize > 0)
                 {

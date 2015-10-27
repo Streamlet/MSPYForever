@@ -42,6 +42,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32MessagingTest", "Proje
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Win32NetworkTest", "Projects\Win32NetworkTest\Win32NetworkTest.vcxproj", "{9D377F4D-EC3E-4730-877B-E63E9376B71E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlMemoryTest", "Projects\PerformanceTest\xlMemoryTest\xlMemoryTest.vcxproj", "{949DACD8-9629-4406-BA92-8C7121967606}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -146,6 +148,14 @@ Global
 		{9D377F4D-EC3E-4730-877B-E63E9376B71E}.Release|Win32.Build.0 = Release|Win32
 		{9D377F4D-EC3E-4730-877B-E63E9376B71E}.Release|x64.ActiveCfg = Release|x64
 		{9D377F4D-EC3E-4730-877B-E63E9376B71E}.Release|x64.Build.0 = Release|x64
+		{949DACD8-9629-4406-BA92-8C7121967606}.Debug|Win32.ActiveCfg = Debug|Win32
+		{949DACD8-9629-4406-BA92-8C7121967606}.Debug|Win32.Build.0 = Debug|Win32
+		{949DACD8-9629-4406-BA92-8C7121967606}.Debug|x64.ActiveCfg = Debug|x64
+		{949DACD8-9629-4406-BA92-8C7121967606}.Debug|x64.Build.0 = Debug|x64
+		{949DACD8-9629-4406-BA92-8C7121967606}.Release|Win32.ActiveCfg = Release|Win32
+		{949DACD8-9629-4406-BA92-8C7121967606}.Release|Win32.Build.0 = Release|Win32
+		{949DACD8-9629-4406-BA92-8C7121967606}.Release|x64.ActiveCfg = Release|x64
+		{949DACD8-9629-4406-BA92-8C7121967606}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,5 +174,6 @@ Global
 		{8E218C86-AF3F-4DE0-AE39-F43BEA91AC54} = {BEC8E06A-0EED-4E96-B918-5070DE672CBC}
 		{D169D1D4-4EA6-4CC7-B9C5-7057F451EA40} = {BEC8E06A-0EED-4E96-B918-5070DE672CBC}
 		{9D377F4D-EC3E-4730-877B-E63E9376B71E} = {BEC8E06A-0EED-4E96-B918-5070DE672CBC}
+		{949DACD8-9629-4406-BA92-8C7121967606} = {6126EC35-4E8A-4FB7-A2B5-C54268C4797A}
 	EndGlobalSection
 EndGlobal
