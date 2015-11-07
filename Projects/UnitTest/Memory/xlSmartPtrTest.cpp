@@ -11,7 +11,6 @@
 
 
 #include "../../../Include/xl/AppHelper/xlUnitTest.h"
-#include "../../../Include/xl/xlDef.h"
 #include "../../../Include/xl/Common/Memory/xlSmartPtr.h"
 
 namespace

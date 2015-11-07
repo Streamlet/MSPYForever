@@ -12,10 +12,13 @@
 
 #include "../PerformanceTest.h"
 #include "../../../Include/xl/Common/Memory/xlMemory.h"
-#include <memory.h>
 
 int main()
 {
+    int *p = new int[10];
+    int *q = new int[10];
+    memcpy(p, q, 10);
+
     using namespace std;
     using namespace xl;
 

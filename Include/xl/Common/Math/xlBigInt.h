@@ -13,7 +13,6 @@
 #define __XLBigIntT_H_4ED560E8_F226_4D72_9016_828D1AA8696E_INCLUDED__
 
 
-#include "../../xlDef.h"
 #include "../Containers/xlArray.h"
 #include "../Containers/xlMap.h"
 #include "../String/xlString.h"

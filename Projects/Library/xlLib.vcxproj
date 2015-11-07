@@ -144,15 +144,9 @@
     <ClInclude Include="..\..\Include\xl\Windows\xlDllHelper.h" />
     <ClInclude Include="..\..\Include\xl\Windows\xlWin32Ver.h" />
     <ClInclude Include="..\..\Include\xl\Windows\xlHandle.h" />
-    <ClInclude Include="..\..\Include\xl\xlDef.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\Include\xl\AppHelper\Readme.txt" />
-    <Text Include="..\..\Include\xl\Common\Readme.txt" />
-    <Text Include="..\..\Include\xl\CrossPlatform\Readme.txt" />
     <Text Include="..\..\Include\xl\Linux\Readme.txt" />
-    <Text Include="..\..\Include\xl\Readme.txt" />
-    <Text Include="..\..\Include\xl\Windows\Readme.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}</ProjectGuid>

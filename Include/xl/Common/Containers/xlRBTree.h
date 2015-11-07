@@ -14,7 +14,6 @@
 
 
 #include "../Memory/xlMemory.h"
-#include "../../xlDef.h"
 #include "xlBinTree.h"
 
 namespace xl

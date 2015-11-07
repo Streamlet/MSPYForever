@@ -13,7 +13,6 @@
 #define __XLMEMORY_H_269E94A2_E25E_40CC_A48C_3EA8F354B4BA_INCLUDED__
 
 
-#include "../../xlDef.h"
 #include "../Meta/xlTypeTraits.h"
 
 namespace xl

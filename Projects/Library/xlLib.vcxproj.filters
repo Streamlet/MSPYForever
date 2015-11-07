@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\..\Include\xl\xlDef.h" />
     <ClInclude Include="..\..\Include\xl\Windows\xlWin32Ver.h">
       <Filter>Windows</Filter>
     </ClInclude>
@@ -468,21 +467,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\Include\xl\Readme.txt" />
-    <Text Include="..\..\Include\xl\AppHelper\Readme.txt">
-      <Filter>AppHelper</Filter>
-    </Text>
-    <Text Include="..\..\Include\xl\Windows\Readme.txt">
-      <Filter>Windows</Filter>
-    </Text>
     <Text Include="..\..\Include\xl\Linux\Readme.txt">
       <Filter>Linux</Filter>
-    </Text>
-    <Text Include="..\..\Include\xl\CrossPlatform\Readme.txt">
-      <Filter>CrossPlatform</Filter>
-    </Text>
-    <Text Include="..\..\Include\xl\Common\Readme.txt">
-      <Filter>Common</Filter>
     </Text>
   </ItemGroup>
 </Project>

@@ -16,7 +16,6 @@
 #include "../Meta/xlStaticAssert.h"
 #include "../Meta/xlTypeTraits.h"
 #include "../Meta/xlEnableIf.h"
-#include "../../xlDef.h"
 
 namespace xl
 {
