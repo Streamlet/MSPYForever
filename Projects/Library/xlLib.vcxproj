@@ -43,6 +43,7 @@
     <ClInclude Include="..\..\Include\xl\Common\Memory\xlSmartPtr.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlAssert.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlBind.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlCountOf.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlEnableIf.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlFunction.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlMacros.h" />

@@ -203,6 +203,30 @@ namespace xl
         typedef typename TLMerge<typename TLReverse<T>::Type, typename TLMerge<NullType, H>::Type>::Type Type;
     };
 
+    template <typename TL, template <typename> typename FN, typename P>
+    bool TLForeachInternal(P p, TL *)
+    {
+        if (!FN<TLTypeAt<TL, 0>::Type>()(p))
+        {
+            return false;
+        }
+
+        return TLForeachInternal<TLSplit<TL, 1>::Back, FN, P>(p, (TLSplit<TL, 1>::Back *)0);
+    }
+
+    template <typename TL, template <typename> typename FN, typename P>
+    bool TLForeachInternal(P, NullType *)
+    {
+        return true;
+    }
+
+    template <typename TL, template <typename> typename FN, typename P>
+    bool TLForeach(P p)
+    {
+        return TLForeachInternal<TL, FN, P>(p, (TL *)0);
+    }
+
+
 #define XL_TYPELIST_TYPENAME_DECLARE_PATTERN(n) typename T##n = NullType
 #define XL_TYPELIST_TYPENAME_DECLARE(n)         XL_REPZ(XL_TYPELIST_TYPENAME_DECLARE_PATTERN, n, XL_COMMA)
 #define XL_TYPELIST_TYPENAME_LIST_PATTERN(n)    T##n

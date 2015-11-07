@@ -139,6 +139,69 @@ namespace xl
     };
 
     template <typename T>
+    struct ArrayTraits;
+
+    template <typename T, int N>
+    struct ArrayTraits<T[N]>
+    {
+        static const size_t Size = N;
+    };
+
+    template <int N>
+    struct SizeToSignedIntType;
+
+    template <>
+    struct SizeToSignedIntType<1>
+    {
+        typedef char Type;
+    };
+
+    template <>
+    struct SizeToSignedIntType<2>
+    {
+        typedef short Type;
+    };
+
+    template <>
+    struct SizeToSignedIntType<4>
+    {
+        typedef int Type;
+    };
+
+    template <>
+    struct SizeToSignedIntType<8>
+    {
+        typedef long long Type;
+    };
+
+    template <int N>
+    struct SizeToUnignedIntType;
+
+    template <>
+    struct SizeToUnignedIntType<1>
+    {
+        typedef unsigned char Type;
+    };
+
+    template <>
+    struct SizeToUnignedIntType<2>
+    {
+        typedef unsigned short Type;
+    };
+
+    template <>
+    struct SizeToUnignedIntType<4>
+    {
+        typedef unsigned int Type;
+    };
+
+    template <>
+    struct SizeToUnignedIntType<8>
+    {
+        typedef unsigned long long Type;
+    };
+
+    template <typename T>
     struct MemPtrTraits
     {
         static const bool IsMemPtr = false;

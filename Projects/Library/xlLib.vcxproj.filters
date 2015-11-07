@@ -376,6 +376,9 @@
     <ClInclude Include="..\..\Include\xl\Common\Math\xlEquation.h">
       <Filter>Common\Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlCountOf.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">
