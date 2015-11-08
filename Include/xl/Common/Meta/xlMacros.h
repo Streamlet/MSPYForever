@@ -26,6 +26,7 @@ namespace xl
 
 #define XL_TOSTR_(s)    #s
 #define XL_TOSTR(s)     XL_TOSTR_(s)
+#define XL_TOWCS(s)     XL_CONN(L, XL_TOSTR(s))
 
 #define XL_EVAL(f, p)   f XL_LPARE p XL_RPARE
 

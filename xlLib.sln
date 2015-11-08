@@ -14,9 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Document", "Document", "{EF
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PerfTest", "PerfTest", "{6126EC35-4E8A-4FB7-A2B5-C54268C4797A}"
-	ProjectSection(SolutionItems) = preProject
-		Projects\PerformanceTest\PerformanceTest.h = Projects\PerformanceTest\PerformanceTest.h
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Projects\Test\Test.vcxproj", "{6620C303-0D70-41AF-82BF-CA7EA66A1B21}"
 EndProject
@@ -45,6 +42,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xlMemoryTest", "Projects\PerformanceTest\xlMemoryTest\xlMemoryTest.vcxproj", "{949DACD8-9629-4406-BA92-8C7121967606}"
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64

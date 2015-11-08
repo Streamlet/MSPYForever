@@ -21,8 +21,8 @@ namespace xl
     namespace AppHelper
     {
 
-#define XL_TEST_CLASS_NAME(name)            XL_CONN(xlTestCase, name)
-#define XL_TEST_CLASS_INSTANCE_NAME(name)   XL_CONN(XL_TEST_CLASS_NAME(name), name)
+#define XL_TEST_CLASS_NAME(name)            XL_CONN(xlTestCase_, name)
+#define XL_TEST_CLASS_INSTANCE_NAME(name)   XL_CONN(xlTestCaseInstance_, name)
 
 #define XL_NAMED_TEST_CASE(name)                        \
                                                         \

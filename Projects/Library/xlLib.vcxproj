@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Include\xl\AppHelper\xlLog.h" />
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlPerfTest.h" />
     <ClInclude Include="..\..\Include\xl\AppHelper\xlUnitTest.h" />
     <ClInclude Include="..\..\Include\xl\Common\Algorithm\xlSort.h" />
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlArray.h" />

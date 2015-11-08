@@ -9,60 +9,33 @@
 //
 //------------------------------------------------------------------------------
 
-#include "../PerformanceTest.h"
+#include "../../../Include/xl/AppHelper/xlPerfTest.h"
 #include "../../../Include/xl/Common/Parser/xlRegExp.h"
 #include <regex>
 
 int main()
 {
-    using namespace std;
-    using namespace xl;
-
-    SECTION_BEGIN(StdRegExParse100000);
-    PERFORMANCE_TEST_BEGIN(StdRegExParse100000);
-    for (int i = 0; i < 100000; ++i)
+    XL_BEGIN_PERF_TEST(StdRegExParseAndMatch)
     {
-        wregex r;
-        r.assign(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/");
-    }
-    PERFORMANCE_TEST_END(StdRegExParse100000);
-    SECTION_END();
-
-    SECTION_BEGIN(xlRegExpParse100000);
-    PERFORMANCE_TEST_BEGIN(xlRegExpParse100000);
-    for (int i = 0; i < 100000; ++i)
-    {
-        RegExp r;
-        r.Parse(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/");
-    }
-    PERFORMANCE_TEST_END(xlRegExpParse100000);
-    SECTION_END();
-
-    SECTION_BEGIN(StdRegExMatch100000);
-    {
-        wregex r;
-        r.assign(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/");
-        PERFORMANCE_TEST_BEGIN(StdRegExMatch100000);
-        for (int i = 0; i < 100000; ++i)
+        for (int i = 0; i < 1000; ++i)
         {
+            std::wregex r;
+            r.assign(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/");
             regex_match(L"http://w-1.w-2.w-3.streamlet.org/", r);
         }
-        PERFORMANCE_TEST_END(StdRegExMatch100000);
     }
-    SECTION_END();
+    XL_END_PERF_TEST()
 
-    SECTION_BEGIN(xlRegExpMatch100000);
+    XL_BEGIN_PERF_TEST(xlRegExpParseAndMatch)
     {
-        RegExp r;
-        r.Parse(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/");
-        PERFORMANCE_TEST_BEGIN(xlRegExpMatch100000);
-        for (int i = 0; i < 100000; ++i)
+        for (int i = 0; i < 1000; ++i)
         {
+            xl::RegExp r;
+            r.Parse(L"http://([a-zA-Z0-9\\-]+.)+[a-zA-Z]+/");
             r.Match(L"http://w-1.w-2.w-3.streamlet.org/");
         }
-        PERFORMANCE_TEST_END(xlRegExpMatch100000);
     }
-    SECTION_END();
+    XL_END_PERF_TEST()
 
     return 0;
 }

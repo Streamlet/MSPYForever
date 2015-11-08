@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 
-#include "../PerformanceTest.h"
+#include "../../../Include/xl/AppHelper/xlPerfTest.h"
 #include "../../../Include/xl/Common/Math/xlBigInt.h"
 #include <wchar.h>
 
@@ -36,77 +36,83 @@ int main()
 {
     using namespace xl;
 
-    BigInt p, q, n, d, e;
-    BigInt plain, encoded, decoded;
+    XL_BEGIN_PERF_TEST(512BitRSA)
+    {
+        BigInt p, q, n, d, e;
+        BigInt plain, encoded, decoded;
 
-    SECTION_BEGIN(512BitRSA);
-    p.FromString(P_512, 16);
-    q.FromString(Q_512, 16);
-    n.FromString(N_512, 16);
-    d.FromString(D_512, 16);
-    e.FromString(E_512, 16);
-    wprintf(L"P = %s\n", (const wchar_t *)p.ToString(16));
-    wprintf(L"Q = %s\n", (const wchar_t *)q.ToString(16));
-    wprintf(L"N = %s\n", (const wchar_t *)n.ToString(16));
-    wprintf(L"D = %s\n", (const wchar_t *)d.ToString(16));
-    wprintf(L"E = %s\n", (const wchar_t *)e.ToString(16));
-    plain = 12345;
-    encoded = 0;
-    decoded = 0;
-    PERFORMANCE_TEST_BEGIN(512BitRSA);
-    encoded = plain.ExpMod(d, n);
-    decoded = encoded.ExpMod(e, n);
-    PERFORMANCE_TEST_END(512BitRSA);
-    wprintf(L"Plain   = %s\n", (const wchar_t *)plain.ToString(16));
-    wprintf(L"Encoded = %s\n", (const wchar_t *)encoded.ToString(16));
-    wprintf(L"Decoded = %s\n", (const wchar_t *)decoded.ToString(16));
-    SECTION_END();
+        p.FromString(P_512, 16);
+        q.FromString(Q_512, 16);
+        n.FromString(N_512, 16);
+        d.FromString(D_512, 16);
+        e.FromString(E_512, 16);
+        wprintf(L"P = %s\n", (const wchar_t *)p.ToString(16));
+        wprintf(L"Q = %s\n", (const wchar_t *)q.ToString(16));
+        wprintf(L"N = %s\n", (const wchar_t *)n.ToString(16));
+        wprintf(L"D = %s\n", (const wchar_t *)d.ToString(16));
+        wprintf(L"E = %s\n", (const wchar_t *)e.ToString(16));
+        plain = 12345;
+        encoded = 0;
+        decoded = 0;
+        encoded = plain.ExpMod(d, n);
+        decoded = encoded.ExpMod(e, n);
+        wprintf(L"Plain   = %s\n", (const wchar_t *)plain.ToString(16));
+        wprintf(L"Encoded = %s\n", (const wchar_t *)encoded.ToString(16));
+        wprintf(L"Decoded = %s\n", (const wchar_t *)decoded.ToString(16));
+    }
+    XL_END_PERF_TEST()
 
-    SECTION_BEGIN(1024BitRSA);
-    p.FromString(P_1024, 16);
-    q.FromString(Q_1024, 16);
-    n.FromString(N_1024, 16);
-    d.FromString(D_1024, 16);
-    e.FromString(E_1024, 16);
-    wprintf(L"P = %s\n", (const wchar_t *)p.ToString(16));
-    wprintf(L"Q = %s\n", (const wchar_t *)q.ToString(16));
-    wprintf(L"N = %s\n", (const wchar_t *)n.ToString(16));
-    wprintf(L"D = %s\n", (const wchar_t *)d.ToString(16));
-    wprintf(L"E = %s\n", (const wchar_t *)e.ToString(16));
-    plain = 12345;
-    encoded = 0;
-    decoded = 0;
-    PERFORMANCE_TEST_BEGIN(1024BitRSA);
-    encoded = plain.ExpMod(d, n);
-    decoded = encoded.ExpMod(e, n);
-    PERFORMANCE_TEST_END(1024BitRSA);
-    wprintf(L"Plain   = %s\n", (const wchar_t *)plain.ToString(16));
-    wprintf(L"Encoded = %s\n", (const wchar_t *)encoded.ToString(16));
-    wprintf(L"Decoded = %s\n", (const wchar_t *)decoded.ToString(16));
-    SECTION_END();
+    XL_BEGIN_PERF_TEST(1024BitRSA)
+    {
+        BigInt p, q, n, d, e;
+        BigInt plain, encoded, decoded;
 
-    SECTION_BEGIN(2048BitRSA);
-    p.FromString(P_2048, 16);
-    q.FromString(Q_2048, 16);
-    n.FromString(N_2048, 16);
-    d.FromString(D_2048, 16);
-    e.FromString(E_2048, 16);
-    wprintf(L"P = %s\n", (const wchar_t *)p.ToString(16));
-    wprintf(L"Q = %s\n", (const wchar_t *)q.ToString(16));
-    wprintf(L"N = %s\n", (const wchar_t *)n.ToString(16));
-    wprintf(L"D = %s\n", (const wchar_t *)d.ToString(16));
-    wprintf(L"E = %s\n", (const wchar_t *)e.ToString(16));
-    plain = 12345;
-    encoded = 0;
-    decoded = 0;
-    PERFORMANCE_TEST_BEGIN(2048BitRSA);
-    encoded = plain.ExpMod(d, n);
-    decoded = encoded.ExpMod(e, n);
-    PERFORMANCE_TEST_END(2048BitRSA);
-    wprintf(L"Plain   = %s\n", (const wchar_t *)plain.ToString(16));
-    wprintf(L"Encoded = %s\n", (const wchar_t *)encoded.ToString(16));
-    wprintf(L"Decoded = %s\n", (const wchar_t *)decoded.ToString(16));
-    SECTION_END();
+        p.FromString(P_1024, 16);
+        q.FromString(Q_1024, 16);
+        n.FromString(N_1024, 16);
+        d.FromString(D_1024, 16);
+        e.FromString(E_1024, 16);
+        wprintf(L"P = %s\n", (const wchar_t *)p.ToString(16));
+        wprintf(L"Q = %s\n", (const wchar_t *)q.ToString(16));
+        wprintf(L"N = %s\n", (const wchar_t *)n.ToString(16));
+        wprintf(L"D = %s\n", (const wchar_t *)d.ToString(16));
+        wprintf(L"E = %s\n", (const wchar_t *)e.ToString(16));
+        plain = 12345;
+        encoded = 0;
+        decoded = 0;
+        encoded = plain.ExpMod(d, n);
+        decoded = encoded.ExpMod(e, n);
+        wprintf(L"Plain   = %s\n", (const wchar_t *)plain.ToString(16));
+        wprintf(L"Encoded = %s\n", (const wchar_t *)encoded.ToString(16));
+        wprintf(L"Decoded = %s\n", (const wchar_t *)decoded.ToString(16));
+    }
+    XL_END_PERF_TEST()
+
+    XL_BEGIN_PERF_TEST(2048BitRSA)
+    {
+        BigInt p, q, n, d, e;
+        BigInt plain, encoded, decoded;
+
+        p.FromString(P_2048, 16);
+        q.FromString(Q_2048, 16);
+        n.FromString(N_2048, 16);
+        d.FromString(D_2048, 16);
+        e.FromString(E_2048, 16);
+        wprintf(L"P = %s\n", (const wchar_t *)p.ToString(16));
+        wprintf(L"Q = %s\n", (const wchar_t *)q.ToString(16));
+        wprintf(L"N = %s\n", (const wchar_t *)n.ToString(16));
+        wprintf(L"D = %s\n", (const wchar_t *)d.ToString(16));
+        wprintf(L"E = %s\n", (const wchar_t *)e.ToString(16));
+        plain = 12345;
+        encoded = 0;
+        decoded = 0;
+        encoded = plain.ExpMod(d, n);
+        decoded = encoded.ExpMod(e, n);
+        wprintf(L"Plain   = %s\n", (const wchar_t *)plain.ToString(16));
+        wprintf(L"Encoded = %s\n", (const wchar_t *)encoded.ToString(16));
+        wprintf(L"Decoded = %s\n", (const wchar_t *)decoded.ToString(16));
+    }
+    XL_END_PERF_TEST()
 
     return 0;
 }
