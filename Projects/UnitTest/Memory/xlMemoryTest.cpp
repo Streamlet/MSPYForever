@@ -20,75 +20,81 @@ namespace
     // Memory::Set By KJJ
     XL_TEST_CASE()
     {
-        unsigned char *pChar = new unsigned char[17] + 1;
-        Memory::Set(pChar, 16, 0);
+        unsigned char *pBuf = new unsigned char[17];
+        unsigned char *pChar = pBuf + 1;
+
+        Memory::Set(pChar, 0, 16);
         for (int i = 0; i < 16; ++i)
         {
             XL_TEST_ASSERT(pChar[i] == 0);
         }
 
-        Memory::Set(pChar, 0x12, 7);
-        XL_TEST_ASSERT(pChar[0] == 0x12);
-        XL_TEST_ASSERT(pChar[1] == 0x12);
-        XL_TEST_ASSERT(pChar[2] == 0x12);
-        XL_TEST_ASSERT(pChar[3] == 0x12);
-        XL_TEST_ASSERT(pChar[4] == 0x12);
-        XL_TEST_ASSERT(pChar[5] == 0x12);
-        XL_TEST_ASSERT(pChar[6] == 0x12);
+        Memory::Set(pChar, 0x12345678, 7);
+        XL_TEST_ASSERT(pChar[0] == 0x78);
+        XL_TEST_ASSERT(pChar[1] == 0x78);
+        XL_TEST_ASSERT(pChar[2] == 0x78);
+        XL_TEST_ASSERT(pChar[3] == 0x78);
+        XL_TEST_ASSERT(pChar[4] == 0x78);
+        XL_TEST_ASSERT(pChar[5] == 0x78);
+        XL_TEST_ASSERT(pChar[6] == 0x78);
         XL_TEST_ASSERT(pChar[7] == 0);
 
-        Memory::Set(pChar, 0x34, 5);
-        XL_TEST_ASSERT(pChar[0] == 0x34);
-        XL_TEST_ASSERT(pChar[1] == 0x34);
-        XL_TEST_ASSERT(pChar[2] == 0x34);
-        XL_TEST_ASSERT(pChar[3] == 0x34);
-        XL_TEST_ASSERT(pChar[4] == 0x34);
-        XL_TEST_ASSERT(pChar[5] == 0x34);
-        XL_TEST_ASSERT(pChar[6] == 0x34);
+        Memory::Set(pChar, 0x90abcdef, 5);
+        XL_TEST_ASSERT(pChar[0] == 0xef);
+        XL_TEST_ASSERT(pChar[1] == 0xef);
+        XL_TEST_ASSERT(pChar[2] == 0xef);
+        XL_TEST_ASSERT(pChar[3] == 0xef);
+        XL_TEST_ASSERT(pChar[4] == 0xef);
+        XL_TEST_ASSERT(pChar[5] == 0x78);
+        XL_TEST_ASSERT(pChar[6] == 0x78);
         XL_TEST_ASSERT(pChar[7] == 0);
 
-        Memory::Set(pChar, 0x56, 15);
-        XL_TEST_ASSERT(pChar[0] == 0x56);
-        XL_TEST_ASSERT(pChar[1] == 0x56);
-        XL_TEST_ASSERT(pChar[2] == 0x56);
-        XL_TEST_ASSERT(pChar[3] == 0x56);
-        XL_TEST_ASSERT(pChar[4] == 0x56);
-        XL_TEST_ASSERT(pChar[5] == 0x56);
-        XL_TEST_ASSERT(pChar[6] == 0x56);
-        XL_TEST_ASSERT(pChar[7] == 0x56);
-        XL_TEST_ASSERT(pChar[8] == 0x56);
-        XL_TEST_ASSERT(pChar[9] == 0x56);
-        XL_TEST_ASSERT(pChar[10] == 0x56);
-        XL_TEST_ASSERT(pChar[11] == 0x56);
-        XL_TEST_ASSERT(pChar[12] == 0x56);
-        XL_TEST_ASSERT(pChar[13] == 0x56);
-        XL_TEST_ASSERT(pChar[14] == 0x56);
+        Memory::Set(pChar, 0x98765432, 15);
+        XL_TEST_ASSERT(pChar[0] == 0x32);
+        XL_TEST_ASSERT(pChar[1] == 0x32);
+        XL_TEST_ASSERT(pChar[2] == 0x32);
+        XL_TEST_ASSERT(pChar[3] == 0x32);
+        XL_TEST_ASSERT(pChar[4] == 0x32);
+        XL_TEST_ASSERT(pChar[5] == 0x32);
+        XL_TEST_ASSERT(pChar[6] == 0x32);
+        XL_TEST_ASSERT(pChar[7] == 0x32);
+        XL_TEST_ASSERT(pChar[8] == 0x32);
+        XL_TEST_ASSERT(pChar[9] == 0x32);
+        XL_TEST_ASSERT(pChar[10] == 0x32);
+        XL_TEST_ASSERT(pChar[11] == 0x32);
+        XL_TEST_ASSERT(pChar[12] == 0x32);
+        XL_TEST_ASSERT(pChar[13] == 0x32);
+        XL_TEST_ASSERT(pChar[14] == 0x32);
         XL_TEST_ASSERT(pChar[15] == 0);
+
+        delete[] pBuf;
     }
 
     // Memory::Copy By KJJ
     XL_TEST_CASE()
     {
-        unsigned char *pChar1 = new unsigned char[19] + 3;
-        unsigned char *pChar2 = new unsigned char[19] + 3;
+        unsigned char *pBuf1 = new unsigned char[19];
+        unsigned char *pBuf2 = new unsigned char[19];
+        unsigned char *pChar1 = pBuf1 + 3;
+        unsigned char *pChar2 = pBuf2 + 3;
 
         Memory::Set(pChar1, 0x12, 16);
-        XL_TEST_ASSERT(pChar1[0] == 0x12);
-        XL_TEST_ASSERT(pChar1[1] == 0x12);
-        XL_TEST_ASSERT(pChar1[2] == 0x12);
-        XL_TEST_ASSERT(pChar1[3] == 0x12);
-        XL_TEST_ASSERT(pChar1[4] == 0x12);
-        XL_TEST_ASSERT(pChar1[5] == 0x12);
-        XL_TEST_ASSERT(pChar1[6] == 0x12);
-        XL_TEST_ASSERT(pChar1[7] == 0x12);
-        XL_TEST_ASSERT(pChar1[8] == 0x12);
-        XL_TEST_ASSERT(pChar1[9] == 0x12);
-        XL_TEST_ASSERT(pChar1[10] == 0x12);
-        XL_TEST_ASSERT(pChar1[11] == 0x12);
-        XL_TEST_ASSERT(pChar1[12] == 0x12);
-        XL_TEST_ASSERT(pChar1[13] == 0x12);
-        XL_TEST_ASSERT(pChar1[14] == 0x12);
-        XL_TEST_ASSERT(pChar1[15] == 0x12);
+        pChar1[0] = 0x01;
+        pChar1[1] = 0x02;
+        pChar1[2] = 0x03;
+        pChar1[3] = 0x04;
+        pChar1[4] = 0x05;
+        pChar1[5] = 0x06;
+        pChar1[6] = 0x07;
+        pChar1[7] = 0x08;
+        pChar1[8] = 0x09;
+        pChar1[9] = 0x0a;
+        pChar1[10] = 0x0b;
+        pChar1[11] = 0x0c;
+        pChar1[12] = 0x0d;
+        pChar1[13] = 0x0e;
+        pChar1[14] = 0x0f;
+        pChar1[15] = 0x10;
 
         Memory::Set(pChar2, 0, 16);
         for (int i = 0; i < 16; ++i)
@@ -97,58 +103,61 @@ namespace
         }
 
         Memory::Copy(pChar2, pChar1, 16);
-        XL_TEST_ASSERT(pChar2[0] == 0xef);
-        XL_TEST_ASSERT(pChar2[1] == 0xcd);
-        XL_TEST_ASSERT(pChar2[2] == 0xab);
-        XL_TEST_ASSERT(pChar2[3] == 0x90);
-        XL_TEST_ASSERT(pChar2[4] == 0x78);
-        XL_TEST_ASSERT(pChar2[5] == 0x56);
-        XL_TEST_ASSERT(pChar2[6] == 0x34);
-        XL_TEST_ASSERT(pChar2[7] == 0x12);
-        XL_TEST_ASSERT(pChar2[8] == 0xef);
-        XL_TEST_ASSERT(pChar2[9] == 0xcd);
-        XL_TEST_ASSERT(pChar2[10] == 0xab);
-        XL_TEST_ASSERT(pChar2[11] == 0x90);
-        XL_TEST_ASSERT(pChar2[12] == 0x78);
-        XL_TEST_ASSERT(pChar2[13] == 0x56);
-        XL_TEST_ASSERT(pChar2[14] == 0x34);
-        XL_TEST_ASSERT(pChar2[15] == 0x12);
+        XL_TEST_ASSERT(pChar2[0] == 0x01);
+        XL_TEST_ASSERT(pChar2[1] == 0x02);
+        XL_TEST_ASSERT(pChar2[2] == 0x03);
+        XL_TEST_ASSERT(pChar2[3] == 0x04);
+        XL_TEST_ASSERT(pChar2[4] == 0x05);
+        XL_TEST_ASSERT(pChar2[5] == 0x06);
+        XL_TEST_ASSERT(pChar2[6] == 0x07);
+        XL_TEST_ASSERT(pChar2[7] == 0x08);
+        XL_TEST_ASSERT(pChar2[8] == 0x09);
+        XL_TEST_ASSERT(pChar2[9] == 0x0a);
+        XL_TEST_ASSERT(pChar2[10] == 0x0b);
+        XL_TEST_ASSERT(pChar2[11] == 0x0c);
+        XL_TEST_ASSERT(pChar2[12] == 0x0d);
+        XL_TEST_ASSERT(pChar2[13] == 0x0e);
+        XL_TEST_ASSERT(pChar2[14] == 0x0f);
+        XL_TEST_ASSERT(pChar2[15] == 0x10);
 
         Memory::Copy(pChar1, pChar1 + 1 , 15);
-        XL_TEST_ASSERT(pChar1[0] == 0xcd);
-        XL_TEST_ASSERT(pChar1[1] == 0xab);
-        XL_TEST_ASSERT(pChar1[2] == 0x90);
-        XL_TEST_ASSERT(pChar1[3] == 0x78);
-        XL_TEST_ASSERT(pChar1[4] == 0x56);
-        XL_TEST_ASSERT(pChar1[5] == 0x34);
-        XL_TEST_ASSERT(pChar1[6] == 0x12);
-        XL_TEST_ASSERT(pChar1[7] == 0xef);
-        XL_TEST_ASSERT(pChar1[8] == 0xcd);
-        XL_TEST_ASSERT(pChar1[9] == 0xab);
-        XL_TEST_ASSERT(pChar1[10] == 0x90);
-        XL_TEST_ASSERT(pChar1[11] == 0x78);
-        XL_TEST_ASSERT(pChar1[12] == 0x56);
-        XL_TEST_ASSERT(pChar1[13] == 0x34);
-        XL_TEST_ASSERT(pChar1[14] == 0x12);
-        XL_TEST_ASSERT(pChar1[15] == 0x12);
+        XL_TEST_ASSERT(pChar1[0] == 0x02);
+        XL_TEST_ASSERT(pChar1[1] == 0x03);
+        XL_TEST_ASSERT(pChar1[2] == 0x04);
+        XL_TEST_ASSERT(pChar1[3] == 0x05);
+        XL_TEST_ASSERT(pChar1[4] == 0x06);
+        XL_TEST_ASSERT(pChar1[5] == 0x07);
+        XL_TEST_ASSERT(pChar1[6] == 0x08);
+        XL_TEST_ASSERT(pChar1[7] == 0x09);
+        XL_TEST_ASSERT(pChar1[8] == 0x0a);
+        XL_TEST_ASSERT(pChar1[9] == 0x0b);
+        XL_TEST_ASSERT(pChar1[10] == 0x0c);
+        XL_TEST_ASSERT(pChar1[11] == 0x0d);
+        XL_TEST_ASSERT(pChar1[12] == 0x0e);
+        XL_TEST_ASSERT(pChar1[13] == 0x0f);
+        XL_TEST_ASSERT(pChar1[14] == 0x10);
+        XL_TEST_ASSERT(pChar1[15] == 0x10);
 
         Memory::Copy(pChar2 + 1, pChar2, 15);
-        XL_TEST_ASSERT(pChar2[0] == 0xef);
-        XL_TEST_ASSERT(pChar2[1] == 0xef);
-        XL_TEST_ASSERT(pChar2[2] == 0xcd);
-        XL_TEST_ASSERT(pChar2[3] == 0xab);
-        XL_TEST_ASSERT(pChar2[4] == 0x90);
-        XL_TEST_ASSERT(pChar2[5] == 0x78);
-        XL_TEST_ASSERT(pChar2[6] == 0x56);
-        XL_TEST_ASSERT(pChar2[7] == 0x34);
-        XL_TEST_ASSERT(pChar2[8] == 0x12);
-        XL_TEST_ASSERT(pChar2[9] == 0xef);
-        XL_TEST_ASSERT(pChar2[10] == 0xcd);
-        XL_TEST_ASSERT(pChar2[11] == 0xab);
-        XL_TEST_ASSERT(pChar2[12] == 0x90);
-        XL_TEST_ASSERT(pChar2[13] == 0x78);
-        XL_TEST_ASSERT(pChar2[14] == 0x56);
-        XL_TEST_ASSERT(pChar2[15] == 0x34);
+        XL_TEST_ASSERT(pChar2[0] == 0x01);
+        XL_TEST_ASSERT(pChar2[1] == 0x01);
+        XL_TEST_ASSERT(pChar2[2] == 0x02);
+        XL_TEST_ASSERT(pChar2[3] == 0x03);
+        XL_TEST_ASSERT(pChar2[4] == 0x04);
+        XL_TEST_ASSERT(pChar2[5] == 0x05);
+        XL_TEST_ASSERT(pChar2[6] == 0x06);
+        XL_TEST_ASSERT(pChar2[7] == 0x07);
+        XL_TEST_ASSERT(pChar2[8] == 0x08);
+        XL_TEST_ASSERT(pChar2[9] == 0x09);
+        XL_TEST_ASSERT(pChar2[10] == 0x0a);
+        XL_TEST_ASSERT(pChar2[11] == 0x0b);
+        XL_TEST_ASSERT(pChar2[12] == 0x0c);
+        XL_TEST_ASSERT(pChar2[13] == 0x0d);
+        XL_TEST_ASSERT(pChar2[14] == 0x0e);
+        XL_TEST_ASSERT(pChar2[15] == 0x0f);
+
+        delete[] pBuf2;
+        delete[] pBuf1;
     }
 
     // Memory::Zero/Copy By KJJ
@@ -205,15 +214,5 @@ namespace
         Memory::Swap(a, b);
         XL_TEST_ASSERT(a == 2);
         XL_TEST_ASSERT(b == 1);
-    }
-
-    // Memory::Set By WYN
-    XL_TEST_CASE()
-    {
-        char *pChar = new char[3];
-        Memory::Set(pChar, 3, 0x12345678);
-        XL_TEST_ASSERT(pChar[0] == 0x78);
-        XL_TEST_ASSERT(pChar[1] == 0x56);
-        XL_TEST_ASSERT(pChar[2] == 0x34);
     }
 }
