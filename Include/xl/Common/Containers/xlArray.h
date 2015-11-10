@@ -77,7 +77,7 @@ namespace xl
             this->m_nLogicalSize = that.m_nLogicalSize;
             this->m_pBuffer = new T[this->m_nMemorySize];
 
-            Memory::Copy(this->m_pBuffer + this->m_nOffset, that.m_pBuffer + that.m_nOffset, m_nLogicalSize);
+            Memory::CopyT(this->m_pBuffer + this->m_nOffset, that.m_pBuffer + that.m_nOffset, m_nLogicalSize);
 
             return *this;
         }
@@ -89,7 +89,7 @@ namespace xl
                 return *this;
             }
 
-            Memory::Copy(this, &that, 1);
+            Memory::CopyT(this, &that, 1);
             Memory::Zero(that);
 
             return *this;
@@ -226,7 +226,7 @@ namespace xl
             }
 
             PrepareInsert(nIndex, nCount);
-            Memory::Copy(m_pBuffer + m_nOffset + nIndex, pBuffer, nCount);
+            Memory::CopyT(m_pBuffer + m_nOffset + nIndex, pBuffer, nCount);
         }
 
         void Insert(size_t nIndex, const T &tValue, size_t nCount)
@@ -261,7 +261,7 @@ namespace xl
 
         void Delete(size_t nIndex, size_t nCount)
         {
-            if (nIndex + nIndex > m_nLogicalSize)
+            if (nIndex + nCount > m_nLogicalSize)
             {
                 return;
             }
@@ -271,13 +271,13 @@ namespace xl
 
             if (P == ArrayAlignmentPolicy_Tail || P == ArrayAlignmentPolicy_Center && nMoveCountHead < nMoveCountTail)
             {
-                Memory::Copy(m_pBuffer + m_nOffset + nCount, m_pBuffer + m_nOffset, nIndex);
+                Memory::CopyT(m_pBuffer + m_nOffset + nCount, m_pBuffer + m_nOffset, nIndex);
                 m_nOffset += nCount;
                 m_nLogicalSize -= nCount;
             }
             else
             {
-                Memory::Copy(m_pBuffer + m_nOffset + nIndex, m_pBuffer + m_nOffset + nIndex + nCount, m_nLogicalSize - (nIndex + nCount));
+                Memory::CopyT(m_pBuffer + m_nOffset + nIndex, m_pBuffer + m_nOffset + nIndex + nCount, m_nLogicalSize - (nIndex + nCount));
                 m_nLogicalSize -= nCount;
             }
         }
@@ -312,13 +312,13 @@ namespace xl
 
             if (nMoveCountHead < nMoveCountTail && (int)nInsertSize < nSpaceHead)
             {
-                Memory::Copy(m_pBuffer + m_nOffset - nInsertSize, m_pBuffer + m_nOffset, nMoveCountHead);
+                Memory::CopyT(m_pBuffer + m_nOffset - nInsertSize, m_pBuffer + m_nOffset, nMoveCountHead);
                 m_nOffset -= nMoveCountHead;
                 m_nLogicalSize += nInsertSize;
             }
             else if (nMoveCountHead >= nMoveCountTail && (int)nInsertSize < nSpaceTail)
             {
-                Memory::Copy(m_pBuffer + m_nOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, nMoveCountTail);
+                Memory::CopyT(m_pBuffer + m_nOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, nMoveCountTail);
                 m_nLogicalSize += nInsertSize;
             }
             else
@@ -328,10 +328,14 @@ namespace xl
 
                 T *pNewBuffer = new T[nNewMemorySize];
 
-                Memory::Copy(pNewBuffer + nNewOffset, m_pBuffer + m_nOffset, nInsertPos);
-                Memory::Copy(pNewBuffer + nNewOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, m_nLogicalSize - nInsertPos);
+                if (m_pBuffer != nullptr)
+                {
+                    Memory::CopyT(pNewBuffer + nNewOffset, m_pBuffer + m_nOffset, nInsertPos);
+                    Memory::CopyT(pNewBuffer + nNewOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, m_nLogicalSize - nInsertPos);
 
-                delete[] m_pBuffer;
+                    delete[] m_pBuffer;
+                }
+
                 m_pBuffer = pNewBuffer;
                 m_nMemorySize = nNewMemorySize;
                 m_nOffset = nNewOffset;
@@ -823,7 +827,7 @@ namespace xl
     template <typename T, ArrayAlignmentPolicy P>
     inline typename Array<T, P>::ReverseIterator Array<T, P>::Delete(const typename Array<T, P>::ReverseIterator &itWhich)
     {
-        size_t nIndex = itWhich.m_pCurrent - (m_pBuffer + m_nOffset) + 1;
+        size_t nIndex = itWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Delete(nIndex);
 

@@ -26,7 +26,7 @@ namespace
             sprintf_s(&szDigest[i * 8], 9, "%08x", digest[i]);
         }
 
-        return xl::StringA(szDigest);
+        return szDigest;
     }
 
     xl::StringA StringSHA1(const xl::StringA &str)

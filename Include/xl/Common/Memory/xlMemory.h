@@ -44,14 +44,14 @@ namespace xl
 
         template <typename T>
         inline typename EnableIf<(StdTypeDetect<T>::IsStdType || PtrTraits<T>::IsPtr) && !ArrayTraits<T>::IsArray, T>::Type *
-            Copy(T *pDst, const T *pSrc, size_t nCount)
+            CopyT(T *pDst, const T *pSrc, size_t nCount)
         {
             return (T *)Copy((void *)pDst, (const void *)pSrc, sizeof(T) * nCount);
         }
 
         template <typename T>
         inline typename EnableIf<(!StdTypeDetect<T>::IsStdType && !PtrTraits<T>::IsPtr) && !ArrayTraits<T>::IsArray, T>::Type *
-            Copy(T *pDst, const T *pSrc, size_t nCount)
+            CopyT(T *pDst, const T *pSrc, size_t nCount)
         {
             for (size_t i = 0; i < nCount; ++i)
             {
