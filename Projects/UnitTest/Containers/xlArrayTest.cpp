@@ -120,7 +120,7 @@ namespace
         XL_TEST_ASSERT(a.Empty() == true);
 
         int data[4] = { 1, 3, 2, 4 };
-        a.InsertBuffer(0, data, 4);
+        a.Insert(0, data, 4);
         XL_TEST_ASSERT(a.Size() == 4);
         XL_TEST_ASSERT(a[0] == 1);
         XL_TEST_ASSERT(a[1] == 3);

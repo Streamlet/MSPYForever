@@ -19,7 +19,7 @@ int main()
     XL_BEGIN_PERF_TEST(StdVectorPushBack)
     {
         std::vector<int> v;
-        for (int i = 0; i < 10000000; ++i)
+        for (int i = 0; i < 100000000; ++i)
         {
             v.push_back(i);
         }
@@ -29,7 +29,7 @@ int main()
     XL_BEGIN_PERF_TEST(xlArrayPushBack)
     {
         xl::Array<int> a;
-        for (int i = 0; i < 10000000; ++i)
+        for (int i = 0; i < 100000000; ++i)
         {
             a.PushBack(i);
         }

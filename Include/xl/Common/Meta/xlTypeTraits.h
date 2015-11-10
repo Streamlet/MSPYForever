@@ -139,11 +139,23 @@ namespace xl
     };
 
     template <typename T>
-    struct ArrayTraits;
+    struct PtrTraits<const T *>
+    {
+        static const bool IsPtr = true;
+        typedef const T  PtrToType;
+        typedef const T *PtrType;
+    };
+
+    template <typename T>
+    struct ArrayTraits
+    {
+        static const bool IsArray = false;
+    };
 
     template <typename T, int N>
     struct ArrayTraits<T[N]>
     {
+        static const bool IsArray = true;
         static const size_t Size = N;
     };
 
@@ -279,11 +291,11 @@ namespace xl
         static const bool IsInt     = (IsBool || IsSInt || IsUInt || IsChar);
         static const bool IsStdType = (IsVoid || IsInt || IsFloat);
 
-    public:
-        typedef typename StaticSelect<IsStdType,
-                                      T,
-                                      typename RefTraits<T>::RefType>::Type
-                         ParamType;
+    //public:
+    //    typedef typename StaticSelect<IsStdType,
+    //                                  T,
+    //                                  typename RefTraits<T>::RefType>::Type
+    //                     ParamType;
     };
 
 

@@ -15,6 +15,7 @@
 
 #include <memory.h>
 #include "../Meta/xlTypeTraits.h"
+#include "../Meta/xlEnableIf.h"
 
 namespace xl
 {
@@ -42,46 +43,29 @@ namespace xl
         }
 
         template <typename T>
-        inline void Copy(T &tDest, T &tSource)
+        inline typename EnableIf<(StdTypeDetect<T>::IsStdType || PtrTraits<T>::IsPtr) && !ArrayTraits<T>::IsArray, T>::Type *
+            Copy(T *pDst, const T *pSrc, size_t nCount)
         {
-            Copy(&tDest, &tSource, sizeof(T));
+            return (T *)Copy((void *)pDst, (const void *)pSrc, sizeof(T) * nCount);
         }
 
         template <typename T>
-        inline void Copy(T &tDest, const T &tSource)
+        inline typename EnableIf<(!StdTypeDetect<T>::IsStdType && !PtrTraits<T>::IsPtr) && !ArrayTraits<T>::IsArray, T>::Type *
+            Copy(T *pDst, const T *pSrc, size_t nCount)
         {
-            Copy(&tDest, &tSource, sizeof(T));
-        }
+            for (size_t i = 0; i < nCount; ++i)
+            {
+                pDst[i] = Move(pSrc[i]);
+            }
 
-        template <typename T>
-        inline void Copy(T &tDest, T &&tSource)
-        {
-            Copy(&tDest, &tSource, sizeof(T));
+            return pDst;
         }
-
-        template <typename T>
-        inline void Copy(T &tDest, const T &&tSource)
-        {
-            Copy(&tDest, &tSource, sizeof(T));
-        }
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1600)
 
         template <typename T>
         inline typename RemoveRef<T>::Type &&Move(T &&t)
         {
             return (typename RemoveRef<T>::Type &&)t;
         }
-
-#else
-
-        template <typename T>
-        inline T &Move(T &t)
-        {
-            return t;
-        }
-
-#endif
 
         template <typename T>
         inline void Swap(T &t1, T &t2)

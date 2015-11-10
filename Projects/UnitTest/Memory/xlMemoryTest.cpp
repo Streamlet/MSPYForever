@@ -12,6 +12,7 @@
 
 #include "../../../Include/xl/AppHelper/xlUnitTest.h"
 #include "../../../Include/xl/Common/Memory/xlMemory.h"
+#include "../../../Include/xl/Common/Meta/xlCountOf.h"
 
 namespace
 {
@@ -172,7 +173,7 @@ namespace
         XL_TEST_ASSERT(c[4] == 0);
 
         char d[] = { '\x12', '\x34', '\x56', '\x78', '\xab' };
-        Memory::Copy(c, d);
+        Memory::Copy(c, d, XL_COUNT_OF(c));
         XL_TEST_ASSERT(d[0] == '\x12');
         XL_TEST_ASSERT(d[1] == '\x34');
         XL_TEST_ASSERT(d[2] == '\x56');

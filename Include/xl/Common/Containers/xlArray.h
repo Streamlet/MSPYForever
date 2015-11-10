@@ -28,54 +28,339 @@ namespace xl
     class Array
     {
     public:
-        Array(size_t nSize = 0);
-        Array(size_t nSize, const T &tValue);
-        Array(const Array<T> &that);
-        Array(Array<T> &&that);
-        ~Array();
+        Array(size_t nSize = 0)
+            : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
+        {
+            Resize(nSize);
+        }
+
+        Array(size_t nSize, const T &tValue)
+            : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
+        {
+            Resize(nSize);
+
+            for (size_t i = 0; i < m_nLogicalSize; ++i)
+            {
+                m_pBuffer[m_nOffset + i] = tValue;
+            }
+        }
+
+        Array(const Array<T> &that)
+            : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
+        {
+            *this = that;
+        }
+
+        Array(Array<T> &&that)
+            : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
+        {
+            *this = Memory::Move(that);
+        }
+
+        ~Array()
+        {
+            Release();
+        }
 
     public:
-        Array<T> &operator = (const Array<T> &that);
-        Array<T> &operator = (Array<T> &&that);
-        bool operator == (const Array<T> &that) const;
-        bool operator != (const Array<T> &that) const;
+        Array<T> &operator = (const Array<T> &that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            Release();
+
+            this->m_nMemorySize = that.m_nMemorySize;
+            this->m_nOffset = that.m_nOffset;
+            this->m_nLogicalSize = that.m_nLogicalSize;
+            this->m_pBuffer = new T[this->m_nMemorySize];
+
+            Memory::Copy(this->m_pBuffer + this->m_nOffset, that.m_pBuffer + that.m_nOffset, m_nLogicalSize);
+
+            return *this;
+        }
+
+        Array<T> &operator = (Array<T> &&that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            Memory::Copy(this, &that, 1);
+            Memory::Zero(that);
+
+            return *this;
+        }
+
+        bool operator == (const Array<T> &that) const
+        {
+            if (this == &that)
+            {
+                return true;
+            }
+
+            if (this->m_nLogicalSize != that.m_nLogicalSize)
+            {
+                return false;
+            }
+
+            for (size_t i = 0; i < this->m_nLogicalSize; ++i)
+            {
+                if (!(this->m_pBuffer[this->m_nOffset + i] == that.m_pBuffer[that.m_nOffset + i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        bool operator != (const Array<T> &that) const
+        {
+            if (this == &that)
+            {
+                return false;
+            }
+
+            if (this->m_nLogicalSize != that.m_nLogicalSize)
+            {
+                return true;
+            }
+
+            for (size_t i = 0; i < this->m_nLogicalSize; ++i)
+            {
+                if (this->m_pBuffer[this->m_nOffset + i] != that.m_pBuffer[that.m_nOffset + i])
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
     public:
-        T &operator[](size_t nIndex);
-        const T &operator[](size_t nIndex) const;
+        inline T &operator[](size_t nIndex)
+        {
+            return m_pBuffer[m_nOffset + nIndex];
+        }
+
+        inline const T &operator[](size_t nIndex) const
+        {
+            return m_pBuffer[m_nOffset + nIndex];
+        }
 
     public:
-        bool Empty() const;
-        size_t Size() const;
-        void Reserve(size_t nSize);
-        void Resize(size_t nSize);
-        void Resize(size_t nSize, const T &tValue);
+        bool Empty() const
+        {
+            return m_nLogicalSize == 0;
+        }
+
+        size_t Size() const
+        {
+            return m_nLogicalSize;
+        }
 
     public:
-        void InsertBuffer(size_t nIndex, const T *pStart, int nCount);
-        void Insert(size_t nIndex, const T &tValue, int nCount);
-        void Insert(size_t nIndex, const T &tValue);
-        void PushFront(const T &tValue);
-        void PushBack(const T &tValue);
-        void Delete(size_t nIndex, int nCount);
-        void Delete(size_t nIndex);
-        void PopFront();
-        void PopBack();
-        void Clear();
+        void Reserve(size_t nSize)
+        {
+            if (nSize < m_nLogicalSize)
+            {
+                return;
+            }
 
-    protected:
-        T *m_pData;
-        size_t m_nSize;
-        size_t m_nStart;
-        size_t m_nEof;
+            size_t nIncreaseSize = m_nLogicalSize - nSize;
 
-    protected:
-        void Release();
-        size_t GetWellSize(size_t nSize) const;
-        void MoveData(T *pMem, size_t nCount, int nDistance);
-        void CopyData(const T *pMem, size_t nCount, T *pNewMem);
+            if (P == ArrayAlignmentPolicy_Tail)
+            {
+                PrepareInsert(0, nIncreaseSize);
+                m_nOffset += nIncreaseSize;
+                m_nLogicalSize -= nIncreaseSize;
+            }
+            else
+            {
+                PrepareInsert(m_nLogicalSize, nIncreaseSize);
+                m_nLogicalSize -= nIncreaseSize;
+            }
+        }
 
-    // Iterator
+        void Resize(size_t nSize)
+        {
+            if (nSize < m_nLogicalSize)
+            {
+                m_nLogicalSize = nSize;
+                return;
+            }
+
+            size_t nIncreaseSize = nSize - m_nLogicalSize;
+
+            if (P == ArrayAlignmentPolicy_Tail)
+            {
+                PrepareInsert(0, nIncreaseSize);
+                m_nOffset += nIncreaseSize;
+            }
+            else
+            {
+                PrepareInsert(m_nLogicalSize, nIncreaseSize);
+            }
+        }
+
+        void Resize(size_t nSize, const T &tValue)
+        {
+            Resize(nSize);
+
+            for (size_t i = 0; i < m_nLogicalSize; ++i)
+            {
+                m_pBuffer[m_nOffset + i] = tValue;
+            }
+        }
+
+    public:
+        inline void Insert(size_t nIndex, const T *pBuffer, size_t nCount)
+        {
+            if (nIndex > m_nLogicalSize)
+            {
+                return;
+            }
+
+            PrepareInsert(nIndex, nCount);
+            Memory::Copy(m_pBuffer + m_nOffset + nIndex, pBuffer, nCount);
+        }
+
+        void Insert(size_t nIndex, const T &tValue, size_t nCount)
+        {
+            if (nIndex > m_nLogicalSize)
+            {
+                return;
+            }
+
+            PrepareInsert(nIndex, nCount);
+
+            for (size_t i = 0; i < nCount; ++i)
+            {
+                m_pBuffer[m_nOffset + nIndex + i] = tValue;
+            }
+        }
+
+        inline void Insert(size_t nIndex, const T &tValue)
+        {
+            Insert(nIndex, tValue, 1);
+        }
+
+        inline void PushFront(const T &tValue)
+        {
+            Insert(0, tValue);
+        }
+
+        inline void PushBack(const T &tValue)
+        {
+            Insert(m_nLogicalSize, tValue);
+        }
+
+        void Delete(size_t nIndex, size_t nCount)
+        {
+            if (nIndex + nIndex > m_nLogicalSize)
+            {
+                return;
+            }
+
+            size_t nMoveCountHead = nIndex;
+            size_t nMoveCountTail = m_nLogicalSize - nIndex;
+
+            if (P == ArrayAlignmentPolicy_Tail || P == ArrayAlignmentPolicy_Center && nMoveCountHead < nMoveCountTail)
+            {
+                Memory::Copy(m_pBuffer + m_nOffset + nCount, m_pBuffer + m_nOffset, nIndex);
+                m_nOffset += nCount;
+                m_nLogicalSize -= nCount;
+            }
+            else
+            {
+                Memory::Copy(m_pBuffer + m_nOffset + nIndex, m_pBuffer + m_nOffset + nIndex + nCount, m_nLogicalSize - (nIndex + nCount));
+                m_nLogicalSize -= nCount;
+            }
+        }
+
+        inline void Delete(size_t nIndex)
+        {
+            Delete(nIndex, 1);
+        }
+
+        inline void PopFront()
+        {
+            Delete(0);
+        }
+
+        inline void PopBack()
+        {
+            Delete(m_nLogicalSize - 1);
+        }
+
+        inline void Clear()
+        {
+            Release();
+        }
+
+    private:
+        void PrepareInsert(size_t nInsertPos, size_t nInsertSize)
+        {
+            int nSpaceHead = (int)m_nOffset;
+            int nSpaceTail = (int)(m_nMemorySize - (m_nOffset + m_nLogicalSize));
+            int nMoveCountHead = (int)nInsertPos;
+            int nMoveCountTail = (int)(m_nLogicalSize - nInsertPos);
+
+            if (nMoveCountHead < nMoveCountTail && (int)nInsertSize < nSpaceHead)
+            {
+                Memory::Copy(m_pBuffer + m_nOffset - nInsertSize, m_pBuffer + m_nOffset, nMoveCountHead);
+                m_nOffset -= nMoveCountHead;
+                m_nLogicalSize += nInsertSize;
+            }
+            else if (nMoveCountHead >= nMoveCountTail && (int)nInsertSize < nSpaceTail)
+            {
+                Memory::Copy(m_pBuffer + m_nOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, nMoveCountTail);
+                m_nLogicalSize += nInsertSize;
+            }
+            else
+            {
+                size_t nNewMemorySize = (m_nLogicalSize + nInsertSize) * (P == ArrayAlignmentPolicy_Center ? 3 : 2);
+                size_t nNewOffset = (P == ArrayAlignmentPolicy_Head ? 0 : m_nLogicalSize + nInsertSize);
+
+                T *pNewBuffer = new T[nNewMemorySize];
+
+                Memory::Copy(pNewBuffer + nNewOffset, m_pBuffer + m_nOffset, nInsertPos);
+                Memory::Copy(pNewBuffer + nNewOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, m_nLogicalSize - nInsertPos);
+
+                delete[] m_pBuffer;
+                m_pBuffer = pNewBuffer;
+                m_nMemorySize = nNewMemorySize;
+                m_nOffset = nNewOffset;
+                m_nLogicalSize += nInsertSize;
+            }
+        }
+
+        void Release()
+        {
+            if (m_pBuffer != nullptr)
+            {
+                delete[] m_pBuffer;
+                m_pBuffer = nullptr;
+            }
+
+            m_nMemorySize = 0;
+            m_nOffset = 0;
+            m_nLogicalSize = 0;
+        }
+
+    private:
+        T *m_pBuffer;
+        size_t m_nMemorySize;
+        size_t m_nOffset;
+        size_t m_nLogicalSize;
+
+
+
+        // Iterator
 
     public:
         class Iterator
@@ -162,562 +447,6 @@ namespace xl
         Iterator Delete(const Iterator &itFirstToInsert, const Iterator &itAfterLastToDelete);
         Iterator Delete(const ReverseIterator &itFirstToInsert, const ReverseIterator &itAfterLastToDelete);
     };
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Array(size_t nSize /*= 0*/)
-        : m_pData(nullptr), m_nSize(0), m_nStart(0), m_nEof(0)
-    {
-        Resize(nSize);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Array(size_t nSize, const T &tValue)
-        : m_pData(nullptr), m_nSize(0), m_nStart(0), m_nEof(0)
-    {
-        Resize(nSize);
-
-        for (size_t i = m_nStart; i != m_nEof; ++i)
-        {
-            m_pData[i] = tValue;
-        }
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Array(const Array<T> &that)
-        : m_pData(nullptr), m_nSize(0), m_nStart(0), m_nEof(0)
-    {
-        *this = that;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Array(Array<T> &&that)
-        : m_pData(nullptr), m_nSize(0), m_nStart(0), m_nEof(0)
-    {
-        *this = Memory::Move(that);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::~Array()
-    {
-        Release();
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    Array<T> &Array<T, P>::operator = (const Array<T> &that)
-    {
-        if (this == &that)
-        {
-            return *this;
-        }
-
-        Release();
-
-        this->m_nSize = that.m_nSize;
-        this->m_nStart = that.m_nStart;
-        this->m_nEof = that.m_nEof;
-        this->m_pData = new T[this->m_nSize];
-
-        CopyData(that.m_pData + that.m_nStart, that.m_nEof - that.m_nStart, this->m_pData + this->m_nStart);
-
-        return *this;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    Array<T> &Array<T, P>::operator = (Array<T> &&that)
-    {
-        if (this == &that)
-        {
-            return *this;
-        }
-
-        Memory::Copy(*this, that);
-        Memory::Zero(that);
-
-        return *this;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    bool Array<T, P>::operator == (const Array<T> &that) const
-    {
-        if (this == &that)
-        {
-            return true;
-        }
-
-        if (this->m_nEof - this->m_nStart != that.m_nEof - that.m_nStart)
-        {
-            return false;
-        }
-
-        for (size_t i = 0; i < this->m_nEof - this->m_nStart; ++i)
-        {
-            if (this->m_pData[this->m_nStart + i] != that.m_pData[that.m_nStart + i])
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline bool Array<T, P>::operator != (const Array<T> &that) const
-    {
-        if (this == &that)
-        {
-            return false;
-        }
-
-        if (this->m_nEof - this->m_nStart != that.m_nEof - that.m_nStart)
-        {
-            return true;
-        }
-
-        for (size_t i = 0; i < this->m_nEof - this->m_nStart; ++i)
-        {
-            if (this->m_pData[this->m_nStart + i] != that.m_pData[that.m_nStart + i])
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline T &Array<T, P>::operator [] (size_t nIndex)
-    {
-        return m_pData[m_nStart + nIndex];
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline const T &Array<T, P>::operator [] (size_t nIndex) const
-    {
-        return m_pData[m_nStart + nIndex];
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline bool Array<T, P>::Empty() const
-    {
-        return m_nStart == m_nEof;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline size_t Array<T, P>::Size() const
-    {
-        return m_nEof - m_nStart;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    void Array<T, P>::Reserve(size_t nSize)
-    {
-        // Free spaces at the back is enough
-        if (m_nSize - m_nStart >= nSize)
-        {
-            return;
-        }
-
-        // Not enough spaces at the back
-        size_t nWellSize = nSize;
-
-        if (nWellSize <= m_nSize)
-        {
-            // New space size is not larger than current space size
-            // It implies there a lot of spaces wasted at the front
-            // Recalculate the start offset and move the elements
-
-            size_t nNewStart = (m_nSize - nSize) / 2;
-            MoveData(m_pData + m_nStart, m_nEof - m_nStart, m_nStart - nNewStart);
-
-            m_nStart = nNewStart;
-            m_nEof = m_nStart + nSize;
-        }
-        else
-        {
-            // Current space is not large enough, reallocate and move elements
-
-            T *pNewData = new T[nWellSize];
-            size_t nNewStart = (nWellSize - nSize) / 2;
-
-            if (m_pData != nullptr)
-            {
-                CopyData(m_pData + m_nStart, m_nEof - m_nStart, pNewData + nNewStart);
-            }
-            Release();
-
-            m_nEof = nNewStart + (m_nEof - m_nStart);
-            m_nStart = nNewStart;
-            m_nSize = nWellSize;
-            m_pData = pNewData;
-        }
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    void Array<T, P>:: Resize(size_t nSize)
-    {
-        // Free spaces at the back is enough
-        if (m_nSize - m_nStart >= nSize)
-        {
-            m_nEof = m_nStart + nSize;
-
-            return;
-        }
-
-        // Not enough spaces at the back
-        size_t nWellSize = GetWellSize(nSize);
-
-        if (nWellSize <= m_nSize)
-        {
-            // New space size is not larger than current space size
-            // It implies there a lot of spaces wasted at the front
-            // Recalculate the start offset and move the elements
-
-            size_t nNewStart = (m_nSize - nSize) / 2;
-
-            m_nStart = nNewStart;
-            m_nEof = m_nStart + nSize;
-        }
-        else
-        {
-            // Current space is not large enough, reallocate and move elements
-
-            T *pNewData = new T[nWellSize];
-            size_t nNewStart = (nWellSize - nSize) / 2;
-
-            Release();
-
-            m_nStart = nNewStart;
-            m_nEof = m_nStart + nSize;
-            m_nSize = nWellSize;
-            m_pData = pNewData;
-        }
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    void Array<T, P>:: Resize(size_t nSize, const T &tValue)
-    {
-        Resize(nSize);
-
-        for (size_t i = m_nStart; i != m_nEof; ++i)
-        {
-            m_pData[i] = tValue;
-        }
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    void Array<T, P>::InsertBuffer(size_t nIndex, const T *pStart, int nCount)
-    {
-        if (nIndex < 0 || nIndex > m_nEof - m_nStart)
-        {
-            return;
-        }
-
-        if (nCount <= 0)
-        {
-            return;
-        }
-
-        if (m_nStart >= (size_t)nCount && nIndex <= m_nSize - (m_nStart + nIndex))
-        {
-            // In this case:
-            // There are enough spaces at the front,
-            // and (the position to insert is near the front, or there is not enough space at the back)
-
-            MoveData(m_pData + m_nStart, nIndex, -nCount);
-            CopyData(pStart, nCount, m_pData + m_nStart - nCount + nIndex);
-
-            m_nStart -= nCount;
-
-            return;
-        }
-        // Else:
-        // There is not enough space at the front,
-        // or (the position to insert is near the back, and there are enough spaces at the back)
-        else if (m_nSize - m_nEof >= (size_t)nCount && nIndex > m_nSize - (m_nStart + nIndex))
-        {
-            // There are enough spaces at the back
-
-            MoveData(m_pData + m_nStart + nIndex, m_nEof - m_nStart - nIndex, nCount);
-            CopyData(pStart, nCount, m_pData + m_nStart + nIndex);
-
-            m_nEof += nCount;
-
-            return;
-        }
-
-        // Now the case is:
-        // There is not enough space at the front or enough space at the back to hold the new elements itself
-        // But the total of the spaces might hold them
-
-        size_t nNewSize = m_nEof - m_nStart + nCount;
-        size_t nWellSize = m_nSize != 0 ? m_nSize : nNewSize;
-
-        while (nWellSize < nNewSize)
-        {
-            nWellSize *= P == ArrayAlignmentPolicy_Center ? 3 : 2;
-        }
-
-        // Not enough spaces, reallocate.
-
-        T *pNewData = new T[nWellSize];
-        size_t nNewStart = 0;
-
-        switch (P)
-        {
-        case ArrayAlignmentPolicy_Head:
-            nNewStart = 0;
-            break;
-        case ArrayAlignmentPolicy_Center:
-            nNewStart = (nWellSize - nNewSize) / 2;
-            break;
-        case ArrayAlignmentPolicy_Tail:
-            nNewStart = (nWellSize - nNewSize);
-            break;
-        default:
-            break;
-        }
-
-        CopyData(m_pData + m_nStart, nIndex, pNewData + nNewStart);
-        CopyData(pStart, nCount, pNewData + nNewStart + nIndex);
-        CopyData(m_pData + m_nStart + nIndex, m_nEof - m_nStart - nIndex, pNewData + nNewStart + nIndex + nCount);
-
-        Release();
-
-        m_nStart = nNewStart;
-        m_nEof = nNewStart + nNewSize;
-        m_nSize = nWellSize;
-        m_pData = pNewData;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    void Array<T, P>::Insert(size_t nIndex, const T &tValue, int nCount)
-    {
-        if (nIndex < 0 || nIndex > m_nEof - m_nStart)
-        {
-            return;
-        }
-
-        if (nCount <= 0)
-        {
-            return;
-        }
-
-        if (P != ArrayAlignmentPolicy_Head && m_nStart >= (size_t)nCount && nIndex <= (m_nEof - m_nStart) / 2)
-        {
-            // In this case:
-            // There are enough spaces at the front,
-            // and (the position to insert is near the front, or there is not enough space at the back)
-
-            MoveData(m_pData + m_nStart, nIndex, -nCount);
-
-            for (int i = 0; i < nCount; ++i)
-            {
-                m_pData[m_nStart - nCount + nIndex + i] = tValue;
-            }
-
-            m_nStart -= nCount;
-
-            return;
-        }
-        // Else:
-        // There is not enough space at the front,
-        // or (the position to insert is near the back, and there are enough spaces at the back)
-        else if (P != ArrayAlignmentPolicy_Tail && m_nSize - m_nEof >= (size_t)nCount && nIndex >= (m_nEof - m_nStart) / 2)
-        {
-            // There are enough spaces at the back
-
-            MoveData(m_pData + m_nStart + nIndex, m_nEof - m_nStart - nIndex, nCount);
-
-            for (int i = 0; i < nCount; ++i)
-            {
-                m_pData[m_nStart + nIndex + i] = tValue;
-            }
-
-            m_nEof += nCount;
-
-            return;
-        }
-
-        // Now the case is:
-        // There is not enough space at the front or enough space at the back to hold the new elements itself
-        // But the total of the spaces might hold them
-
-        size_t nNewSize = m_nEof - m_nStart + nCount;
-        size_t nWellSize = m_nSize != 0 ? m_nSize : nNewSize;
-
-        while (nWellSize < nNewSize)
-        {
-            nWellSize *= P == ArrayAlignmentPolicy_Center ? 3 : 2;
-        }
-
-        // Not enough spaces, reallocate.
-
-        T *pNewData = new T[nWellSize];
-        size_t nNewStart = 0;
-
-        switch (P)
-        {
-        case ArrayAlignmentPolicy_Head:
-            nNewStart = 0;
-            break;
-        case ArrayAlignmentPolicy_Center:
-            nNewStart = (nWellSize - nNewSize) / 2;
-            break;
-        case ArrayAlignmentPolicy_Tail:
-            nNewStart = (nWellSize - nNewSize);
-            break;
-        default:
-            break;
-        }
-
-        CopyData(m_pData + m_nStart, nIndex, pNewData + nNewStart);
-
-        for (int i = 0; i < nCount; ++i)
-        {
-            pNewData[nNewStart + nIndex + i] = tValue;
-        }
-
-        CopyData(m_pData + m_nStart + nIndex, m_nEof - m_nStart - nIndex, pNewData + nNewStart + nIndex + nCount);
-
-        Release();
-
-        m_nStart = nNewStart;
-        m_nEof = nNewStart + nNewSize;
-        m_nSize = nWellSize;
-        m_pData = pNewData;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::Insert(size_t nIndex, const T &tValue)
-    {
-        Insert(nIndex, tValue, 1);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::PushFront(const T &tValue)
-    {
-        Insert(0, tValue);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::PushBack(const T &tValue)
-    {
-        Insert(m_nEof - m_nStart, tValue);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    void Array<T, P>::Delete(size_t nIndex, int nCount)
-    {
-        if (nCount <= 0)
-        {
-            return;
-        }
-
-        if (m_nStart + nIndex <= m_nSize - (m_nStart + nIndex))
-        {
-            // The element to be deleted is near the front
-
-            MoveData(m_pData + m_nStart, nIndex, nCount);
-            m_nStart += nCount;
-        }
-        else
-        {
-            // It is near the back
-
-            MoveData(m_pData + m_nStart + nIndex + nCount, m_nEof - m_nStart - 1 - nIndex, -nCount);
-            m_nEof -= nCount;
-        }
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::Delete(size_t nIndex)
-    {
-        Delete(nIndex, 1);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::PopFront()
-    {
-        Delete(0);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::PopBack()
-    {
-        Delete(m_nEof - m_nStart - 1);
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::Clear()
-    {
-        Release();
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    void Array<T, P>::Release()
-    {
-        if (m_pData != nullptr)
-        {
-            delete[] m_pData;
-            m_pData = nullptr;
-        }
-
-        m_nSize = 0;
-        m_nStart = 0;
-        m_nEof = 0;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    size_t Array<T, P>::GetWellSize(size_t nSize) const
-    {
-        size_t i = 1;
-
-        while (i < nSize)
-        {
-            i *= 2;
-        }
-
-        return i;
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::MoveData(T *pMem, size_t nCount, int nDistance)
-    {
-         if (nDistance == 0)
-         {
-             return;
-         }
-         else if (nDistance > 0)
-         {
-             for (int i = (int)nCount - 1 + nDistance; i > - 1 + nDistance; --i)
-             {
-                 pMem[i] = pMem[i - nDistance];
-             }
-         }
-         else if(nDistance < 0)
-         {
-             for (int i = nDistance; i < (int)nCount + nDistance; ++i)
-             {
-                 pMem[i] = pMem[i - nDistance];
-             }
-         }
-    }
-
-    template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::CopyData(const T *pMem, size_t nCount, T *pNewMem)
-    {
-        if (pNewMem >= pMem && pNewMem < pMem + nCount)
-        {
-            MoveData(const_cast<T *>(pMem), nCount, (int)(pNewMem - pMem));
-        }
-        else
-        {
-            for (size_t i = 0; i < nCount; ++i)
-            {
-                *pNewMem++ = pMem[i];
-            }
-        }
-    }
 
     // Iterator
 
@@ -1035,31 +764,31 @@ namespace xl
     template <typename T, ArrayAlignmentPolicy P>
     inline typename Array<T, P>::Iterator Array<T, P>::Begin() const
     {
-        return typename Array<T, P>::Iterator(m_pData + m_nStart, m_pData + m_nStart, m_pData + m_nEof);
+        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
     inline typename Array<T, P>::Iterator Array<T, P>::End() const
     {
-        return typename Array<T, P>::Iterator(m_pData + m_nEof, m_pData + m_nStart, m_pData + m_nEof);
+        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + m_nLogicalSize, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
     inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseBegin() const
     {
-        return typename Array<T, P>::ReverseIterator(m_pData + m_nEof - 1, m_pData + m_nEof - 1, m_pData + m_nStart - 1);
+        return typename Array<T, P>::ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
     inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseEnd() const
     {
-        return typename Array<T, P>::ReverseIterator(m_pData + m_nStart - 1, m_pData + m_nEof - 1, m_pData + m_nStart - 1);
+        return typename Array<T, P>::ReverseIterator(m_pBuffer + m_nOffset - 1, m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
     inline void Array<T, P>::Insert(const typename Array<T, P>::Iterator &itBeforeWhich, const T &tValue)
     {
-        size_t nIndex = itBeforeWhich.m_pCurrent - (m_pData + m_nStart);
+        size_t nIndex = itBeforeWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Insert(nIndex, tValue);
     }
@@ -1067,7 +796,7 @@ namespace xl
     template <typename T, ArrayAlignmentPolicy P>
     inline void Array<T, P>::Insert(const typename Array<T, P>::ReverseIterator &itBeforeWhich, const T &tValue)
     {
-        size_t nIndex = itBeforeWhich.m_pCurrent - (m_pData + m_nStart);
+        size_t nIndex = itBeforeWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Insert(++nIndex, tValue);
     }
@@ -1076,29 +805,29 @@ namespace xl
     inline void Array<T, P>::Insert(const Iterator &itBeforeWhich,
         const Iterator &itFirstToInsert, const Iterator &itAfterLastToInsert)
     {
-        size_t nIndex = itBeforeWhich.m_pCurrent - (m_pData + m_nStart);
+        size_t nIndex = itBeforeWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
-        InsertBuffer(nIndex, itFirstToInsert.m_pCurrent, (int)(itAfterLastToInsert - itFirstToInsert));
+        Insert(nIndex, itFirstToInsert.m_pCurrent, (int)(itAfterLastToInsert - itFirstToInsert));
     }
 
     template <typename T, ArrayAlignmentPolicy P>
     inline typename Array<T, P>::Iterator Array<T, P>::Delete(const typename Array<T, P>::Iterator &itWhich)
     {
-        size_t nIndex = itWhich.m_pCurrent - (m_pData + m_nStart);
+        size_t nIndex = itWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Delete(nIndex);
 
-        return typename Array<T, P>::Iterator(m_pData + m_nStart + nIndex, m_pData + m_nStart, m_pData + m_nEof);
+        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + nIndex, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
     inline typename Array<T, P>::ReverseIterator Array<T, P>::Delete(const typename Array<T, P>::ReverseIterator &itWhich)
     {
-        size_t nIndex = itWhich.m_pCurrent - (m_pData + m_nStart) + 1;
+        size_t nIndex = itWhich.m_pCurrent - (m_pBuffer + m_nOffset) + 1;
 
         Delete(nIndex);
 
-        return typename Array<T, P>::ReverseIterator(m_pData + m_nStart + nIndex - 1, m_pData + m_nStart, m_pData + m_nEof);
+        return typename Array<T, P>::ReverseIterator(m_pBuffer + m_nOffset + nIndex - 1, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
 
     }
 
@@ -1107,12 +836,12 @@ namespace xl
         const typename Array<T, P>::Iterator &itFirstToInsert,
         const typename Array<T, P>::Iterator &itAfterLastToDelete)
     {
-        size_t nStart = itFirstToInsert.m_pCurrent - (m_pData + m_nStart);
-        size_t nEof = itAfterLastToDelete.m_pCurrent - (m_pData + m_nStart);
+        size_t nStart = itFirstToInsert.m_pCurrent - (m_pBuffer + m_nOffset);
+        size_t nEof = itAfterLastToDelete.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Delete(nStart, nEof - nStart);
 
-        return typename Array<T, P>::Iterator(m_pData + m_nStart + nStart, m_pData + m_nStart, m_pData + m_nEof);
+        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + nStart, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
@@ -1120,12 +849,12 @@ namespace xl
         const typename Array<T, P>::ReverseIterator &itFirstToInsert,
         const typename Array<T, P>::ReverseIterator &itAfterLastToDelete)
     {
-        size_t nEof = itFirstToInsert.m_pCurrent - (m_pData + m_nStart) + 1;
-        size_t nStart = itAfterLastToDelete.m_pCurrent - (m_pData + m_nStart) + 1;
+        size_t nEof = itFirstToInsert.m_pCurrent - (m_pBuffer + m_nOffset) + 1;
+        size_t nStart = itAfterLastToDelete.m_pCurrent - (m_pBuffer + m_nOffset) + 1;
 
         Delete(nStart, nEof - nStart);
 
-        return typename Array<T, P>::Iterator(m_pData + m_nStart + nStart, m_pData + m_nStart, m_pData + m_nEof);
+        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + nStart, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
 } // namespace xl
@@ -1141,11 +870,11 @@ namespace xl
 //     preview (
 //         #(
 //             "[",
-//             $e.m_nEof - $e.m_nStart,
+//             $e.m_nEnd - $e.m_nOffset,
 //             "](",
 //             #array(
-//                 expr: $e.m_pData[$e.m_nStart + $i],
-//                 size: $e.m_nEof - $e.m_nStart
+//                 expr: $e.m_pBuffer[$e.m_nOffset + $i],
+//                 size: $e.m_nEnd - $e.m_nOffset
 //             ),
 //             ")"
 //         )
@@ -1153,8 +882,8 @@ namespace xl
 //     children (
 //         #(
 //             #array(
-//                 expr: $e.m_pData[$e.m_nStart + $i],
-//                 size: $e.m_nEof - $e.m_nStart
+//                 expr: $e.m_pBuffer[$e.m_nOffset + $i],
+//                 size: $e.m_nEnd - $e.m_nOffset
 //             )
 //         )
 //     )
