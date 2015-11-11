@@ -89,17 +89,17 @@
         </Expand>
     </Type>
 
-    <Type Name="xl::Array&lt;*&gt;">
-        <DisplayString>{{ size={m_nEof - m_nStart} }}</DisplayString>
+    <Type Name="xl::ArrayT&lt;*,*&gt;">
+        <DisplayString>{{ size={m_nLogicalSize} }}</DisplayString>
         <Expand>
             <ArrayItems>
-                <Size>m_nEof - m_nStart</Size>
-                <ValuePointer>m_pData + m_nStart</ValuePointer>
+                <Size>m_nLogicalSize</Size>
+                <ValuePointer>m_pBuffer + m_nOffset</ValuePointer>
             </ArrayItems>
         </Expand>
     </Type>
 
-    <Type Name="xl::Array&lt;*&gt;::Iterator">
+    <Type Name="xl::ArrayT&lt;*,*&gt;::Iterator">
         <AlternativeType Name="xl::Array&lt;*&gt;::Iterator" />
         <AlternativeType Name="xl::Array&lt;*&gt;::ReverseIterator" />
         <DisplayString>{*m_pCurrent}</DisplayString>

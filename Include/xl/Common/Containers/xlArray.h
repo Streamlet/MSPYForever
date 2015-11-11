@@ -25,16 +25,16 @@ namespace xl
     };
 
     template <typename T, ArrayAlignmentPolicy P = ArrayAlignmentPolicy_Head>
-    class Array
+    class ArrayT
     {
     public:
-        Array(size_t nSize = 0)
+        ArrayT(size_t nSize = 0)
             : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
         {
             Resize(nSize);
         }
 
-        Array(size_t nSize, const T &tValue)
+        ArrayT(size_t nSize, const T &tValue)
             : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
         {
             Resize(nSize);
@@ -45,25 +45,25 @@ namespace xl
             }
         }
 
-        Array(const Array<T> &that)
+        ArrayT(const ArrayT<T> &that)
             : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
         {
             *this = that;
         }
 
-        Array(Array<T> &&that)
+        ArrayT(ArrayT<T> &&that)
             : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
         {
             *this = Memory::Move(that);
         }
 
-        ~Array()
+        ~ArrayT()
         {
             Release();
         }
 
     public:
-        Array<T> &operator = (const Array<T> &that)
+        ArrayT<T, P> &operator = (const ArrayT<T, P> &that)
         {
             if (this == &that)
             {
@@ -82,7 +82,7 @@ namespace xl
             return *this;
         }
 
-        Array<T> &operator = (Array<T> &&that)
+        ArrayT<T, P> &operator = (ArrayT<T, P> &&that)
         {
             if (this == &that)
             {
@@ -95,7 +95,7 @@ namespace xl
             return *this;
         }
 
-        bool operator == (const Array<T> &that) const
+        bool operator == (const ArrayT<T, P> &that) const
         {
             if (this == &that)
             {
@@ -118,7 +118,7 @@ namespace xl
             return true;
         }
 
-        bool operator != (const Array<T> &that) const
+        bool operator != (const ArrayT<T, P> &that) const
         {
             if (this == &that)
             {
@@ -188,6 +188,11 @@ namespace xl
 
         void Resize(size_t nSize)
         {
+            if (nSize == 0)
+            {
+                Release();
+            }
+
             if (nSize < m_nLogicalSize)
             {
                 m_nLogicalSize = nSize;
@@ -326,7 +331,7 @@ namespace xl
                     Memory::CopyT(m_pBuffer + m_nOffset - nInsertSize, m_pBuffer + m_nOffset, nMoveCountHead);
                 }
 
-                m_nOffset -= nMoveCountHead;
+                m_nOffset -= nInsertSize + nMoveCountHead;
                 m_nLogicalSize += nInsertSize;
             }
             else
@@ -394,7 +399,7 @@ namespace xl
         protected:
             Iterator(T *pValue);
             Iterator(T *pValue, T *pStart, T *pEof);
-            friend class Array;
+            friend class ArrayT;
 
         protected:
             T *m_pStart;
@@ -435,7 +440,7 @@ namespace xl
 
         protected:
             ReverseIterator(T *pValue, T *pStart, T *pEof);
-            friend class Array;
+            friend class ArrayT;
 
         public:
             ReverseIterator &operator ++ ();
@@ -470,59 +475,59 @@ namespace xl
     // Iterator
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Iterator::Iterator()
+    inline ArrayT<T, P>::Iterator::Iterator()
         : m_pStart(nullptr), m_pEof(nullptr), m_pCurrent(nullptr)
     {
 
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Iterator::Iterator(T *pValue)
+    inline ArrayT<T, P>::Iterator::Iterator(T *pValue)
         : m_pStart(nullptr), m_pEof(nullptr), m_pCurrent(pValue)
     {
 
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Iterator::Iterator(T *pValue, T *pStart, T *pEof)
+    inline ArrayT<T, P>::Iterator::Iterator(T *pValue, T *pStart, T *pEof)
         : m_pStart(pStart), m_pEof(pEof), m_pCurrent(pValue)
     {
 
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Iterator::Iterator(const Iterator &that)
+    inline ArrayT<T, P>::Iterator::Iterator(const Iterator &that)
         : m_pStart(nullptr), m_pEof(nullptr), m_pCurrent(nullptr)
     {
         *this = that;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline T &Array<T, P>::Iterator::operator * ()
+    inline T &ArrayT<T, P>::Iterator::operator * ()
     {
         return *m_pCurrent;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline T *Array<T, P>::Iterator::operator -> ()
+    inline T *ArrayT<T, P>::Iterator::operator -> ()
     {
         return m_pCurrent;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Iterator::operator T * ()
+    inline ArrayT<T, P>::Iterator::operator T * ()
     {
         return m_pCurrent;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::Iterator::operator const T * () const
+    inline ArrayT<T, P>::Iterator::operator const T * () const
     {
         return m_pCurrent;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator &Array<T, P>::Iterator::operator = (const typename Array<T, P>::Iterator &that)
+    inline typename ArrayT<T, P>::Iterator &ArrayT<T, P>::Iterator::operator = (const typename ArrayT<T, P>::Iterator &that)
     {
         if (this == & that)
         {
@@ -537,19 +542,19 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline bool Array<T, P>::Iterator::operator == (const typename Array<T, P>::Iterator &that) const
+    inline bool ArrayT<T, P>::Iterator::operator == (const typename ArrayT<T, P>::Iterator &that) const
     {
         return (this->m_pCurrent == that.m_pCurrent);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline bool Array<T, P>::Iterator::operator != (const typename Array<T, P>::Iterator &that) const
+    inline bool ArrayT<T, P>::Iterator::operator != (const typename ArrayT<T, P>::Iterator &that) const
     {
         return (this->m_pCurrent != that.m_pCurrent);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator &Array<T, P>::Iterator::operator ++ ()
+    inline typename ArrayT<T, P>::Iterator &ArrayT<T, P>::Iterator::operator ++ ()
     {
         if (m_pCurrent != m_pEof)
         {
@@ -560,9 +565,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Iterator::operator ++ (int)
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Iterator::operator ++ (int)
     {
-        typename Array<T, P>::Iterator itRet = *this;
+        typename ArrayT<T, P>::Iterator itRet = *this;
 
         ++*this;
 
@@ -570,7 +575,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator &Array<T, P>::Iterator::operator -- ()
+    inline typename ArrayT<T, P>::Iterator &ArrayT<T, P>::Iterator::operator -- ()
     {
         if (m_pCurrent != m_pStart)
         {
@@ -581,9 +586,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Iterator::operator -- (int)
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Iterator::operator -- (int)
     {
-        typename Array<T, P>::Iterator itRet = *this;
+        typename ArrayT<T, P>::Iterator itRet = *this;
 
         --*this;
 
@@ -591,9 +596,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Iterator::operator + (int nDistance) const
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Iterator::operator + (int nDistance) const
     {
-        typename Array<T, P>::Iterator itRet = *this;
+        typename ArrayT<T, P>::Iterator itRet = *this;
 
         itRet += nDistance;
 
@@ -601,9 +606,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Iterator::operator - (int nDistance) const
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Iterator::operator - (int nDistance) const
     {
-        typename Array<T, P>::Iterator itRet = *this;
+        typename ArrayT<T, P>::Iterator itRet = *this;
 
         itRet -= nDistance;
 
@@ -611,7 +616,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator &Array<T, P>::Iterator::operator += (int nDistance)
+    inline typename ArrayT<T, P>::Iterator &ArrayT<T, P>::Iterator::operator += (int nDistance)
     {
         m_pCurrent += nDistance;
 
@@ -628,7 +633,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator &Array<T, P>::Iterator::operator -= (int nDistance)
+    inline typename ArrayT<T, P>::Iterator &ArrayT<T, P>::Iterator::operator -= (int nDistance)
     {
         m_pCurrent -= nDistance;
 
@@ -645,41 +650,41 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline int Array<T, P>::Iterator::operator -(const typename Array<T, P>::Iterator &that)
+    inline int ArrayT<T, P>::Iterator::operator -(const typename ArrayT<T, P>::Iterator &that)
     {
         return this->m_pCurrent - that.m_pCurrent;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::ReverseIterator::ReverseIterator()
+    inline ArrayT<T, P>::ReverseIterator::ReverseIterator()
         : Iterator()
     {
 
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::ReverseIterator::ReverseIterator(T *pValue)
+    inline ArrayT<T, P>::ReverseIterator::ReverseIterator(T *pValue)
         : Iterator(pValue)
     {
 
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::ReverseIterator::ReverseIterator(T *pValue, T *pStart, T *pEof)
+    inline ArrayT<T, P>::ReverseIterator::ReverseIterator(T *pValue, T *pStart, T *pEof)
         : Iterator(pValue, pStart, pEof)
     {
 
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline Array<T, P>::ReverseIterator::ReverseIterator(const typename Array<T, P>::ReverseIterator &that)
+    inline ArrayT<T, P>::ReverseIterator::ReverseIterator(const typename ArrayT<T, P>::ReverseIterator &that)
         : Iterator()
     {
         *this = that;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator &Array<T, P>::ReverseIterator::operator ++ ()
+    inline typename ArrayT<T, P>::ReverseIterator &ArrayT<T, P>::ReverseIterator::operator ++ ()
     {
         if (this->m_pCurrent != this->m_pEof)
         {
@@ -690,9 +695,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseIterator::operator ++ (int)
+    inline typename ArrayT<T, P>::ReverseIterator ArrayT<T, P>::ReverseIterator::operator ++ (int)
     {
-        typename Array<T, P>::ReverseIterator itRet = *this;
+        typename ArrayT<T, P>::ReverseIterator itRet = *this;
 
         ++*this;
 
@@ -700,7 +705,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator &Array<T, P>::ReverseIterator::operator -- ()
+    inline typename ArrayT<T, P>::ReverseIterator &ArrayT<T, P>::ReverseIterator::operator -- ()
     {
         if (this->m_pCurrent != this->m_pStart)
         {
@@ -711,9 +716,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseIterator::operator -- (int)
+    inline typename ArrayT<T, P>::ReverseIterator ArrayT<T, P>::ReverseIterator::operator -- (int)
     {
-        typename Array<T, P>::ReverseIterator itRet = *this;
+        typename ArrayT<T, P>::ReverseIterator itRet = *this;
 
         --*this;
 
@@ -721,9 +726,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseIterator::operator + (int nDistance) const
+    inline typename ArrayT<T, P>::ReverseIterator ArrayT<T, P>::ReverseIterator::operator + (int nDistance) const
     {
-        typename Array<T, P>::ReverseIterator itRet = *this;
+        typename ArrayT<T, P>::ReverseIterator itRet = *this;
 
         itRet += nDistance;
 
@@ -731,9 +736,9 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseIterator::operator - (int nDistance) const
+    inline typename ArrayT<T, P>::ReverseIterator ArrayT<T, P>::ReverseIterator::operator - (int nDistance) const
     {
-        typename Array<T, P>::ReverseIterator itRet = *this;
+        typename ArrayT<T, P>::ReverseIterator itRet = *this;
 
         itRet -= nDistance;
 
@@ -741,7 +746,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator &Array<T, P>::ReverseIterator::operator += (int nDistance)
+    inline typename ArrayT<T, P>::ReverseIterator &ArrayT<T, P>::ReverseIterator::operator += (int nDistance)
     {
         this->m_pCurrent -= nDistance;
 
@@ -758,7 +763,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator &Array<T, P>::ReverseIterator::operator -= (int nDistance)
+    inline typename ArrayT<T, P>::ReverseIterator &ArrayT<T, P>::ReverseIterator::operator -= (int nDistance)
     {
         this->m_pCurrent += nDistance;
 
@@ -775,37 +780,37 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline int Array<T, P>::ReverseIterator::operator -(const typename Array<T, P>::ReverseIterator &that)
+    inline int ArrayT<T, P>::ReverseIterator::operator -(const typename ArrayT<T, P>::ReverseIterator &that)
     {
         return that.m_pCurrent - this->m_pCurrent;
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Begin() const
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Begin() const
     {
-        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
+        return typename ArrayT<T, P>::Iterator(m_pBuffer + m_nOffset, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::End() const
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::End() const
     {
-        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + m_nLogicalSize, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
+        return typename ArrayT<T, P>::Iterator(m_pBuffer + m_nOffset + m_nLogicalSize, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseBegin() const
+    inline typename ArrayT<T, P>::ReverseIterator ArrayT<T, P>::ReverseBegin() const
     {
-        return typename Array<T, P>::ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1);
+        return typename ArrayT<T, P>::ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator Array<T, P>::ReverseEnd() const
+    inline typename ArrayT<T, P>::ReverseIterator ArrayT<T, P>::ReverseEnd() const
     {
-        return typename Array<T, P>::ReverseIterator(m_pBuffer + m_nOffset - 1, m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1);
+        return typename ArrayT<T, P>::ReverseIterator(m_pBuffer + m_nOffset - 1, m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::Insert(const typename Array<T, P>::Iterator &itBeforeWhich, const T &tValue)
+    inline void ArrayT<T, P>::Insert(const typename ArrayT<T, P>::Iterator &itBeforeWhich, const T &tValue)
     {
         size_t nIndex = itBeforeWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
@@ -813,7 +818,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::Insert(const typename Array<T, P>::ReverseIterator &itBeforeWhich, const T &tValue)
+    inline void ArrayT<T, P>::Insert(const typename ArrayT<T, P>::ReverseIterator &itBeforeWhich, const T &tValue)
     {
         size_t nIndex = itBeforeWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
@@ -821,7 +826,7 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline void Array<T, P>::Insert(const Iterator &itBeforeWhich,
+    inline void ArrayT<T, P>::Insert(const Iterator &itBeforeWhich,
         const Iterator &itFirstToInsert, const Iterator &itAfterLastToInsert)
     {
         size_t nIndex = itBeforeWhich.m_pCurrent - (m_pBuffer + m_nOffset);
@@ -830,51 +835,66 @@ namespace xl
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Delete(const typename Array<T, P>::Iterator &itWhich)
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Delete(const typename ArrayT<T, P>::Iterator &itWhich)
     {
         size_t nIndex = itWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Delete(nIndex);
 
-        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + nIndex, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
+        return typename ArrayT<T, P>::Iterator(m_pBuffer + m_nOffset + nIndex, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::ReverseIterator Array<T, P>::Delete(const typename Array<T, P>::ReverseIterator &itWhich)
+    inline typename ArrayT<T, P>::ReverseIterator ArrayT<T, P>::Delete(const typename ArrayT<T, P>::ReverseIterator &itWhich)
     {
         size_t nIndex = itWhich.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Delete(nIndex);
 
-        return typename Array<T, P>::ReverseIterator(m_pBuffer + m_nOffset + nIndex - 1, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
+        return typename ArrayT<T, P>::ReverseIterator(m_pBuffer + m_nOffset + nIndex - 1, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
 
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Delete(
-        const typename Array<T, P>::Iterator &itFirstToInsert,
-        const typename Array<T, P>::Iterator &itAfterLastToDelete)
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Delete(
+        const typename ArrayT<T, P>::Iterator &itFirstToInsert,
+        const typename ArrayT<T, P>::Iterator &itAfterLastToDelete)
     {
         size_t nStart = itFirstToInsert.m_pCurrent - (m_pBuffer + m_nOffset);
         size_t nEof = itAfterLastToDelete.m_pCurrent - (m_pBuffer + m_nOffset);
 
         Delete(nStart, nEof - nStart);
 
-        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + nStart, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
+        return typename ArrayT<T, P>::Iterator(m_pBuffer + m_nOffset + nStart, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
 
     template <typename T, ArrayAlignmentPolicy P>
-    inline typename Array<T, P>::Iterator Array<T, P>::Delete(
-        const typename Array<T, P>::ReverseIterator &itFirstToInsert,
-        const typename Array<T, P>::ReverseIterator &itAfterLastToDelete)
+    inline typename ArrayT<T, P>::Iterator ArrayT<T, P>::Delete(
+        const typename ArrayT<T, P>::ReverseIterator &itFirstToInsert,
+        const typename ArrayT<T, P>::ReverseIterator &itAfterLastToDelete)
     {
         size_t nEof = itFirstToInsert.m_pCurrent - (m_pBuffer + m_nOffset) + 1;
         size_t nStart = itAfterLastToDelete.m_pCurrent - (m_pBuffer + m_nOffset) + 1;
 
         Delete(nStart, nEof - nStart);
 
-        return typename Array<T, P>::Iterator(m_pBuffer + m_nOffset + nStart, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
+        return typename ArrayT<T, P>::Iterator(m_pBuffer + m_nOffset + nStart, m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize);
     }
+
+    template <typename T>
+    using Array = ArrayT<T, ArrayAlignmentPolicy_Center>;
+
+    template <typename T>
+    using Deque = ArrayT<T, ArrayAlignmentPolicy_Center>;
+
+    template <typename T>
+    using Vector = ArrayT<T, ArrayAlignmentPolicy_Head>;
+
+    template <typename T>
+    using Queue = ArrayT<T, ArrayAlignmentPolicy_Head>;
+
+    template <typename T>
+    using Stack = ArrayT<T, ArrayAlignmentPolicy_Tail>;
 
 } // namespace xl
 
@@ -885,7 +905,7 @@ namespace xl
 // ;------------------------------------------------------------------------------
 // ;  xl::Array
 // ;------------------------------------------------------------------------------
-// xl::Array<*>{
+// xl::ArrayT<*>{
 //     preview (
 //         #(
 //             "[",
@@ -907,7 +927,7 @@ namespace xl
 //         )
 //     )
 // }
-// xl::Array<*>::Iterator|xl::Array<*>::ReverseIterator{
+// xl::ArrayT<*>::Iterator|xl::ArrayT<*>::ReverseIterator{
 //     preview (
 //         *$e.m_pCurrent
 //     )
