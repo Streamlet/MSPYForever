@@ -310,15 +310,23 @@ namespace xl
             int nMoveCountHead = (int)nInsertPos;
             int nMoveCountTail = (int)(m_nLogicalSize - nInsertPos);
 
-            if (nMoveCountHead < nMoveCountTail && (int)nInsertSize < nSpaceHead)
+            if (nMoveCountHead >= nMoveCountTail && (int)nInsertSize < nSpaceTail)
             {
-                Memory::CopyT(m_pBuffer + m_nOffset - nInsertSize, m_pBuffer + m_nOffset, nMoveCountHead);
-                m_nOffset -= nMoveCountHead;
+                if (nMoveCountTail > 0)
+                {
+                    Memory::CopyT(m_pBuffer + m_nOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, nMoveCountTail);
+                }
+
                 m_nLogicalSize += nInsertSize;
             }
-            else if (nMoveCountHead >= nMoveCountTail && (int)nInsertSize < nSpaceTail)
+            else if (nMoveCountHead < nMoveCountTail && (int)nInsertSize < nSpaceHead)
             {
-                Memory::CopyT(m_pBuffer + m_nOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, nMoveCountTail);
+                if (nMoveCountHead > 0)
+                {
+                    Memory::CopyT(m_pBuffer + m_nOffset - nInsertSize, m_pBuffer + m_nOffset, nMoveCountHead);
+                }
+
+                m_nOffset -= nMoveCountHead;
                 m_nLogicalSize += nInsertSize;
             }
             else
@@ -330,8 +338,15 @@ namespace xl
 
                 if (m_pBuffer != nullptr)
                 {
-                    Memory::CopyT(pNewBuffer + nNewOffset, m_pBuffer + m_nOffset, nInsertPos);
-                    Memory::CopyT(pNewBuffer + nNewOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, m_nLogicalSize - nInsertPos);
+                    if (nInsertPos > 0)
+                    {
+                        Memory::CopyT(pNewBuffer + nNewOffset, m_pBuffer + m_nOffset, nInsertPos);
+                    }
+
+                    if (nInsertPos < m_nLogicalSize)
+                    {
+                        Memory::CopyT(pNewBuffer + nNewOffset + nInsertPos + nInsertSize, m_pBuffer + m_nOffset + nInsertPos, m_nLogicalSize - nInsertPos);
+                    }
 
                     delete[] m_pBuffer;
                 }
