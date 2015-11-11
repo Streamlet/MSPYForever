@@ -16,7 +16,7 @@
 #define __XLBITMAPD2D1POINT1_H_F360F84D_C11B_4807_85C5_8C6F760746E7_INCLUDED__
 
 
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonCopyable.h"
 #include "xlBitmapDef.h"
 #include <d2d1_1.h>
 

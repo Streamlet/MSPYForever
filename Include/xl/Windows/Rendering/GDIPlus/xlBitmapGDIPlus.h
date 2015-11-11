@@ -16,7 +16,7 @@
 #define __XLBITMAPGDIPLUS_H_944EFD32_0936_4161_80FE_FE147D62FA2E_INCLUDED__
 
 
-#include "../../../Common/Meta/xlUtility.h"
+#include "../../../Common/Meta/xlNonCopyable.h"
 #include "../../../Common/Meta/xlScopeExit.h"
 #include "../../COM/xlComPtr.h"
 #include "../../File/xlPath.h"

@@ -19,7 +19,7 @@
 #include "../../Common/Containers/xlArray.h"
 #include "../../Common/Memory/xlSmartPtr.h"
 #include "../../Common/Meta/xlScopeExit.h"
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonInstantiable.h"
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>

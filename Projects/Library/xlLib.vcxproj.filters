@@ -331,9 +331,6 @@
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlTypeTraits.h">
       <Filter>Common\Meta</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Include\xl\Common\Meta\xlUtility.h">
-      <Filter>Common\Meta</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlAssert.h">
       <Filter>Common\Meta</Filter>
     </ClInclude>
@@ -381,6 +378,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Include\xl\AppHelper\xlPerfTest.h">
       <Filter>AppHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlNonInstantiable.h">
+      <Filter>Common\Meta</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlNonCopyable.h">
+      <Filter>Common\Meta</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,7 +18,7 @@
 
 #include "../../Common/Meta/xlAssert.h"
 #include "../../Common/Meta/xlScopeExit.h"
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonCopyable.h"
 #include "../../Common/String/xlString.h"
 #include "../File/xlIniFile.h"
 #include "../Registry/xlRegistry.h"

@@ -14,7 +14,7 @@
 
 
 #include "../../Common/Meta/xlFunction.h"
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonCopyable.h"
 #include "../xlWin32Ver.h"
 #include "xlCriticalSection.h"
 #include <Windows.h>

@@ -13,7 +13,7 @@
 #define __XLTLS_H_227ED6E5_E819_4DAF_8ACB_51EBFA717AFC_INCLUDED__
 
 
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonCopyable.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
 

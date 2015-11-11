@@ -14,7 +14,7 @@
 
 
 #include "../Memory/xlMemory.h"
-#include "../Meta/xlUtility.h"
+#include "../Meta/xlNonCopyable.h"
 #include "../String/xlString.h"
 
 namespace xl

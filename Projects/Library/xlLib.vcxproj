@@ -49,12 +49,13 @@
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlFunction.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlMacros.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlMetaBase.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlNonCopyable.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlNonInstantiable.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlScopeExit.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlStaticAssert.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlTuple.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlTypeList.h" />
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlTypeTraits.h" />
-    <ClInclude Include="..\..\Include\xl\Common\Meta\xlUtility.h" />
     <ClInclude Include="..\..\Include\xl\Common\Parser\xlRegExp.h" />
     <ClInclude Include="..\..\Include\xl\Common\String\xlBase64.h" />
     <ClInclude Include="..\..\Include\xl\Common\String\xlEncoding.h" />

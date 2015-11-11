@@ -16,7 +16,7 @@
 #include "../../Common/Containers/xlArray.h"
 #include "../../Common/Containers/xlSet.h"
 #include "../../Common/Meta/xlFunction.h"
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonCopyable.h"
 #include "xlCriticalSection.h"
 #include "xlThread.h"
 

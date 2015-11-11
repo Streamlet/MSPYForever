@@ -17,14 +17,14 @@
 
 
 #include "../../Common/String/xlString.h"
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonInstantiable.h"
 #include <Windows.h>
 
 namespace xl
 {
     namespace Windows
     {
-        class Path : public NonCopyable
+        class Path : public NonInstantiable
         {
         public:
             static String GetFileDir(const String &strFilePath)

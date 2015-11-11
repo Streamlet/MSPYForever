@@ -16,7 +16,7 @@
 #define __XLWINHTTP_H_AABABE1B_FA77_496D_AE29_1FE0DDDF7436_INCLUDED__
 
 
-#include "../../Common/Meta/xlUtility.h"
+#include "../../Common/Meta/xlNonInstantiable.h"
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
