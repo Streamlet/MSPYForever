@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlArray.h" />
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlBinTree.h" />
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlGraph.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlIterator.h" />
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlList.h" />
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlMap.h" />
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlPair.h" />

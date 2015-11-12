@@ -1059,7 +1059,7 @@ namespace xl
 
             if (iValue < 0)
             {
-                for (auto it = arrBackwards.Begin(); it < arrBackwards.End(); ++it)
+                for (auto it = arrBackwards.Begin(); it != arrBackwards.End(); ++it)
                 {
                     Backward(*it);
                 }

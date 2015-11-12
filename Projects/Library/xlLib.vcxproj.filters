@@ -385,6 +385,9 @@
     <ClInclude Include="..\..\Include\xl\Common\Meta\xlNonCopyable.h">
       <Filter>Common\Meta</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlIterator.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">

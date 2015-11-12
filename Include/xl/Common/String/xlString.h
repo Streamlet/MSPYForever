@@ -470,6 +470,11 @@ namespace xl
             nLength = (int)m_aData.Size() - 1 - nStart;
         }
 
+        if (nStart + nLength > m_aData.Size())
+        {
+            nLength = m_aData.Size() - nStart;
+        }
+
         if (nLength > 0)
         {
             strRet.m_aData.Insert(strRet.m_aData.End(), m_aData.Begin() + nStart, m_aData.Begin() + nStart + nLength);
