@@ -93,13 +93,13 @@ namespace xl
 
     public:
         template <bool RR = R>
-        inline typename EnableIf<!RR, BufferIteratorT<T, RR> &>::Type operator ++ ()
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator ++ ()
         {
             ++m_pCurrent;
             return *this;
         }
         template <bool RR = R>
-        inline typename EnableIf<RR, BufferIteratorT<T, RR> &>::Type operator ++ ()
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator ++ ()
         {
             --m_pCurrent;
             return *this;
@@ -113,13 +113,13 @@ namespace xl
         }
 
         template <bool RR = R>
-        inline typename EnableIf<!RR, BufferIteratorT<T, RR> &>::Type operator -- ()
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator -- ()
         {
             --m_pCurrent;
             return *this;
         }
         template <bool RR = R>
-        inline typename EnableIf<RR, BufferIteratorT<T, RR> &>::Type operator -- ()
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator -- ()
         {
             ++m_pCurrent;
             return *this;
@@ -134,26 +134,26 @@ namespace xl
 
     public:
         template <bool RR = R>
-        inline typename EnableIf<!RR, BufferIteratorT<T, RR> &>::Type operator += (int nDistance)
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator += (int nDistance)
         {
             m_pCurrent += nDistance;
             return *this;
         }
         template <bool RR = R>
-        inline typename EnableIf<RR, BufferIteratorT<T, RR> &>::Type operator += (int nDistance)
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator += (int nDistance)
         {
             m_pCurrent -= nDistance;
             return *this;
         }
 
         template <bool RR = R>
-        inline typename EnableIf<!RR, BufferIteratorT<T, RR> &>::Type operator -= (int nDistance)
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator -= (int nDistance)
         {
             m_pCurrent -= nDistance;
             return *this;
         }
         template <bool RR = R>
-        inline typename EnableIf<RR, BufferIteratorT<T, RR> &>::Type operator -= (int nDistance)
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator -= (int nDistance)
         {
             m_pCurrent += nDistance;
             return *this;
