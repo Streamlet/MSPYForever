@@ -17,43 +17,215 @@
 
 namespace xl
 {
-    template <typename T>
+    template <typename T, typename NodeType = LinkedListNode<T>>
     class List
     {
     public:
-        List();
-        List(const List<T> &that);
-        ~List();
+        List()
+            : m_pHead(nullptr), m_nSize(0)
+        {
 
-    protected:
-        typedef LinkedListNode<T> Node;
+        }
 
-    public:
-        List<T> &operator = (const List<T> &that);
-        bool operator == (const List<T> &that) const;
-        bool operator != (const List<T> &that) const;
+        List(const List<T, NodeType> &that)
+            : m_pHead(nullptr), m_nSize(0)
+        {
+            *this = that;
+        }
 
-    public:
-        bool Empty() const;
-        size_t Size() const;
+        ~List()
+        {
+            Release();
+        }
 
-    protected:
-        void Insert(Node *pNode, const T &tValue);
-        void Delete(Node *pNode);
 
     public:
-        void PushFront(const T &tValue);
-        void PushBack(const T &tValue);
-        void PopFront();
-        void PopBack();
-        void Clear();
+        List<T, NodeType> &operator = (const List<T, NodeType> &that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            this->Clear();
+
+            for (NodeType *p = that.m_pHead; p != nullptr; )
+            {
+                this->PushBack(p->tValue);
+
+                p = p->pNext;
+
+                if (p == that.m_pHead)
+                {
+                    break;
+                }
+            }
+
+            return *this;
+        }
+
+        bool operator == (const List<T, NodeType> &that) const
+        {
+            if (this == &that)
+            {
+                return true;
+            }
+
+            if (this->m_nSize != that.m_nSize)
+            {
+                return false;
+            }
+
+            for (NodeType *pThis = this->m_pHead, *pThat = that.m_pHead; pThis != nullptr && pThat != nullptr; )
+            {
+                if (pThis->tValue != pThat->tValue)
+                {
+                    return false;
+                }
+
+                pThis = pThis->pNext;
+                pThat = pThat->pNext;
+
+                if (pThis == this->m_pHead || pThat == that.m_pHead)
+                {
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        bool operator != (const List<T, NodeType> &that) const
+        {
+            if (this == &that)
+            {
+                return false;
+            }
+
+            if (this->m_nSize != that.m_nSize)
+            {
+                return true;
+            }
+
+            for (NodeType *pThis = this->m_pHead, *pThat = that.m_pHead; pThis != nullptr && pThat != nullptr; )
+            {
+                if (pThis->tValue != pThat->tValue)
+                {
+                    return true;
+                }
+
+                pThis = pThis->pNext;
+                pThat = pThat->pNext;
+
+                if (pThis == this->m_pHead || pThat == that.m_pHead)
+                {
+                    break;
+                }
+            }
+
+            return false;
+        }
+
+    public:
+        bool Empty() const
+        {
+            return m_nSize == 0;
+        }
+
+        size_t Size() const
+        {
+            return m_nSize;
+        }
 
     protected:
-        Node *m_pHead;
+        void Insert(NodeType *pNode, const T &tValue)
+        {
+            NodeType *pNewNode = new NodeType(tValue);
+            NodeType *pBefore = pNode == nullptr ? m_pHead : pNode;
+
+            if (pBefore == nullptr)
+            {
+                pNewNode->pPrev = pNewNode;
+                pNewNode->pNext = pNewNode;
+            }
+            else
+            {
+                pNewNode->pPrev = pBefore->pPrev;
+                pNewNode->pNext = pBefore;
+                pBefore->pPrev->pNext = pNewNode;
+                pBefore->pPrev = pNewNode;
+            }
+
+            if (pNode == m_pHead || m_pHead == nullptr)
+            {
+                m_pHead = pNewNode;
+            }
+
+            ++m_nSize;
+        }
+
+        void Delete(NodeType *pNode)
+        {
+            if (pNode == nullptr)
+            {
+                return;
+            }
+
+            if (pNode == m_pHead)
+            {
+                m_pHead = pNode->pNext;
+
+                if (m_pHead == pNode)
+                {
+                    m_pHead = nullptr;
+                }
+            }
+
+            pNode->pPrev->pNext = pNode->pNext;
+            pNode->pNext->pPrev = pNode->pPrev;
+
+            delete pNode;
+            --m_nSize;
+        }
+
+    public:
+        void PushFront(const T &tValue)
+        {
+            Insert(m_pHead, tValue);
+        }
+
+        void PushBack(const T &tValue)
+        {
+            Insert(nullptr, tValue);
+        }
+
+        void PopFront()
+        {
+            Delete(m_pHead);
+        }
+
+        void PopBack()
+        {
+            Delete(m_pHead != nullptr ? m_pHead->pPrev : nullptr);
+        }
+
+        void Clear()
+        {
+            while (m_pHead != nullptr)
+            {
+                Delete(m_pHead);
+            }
+        }
+
+    protected:
+        NodeType *m_pHead;
         size_t m_nSize;
 
     protected:
-        void Release();
+        void Release()
+        {
+            Clear();
+        }
 
     // Iterator
 
@@ -68,13 +240,13 @@ namespace xl
             typedef T ValueType;
 
         protected:
-            Iterator(Node *pCurrent);
-            Iterator(Node *pCurrent, Node *pHead);
+            Iterator(NodeType *pCurrent);
+            Iterator(NodeType *pCurrent, NodeType *pHead);
             friend class List;
 
         protected:
-            Node *m_pCurrent;
-            Node *m_pHead;
+            NodeType *m_pCurrent;
+            NodeType *m_pHead;
 
         public:
             T &operator * ();
@@ -101,8 +273,8 @@ namespace xl
             ReverseIterator(const Iterator &that);
 
         protected:
-            ReverseIterator(Node *pCurrent);
-            ReverseIterator(Node *pCurrent, Node *pHead);
+            ReverseIterator(NodeType *pCurrent);
+            ReverseIterator(NodeType *pCurrent, NodeType *pHead);
             friend class List;
 
         public:
@@ -131,275 +303,66 @@ namespace xl
         ReverseIterator Delete(const ReverseIterator &itFirstToInsert, const ReverseIterator &itAfterLastToDelete);
     };
 
-    template <typename T>
-    inline List<T>::List()
-        : m_pHead(nullptr), m_nSize(0)
-    {
 
-    }
 
-    template <typename T>
-    inline List<T>::List(const List<T> &that)
-        : m_pHead(nullptr), m_nSize(0)
-    {
-        *this = that;
-    }
-
-    template <typename T>
-    inline List<T>::~List()
-    {
-        Release();
-    }
-
-    template <typename T>
-    List<T> &List<T>::operator = (const List<T> &that)
-    {
-        if (this == &that)
-        {
-            return *this;
-        }
-
-        this->Clear();
-
-        for (typename List<T>::Node *p = that.m_pHead; p != nullptr; )
-        {
-            this->PushBack(p->tValue);
-
-            p = p->pNext;
-
-            if (p == that.m_pHead)
-            {
-                break;
-            }
-        }
-
-        return *this;
-    }
-
-    template <typename T>
-    bool List<T>::operator == (const List<T> &that) const
-    {
-        if (this == &that)
-        {
-            return true;
-        }
-
-        if (this->m_nSize != that.m_nSize)
-        {
-            return false;
-        }
-
-        for (typename List<T>::Node *pThis = this->m_pHead, *pThat = that.m_pHead; pThis != nullptr && pThat != nullptr; )
-        {
-            if (pThis->tValue != pThat->tValue)
-            {
-                return false;
-            }
-
-            pThis = pThis->pNext;
-            pThat = pThat->pNext;
-
-            if (pThis == this->m_pHead || pThat == that.m_pHead)
-            {
-                break;
-            }
-        }
-
-        return true;
-    }
-
-    template <typename T>
-    inline bool List<T>::operator != (const List<T> &that) const
-    {
-        if (this == &that)
-        {
-            return false;
-        }
-
-        if (this->m_nSize != that.m_nSize)
-        {
-            return true;
-        }
-
-        for (typename List<T>::Node *pThis = this->m_pHead, *pThat = that.m_pHead; pThis != nullptr && pThat != nullptr; )
-        {
-            if (pThis->tValue != pThat->tValue)
-            {
-                return true;
-            }
-
-            pThis = pThis->pNext;
-            pThat = pThat->pNext;
-
-            if (pThis == this->m_pHead || pThat == that.m_pHead)
-            {
-                break;
-            }
-        }
-
-        return false;
-    }
-
-    template <typename T>
-    inline bool List<T>::Empty() const
-    {
-        return m_nSize == 0;
-    }
-
-    template <typename T>
-    inline size_t List<T>:: Size() const
-    {
-        return m_nSize;
-    }
-
-    template <typename T>
-    void List<T>::Insert(typename List<T>::Node *pNode, const T &tValue)
-    {
-        typename List<T>::Node *pNewNode = new typename List<T>::Node(tValue);
-        typename List<T>::Node *pBefore = pNode == nullptr ? m_pHead : pNode;
-
-        if (pBefore == nullptr)
-        {
-            pNewNode->pPrev = pNewNode;
-            pNewNode->pNext = pNewNode;
-        }
-        else
-        {
-            pNewNode->pPrev = pBefore->pPrev;
-            pNewNode->pNext = pBefore;
-            pBefore->pPrev->pNext = pNewNode;
-            pBefore->pPrev = pNewNode;
-        }
-
-        if (pNode == m_pHead || m_pHead == nullptr)
-        {
-            m_pHead = pNewNode;
-        }
-
-        ++m_nSize;
-    }
-
-    template <typename T>
-    inline void List<T>::PushFront(const T &tValue)
-    {
-        Insert(m_pHead, tValue);
-    }
-
-    template <typename T>
-    inline void List<T>::PushBack(const T &tValue)
-    {
-        Insert(nullptr, tValue);
-    }
-
-    template <typename T>
-    void List<T>::Delete(Node *pNode)
-    {
-        if (pNode == nullptr)
-        {
-            return;
-        }
-
-        if (pNode == m_pHead)
-        {
-            m_pHead = pNode->pNext;
-
-            if (m_pHead == pNode)
-            {
-                m_pHead = nullptr;
-            }
-        }
-
-        pNode->pPrev->pNext = pNode->pNext;
-        pNode->pNext->pPrev = pNode->pPrev;
-
-        delete pNode;
-        --m_nSize;
-    }
-
-    template <typename T>
-    inline void List<T>::PopFront()
-    {
-        Delete(m_pHead);
-    }
-
-    template <typename T>
-    inline void List<T>::PopBack()
-    {
-        Delete(m_pHead != nullptr ? m_pHead->pPrev : nullptr);
-    }
-
-    template <typename T>
-    void List<T>::Clear()
-    {
-        while (m_pHead != nullptr)
-        {
-            Delete(m_pHead);
-        }
-    }
-
-    template <typename T>
-    inline void List<T>::Release()
-    {
-        Clear();
-    }
 
     // Iterator
 
 
-    template <typename T>
-    inline List<T>::Iterator::Iterator()
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::Iterator::Iterator()
         : m_pCurrent(nullptr), m_pHead(nullptr)
     {
 
     }
 
-    template <typename T>
-    inline List<T>::Iterator::Iterator(const Iterator &that)
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::Iterator::Iterator(const Iterator &that)
         : m_pCurrent(nullptr), m_pHead(nullptr)
     {
         *this = that;
     }
 
-    template <typename T>
-    inline List<T>::Iterator::Iterator(Node *pCurrent)
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::Iterator::Iterator(NodeType *pCurrent)
         : m_pCurrent(pCurrent), m_pHead(nullptr)
     {
 
     }
 
-    template <typename T>
-    inline List<T>::Iterator::Iterator(Node *pCurrent, Node *pHead)
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::Iterator::Iterator(NodeType *pCurrent, NodeType *pHead)
         : m_pCurrent(pCurrent), m_pHead(pHead)
     {
 
     }
 
-    template <typename T>
-    inline T &List<T>::Iterator::operator * ()
+    template <typename T, typename NodeType>
+    inline T &List<T, NodeType>::Iterator::operator * ()
     {
         return m_pCurrent->tValue;
     }
 
-    template <typename T>
-    inline T *List<T>::Iterator::operator -> ()
+    template <typename T, typename NodeType>
+    inline T *List<T, NodeType>::Iterator::operator -> ()
     {
         return &m_pCurrent->tValue;
     }
 
-    template <typename T>
-    inline List<T>::Iterator::operator T * ()
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::Iterator::operator T * ()
     {
         return m_pCurrent->tValue;
     }
 
-    template <typename T>
-    inline List<T>::Iterator::operator const T * () const
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::Iterator::operator const T * () const
     {
         return m_pCurrent->tValue;
     }
 
-    template <typename T>
-    inline typename List<T>::Iterator &List<T>::Iterator::operator = (const typename List<T>::Iterator &that)
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::Iterator &List<T, NodeType>::Iterator::operator = (const typename List<T, NodeType>::Iterator &that)
     {
         if (this == & that)
         {
@@ -412,20 +375,20 @@ namespace xl
         return *this;
     }
 
-    template <typename T>
-    inline bool List<T>::Iterator::operator == (const Iterator &that) const
+    template <typename T, typename NodeType>
+    inline bool List<T, NodeType>::Iterator::operator == (const Iterator &that) const
     {
         return (this->m_pCurrent == that.m_pCurrent);
     }
 
-    template <typename T>
-    inline bool List<T>::Iterator::operator != (const Iterator &that) const
+    template <typename T, typename NodeType>
+    inline bool List<T, NodeType>::Iterator::operator != (const Iterator &that) const
     {
         return (this->m_pCurrent != that.m_pCurrent);
     }
 
-    template <typename T>
-    inline typename List<T>::Iterator &List<T>::Iterator::operator ++ ()
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::Iterator &List<T, NodeType>::Iterator::operator ++ ()
     {
         if (m_pCurrent != nullptr)
         {
@@ -440,18 +403,18 @@ namespace xl
         return *this;
     }
 
-    template <typename T>
-    inline typename List<T>::Iterator List<T>::Iterator::operator ++ (int)
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::Iterator List<T, NodeType>::Iterator::operator ++ (int)
     {
-        typename List<T>::Iterator itRet = *this;
+        typename List<T, NodeType>::Iterator itRet = *this;
 
         ++*this;
 
         return itRet;
     }
 
-    template <typename T>
-    inline typename List<T>::Iterator &List<T>::Iterator::operator -- ()
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::Iterator &List<T, NodeType>::Iterator::operator -- ()
     {
         if (m_pCurrent != m_pHead)
         {
@@ -471,46 +434,46 @@ namespace xl
         return *this;
     }
 
-    template <typename T>
-    inline typename List<T>::Iterator List<T>::Iterator::operator -- (int)
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::Iterator List<T, NodeType>::Iterator::operator -- (int)
     {
-        typename List<T>::Iterator itRet = *this;
+        typename List<T, NodeType>::Iterator itRet = *this;
 
         --*this;
 
         return itRet;
     }
 
-    template <typename T>
-    inline List<T>::ReverseIterator::ReverseIterator()
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::ReverseIterator::ReverseIterator()
         : Iterator()
     {
 
     }
 
-    template <typename T>
-    inline List<T>::ReverseIterator::ReverseIterator(const Iterator &that)
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::ReverseIterator::ReverseIterator(const Iterator &that)
         : Iterator(that)
     {
 
     }
 
-    template <typename T>
-    inline List<T>::ReverseIterator::ReverseIterator(Node *pCurrent)
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::ReverseIterator::ReverseIterator(NodeType *pCurrent)
         : Iterator(pCurrent)
     {
 
     }
 
-    template <typename T>
-    inline List<T>::ReverseIterator::ReverseIterator(Node *pCurrent, Node *pHead)
+    template <typename T, typename NodeType>
+    inline List<T, NodeType>::ReverseIterator::ReverseIterator(NodeType *pCurrent, NodeType *pHead)
         : Iterator(pCurrent, pHead)
     {
 
     }
 
-    template <typename T>
-    inline typename List<T>::ReverseIterator &List<T>::ReverseIterator::operator ++ ()
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::ReverseIterator &List<T, NodeType>::ReverseIterator::operator ++ ()
     {
         if (this->m_pCurrent != nullptr)
         {
@@ -525,18 +488,18 @@ namespace xl
         return *this;
     }
 
-    template <typename T>
-    inline typename List<T>::ReverseIterator List<T>::ReverseIterator::operator ++ (int)
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::ReverseIterator List<T, NodeType>::ReverseIterator::operator ++ (int)
     {
-        typename List<T>::ReverseIterator itRet = *this;
+        typename List<T, NodeType>::ReverseIterator itRet = *this;
 
         ++*this;
 
         return *itRet;
     }
 
-    template <typename T>
-    inline typename List<T>::ReverseIterator &List<T>::ReverseIterator::operator -- ()
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::ReverseIterator &List<T, NodeType>::ReverseIterator::operator -- ()
     {
         if (m_pHead == nullptr || (m_pHead != nullptr && this->m_pCurrent != m_pHead->pPrev))
         {
@@ -556,46 +519,46 @@ namespace xl
         return *this;
     }
 
-    template <typename T>
-    inline typename List<T>::ReverseIterator List<T>::ReverseIterator::operator -- (int)
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::ReverseIterator List<T, NodeType>::ReverseIterator::operator -- (int)
     {
-        typename List<T>::ReverseIterator itRet = *this;
+        typename List<T, NodeType>::ReverseIterator itRet = *this;
 
         ++*this;
 
         return *itRet;
     }
 
-    template <typename T>
-    inline typename List<T>::Iterator List<T>::Begin() const
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::Iterator List<T, NodeType>::Begin() const
     {
-        return typename List<T>::Iterator(m_pHead, m_pHead);
+        return typename List<T, NodeType>::Iterator(m_pHead, m_pHead);
     }
 
-    template <typename T>
-    inline typename List<T>::Iterator List<T>::End() const
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::Iterator List<T, NodeType>::End() const
     {
-        return typename List<T>::Iterator(nullptr, m_pHead);
+        return typename List<T, NodeType>::Iterator(nullptr, m_pHead);
     }
 
-    template <typename T>
-    inline typename List<T>::ReverseIterator List<T>::ReverseBegin() const
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::ReverseIterator List<T, NodeType>::ReverseBegin() const
     {
-        return typename List<T>::ReverseIterator(m_pHead == nullptr ? nullptr : m_pHead->pPrev, m_pHead);
+        return typename List<T, NodeType>::ReverseIterator(m_pHead == nullptr ? nullptr : m_pHead->pPrev, m_pHead);
     }
 
-    template <typename T>
-    inline typename List<T>::ReverseIterator List<T>::ReverseEnd() const
+    template <typename T, typename NodeType>
+    inline typename List<T, NodeType>::ReverseIterator List<T, NodeType>::ReverseEnd() const
     {
-        return typename List<T>::ReverseIterator(nullptr, m_pHead);
+        return typename List<T, NodeType>::ReverseIterator(nullptr, m_pHead);
     }
 
 
-    template <typename T>
-    void List<T>::Insert(const typename List<T>::Iterator &itBeforeWhich, const T &tValue)
+    template <typename T, typename NodeType>
+    void List<T, NodeType>::Insert(const typename List<T, NodeType>::Iterator &itBeforeWhich, const T &tValue)
     {
-        typename List<T>::Node *pNode = new typename List<T>::Node(tValue);
-        typename List<T>::Node *pBefore = itBeforeWhich.m_pCurrent;
+        NodeType *pNode = new NodeType(tValue);
+        NodeType *pBefore = itBeforeWhich.m_pCurrent;
 
         if (pBefore == nullptr)
         {
@@ -624,11 +587,11 @@ namespace xl
         ++m_nSize;
     }
 
-    template <typename T>
-    void List<T>::Insert(const typename List<T>::ReverseIterator &itBeforeWhich, const T &tValue)
+    template <typename T, typename NodeType>
+    void List<T, NodeType>::Insert(const typename List<T, NodeType>::ReverseIterator &itBeforeWhich, const T &tValue)
     {
-        typename List<T>::Node *pNode = new typename List<T>::Node(tValue);
-        typename List<T>::Node *pBefore = itBeforeWhich.m_pCurrent;
+        NodeType *pNode = new NodeType(tValue);
+        NodeType *pBefore = itBeforeWhich.m_pCurrent;
 
         if (pBefore == nullptr && m_pHead != nullptr)
         {
@@ -657,9 +620,9 @@ namespace xl
     }
 
 
-    template <typename T>
+    template <typename T, typename NodeType>
     template <typename I>
-    void List<T>::Insert(const Iterator &itBeforeWhich, const I &itFirstToInsert, const I &itAfterLastToInsert)
+    void List<T, NodeType>::Insert(const Iterator &itBeforeWhich, const I &itFirstToInsert, const I &itAfterLastToInsert)
     {
         for (I it = itFirstToInsert; it != itAfterLastToInsert; ++it)
         {
@@ -667,9 +630,9 @@ namespace xl
         }
     }
 
-    template <typename T>
+    template <typename T, typename NodeType>
     template <typename I>
-    void List<T>::Insert(const ReverseIterator &itBeforeWhich, const I &itFirstToInsert, const I &itAfterLastToInsert)
+    void List<T, NodeType>::Insert(const ReverseIterator &itBeforeWhich, const I &itFirstToInsert, const I &itAfterLastToInsert)
     {
         for (I it = itFirstToInsert; it != itAfterLastToInsert; ++it)
         {
@@ -677,14 +640,14 @@ namespace xl
         }
     }
 
-    template <typename T>
-    typename List<T>::Iterator List<T>::Delete(const typename List<T>::Iterator &itWhich)
+    template <typename T, typename NodeType>
+    typename List<T, NodeType>::Iterator List<T, NodeType>::Delete(const typename List<T, NodeType>::Iterator &itWhich)
     {
-        typename List<T>::Node *pNode = itWhich.m_pCurrent;
+        NodeType *pNode = itWhich.m_pCurrent;
 
         if (pNode == nullptr)
         {
-            return typename List<T>::Iterator(nullptr, m_pHead);
+            return typename List<T, NodeType>::Iterator(nullptr, m_pHead);
         }
 
         if (pNode == m_pHead)
@@ -697,7 +660,7 @@ namespace xl
             }
         }
 
-        typename List<T>::Iterator itRet(pNode->pNext != pNode ? pNode->pNext : nullptr, m_pHead);
+        typename List<T, NodeType>::Iterator itRet(pNode->pNext != pNode ? pNode->pNext : nullptr, m_pHead);
 
         pNode->pPrev->pNext = pNode->pNext;
         pNode->pNext->pPrev = pNode->pPrev;
@@ -708,14 +671,14 @@ namespace xl
         return itRet;
     }
 
-    template <typename T>
-    typename List<T>::ReverseIterator List<T>::Delete(const ReverseIterator &itWhich)
+    template <typename T, typename NodeType>
+    typename List<T, NodeType>::ReverseIterator List<T, NodeType>::Delete(const ReverseIterator &itWhich)
     {
-        typename List<T>::Node *pNode = itWhich.m_pCurrent;
+        NodeType *pNode = itWhich.m_pCurrent;
 
         if (pNode == nullptr)
         {
-            return typename List<T>::Iterator(nullptr, m_pHead);
+            return typename List<T, NodeType>::Iterator(nullptr, m_pHead);
         }
 
         if (pNode == m_pHead)
@@ -728,7 +691,7 @@ namespace xl
             }
         }
 
-        typename List<T>::ReverseIterator itRet(pNode->pPrev != pNode ? pNode->pPrev : nullptr, m_pHead);
+        typename List<T, NodeType>::ReverseIterator itRet(pNode->pPrev != pNode ? pNode->pPrev : nullptr, m_pHead);
 
         pNode->pPrev->pNext = pNode->pNext;
         pNode->pNext->pPrev = pNode->pPrev;
@@ -739,10 +702,10 @@ namespace xl
         return itRet;
     }
 
-    template <typename T>
-    typename List<T>::Iterator List<T>::Delete(const Iterator &itFirstToInsert, const Iterator &itAfterLastToDelete)
+    template <typename T, typename NodeType>
+    typename List<T, NodeType>::Iterator List<T, NodeType>::Delete(const Iterator &itFirstToInsert, const Iterator &itAfterLastToDelete)
     {
-        typename List<T>::Iterator it = itFirstToInsert;
+        typename List<T, NodeType>::Iterator it = itFirstToInsert;
 
         while (it != itAfterLastToDelete)
         {
@@ -752,10 +715,10 @@ namespace xl
         return it;
     }
 
-    template <typename T>
-    typename List<T>::ReverseIterator List<T>::Delete(const ReverseIterator &itFirstToInsert, const ReverseIterator &itAfterLastToDelete)
+    template <typename T, typename NodeType>
+    typename List<T, NodeType>::ReverseIterator List<T, NodeType>::Delete(const ReverseIterator &itFirstToInsert, const ReverseIterator &itAfterLastToDelete)
     {
-        typename List<T>::ReverseIterator it = itFirstToInsert;
+        typename List<T, NodeType>::ReverseIterator it = itFirstToInsert;
 
         while (it != itAfterLastToDelete)
         {
