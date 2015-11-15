@@ -13,33 +13,11 @@
 #define __XLBINTREE_H_6C3F6F71_DCAC_4B1D_9BAC_1333FB803DEE_INCLUDED__
 
 
+#include "xlBinTreeNode.h"
 #include "../Memory/xlMemory.h"
 
 namespace xl
 {
-    template <typename T>
-    struct BinTreeNode
-    {
-        typedef BinTreeNode *NodePtr;
-
-        T tValue;
-
-        NodePtr pParent;
-        NodePtr pLeft;
-        NodePtr pRight;
-
-        BinTreeNode() : pParent(nullptr), pLeft(nullptr), pRight(nullptr)
-        {
-
-        }
-
-        BinTreeNode(const T &tValue, NodePtr pParent = nullptr, NodePtr pLeft = nullptr, NodePtr pRight = nullptr) :
-            tValue(tValue), pParent(pParent), pLeft(pLeft), pRight(pRight)
-        {
-
-        }
-    };
-
     template <typename T, typename NodeType = BinTreeNode<T>>
     class BinTree
     {

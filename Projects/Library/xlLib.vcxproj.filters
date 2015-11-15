@@ -388,6 +388,12 @@
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlIterator.h">
       <Filter>Common\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlBinTreeNode.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlLinkedListNode.h">
+      <Filter>Common\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">

@@ -13,6 +13,7 @@
 #define __XLLIST_H_2BEF1B3C_A056_4EC7_B5E3_9898E7945B54_INCLUDED__
 
 
+#include "xlLinkedListNode.h"
 
 namespace xl
 {
@@ -25,16 +26,7 @@ namespace xl
         ~List();
 
     protected:
-        struct Node
-        {
-            T tValue;
-            Node *pPrev;
-            Node *pNext;
-
-            Node() : tValue(), pPrev(nullptr), pNext(nullptr) { }
-            Node(const T &tValue) : tValue(tValue), pPrev(nullptr), pNext(nullptr) { }
-            Node(const T &tValue, Node *pPrev, Node *pNext) : tValue(tValue), pPrev(pPrev), pNext(pNext) { }
-        };
+        typedef LinkedListNode<T> Node;
 
     public:
         List<T> &operator = (const List<T> &that);
