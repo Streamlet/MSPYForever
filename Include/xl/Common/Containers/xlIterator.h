@@ -22,20 +22,14 @@ namespace xl
     class BufferIteratorT
     {
     public:
-        inline BufferIteratorT()
-            : m_pBegin(nullptr), m_pEnd(nullptr), m_pCurrent(nullptr)
+        inline BufferIteratorT(T *pData = nullptr)
+            : m_pData(pData)
         {
 
         }
 
         inline BufferIteratorT(const BufferIteratorT &that)
-            : m_pBegin(that.m_pBegin), m_pEnd(that.m_pEnd), m_pCurrent(that.m_pCurrent)
-        {
-
-        }
-
-        inline BufferIteratorT(T *pBegin, T *pEnd, T *pCurrent)
-            : m_pBegin(pBegin), m_pEnd(pEnd), m_pCurrent(pCurrent)
+            : m_pData(that.m_pData)
         {
 
         }
@@ -48,61 +42,57 @@ namespace xl
                 return *this;
             }
 
-            this->m_pBegin = that.m_pBegin;
-            this->m_pEnd = that.m_pEnd;
-            this->m_pCurrent = that.m_pCurrent;
+            this->m_pData = that.m_pData;
 
             return *this;
         }
 
     protected:
-        T *m_pBegin;
-        T *m_pEnd;
-        T *m_pCurrent;
+        T *m_pData;
 
     public:
         inline T &operator * () const
         {
-            return *m_pCurrent;
+            return *m_pData;
         }
 
         inline T *operator -> () const
         {
-            return m_pCurrent;
+            return m_pData;
         }
 
         inline operator T * () const
         {
-            return m_pCurrent;
+            return m_pData;
         }
 
         inline operator const T * () const
         {
-            return m_pCurrent;
+            return m_pData;
         }
 
     public:
         inline bool operator == (const BufferIteratorT &that) const
         {
-            return (this->m_pCurrent == that.m_pCurrent);
+            return (this->m_pData == that.m_pData);
         }
 
         inline bool operator != (const BufferIteratorT &that) const
         {
-            return (this->m_pCurrent != that.m_pCurrent);
+            return (this->m_pData != that.m_pData);
         }
 
     public:
         template <bool RR = R>
         inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator ++ ()
         {
-            ++m_pCurrent;
+            ++m_pData;
             return *this;
         }
         template <bool RR = R>
         inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator ++ ()
         {
-            --m_pCurrent;
+            --m_pData;
             return *this;
         }
 
@@ -116,13 +106,13 @@ namespace xl
         template <bool RR = R>
         inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator -- ()
         {
-            --m_pCurrent;
+            --m_pData;
             return *this;
         }
         template <bool RR = R>
         inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator -- ()
         {
-            ++m_pCurrent;
+            ++m_pData;
             return *this;
         }
 
@@ -137,26 +127,26 @@ namespace xl
         template <bool RR = R>
         inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator += (int nDistance)
         {
-            m_pCurrent += nDistance;
+            m_pData += nDistance;
             return *this;
         }
         template <bool RR = R>
         inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator += (int nDistance)
         {
-            m_pCurrent -= nDistance;
+            m_pData -= nDistance;
             return *this;
         }
 
         template <bool RR = R>
         inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator -= (int nDistance)
         {
-            m_pCurrent -= nDistance;
+            m_pData -= nDistance;
             return *this;
         }
         template <bool RR = R>
         inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator -= (int nDistance)
         {
-            m_pCurrent += nDistance;
+            m_pData += nDistance;
             return *this;
         }
 
@@ -174,7 +164,123 @@ namespace xl
 
         inline int operator - (const BufferIteratorT &that) const
         {
-            return this->m_pCurrent - that.m_pCurrent;
+            return this->m_pData - that.m_pData;
+        }
+    };
+
+
+    template <typename T, typename NodeType, bool R>
+    class LinkedListIteratorT
+    {
+    public:
+        LinkedListIteratorT(NodeType *pNode = nullptr)
+            : m_pNode(pNode)
+        {
+
+        }
+
+        LinkedListIteratorT(const LinkedListIteratorT &that)
+            : m_pNode(nullptr), m_pHead(nullptr)
+        {
+            *this = that;
+        }
+
+        LinkedListIteratorT &operator = (const LinkedListIteratorT &that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            this->m_pNode = that.m_pNode;
+
+            return *this;
+        }
+
+    protected:
+        NodeType *m_pNode;
+
+    public:
+        T &operator * () const
+        {
+            return m_pNode->tValue;
+        }
+
+        T *operator -> () const
+        {
+            return &m_pNode->tValue;
+        }
+
+        operator T * () const
+        {
+            return m_pNode->tValue;
+        }
+
+        operator const T * () const
+        {
+            return m_pNode->tValue;
+        }
+
+        operator NodeType * () const
+        {
+            return m_pNode;
+        }
+
+        operator const NodeType * () const
+        {
+            return m_pNode;
+        }
+
+    public:
+        bool operator == (const LinkedListIteratorT &that) const
+        {
+            return (this->m_pNode == that.m_pNode);
+        }
+
+        bool operator != (const LinkedListIteratorT &that) const
+        {
+            return (this->m_pNode != that.m_pNode);
+        }
+
+    public:
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && !R, LinkedListIteratorT<T, NodeType, R> &>::Type operator ++ ()
+        {
+            m_pNode = m_pNode->pNext;
+            return *this;
+        }
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && R, LinkedListIteratorT<T, NodeType, R> &>::Type operator ++ ()
+        {
+            m_pNode = m_pNode->pPrev;
+            return *this;
+        }
+
+        LinkedListIteratorT operator ++ (int)
+        {
+            auto itRet = *this;
+            ++*this;
+            return itRet;
+        }
+
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && !R, LinkedListIteratorT<T, NodeType, R> &>::Type operator -- ()
+        {
+            m_pNode = m_pNode->pPrev;
+            return *this;
+        }
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && R, LinkedListIteratorT<T, NodeType, R> &>::Type operator -- ()
+        {
+            m_pNode = m_pNode->pNext;
+            return *this;
+        }
+
+        LinkedListIteratorT operator -- (int)
+        {
+            auto itRet = *this;
+            --*this;
+            return itRet;
         }
     };
 
@@ -185,41 +291,11 @@ namespace xl
     using ReverseBufferIterator = BufferIteratorT<T, true>;
 
 
-    template <typename T, typename NodeType, bool R>
-    class LinkedListIteratorT
-    {
-    public:
-        LinkedListIteratorT()
-        {
+    template <typename T, typename NodeType>
+    using LinkedListIterator = LinkedListIteratorT<T, NodeType, false>;
 
-        }
-        LinkedListIteratorT(const LinkedListIteratorT &that);
-
-        LinkedListIteratorT(NodeType *pCurrent);
-        LinkedListIteratorT(NodeType *pCurrent, NodeType *pHead);
-
-        LinkedListIteratorT &operator = (const LinkedListIteratorT &that);
-
-    protected:
-        NodeType *m_pCurrent;
-        NodeType *m_pHead;
-
-    public:
-        T &operator * ();
-        T *operator -> ();
-        operator T * ();
-        operator const T * () const;
-
-    public:
-        bool operator == (const LinkedListIteratorT &that) const;
-        bool operator != (const LinkedListIteratorT &that) const;
-
-    public:
-        LinkedListIteratorT &operator ++ ();
-        LinkedListIteratorT operator ++ (int);
-        LinkedListIteratorT &operator -- ();
-        LinkedListIteratorT operator -- (int);
-    };
+    template <typename T, typename NodeType>
+    using ReverseLinkedListIterator = LinkedListIteratorT<T, NodeType, true>;
 
 } // namespace xl
 

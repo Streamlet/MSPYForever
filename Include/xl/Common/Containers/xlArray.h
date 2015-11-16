@@ -46,13 +46,13 @@ namespace xl
             }
         }
 
-        inline ArrayT(const ArrayT<T ,P> &that)
+        inline ArrayT(const ArrayT &that)
             : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
         {
             *this = that;
         }
 
-        inline ArrayT(ArrayT<T, P> &&that)
+        inline ArrayT(ArrayT &&that)
             : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
         {
             *this = Memory::Move(that);
@@ -64,7 +64,7 @@ namespace xl
         }
 
     public:
-        ArrayT<T, P> &operator = (const ArrayT<T, P> &that)
+        ArrayT &operator = (const ArrayT &that)
         {
             if (this == &that)
             {
@@ -83,7 +83,7 @@ namespace xl
             return *this;
         }
 
-        ArrayT<T, P> &operator = (ArrayT<T, P> &&that)
+        ArrayT &operator = (ArrayT &&that)
         {
             if (this == &that)
             {
@@ -96,7 +96,7 @@ namespace xl
             return *this;
         }
 
-        bool operator == (const ArrayT<T, P> &that) const
+        bool operator == (const ArrayT &that) const
         {
             if (this == &that)
             {
@@ -119,7 +119,7 @@ namespace xl
             return true;
         }
 
-        bool operator != (const ArrayT<T, P> &that) const
+        bool operator != (const ArrayT &that) const
         {
             if (this == &that)
             {
@@ -390,22 +390,22 @@ namespace xl
     public:
         Iterator Begin() const
         {
-            return Iterator(m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize, m_pBuffer + m_nOffset);
+            return Iterator(m_pBuffer + m_nOffset);
         }
 
         Iterator End() const
         {
-            return Iterator(m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize, m_pBuffer + m_nOffset + m_nLogicalSize);
+            return Iterator(m_pBuffer + m_nOffset + m_nLogicalSize);
         }
 
         ReverseIterator ReverseBegin() const
         {
-            return ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1, m_pBuffer + m_nOffset + m_nLogicalSize - 1);
+            return ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1);
         }
 
         ReverseIterator ReverseEnd() const
         {
-            return ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1, m_pBuffer + m_nOffset - 1);
+            return ReverseIterator(m_pBuffer + m_nOffset - 1);
         }
 
     public:
@@ -431,28 +431,28 @@ namespace xl
         {
             size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
             Delete(nIndex);
-            return Iterator(m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize, m_pBuffer + m_nOffset + nIndex);
+            return Iterator(m_pBuffer + m_nOffset + nIndex);
         }
 
         ReverseIterator Delete(const ReverseIterator &itWhere)
         {
             size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
             Delete(nIndex);
-            return ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1, m_pBuffer + m_nOffset + nIndex - 1);
+            return ReverseIterator(m_pBuffer + m_nOffset + nIndex - 1);
         }
 
         Iterator Delete(const Iterator &itBegin, const Iterator &itEnd)
         {
             size_t nIndex = (T *)itBegin - (m_pBuffer + m_nOffset);
             Delete(nIndex, itEnd - itBegin);
-            return Iterator(m_pBuffer + m_nOffset, m_pBuffer + m_nOffset + m_nLogicalSize, m_pBuffer + m_nOffset + nIndex);
+            return Iterator(m_pBuffer + m_nOffset + nIndex);
         }
 
         ReverseIterator Delete(const ReverseIterator &itBegin, const ReverseIterator &itEnd)
         {
             size_t nIndex = (T *)itBegin - (m_pBuffer + m_nOffset) + 1;
             Delete(nIndex, itEnd - itBegin);
-            return ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1, m_pBuffer + m_nOffset - 1, m_pBuffer + m_nOffset + nIndex - 1);
+            return ReverseIterator(m_pBuffer + m_nOffset + nIndex - 1);
         }
     };
 
@@ -472,44 +472,5 @@ namespace xl
     using Stack = ArrayT<T, ArrayAlignmentPolicy_Tail>;
 
 } // namespace xl
-
-//
-// For convenience of debugging, put the following code to the [AutoExpand] section of
-//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
-//
-// ;------------------------------------------------------------------------------
-// ;  xl::Array
-// ;------------------------------------------------------------------------------
-// xl::ArrayT<*>{
-//     preview (
-//         #(
-//             "[",
-//             $e.m_nEnd - $e.m_nOffset,
-//             "](",
-//             #array(
-//                 expr: $e.m_pBuffer[$e.m_nOffset + $i],
-//                 size: $e.m_nEnd - $e.m_nOffset
-//             ),
-//             ")"
-//         )
-//     )
-//     children (
-//         #(
-//             #array(
-//                 expr: $e.m_pBuffer[$e.m_nOffset + $i],
-//                 size: $e.m_nEnd - $e.m_nOffset
-//             )
-//         )
-//     )
-// }
-// xl::ArrayT<*>::Iterator|xl::ArrayT<*>::ReverseIterator{
-//     preview (
-//         *$e.m_pCurrent
-//     )
-//     children (
-//         #([ptr] : $e.m_pCurrent)
-//     )
-// }
-// 
 
 #endif // #ifndef __XLARRAY_H_3B18D7E2_B52A_4D57_BE4B_657F9D17320D_INCLUDED__
