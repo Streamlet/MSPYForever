@@ -127,6 +127,15 @@ namespace
         XL_TEST_ASSERT(a[2] == 2);
         XL_TEST_ASSERT(a[3] == 4);
 
+        Array<int>::Iterator it = a.Begin();
+        XL_TEST_ASSERT(*it == 1);
+        ++it;
+        XL_TEST_ASSERT(*it == 3);
+        ++it;
+        XL_TEST_ASSERT(*it == 2);
+        ++it;
+        XL_TEST_ASSERT(*it == 4);
+
         a.Insert(2, 10);
         XL_TEST_ASSERT(a.Size() == 5);
         XL_TEST_ASSERT(a[0] == 1);
@@ -193,5 +202,10 @@ namespace
 
         XL_TEST_ASSERT(a[0] == 's');
         XL_TEST_ASSERT(a[1] == 'k');
+
+        Array<char>::Iterator it = a.Begin();
+        XL_TEST_ASSERT(*it == 's');
+        ++it;
+        XL_TEST_ASSERT(*it == 'k');
     }
 }

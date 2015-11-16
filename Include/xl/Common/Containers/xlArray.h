@@ -64,7 +64,7 @@ namespace xl
         }
 
     public:
-        ArrayT &operator = (const ArrayT &that)
+        inline ArrayT &operator = (const ArrayT &that)
         {
             if (this == &that)
             {
@@ -83,7 +83,7 @@ namespace xl
             return *this;
         }
 
-        ArrayT &operator = (ArrayT &&that)
+        inline ArrayT &operator = (ArrayT &&that)
         {
             if (this == &that)
             {
@@ -96,7 +96,7 @@ namespace xl
             return *this;
         }
 
-        bool operator == (const ArrayT &that) const
+        inline bool operator == (const ArrayT &that) const
         {
             if (this == &that)
             {
@@ -119,7 +119,7 @@ namespace xl
             return true;
         }
 
-        bool operator != (const ArrayT &that) const
+        inline bool operator != (const ArrayT &that) const
         {
             if (this == &that)
             {
@@ -165,7 +165,7 @@ namespace xl
         }
 
     public:
-        void Reserve(size_t nSize)
+        inline void Reserve(size_t nSize)
         {
             if (nSize < m_nLogicalSize)
             {
@@ -187,7 +187,7 @@ namespace xl
             }
         }
 
-        void Resize(size_t nSize)
+        inline void Resize(size_t nSize)
         {
             if (nSize == 0)
             {
@@ -213,7 +213,7 @@ namespace xl
             }
         }
 
-        void Resize(size_t nSize, const T &tValue)
+        inline void Resize(size_t nSize, const T &tValue)
         {
             Resize(nSize);
 
@@ -235,7 +235,7 @@ namespace xl
             Memory::CopyT(m_pBuffer + m_nOffset + nIndex, pBuffer, nCount);
         }
 
-        void Insert(size_t nIndex, const T &tValue, size_t nCount)
+        inline void Insert(size_t nIndex, const T &tValue, size_t nCount)
         {
             if (nIndex > m_nLogicalSize)
             {
@@ -265,7 +265,7 @@ namespace xl
             Insert(m_nLogicalSize, tValue);
         }
 
-        void Delete(size_t nIndex, size_t nCount)
+        inline void Delete(size_t nIndex, size_t nCount)
         {
             if (nIndex + nCount > m_nLogicalSize)
             {
@@ -309,7 +309,7 @@ namespace xl
         }
 
     private:
-        void PrepareInsert(size_t nInsertPos, size_t nInsertSize)
+        inline void PrepareInsert(size_t nInsertPos, size_t nInsertSize)
         {
             int nSpaceHead = (int)m_nOffset;
             int nSpaceTail = (int)(m_nMemorySize - (m_nOffset + m_nLogicalSize));
@@ -364,7 +364,7 @@ namespace xl
             }
         }
 
-        void Release()
+        inline void Release()
         {
             if (m_pBuffer != nullptr)
             {
@@ -388,67 +388,67 @@ namespace xl
         typedef ReverseBufferIterator<T> ReverseIterator;
 
     public:
-        Iterator Begin() const
+        inline Iterator Begin() const
         {
             return Iterator(m_pBuffer + m_nOffset);
         }
 
-        Iterator End() const
+        inline Iterator End() const
         {
             return Iterator(m_pBuffer + m_nOffset + m_nLogicalSize);
         }
 
-        ReverseIterator ReverseBegin() const
+        inline ReverseIterator ReverseBegin() const
         {
             return ReverseIterator(m_pBuffer + m_nOffset + m_nLogicalSize - 1);
         }
 
-        ReverseIterator ReverseEnd() const
+        inline ReverseIterator ReverseEnd() const
         {
             return ReverseIterator(m_pBuffer + m_nOffset - 1);
         }
 
     public:
-        void Insert(const Iterator &itWhere, const T &tValue)
+        inline void Insert(const Iterator &itWhere, const T &tValue)
         {
             size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
             Insert(nIndex, tValue);
         }
 
-        void Insert(const ReverseIterator &itWhere, const T &tValue)
+        inline void Insert(const ReverseIterator &itWhere, const T &tValue)
         {
             size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
             Insert(++nIndex, tValue);
         }
 
-        void Insert(const Iterator &itWhere, const Iterator &itBegin, const Iterator &itEnd)
+        inline void Insert(const Iterator &itWhere, const Iterator &itBegin, const Iterator &itEnd)
         {
             size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
             Insert(nIndex, (T *)itBegin, itEnd - itBegin);
         }
 
-        Iterator Delete(const Iterator &itWhere)
+        inline Iterator Delete(const Iterator &itWhere)
         {
             size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
             Delete(nIndex);
             return Iterator(m_pBuffer + m_nOffset + nIndex);
         }
 
-        ReverseIterator Delete(const ReverseIterator &itWhere)
+        inline ReverseIterator Delete(const ReverseIterator &itWhere)
         {
             size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
             Delete(nIndex);
             return ReverseIterator(m_pBuffer + m_nOffset + nIndex - 1);
         }
 
-        Iterator Delete(const Iterator &itBegin, const Iterator &itEnd)
+        inline Iterator Delete(const Iterator &itBegin, const Iterator &itEnd)
         {
             size_t nIndex = (T *)itBegin - (m_pBuffer + m_nOffset);
             Delete(nIndex, itEnd - itBegin);
             return Iterator(m_pBuffer + m_nOffset + nIndex);
         }
 
-        ReverseIterator Delete(const ReverseIterator &itBegin, const ReverseIterator &itEnd)
+        inline ReverseIterator Delete(const ReverseIterator &itBegin, const ReverseIterator &itEnd)
         {
             size_t nIndex = (T *)itBegin - (m_pBuffer + m_nOffset) + 1;
             Delete(nIndex, itEnd - itBegin);

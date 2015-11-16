@@ -24,31 +24,31 @@ namespace xl
     class List
     {
     public:
-        List()
+        inline List()
             : m_pHead(nullptr), m_pTail(nullptr), m_nSize(0)
         {
 
         }
 
-        List(const List &that)
+        inline List(const List &that)
             : m_pHead(nullptr), m_pTail(nullptr), m_nSize(0)
         {
             *this = that;
         }
 
-        List(List &&that)
+        inline List(List &&that)
             : m_pHead(nullptr), m_pTail(nullptr), m_nSize(0)
         {
             *this = Memory::Move(that);
         }
 
-        ~List()
+        inline ~List()
         {
             Release();
         }
 
     public:
-        List &operator = (const List &that)
+        inline List &operator = (const List &that)
         {
             if (this == &that)
             {
@@ -65,7 +65,7 @@ namespace xl
             return *this;
         }
 
-        List &&operator = (List &&that)
+        inline List &&operator = (List &&that)
         {
             if (this == &that)
             {
@@ -83,7 +83,7 @@ namespace xl
             return *this;
         }
 
-        bool operator == (const List &that) const
+        inline bool operator == (const List &that) const
         {
             if (this == &that)
             {
@@ -108,7 +108,7 @@ namespace xl
             return true;
         }
 
-        bool operator != (const List &that) const
+        inline bool operator != (const List &that) const
         {
             if (this == &that)
             {
@@ -134,18 +134,18 @@ namespace xl
         }
 
     public:
-        bool Empty() const
+        inline bool Empty() const
         {
             return m_nSize == 0;
         }
 
-        size_t Size() const
+        inline size_t Size() const
         {
             return m_nSize;
         }
 
     protected:
-        void Insert(NodeType *pWhere, const T &tValue)
+        inline void Insert(NodeType *pWhere, const T &tValue)
         {
             NodeType *pNewNode = new NodeType(tValue);
 
@@ -180,7 +180,7 @@ namespace xl
             ++m_nSize;
         }
 
-        void Delete(NodeType *pNode)
+        inline void Delete(NodeType *pNode)
         {
             if (pNode == m_pHead && pNode == m_pTail && pNode != nullptr)
             {
@@ -211,37 +211,29 @@ namespace xl
         }
 
     public:
-        void PushFront(const T &tValue)
+        inline void PushFront(const T &tValue)
         {
             Insert(m_pHead, tValue);
         }
 
-        void PushBack(const T &tValue)
+        inline void PushBack(const T &tValue)
         {
             Insert(nullptr, tValue);
         }
 
-        void PopFront()
+        inline void PopFront()
         {
             Delete(m_pHead);
         }
 
-        void PopBack()
+        inline void PopBack()
         {
             Delete(m_pTail);
         }
 
-        void Clear()
+        inline void Clear()
         {
-            for (NodeType *p = m_pHead, *q = p; p != nullptr; )
-            {
-                p = p->pNext;
-                delete q;
-            }
-
-            m_pHead = nullptr;
-            m_pTail = nullptr;
-            m_nSize = 0;
+            Release();
         }
 
     protected:
@@ -254,47 +246,55 @@ namespace xl
         typedef ReverseLinkedListIterator<T, NodeType> ReverseIterator;
 
     protected:
-        void Release()
+        inline void Release()
         {
-            Clear();
+            for (NodeType *p = m_pHead, *q = p; p != nullptr; q = p)
+            {
+                p = p->pNext;
+                delete q;
+            }
+
+            m_pHead = nullptr;
+            m_pTail = nullptr;
+            m_nSize = 0;
         }
 
     public:
-        Iterator Begin() const
+        inline Iterator Begin() const
         {
             return Iterator(m_pHead);
         }
 
-        Iterator End() const
+        inline Iterator End() const
         {
             return Iterator(nullptr);
         }
 
-        ReverseIterator ReverseBegin() const
+        inline ReverseIterator ReverseBegin() const
         {
             return ReverseIterator(m_pTail);
         }
 
-        ReverseIterator ReverseEnd() const
+        inline ReverseIterator ReverseEnd() const
         {
             return ReverseIterator(nullptr);
         }
 
     public:
-        void Insert(const Iterator &itWhere, const T &tValue)
+        inline void Insert(const Iterator &itWhere, const T &tValue)
         {
             NodeType *pWhere = (NodeType *)itWhere;
             Insert(pWhere, tValue);
         }
 
-        void Insert(const ReverseIterator &itWhere, const T &tValue)
+        inline void Insert(const ReverseIterator &itWhere, const T &tValue)
         {
             NodeType *pWhere = (NodeType *)itWhere;
             Insert(pWhere, tValue);
         }
 
         template <typename I>
-        void Insert(const Iterator &itWhere, const I &itBegin, const I &itEnd)
+        inline void Insert(const Iterator &itWhere, const I &itBegin, const I &itEnd)
         {
             for (I it = itBegin; it != itEnd; ++it)
             {
@@ -303,7 +303,7 @@ namespace xl
         }
 
         template <typename I>
-        void Insert(const ReverseIterator &itWhere, const I &itBegin, const I &itEnd)
+        inline void Insert(const ReverseIterator &itWhere, const I &itBegin, const I &itEnd)
         {
             for (I it = itBegin; it != itEnd; ++it)
             {
@@ -311,7 +311,7 @@ namespace xl
             }
         }
 
-        Iterator Delete(const Iterator &itWhere)
+        inline Iterator Delete(const Iterator &itWhere)
         {
             NodeType *pNode = (NodeType *)itWhere;
             NodeType *pNext = pNode->pNext;
@@ -319,7 +319,7 @@ namespace xl
             return Iterator(pNext);
         }
 
-        ReverseIterator Delete(const ReverseIterator &itWhere)
+        inline ReverseIterator Delete(const ReverseIterator &itWhere)
         {
             NodeType *pNode = (NodeType *)itWhere;
             NodeType *pPrev = pNode->pPrev;
@@ -327,7 +327,7 @@ namespace xl
             return ReverseIterator(pPrev);
         }
 
-        Iterator Delete(const Iterator &itBegin, const Iterator &itEnd)
+        inline Iterator Delete(const Iterator &itBegin, const Iterator &itEnd)
         {
             NodeType *pBegin = (NodeType *)itBegin;
             NodeType *pEnd = (NodeType *)itEnd;
@@ -340,7 +340,7 @@ namespace xl
             return Iterator(pEnd);
         }
 
-        ReverseIterator Delete(const ReverseIterator &itBegin, const ReverseIterator &itEnd)
+        inline ReverseIterator Delete(const ReverseIterator &itBegin, const ReverseIterator &itEnd)
         {
             NodeType *pBegin = (NodeType *)itBegin;
             NodeType *pEnd = (NodeType *)itEnd;

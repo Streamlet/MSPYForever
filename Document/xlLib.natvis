@@ -99,16 +99,14 @@
         </Expand>
     </Type>
 
-    <Type Name="xl::ArrayT&lt;*,*&gt;::Iterator">
-        <AlternativeType Name="xl::Array&lt;*&gt;::Iterator" />
-        <AlternativeType Name="xl::Array&lt;*&gt;::ReverseIterator" />
-        <DisplayString>{*m_pCurrent}</DisplayString>
+    <Type Name="xl::BufferIteratorT&lt;*&gt;">
+        <DisplayString>{*m_pData}</DisplayString>
         <Expand>
-            <Item Name="[ptr]">m_pCurrent</Item>
+            <Item Name="[ptr]">m_pData</Item>
         </Expand>
     </Type>
 
-    <Type Name="xl::List&lt;*&gt;">
+    <Type Name="xl::List&lt;*,*&gt;">
         <DisplayString>{{ size={m_nSize} }}</DisplayString>
         <Expand>
             <LinkedListItems>
@@ -120,12 +118,10 @@
         </Expand>
     </Type>
 
-    <Type Name="xl::List&lt;*&gt;::Iterator">
-        <AlternativeType Name="xl::List&lt;*&gt;::Iterator" />
-        <AlternativeType Name="xl::List&lt;*&gt;::ReverseIterator" />
-        <DisplayString>{m_pCurrent-&gt;tValue}</DisplayString>
+    <Type Name="xl::LinkedListIteratorT&lt;*,*,*&gt;">
+        <DisplayString>{m_pNode-&gt;tValue}</DisplayString>
         <Expand>
-            <Item Name="[ptr]">&amp;m_pCurrent-&gt;tValue</Item>
+            <Item Name="[ptr]">&amp;m_pNode-&gt;tValue</Item>
         </Expand>
     </Type>
 
