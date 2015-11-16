@@ -4,15 +4,15 @@
 ;------------------------------------------------------------------------------
 ;  xl::Array
 ;------------------------------------------------------------------------------
-xl::ArrayT<*,*>{
+xl::Array<*>{
     preview (
         #(
             "[",
-            $e.m_nLogicalSize,
+            $e.m_nEof - $e.m_nStart,
             "](",
             #array(
-                expr: $e.m_pBuffer[$e.m_nOffset + $i],
-                size: $e.m_nLogicalSize
+                expr: $e.m_pData[$e.m_nStart + $i],
+                size: $e.m_nEof - $e.m_nStart
             ),
             ")"
         )
@@ -20,13 +20,13 @@ xl::ArrayT<*,*>{
     children (
         #(
             #array(
-                expr: $e.m_pBuffer[$e.m_nOffset + $i],
-                size: $e.m_nLogicalSize
+                expr: $e.m_pData[$e.m_nStart + $i],
+                size: $e.m_nEof - $e.m_nStart
             )
         )
     )
 }
-xl::ArrayT<*,*>::Iterator|xl::Array<*>::ReverseIterator{
+xl::Array<*>::Iterator|xl::Array<*>::ReverseIterator{
     preview (
         *$e.m_pCurrent
     )
