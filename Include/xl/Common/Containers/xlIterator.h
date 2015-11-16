@@ -14,6 +14,7 @@
 
 
 #include "../Meta/xlEnableIf.h"
+#include "xlLinkedListNode.h"
 
 namespace xl
 {
@@ -183,6 +184,42 @@ namespace xl
     template <typename T>
     using ReverseBufferIterator = BufferIteratorT<T, true>;
 
+
+    template <typename T, typename NodeType, bool R>
+    class LinkedListIteratorT
+    {
+    public:
+        LinkedListIteratorT()
+        {
+
+        }
+        LinkedListIteratorT(const LinkedListIteratorT &that);
+
+        LinkedListIteratorT(NodeType *pCurrent);
+        LinkedListIteratorT(NodeType *pCurrent, NodeType *pHead);
+
+        LinkedListIteratorT &operator = (const LinkedListIteratorT &that);
+
+    protected:
+        NodeType *m_pCurrent;
+        NodeType *m_pHead;
+
+    public:
+        T &operator * ();
+        T *operator -> ();
+        operator T * ();
+        operator const T * () const;
+
+    public:
+        bool operator == (const LinkedListIteratorT &that) const;
+        bool operator != (const LinkedListIteratorT &that) const;
+
+    public:
+        LinkedListIteratorT &operator ++ ();
+        LinkedListIteratorT operator ++ (int);
+        LinkedListIteratorT &operator -- ();
+        LinkedListIteratorT operator -- (int);
+    };
 
 } // namespace xl
 
