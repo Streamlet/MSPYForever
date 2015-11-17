@@ -22,9 +22,6 @@ namespace xl
     class BinTree
     {
     public:
-        typedef NodeType *NodePtr;
-
-    public:
         BinTree() : m_pRoot(nullptr)
         {
 
@@ -41,7 +38,7 @@ namespace xl
         }
 
     protected:
-        NodePtr m_pRoot;
+        NodeType *m_pRoot;
 
     public:
         BinTree &operator = (const BinTree &that)
@@ -77,7 +74,7 @@ namespace xl
         }
 
     public:
-        NodePtr Root() const
+        NodeType *Root() const
         {
             return m_pRoot;
         }
@@ -93,7 +90,7 @@ namespace xl
             DeleteSubTree(m_pRoot);
         }
 
-        NodePtr SetRoot(NodePtr pNode)
+        NodeType *SetRoot(NodeType *pNode)
         {
             m_pRoot = pNode;
 
@@ -101,7 +98,7 @@ namespace xl
         }
 
     public:
-        static bool IsSubTreeEqual(NodePtr pThisNode, NodePtr pThatNode)
+        static bool IsSubTreeEqual(NodeType *pThisNode, NodeType *pThatNode)
         {
             if (pThisNode == pThatNode)
             {
@@ -122,7 +119,7 @@ namespace xl
                     IsSubTreeEqual(pThisNode->pRight, pThatNode->pRight));
         }
 
-        static bool IsSubTreeUnequal(NodePtr pThisNode, NodePtr pThatNode)
+        static bool IsSubTreeUnequal(NodeType *pThisNode, NodeType *pThatNode)
         {
             if (pThisNode == pThatNode)
             {
@@ -143,7 +140,7 @@ namespace xl
                     IsSubTreeUnequal(pThisNode->pRight, pThatNode->pRight));
         }
 
-        static NodePtr RightmostOf(NodePtr pRoot)
+        static NodeType *RightmostOf(NodeType *pRoot)
         {
             if (pRoot == nullptr || pRoot->pRight == nullptr)
             {
@@ -153,7 +150,7 @@ namespace xl
             return RightmostOf(pRoot->pRight);
         }
 
-        static NodePtr LeftmostOf(NodePtr pRoot)
+        static NodeType *LeftmostOf(NodeType *pRoot)
         {
             if (pRoot == nullptr || pRoot->pLeft == nullptr)
             {
@@ -163,7 +160,7 @@ namespace xl
             return LeftmostOf(pRoot->pLeft);
         }
 
-        static NodePtr PreviousOf(NodePtr pNode)
+        static NodeType *PreviousOf(NodeType *pNode)
         {
             if (pNode == nullptr)
             {
@@ -188,7 +185,7 @@ namespace xl
             return pNode->pParent;
         }
 
-        static NodePtr NextOf(NodePtr pNode)
+        static NodeType *NextOf(NodeType *pNode)
         {
             if (pNode == nullptr)
             {
@@ -214,25 +211,25 @@ namespace xl
         }
 
     public:
-        NodePtr CopySubTree(NodePtr pSubTreeRoot)
+        NodeType *CopySubTree(NodeType *pSubTreeRoot)
         {
             if (pSubTreeRoot == nullptr)
             {
                 return nullptr;
             }
 
-            NodePtr pNode = new NodeType(pSubTreeRoot->tValue);
+            NodeType *pNode = new NodeType(pSubTreeRoot->tValue);
 
             if (pSubTreeRoot->pLeft != nullptr)
             {
-                NodePtr pLeft = CopySubTree(pSubTreeRoot->pLeft);
+                NodeType *pLeft = CopySubTree(pSubTreeRoot->pLeft);
                 pLeft->pParent = pNode;
                 pNode->pLeft = pLeft;
             }
 
             if (pSubTreeRoot->pRight != nullptr)
             {
-                NodePtr pRight = CopySubTree(pSubTreeRoot->pRight);
+                NodeType *pRight = CopySubTree(pSubTreeRoot->pRight);
                 pRight->pParent = pNode;
                 pNode->pRight = pRight;
             }
@@ -240,7 +237,7 @@ namespace xl
             return pNode;
         }
 
-        NodePtr SetLeftSubTree(NodePtr pParent, NodePtr pSubTreeRoot)
+        NodeType *SetLeftSubTree(NodeType *pParent, NodeType *pSubTreeRoot)
         {
             if (pSubTreeRoot == nullptr)
             {
@@ -264,7 +261,7 @@ namespace xl
             return pSubTreeRoot;
         }
 
-        NodePtr SetRightSubTree(NodePtr pParent, NodePtr pSubTreeRoot)
+        NodeType *SetRightSubTree(NodeType *pParent, NodeType *pSubTreeRoot)
         {
             if (pSubTreeRoot == nullptr)
             {
@@ -288,14 +285,14 @@ namespace xl
             return pSubTreeRoot;
         }
 
-        NodePtr DeleteSubTree(NodePtr pSubTreeRoot)
+        NodeType *DeleteSubTree(NodeType *pSubTreeRoot)
         {
             if (pSubTreeRoot == nullptr)
             {
                 return nullptr;
             }
 
-            NodePtr pParent = pSubTreeRoot->pParent;
+            NodeType *pParent = pSubTreeRoot->pParent;
 
             if (pParent == nullptr)
             {
@@ -319,7 +316,7 @@ namespace xl
         }
 
     public:
-        void SwapNode(NodePtr pNode1, NodePtr pNode2)
+        void SwapNode(NodeType *pNode1, NodeType *pNode2)
         {
             if (pNode1->pLeft == pNode2)
             {
@@ -345,9 +342,9 @@ namespace xl
                 pNode1->pParent = pNode1;
             }
 
-            NodePtr pParent1 = pNode1->pParent, pLeft1 = pNode1->pLeft, pRight1 = pNode1->pRight;
-            NodePtr pParent2 = pNode2->pParent, pLeft2 = pNode2->pLeft, pRight2 = pNode2->pRight;
-            NodePtr *ppParent1ToNode1 = nullptr, *ppParent2ToNode2 = nullptr;
+            NodeType *pParent1 = pNode1->pParent, *pLeft1 = pNode1->pLeft, *pRight1 = pNode1->pRight;
+            NodeType *pParent2 = pNode2->pParent, *pLeft2 = pNode2->pLeft, *pRight2 = pNode2->pRight;
+            NodeType **ppParent1ToNode1 = nullptr, **ppParent2ToNode2 = nullptr;
 
             if (pParent1 == nullptr)
             {
@@ -421,14 +418,14 @@ namespace xl
             }
         }
 
-        NodePtr RotateLeft(NodePtr pNode)
+        NodeType *RotateLeft(NodeType *pNode)
         {
             if (pNode == nullptr || pNode->pRight == nullptr)
             {
                 return pNode;
             }
 
-            NodePtr pNewNode = pNode->pRight;
+            NodeType *pNewNode = pNode->pRight;
 
             if (pNode->pParent == nullptr)
             {
@@ -460,14 +457,14 @@ namespace xl
             return pNewNode;
         }
 
-        NodePtr RotateRight(NodePtr pNode)
+        NodeType *RotateRight(NodeType *pNode)
         {
             if (pNode == nullptr || pNode->pLeft == nullptr)
             {
                 return pNode;
             }
 
-            NodePtr pNewNode = pNode->pLeft;
+            NodeType *pNewNode = pNode->pLeft;
 
             if (pNode->pParent == nullptr)
             {
@@ -516,12 +513,12 @@ namespace xl
             }
 
         protected:
-            Iterator(NodePtr pCurrent) : m_pCurrent(pCurrent), m_pHead(nullptr)
+            Iterator(NodeType *pCurrent) : m_pCurrent(pCurrent), m_pHead(nullptr)
             {
 
             }
 
-            Iterator(NodePtr pCurrent, NodePtr pHead) : m_pCurrent(pCurrent), m_pHead(pHead)
+            Iterator(NodeType *pCurrent, NodeType *pHead) : m_pCurrent(pCurrent), m_pHead(pHead)
             {
 
             }
@@ -530,8 +527,8 @@ namespace xl
             friend class BinTree;
 
         protected:
-            NodePtr m_pCurrent;
-            NodePtr m_pHead;
+            NodeType *m_pCurrent;
+            NodeType *m_pHead;
 
         public:
             T &operator * ()
@@ -631,12 +628,12 @@ namespace xl
             }
 
         protected:
-            ReverseIterator(NodePtr pCurrent) : Iterator(pCurrent)
+            ReverseIterator(NodeType *pCurrent) : Iterator(pCurrent)
             {
 
             }
 
-            ReverseIterator(NodePtr pCurrent, NodePtr pHead) : Iterator(pCurrent, pHead)
+            ReverseIterator(NodeType *pCurrent, NodeType *pHead) : Iterator(pCurrent, pHead)
             {
 
             }
@@ -708,12 +705,12 @@ namespace xl
         }
 
     public:
-        Iterator GetIterator(NodePtr pNode) const
+        Iterator GetIterator(NodeType *pNode) const
         {
             return Iterator(pNode, m_pRoot);
         }
 
-        ReverseIterator GetReverseIterator(NodePtr pNode) const
+        ReverseIterator GetReverseIterator(NodeType *pNode) const
         {
             return ReverseIterator(pNode, m_pRoot);
         }

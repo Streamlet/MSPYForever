@@ -136,7 +136,6 @@ namespace xl
 
         typedef BinTreeNode<NodeData> NodeType;
         typedef BinTree<T, NodeType> InnerBinTree;
-        typedef typename InnerBinTree::NodePtr NodePtr;  
 
     protected:
         InnerBinTree m_tBinTree;
@@ -206,7 +205,7 @@ namespace xl
         }
 
     protected:
-        void SwapNode(NodePtr pNode1, NodePtr pNode2)
+        void SwapNode(NodeType *pNode1, NodeType *pNode2)
         {
             m_tBinTree.SwapNode(pNode1, pNode2);
             Memory::Swap(pNode1->tValue.ncColor, pNode2->tValue.ncColor);
@@ -214,7 +213,7 @@ namespace xl
 
     protected:
         // All cases
-        void InsertFixup(NodePtr pNode)
+        void InsertFixup(NodeType *pNode)
         {
             // Is root
             if (pNode->pParent == nullptr)
@@ -228,7 +227,7 @@ namespace xl
         }
 
         // Not root
-        void InsertFixupCase1(NodePtr pNode)
+        void InsertFixupCase1(NodeType *pNode)
         {
             // Parent is black
             if (pNode->pParent->tValue.ncColor == NC_BLACK)
@@ -249,9 +248,9 @@ namespace xl
         }
 
         // Not root, Parent is red
-        void InsertFixupCase2L(NodePtr pNode)
+        void InsertFixupCase2L(NodeType *pNode)
         {
-            NodePtr pGrandParent = pNode->pParent->pParent;
+            NodeType *pGrandParent = pNode->pParent->pParent;
 
             // Uncle is red
             if (pGrandParent->pRight != nullptr && pGrandParent->pRight->tValue.ncColor == NC_RED)
@@ -269,9 +268,9 @@ namespace xl
 
         }
 
-        void InsertFixupCase2R(NodePtr pNode)
+        void InsertFixupCase2R(NodeType *pNode)
         {
-            NodePtr pGrandParent = pNode->pParent->pParent;
+            NodeType *pGrandParent = pNode->pParent->pParent;
 
             if (pGrandParent->pLeft != nullptr && pGrandParent->pLeft->tValue.ncColor == NC_RED)
             {
@@ -288,7 +287,7 @@ namespace xl
         }
 
         // Not root, Parent is red, Uncle is black
-        void InsertFixupCase3L(NodePtr pNode)
+        void InsertFixupCase3L(NodeType *pNode)
         {
             // New node is Parent's r-child
             if (pNode == pNode->pParent->pRight)
@@ -302,7 +301,7 @@ namespace xl
             }
         }
 
-        void InsertFixupCase3R(NodePtr pNode)
+        void InsertFixupCase3R(NodeType *pNode)
         {
             if (pNode == pNode->pParent->pLeft)
             {
@@ -316,14 +315,14 @@ namespace xl
         }
 
         // Not root, Parent is red, Uncle is black, New node is Parent's l-child
-        void InsertFixupCase4L(NodePtr pNode)
+        void InsertFixupCase4L(NodeType *pNode)
         {
             m_tBinTree.RotateRight(pNode->pParent->pParent);
             pNode->pParent->tValue.ncColor = NC_BLACK;
             pNode->pParent->pRight->tValue.ncColor = NC_RED;
         }
 
-        void InsertFixupCase4R(NodePtr pNode)
+        void InsertFixupCase4R(NodeType *pNode)
         {
             m_tBinTree.RotateLeft(pNode->pParent->pParent);
             pNode->pParent->tValue.ncColor = NC_BLACK;
@@ -331,7 +330,7 @@ namespace xl
         }
 
         // All cases
-        void DeleteFixup(NodePtr pNode, NodePtr pParent)
+        void DeleteFixup(NodeType *pNode, NodeType *pParent)
         {
             // Is root
             if (pParent == nullptr)
@@ -364,7 +363,7 @@ namespace xl
         }
 
         // Not root
-        void DeleteFixupCase1L(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase1L(NodeType *pNode, NodeType *pParent)
         {
             // Sibling is red
             if (pParent->pRight->tValue.ncColor == NC_RED)
@@ -377,7 +376,7 @@ namespace xl
             DeleteFixupCase2L(pNode, pParent);
         }
 
-        void DeleteFixupCase1R(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase1R(NodeType *pNode, NodeType *pParent)
         {
             if (pParent->pLeft->tValue.ncColor == NC_RED)
             {
@@ -390,9 +389,9 @@ namespace xl
         }
 
         // Not root, Sibling is black
-        void DeleteFixupCase2L(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase2L(NodeType *pNode, NodeType *pParent)
         {
-            NodePtr pSibling = pParent->pRight;
+            NodeType *pSibling = pParent->pRight;
 
             // Sibling's r-child is red
             if (pSibling->pRight != nullptr && pSibling->pRight->tValue.ncColor == NC_RED)
@@ -407,9 +406,9 @@ namespace xl
             }
         }
 
-        void DeleteFixupCase2R(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase2R(NodeType *pNode, NodeType *pParent)
         {
-            NodePtr pSibling = pParent->pLeft;
+            NodeType *pSibling = pParent->pLeft;
 
             if (pSibling->pLeft != nullptr && pSibling->pLeft->tValue.ncColor == NC_RED)
             {
@@ -424,9 +423,9 @@ namespace xl
         }
 
         // Not root, Sibling is black, Sibling's r-child is black
-        void DeleteFixupCase3L(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase3L(NodeType *pNode, NodeType *pParent)
         {
-            NodePtr pSibling = pParent->pRight;
+            NodeType *pSibling = pParent->pRight;
 
             // Sibling's l-child is red
             if (pSibling->pLeft != nullptr && pSibling->pLeft->tValue.ncColor == NC_RED)
@@ -443,9 +442,9 @@ namespace xl
             }
         }
 
-        void DeleteFixupCase3R(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase3R(NodeType *pNode, NodeType *pParent)
         {
-            NodePtr pSibling = pParent->pLeft;
+            NodeType *pSibling = pParent->pLeft;
 
             if (pSibling->pRight != nullptr && pSibling->pRight->tValue.ncColor == NC_RED)
             {
@@ -462,7 +461,7 @@ namespace xl
         }
 
         // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black
-        void DeleteFixupCase4L(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase4L(NodeType *pNode, NodeType *pParent)
         {
             // Parent is red
             if (pParent->tValue.ncColor == NC_RED)
@@ -477,7 +476,7 @@ namespace xl
 
         }
 
-        void DeleteFixupCase4R(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase4R(NodeType *pNode, NodeType *pParent)
         {
             if (pParent->tValue.ncColor == NC_RED)
             {
@@ -491,14 +490,14 @@ namespace xl
         }
 
         // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black, Parent is black
-        void DeleteFixupCase5L(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase5L(NodeType *pNode, NodeType *pParent)
         {
             pParent->pRight->tValue.ncColor = NC_RED;
 
             DeleteFixup(pParent, pParent->pParent);
         }
 
-        void DeleteFixupCase5R(NodePtr pNode, NodePtr pParent)
+        void DeleteFixupCase5R(NodeType *pNode, NodeType *pParent)
         {
             pParent->pLeft->tValue.ncColor = NC_RED;
 
@@ -506,7 +505,7 @@ namespace xl
         }
 
     protected:
-        NodePtr Find(const T &tValue, NodePtr pRoot) const
+        NodeType *Find(const T &tValue, NodeType *pRoot) const
         {
             if (pRoot == nullptr)
             {
@@ -521,7 +520,7 @@ namespace xl
             return Find(tValue, tValue < pRoot->tValue.tValue ? pRoot->pLeft : pRoot->pRight);
         }
 
-        NodePtr FindMaxBelow(const T &tValue, NodePtr pRoot, bool bIncludeEqual = true) const
+        NodeType *FindMaxBelow(const T &tValue, NodeType *pRoot, bool bIncludeEqual = true) const
         {
             if (pRoot == nullptr)
             {
@@ -550,7 +549,7 @@ namespace xl
             }
         }
 
-        NodePtr FindMinAbove(const T &tValue, NodePtr pRoot, bool bIncludeEqual = true) const 
+        NodeType *FindMinAbove(const T &tValue, NodeType *pRoot, bool bIncludeEqual = true) const 
         {
             if (pRoot == nullptr)
             {
@@ -580,14 +579,14 @@ namespace xl
         }
 
     protected:
-        void DeleteNode(NodePtr pNode)
+        void DeleteNode(NodeType *pNode)
         {
             if (pNode == nullptr)
             {
                 return;
             }
 
-            NodePtr pNewNode = InnerBinTree::RightmostOf(pNode->pLeft);
+            NodeType *pNewNode = InnerBinTree::RightmostOf(pNode->pLeft);
 
             if (pNode->pLeft != nullptr && pNode->pRight != nullptr)
             {
@@ -639,7 +638,7 @@ namespace xl
             }
 
             NodeColor ncColor = pNode->tValue.ncColor;
-            NodePtr pParent = pNode->pParent;
+            NodeType *pParent = pNode->pParent;
 
             delete pNode;
             --m_nSize;
@@ -658,7 +657,7 @@ namespace xl
             DeleteFixup(pNewNode, pNewNode == nullptr ? pParent : pNewNode->pParent);
         }
 
-        NodePtr InsertValue(const T &tValue, NodePtr pRoot = nullptr)
+        NodeType *InsertValue(const T &tValue, NodeType *pRoot = nullptr)
         {
             if (pRoot == nullptr)
             {
@@ -682,7 +681,7 @@ namespace xl
             {
                 if (pRoot->pLeft == nullptr)
                 {
-                    NodePtr pNode = m_tBinTree.SetLeftSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
+                    NodeType *pNode = m_tBinTree.SetLeftSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
 
                     ++m_nSize;
 
@@ -697,7 +696,7 @@ namespace xl
             {
                 if (pRoot->pRight == nullptr)
                 {
-                    NodePtr pNode = m_tBinTree.SetRightSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
+                    NodeType *pNode = m_tBinTree.SetRightSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
 
                     ++m_nSize;
 
@@ -713,7 +712,7 @@ namespace xl
     public:
         void Delete(const T &tValue)
         {
-            NodePtr pNode = Find(tValue, m_tBinTree.Root());
+            NodeType *pNode = Find(tValue, m_tBinTree.Root());
 
             if (pNode != nullptr)
             {
@@ -744,12 +743,12 @@ namespace xl
             }
 
         protected:
-            Iterator(NodePtr pCurrent) : InnerBinTree::Iterator(pCurrent)
+            Iterator(NodeType *pCurrent) : InnerBinTree::Iterator(pCurrent)
             {
 
             }
 
-            Iterator(NodePtr pCurrent, NodePtr pHead) : InnerBinTree::Iterator(pCurrent, pHead)
+            Iterator(NodeType *pCurrent, NodeType *pHead) : InnerBinTree::Iterator(pCurrent, pHead)
             {
 
             }
@@ -777,12 +776,12 @@ namespace xl
             }
 
         protected:
-            ReverseIterator(NodePtr pCurrent) : InnerBinTree::ReverseIterator(pCurrent)
+            ReverseIterator(NodeType *pCurrent) : InnerBinTree::ReverseIterator(pCurrent)
             {
 
             }
 
-            ReverseIterator(NodePtr pCurrent, NodePtr pHead) : InnerBinTree::ReverseIterator(pCurrent, pHead)
+            ReverseIterator(NodeType *pCurrent, NodeType *pHead) : InnerBinTree::ReverseIterator(pCurrent, pHead)
             {
 
             }
@@ -849,7 +848,7 @@ namespace xl
 
         Iterator Delete(const Iterator &itWhich)
         {
-            NodePtr pNext = m_tBinTree.NextOf(itWhich.m_pCurrent);
+            NodeType *pNext = m_tBinTree.NextOf(itWhich.m_pCurrent);
 
             DeleteNode(itWhich.m_pCurrent);
 
@@ -859,7 +858,7 @@ namespace xl
 
         ReverseIterator Delete(const ReverseIterator &itWhich)
         {
-            NodePtr pPrev = m_tBinTree.PreviousOf(itWhich.m_pCurrent);
+            NodeType *pPrev = m_tBinTree.PreviousOf(itWhich.m_pCurrent);
 
             DeleteNode(itWhich.m_pCurrent);
 
