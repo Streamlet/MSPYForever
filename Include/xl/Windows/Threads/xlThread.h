@@ -14,7 +14,7 @@
 
 
 #include "../../Common/Meta/xlFunction.h"
-#include "../../Common/Meta/xlNonCopyable.h"
+#include "../../Common/Meta/xlAssert.h"
 #include "../xlWin32Ver.h"
 #include "xlCriticalSection.h"
 #include <Windows.h>
@@ -25,7 +25,7 @@ namespace xl
     namespace Windows
     {
         template <typename ParamType = LPVOID>
-        class Thread : public NonCopyable
+        class Thread 
         {
         public:
             typedef Function<DWORD(HANDLE, ParamType)> ProcType;
@@ -37,12 +37,34 @@ namespace xl
                 m_hEventStopped = CreateEvent(nullptr, TRUE, TRUE, nullptr);
             }
 
+            Thread(const Thread &that)
+            {
+                XL_ASSERT(false);
+            }
+
+            Thread(Thread &&that)
+            {
+                XL_ASSERT(false);
+            }
+
             ~Thread()
             {
                 Destroy();
 
                 CloseHandle(m_hEventStopped);
                 CloseHandle(m_hEventQuit);
+            }
+
+            Thread &operator = (const Thread &that)
+            {
+                XL_ASSERT(false);
+                return *this;
+            }
+
+            Thread &operator = (Thread &&that)
+            {
+                XL_ASSERT(false);
+                return *this;
             }
 
         public:
