@@ -19,18 +19,18 @@
 
 namespace xl
 {
-    template <typename NodeData, typename EdgeData>
+    template <typename RBTreeNode, typename EdgeData>
     struct GraphNode;
 
-    template <typename EdgeData, typename NodeData>
+    template <typename EdgeData, typename RBTreeNode>
     struct GraphEdge;
 
-    template <typename NodeData, typename EdgeData>
+    template <typename RBTreeNode, typename EdgeData>
     struct GraphNode
     {
-        typedef GraphEdge<EdgeData, NodeData> EdgeType;
+        typedef GraphEdge<EdgeData, RBTreeNode> EdgeType;
 
-        NodeData tValue;
+        RBTreeNode tValue;
 
         Array<EdgeType *> arrPrevious;
         Array<EdgeType *> arrNext;
@@ -40,7 +40,7 @@ namespace xl
 
         }
 
-        GraphNode(const NodeData &tValue) : tValue(tValue)
+        GraphNode(const RBTreeNode &tValue) : tValue(tValue)
         {
 
         }
@@ -50,7 +50,7 @@ namespace xl
             *this = that;
         }
 
-        GraphNode &operator = (const NodeData &that)
+        GraphNode &operator = (const RBTreeNode &that)
         {
             if (this == &that)
             {
@@ -125,10 +125,10 @@ namespace xl
         }
     };
 
-    template <typename EdgeData, typename NodeData>
+    template <typename EdgeData, typename RBTreeNode>
     struct GraphEdge
     {
-        typedef GraphNode<NodeData, EdgeData> NodeType;
+        typedef GraphNode<RBTreeNode, EdgeData> NodeType;
 
         EdgeData tValue;
 
@@ -226,7 +226,7 @@ namespace xl
         }
     };
 
-    template <typename NodeData, typename EdgeData>
+    template <typename RBTreeNode, typename EdgeData>
     class Graph
     {
     public:
@@ -306,8 +306,8 @@ namespace xl
         }
 
     public:
-        typedef GraphNode<NodeData, EdgeData> NodeType;
-        typedef GraphEdge<EdgeData, NodeData> EdgeType;
+        typedef GraphNode<RBTreeNode, EdgeData> NodeType;
+        typedef GraphEdge<EdgeData, RBTreeNode> EdgeType;
         typedef NodeType *NodePtr;
         typedef EdgeType *EdgePtr;
         typedef Set<NodePtr> NodeSet;

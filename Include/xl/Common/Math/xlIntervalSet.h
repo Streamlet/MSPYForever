@@ -121,7 +121,7 @@ namespace xl
                 else
                 {
                     ++it;
-                }                
+                }
             }
 
             m_setIntervals.Insert(i);

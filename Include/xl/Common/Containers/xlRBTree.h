@@ -18,8 +18,88 @@
 
 namespace xl
 {
+    enum RBTreeNodeColor
+    {
+        RBTreeNodeColor_Black,
+        RBTreeNodeColor_Red
+    };
+
     template <typename T>
-    class RBTree
+    struct RBTreeNode
+    {
+        T tValue;
+        RBTreeNode *pParent;
+        RBTreeNode *pLeft;
+        RBTreeNode *pRight;
+        RBTreeNodeColor eColor;
+
+        RBTreeNode(RBTreeNodeColor eColor = RBTreeNodeColor_Black) :
+            tValue(), pParent(nullptr), pLeft(nullptr), pRight(nullptr), eColor(eColor)
+        {
+
+        }
+
+        RBTreeNode(const T &tValue, RBTreeNodeColor eColor = RBTreeNodeColor_Black) :
+            tValue(tValue), pParent(nullptr), pLeft(nullptr), pRight(nullptr), eColor(eColor)
+        {
+
+        }
+
+        RBTreeNode(const RBTreeNode &that) :
+            tValue(that.tValue), pParent(nullptr), pLeft(nullptr), pRight(nullptr), eColor(that.eColor)
+        {
+
+        }
+
+        RBTreeNode &operator = (const RBTreeNode &that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            this->tValue = that.tValue;
+            this->pParent = nullptr;
+            this->pLeft = nullptr;
+            this->pRight = nullptr;
+            this->eColor = that.eColor;
+
+            return *this;
+        }
+
+        bool operator == (const RBTreeNode &that) const
+        {
+            return this->tValue == that.tValue;
+        }
+
+        bool operator != (const RBTreeNode &that) const
+        {
+            return this->tValue != that.tValue;
+        }
+
+        bool operator < (const RBTreeNode &that) const
+        {
+            return this->tValue < that.tValue;
+        }
+
+        bool operator > (const RBTreeNode &that) const
+        {
+            return this->tValue > that.tValue;
+        }
+
+        bool operator <= (const RBTreeNode &that) const
+        {
+            return this->tValue <= that.tValue;
+        }
+
+        bool operator >= (const RBTreeNode &that) const
+        {
+            return this->tValue >= that.tValue;
+        }
+    };
+
+    template <typename T>
+    class RBTree : public BinTree<T, RBTreeNode<T>>
     {
     public:
         RBTree() : m_nSize(0)
@@ -27,121 +107,16 @@ namespace xl
 
         }
 
-        RBTree(const RBTree &that) : m_nSize(0)
+        RBTree(const RBTree &that) : BinTree(that), m_nSize(that.m_nSize)
         {
-            *this = that;
+
         }
 
-    protected:
-
-        enum NodeColor
+        RBTree(RBTree &&that) : BinTree(that), m_nSize(that.m_nSize)
         {
-            NC_BLACK,
-            NC_RED
-        };
+            that.m_nSize = 0;
+        }
 
-        struct NodeData
-        {
-            T tValue;
-            NodeColor ncColor;
-
-            NodeData() : ncColor(NC_BLACK)
-            {
-
-            }
-
-            NodeData(const T &tValue, NodeColor ncColor = NC_BLACK) : tValue(tValue), ncColor(ncColor)
-            {
-
-            }
-
-            NodeData(const NodeData &that)
-            {
-                *this = that;
-            }
-
-            NodeData &operator = (const NodeData &that)
-            {
-                if (this == &that)
-                {
-                    return *this;
-                }
-
-                this->tValue = that.tValue;
-                this->ncColor = that.ncColor;
-
-                return *this;
-            }
-
-            bool operator == (const NodeData &that)
-            {
-                if (this == &that)
-                {
-                    return true;
-                }
-
-                return this->tValue == that.tValue;
-            }
-
-            bool operator != (const NodeData &that)
-            {
-                if (this == &that)
-                {
-                    return false;
-                }
-
-                return this->tValue != that.tValue;
-            }
-
-            bool operator < (const NodeData &that)
-            {
-                if (this == &that)
-                {
-                    return false;
-                }
-
-                return this->tValue < that.tValue;
-            }
-
-            bool operator > (const NodeData &that)
-            {
-                if (this == &that)
-                {
-                    return false;
-                }
-
-                return this->tValue > that.tValue;
-            }
-
-            bool operator <= (const NodeData &that)
-            {
-                if (this == &that)
-                {
-                    return true;
-                }
-
-                return this->tValue <= that.tValue;
-            }
-
-            bool operator >= (const NodeData &that)
-            {
-                if (this == &that)
-                {
-                    return true;
-                }
-
-                return this->tValue >= that.tValue;
-            }
-        };
-
-        typedef BinTreeNode<NodeData> NodeType;
-        typedef BinTree<T, NodeType> InnerBinTree;
-
-    protected:
-        InnerBinTree m_tBinTree;
-        size_t       m_nSize;
-
-    public:
         RBTree &operator = (const RBTree &that)
         {
             if (this == &that)
@@ -149,12 +124,32 @@ namespace xl
                 return *this;
             }
 
-            this->m_tBinTree = that.m_tBinTree;
-            this->m_nSize    = that.m_nSize;
+            *(BinTree *)this = (BinTree)that;
+            this->m_nSize = that.m_nSize;
 
             return *this;
-
         }
+
+        RBTree &operator = (RBTree &&that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            *(BinTree *)this = Memory::Move((BinTree)that);
+            this->m_nSize = that.m_nSize;
+            that.m_nSize = 0;
+
+            return *this;
+        }
+
+        typedef RBTreeNode<T> NodeType;
+
+    protected:
+        size_t       m_nSize;
+
+    public:
 
         bool operator == (const RBTree &that) const
         {
@@ -168,7 +163,7 @@ namespace xl
                 return false;
             }
 
-            return this->m_tBinTree == that.m_tBinTree;
+            return *(BinTree *)this == (BinTree)that;
         }
 
         bool operator != (const RBTree &that) const
@@ -183,7 +178,7 @@ namespace xl
                 return true;
             }
 
-            return this->m_tBinTree != that.m_tBinTree;
+            return *(BinTree *)this != (BinTree)that;
         }
 
     public:
@@ -200,15 +195,15 @@ namespace xl
     public:
         void Clear()
         {
-            return m_tBinTree.Clear();
+            BinTree::Clear();
             m_nSize = 0;
         }
 
     protected:
         void SwapNode(NodeType *pNode1, NodeType *pNode2)
         {
-            m_tBinTree.SwapNode(pNode1, pNode2);
-            Memory::Swap(pNode1->tValue.ncColor, pNode2->tValue.ncColor);
+            BinTree::SwapNode(pNode1, pNode2);
+            Memory::Swap(pNode1->eColor, pNode2->eColor);
         }
 
     protected:
@@ -218,7 +213,7 @@ namespace xl
             // Is root
             if (pNode->pParent == nullptr)
             {
-                pNode->tValue.ncColor = NC_BLACK;
+                pNode->eColor = RBTreeNodeColor_Black;
             }
             else
             {
@@ -230,7 +225,7 @@ namespace xl
         void InsertFixupCase1(NodeType *pNode)
         {
             // Parent is black
-            if (pNode->pParent->tValue.ncColor == NC_BLACK)
+            if (pNode->pParent->eColor == RBTreeNodeColor_Black)
             {
                 return;
             }
@@ -253,11 +248,11 @@ namespace xl
             NodeType *pGrandParent = pNode->pParent->pParent;
 
             // Uncle is red
-            if (pGrandParent->pRight != nullptr && pGrandParent->pRight->tValue.ncColor == NC_RED)
+            if (pGrandParent->pRight != nullptr && pGrandParent->pRight->eColor == RBTreeNodeColor_Red)
             {
-                pGrandParent->tValue.ncColor = NC_RED;
-                pGrandParent->pLeft->tValue.ncColor = NC_BLACK;
-                pGrandParent->pRight->tValue.ncColor = NC_BLACK;
+                pGrandParent->eColor = RBTreeNodeColor_Red;
+                pGrandParent->pLeft->eColor = RBTreeNodeColor_Black;
+                pGrandParent->pRight->eColor = RBTreeNodeColor_Black;
 
                 InsertFixup(pGrandParent);
             }
@@ -272,11 +267,11 @@ namespace xl
         {
             NodeType *pGrandParent = pNode->pParent->pParent;
 
-            if (pGrandParent->pLeft != nullptr && pGrandParent->pLeft->tValue.ncColor == NC_RED)
+            if (pGrandParent->pLeft != nullptr && pGrandParent->pLeft->eColor == RBTreeNodeColor_Red)
             {
-                pGrandParent->tValue.ncColor = NC_RED;
-                pGrandParent->pRight->tValue.ncColor = NC_BLACK;
-                pGrandParent->pLeft->tValue.ncColor = NC_BLACK;
+                pGrandParent->eColor = RBTreeNodeColor_Red;
+                pGrandParent->pRight->eColor = RBTreeNodeColor_Black;
+                pGrandParent->pLeft->eColor = RBTreeNodeColor_Black;
 
                 InsertFixup(pGrandParent);
             }
@@ -292,7 +287,7 @@ namespace xl
             // New node is Parent's r-child
             if (pNode == pNode->pParent->pRight)
             {
-                m_tBinTree.RotateLeft(pNode->pParent);
+                RotateLeft(pNode->pParent);
                 InsertFixupCase4L(pNode->pLeft);
             }
             else
@@ -305,7 +300,7 @@ namespace xl
         {
             if (pNode == pNode->pParent->pLeft)
             {
-                m_tBinTree.RotateRight(pNode->pParent);
+                RotateRight(pNode->pParent);
                 InsertFixupCase4R(pNode->pRight);
             }
             else
@@ -317,16 +312,16 @@ namespace xl
         // Not root, Parent is red, Uncle is black, New node is Parent's l-child
         void InsertFixupCase4L(NodeType *pNode)
         {
-            m_tBinTree.RotateRight(pNode->pParent->pParent);
-            pNode->pParent->tValue.ncColor = NC_BLACK;
-            pNode->pParent->pRight->tValue.ncColor = NC_RED;
+            RotateRight(pNode->pParent->pParent);
+            pNode->pParent->eColor = RBTreeNodeColor_Black;
+            pNode->pParent->pRight->eColor = RBTreeNodeColor_Red;
         }
 
         void InsertFixupCase4R(NodeType *pNode)
         {
-            m_tBinTree.RotateLeft(pNode->pParent->pParent);
-            pNode->pParent->tValue.ncColor = NC_BLACK;
-            pNode->pParent->pLeft->tValue.ncColor = NC_RED;
+            RotateLeft(pNode->pParent->pParent);
+            pNode->pParent->eColor = RBTreeNodeColor_Black;
+            pNode->pParent->pLeft->eColor = RBTreeNodeColor_Red;
         }
 
         // All cases
@@ -366,11 +361,11 @@ namespace xl
         void DeleteFixupCase1L(NodeType *pNode, NodeType *pParent)
         {
             // Sibling is red
-            if (pParent->pRight->tValue.ncColor == NC_RED)
+            if (pParent->pRight->eColor == RBTreeNodeColor_Red)
             {
-                m_tBinTree.RotateLeft(pParent);
-                pParent->tValue.ncColor = NC_RED;
-                pParent->pParent->tValue.ncColor = NC_BLACK;
+                RotateLeft(pParent);
+                pParent->eColor = RBTreeNodeColor_Red;
+                pParent->pParent->eColor = RBTreeNodeColor_Black;
             }
 
             DeleteFixupCase2L(pNode, pParent);
@@ -378,11 +373,11 @@ namespace xl
 
         void DeleteFixupCase1R(NodeType *pNode, NodeType *pParent)
         {
-            if (pParent->pLeft->tValue.ncColor == NC_RED)
+            if (pParent->pLeft->eColor == RBTreeNodeColor_Red)
             {
-                m_tBinTree.RotateRight(pParent);
-                pParent->tValue.ncColor = NC_RED;
-                pParent->pParent->tValue.ncColor = NC_BLACK;
+                RotateRight(pParent);
+                pParent->eColor = RBTreeNodeColor_Red;
+                pParent->pParent->eColor = RBTreeNodeColor_Black;
             }
 
             DeleteFixupCase2R(pNode, pParent);
@@ -394,11 +389,11 @@ namespace xl
             NodeType *pSibling = pParent->pRight;
 
             // Sibling's r-child is red
-            if (pSibling->pRight != nullptr && pSibling->pRight->tValue.ncColor == NC_RED)
+            if (pSibling->pRight != nullptr && pSibling->pRight->eColor == RBTreeNodeColor_Red)
             {
-                m_tBinTree.RotateLeft(pParent);
-                pSibling->pRight->tValue.ncColor = NC_BLACK;
-                Memory::Swap(pParent->tValue.ncColor, pSibling->tValue.ncColor);
+                RotateLeft(pParent);
+                pSibling->pRight->eColor = RBTreeNodeColor_Black;
+                Memory::Swap(pParent->eColor, pSibling->eColor);
             }
             else
             {
@@ -410,11 +405,11 @@ namespace xl
         {
             NodeType *pSibling = pParent->pLeft;
 
-            if (pSibling->pLeft != nullptr && pSibling->pLeft->tValue.ncColor == NC_RED)
+            if (pSibling->pLeft != nullptr && pSibling->pLeft->eColor == RBTreeNodeColor_Red)
             {
-                m_tBinTree.RotateRight(pParent);
-                pSibling->pLeft->tValue.ncColor = NC_BLACK;
-                Memory::Swap(pParent->tValue.ncColor, pSibling->tValue.ncColor);
+                RotateRight(pParent);
+                pSibling->pLeft->eColor = RBTreeNodeColor_Black;
+                Memory::Swap(pParent->eColor, pSibling->eColor);
             }
             else
             {
@@ -428,11 +423,11 @@ namespace xl
             NodeType *pSibling = pParent->pRight;
 
             // Sibling's l-child is red
-            if (pSibling->pLeft != nullptr && pSibling->pLeft->tValue.ncColor == NC_RED)
+            if (pSibling->pLeft != nullptr && pSibling->pLeft->eColor == RBTreeNodeColor_Red)
             {
-                m_tBinTree.RotateRight(pSibling);
-                pSibling->pLeft->tValue.ncColor = NC_BLACK;
-                pSibling->tValue.ncColor = NC_RED;
+                RotateRight(pSibling);
+                pSibling->pLeft->eColor = RBTreeNodeColor_Black;
+                pSibling->eColor = RBTreeNodeColor_Red;
 
                 DeleteFixupCase2L(pNode, pParent);
             }
@@ -446,11 +441,11 @@ namespace xl
         {
             NodeType *pSibling = pParent->pLeft;
 
-            if (pSibling->pRight != nullptr && pSibling->pRight->tValue.ncColor == NC_RED)
+            if (pSibling->pRight != nullptr && pSibling->pRight->eColor == RBTreeNodeColor_Red)
             {
-                m_tBinTree.RotateLeft(pSibling);
-                pSibling->pRight->tValue.ncColor = NC_BLACK;
-                pSibling->tValue.ncColor = NC_RED;
+                RotateLeft(pSibling);
+                pSibling->pRight->eColor = RBTreeNodeColor_Black;
+                pSibling->eColor = RBTreeNodeColor_Red;
 
                 DeleteFixupCase2R(pNode, pParent);
             }
@@ -464,10 +459,10 @@ namespace xl
         void DeleteFixupCase4L(NodeType *pNode, NodeType *pParent)
         {
             // Parent is red
-            if (pParent->tValue.ncColor == NC_RED)
+            if (pParent->eColor == RBTreeNodeColor_Red)
             {
-                pParent->tValue.ncColor = NC_BLACK;
-                pParent->pRight->tValue.ncColor = NC_RED;
+                pParent->eColor = RBTreeNodeColor_Black;
+                pParent->pRight->eColor = RBTreeNodeColor_Red;
             }
             else
             {
@@ -478,10 +473,10 @@ namespace xl
 
         void DeleteFixupCase4R(NodeType *pNode, NodeType *pParent)
         {
-            if (pParent->tValue.ncColor == NC_RED)
+            if (pParent->eColor == RBTreeNodeColor_Red)
             {
-                pParent->tValue.ncColor = NC_BLACK;
-                pParent->pLeft->tValue.ncColor = NC_RED;
+                pParent->eColor = RBTreeNodeColor_Black;
+                pParent->pLeft->eColor = RBTreeNodeColor_Red;
             }
             else
             {
@@ -492,14 +487,14 @@ namespace xl
         // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black, Parent is black
         void DeleteFixupCase5L(NodeType *pNode, NodeType *pParent)
         {
-            pParent->pRight->tValue.ncColor = NC_RED;
+            pParent->pRight->eColor = RBTreeNodeColor_Red;
 
             DeleteFixup(pParent, pParent->pParent);
         }
 
         void DeleteFixupCase5R(NodeType *pNode, NodeType *pParent)
         {
-            pParent->pLeft->tValue.ncColor = NC_RED;
+            pParent->pLeft->eColor = RBTreeNodeColor_Red;
 
             DeleteFixup(pParent, pParent->pParent);
         }
@@ -512,12 +507,12 @@ namespace xl
                 return pRoot;
             }
 
-            if (pRoot->tValue.tValue == tValue)
+            if (pRoot->tValue == tValue)
             {
                 return pRoot;
             }
 
-            return Find(tValue, tValue < pRoot->tValue.tValue ? pRoot->pLeft : pRoot->pRight);
+            return Find(tValue, tValue < pRoot->tValue ? pRoot->pLeft : pRoot->pRight);
         }
 
         NodeType *FindMaxBelow(const T &tValue, NodeType *pRoot, bool bIncludeEqual = true) const
@@ -527,14 +522,14 @@ namespace xl
                 return nullptr;
             }
 
-            if (bIncludeEqual && pRoot->tValue.tValue == tValue)
+            if (bIncludeEqual && pRoot->tValue == tValue)
             {
                 return pRoot;
             }
 
-            if (pRoot->tValue.tValue < tValue)
+            if (pRoot->tValue < tValue)
             {
-                if (pRoot->pRight == nullptr || tValue < pRoot->pRight->tValue.tValue)
+                if (pRoot->pRight == nullptr || tValue < pRoot->pRight->tValue)
                 {
                     return pRoot;
                 }
@@ -556,14 +551,14 @@ namespace xl
                 return nullptr;
             }
 
-            if (bIncludeEqual && pRoot->tValue.tValue == tValue)
+            if (bIncludeEqual && pRoot->tValue == tValue)
             {
                 return pRoot;
             }
 
-            if (tValue < pRoot->tValue.tValue)
+            if (tValue < pRoot->tValue)
             {
-                if (pRoot->pLeft == nullptr || pRoot->pLeft->tValue.tValue < tValue)
+                if (pRoot->pLeft == nullptr || pRoot->pLeft->tValue < tValue)
                 {
                     return pRoot;
                 }
@@ -586,20 +581,20 @@ namespace xl
                 return;
             }
 
-            NodeType *pNewNode = InnerBinTree::RightmostOf(pNode->pLeft);
+            NodeType *pNewNode = Iterator::RightmostChildOf(pNode->pLeft);
 
             if (pNode->pLeft != nullptr && pNode->pRight != nullptr)
             {
                 SwapNode(pNode, pNewNode);
 
-                pNewNode = InnerBinTree::RightmostOf(pNode->pLeft);
+                pNewNode = Iterator::RightmostChildOf(pNode->pLeft);
             }
 
             pNewNode = (pNode->pLeft != nullptr ? pNode->pLeft : pNode->pRight);
 
             if(pNode->pParent == nullptr)
             {
-                m_tBinTree.SetRoot(pNewNode);
+                m_pRoot = pNewNode;
             }
             else
             {
@@ -637,20 +632,20 @@ namespace xl
                 }
             }
 
-            NodeColor ncColor = pNode->tValue.ncColor;
+            RBTreeNodeColor eColor = pNode->eColor;
             NodeType *pParent = pNode->pParent;
 
             delete pNode;
             --m_nSize;
 
-            if (ncColor == NC_RED)
+            if (eColor == RBTreeNodeColor_Red)
             {
                 return;
             }
 
-            if (pNewNode != nullptr && pNewNode->tValue.ncColor == NC_RED)
+            if (pNewNode != nullptr && pNewNode->eColor == RBTreeNodeColor_Red)
             {
-                pNewNode->tValue.ncColor = NC_BLACK;
+                pNewNode->eColor = RBTreeNodeColor_Black;
                 return;
             }
 
@@ -661,27 +656,27 @@ namespace xl
         {
             if (pRoot == nullptr)
             {
-                pRoot = m_tBinTree.Root();
+                pRoot = m_pRoot;
             }
 
             if (pRoot == nullptr)
             {
-                m_tBinTree.SetRoot(new NodeType(NodeData(tValue)));
+                m_pRoot = new NodeType(tValue);
                 ++m_nSize;
-                return m_tBinTree.Root();
+                return m_pRoot;
             }
 
-            if (tValue == pRoot->tValue.tValue)
+            if (tValue == pRoot->tValue)
             {
-                pRoot->tValue.tValue = tValue;
+                pRoot->tValue = tValue;
                 return nullptr;
             }
 
-            if (tValue < pRoot->tValue.tValue)
+            if (tValue < pRoot->tValue)
             {
                 if (pRoot->pLeft == nullptr)
                 {
-                    NodeType *pNode = m_tBinTree.SetLeftSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
+                    NodeType *pNode = SetLeftSubTree(pRoot, new NodeType(tValue, RBTreeNodeColor_Red));
 
                     ++m_nSize;
 
@@ -696,7 +691,7 @@ namespace xl
             {
                 if (pRoot->pRight == nullptr)
                 {
-                    NodeType *pNode = m_tBinTree.SetRightSubTree(pRoot, new NodeType(NodeData(tValue, NC_RED)));
+                    NodeType *pNode = SetRightSubTree(pRoot, new NodeType(tValue, RBTreeNodeColor_Red));
 
                     ++m_nSize;
 
@@ -712,7 +707,7 @@ namespace xl
     public:
         void Delete(const T &tValue)
         {
-            NodeType *pNode = Find(tValue, m_tBinTree.Root());
+            NodeType *pNode = Find(tValue, m_pRoot);
 
             if (pNode != nullptr)
             {
@@ -720,197 +715,54 @@ namespace xl
             }
         }
 
-
-    // Iterator
-
-    public:
-        class Iterator : public InnerBinTree::Iterator
-        {
-        public:
-            Iterator() : InnerBinTree::Iterator()
-            {
-
-            }
-
-            Iterator(const Iterator &that) : InnerBinTree::Iterator()
-            {
-                *this = that;
-            }
-
-            Iterator(const typename InnerBinTree::Iterator &that) : InnerBinTree::Iterator(that)
-            {
-
-            }
-
-        protected:
-            Iterator(NodeType *pCurrent) : InnerBinTree::Iterator(pCurrent)
-            {
-
-            }
-
-            Iterator(NodeType *pCurrent, NodeType *pHead) : InnerBinTree::Iterator(pCurrent, pHead)
-            {
-
-            }
-
-        protected:
-            friend class RBTree;
-        };
-
-        class ReverseIterator : public InnerBinTree::ReverseIterator
-        {
-        public:
-            ReverseIterator() : InnerBinTree::ReverseIterator()
-            {
-
-            }
-
-            ReverseIterator(const ReverseIterator &that) : InnerBinTree::ReverseIterator()
-            {
-                *this = that;
-            }
-
-            ReverseIterator(const typename InnerBinTree::ReverseIterator &that) : InnerBinTree::ReverseIterator(that)
-            {
-
-            }
-
-        protected:
-            ReverseIterator(NodeType *pCurrent) : InnerBinTree::ReverseIterator(pCurrent)
-            {
-
-            }
-
-            ReverseIterator(NodeType *pCurrent, NodeType *pHead) : InnerBinTree::ReverseIterator(pCurrent, pHead)
-            {
-
-            }
-
-        protected:
-            friend class RBTree;
-        };
-
-    protected:
-        friend Iterator;
-        friend ReverseIterator;
-
     public:
         Iterator Find(const T &tValue) const
         {
-            return m_tBinTree.GetIterator(Find(tValue, m_tBinTree.Root()));
+            return Iterator(Find(tValue, m_pRoot));
         }
 
         Iterator FindMaxBelow(const T &tValue, bool bIncludeEqual = true) const
         {
-            return m_tBinTree.GetIterator(FindMaxBelow(tValue, m_tBinTree.Root(), bIncludeEqual));
+            return Iterator(FindMaxBelow(tValue, m_pRoot, bIncludeEqual));
         }
 
         Iterator FindMinAbove(const T &tValue, bool bIncludeEqual = true) const
         {
-            return m_tBinTree.GetIterator(FindMinAbove(tValue, m_tBinTree.Root(), bIncludeEqual));
-        }
-
-    public:
-        Iterator Begin() const
-        {
-            return m_tBinTree.Begin();
-        }
-
-        Iterator End() const
-        {
-            return m_tBinTree.End();
-        }
-
-        ReverseIterator ReverseBegin() const
-        {
-            return m_tBinTree.ReverseBegin();
-        }
-
-        ReverseIterator ReverseEnd() const
-        {
-            return m_tBinTree.ReverseEnd();
+            return Iterator(FindMinAbove(tValue, m_pRoot, bIncludeEqual));
         }
 
     public:
         Iterator Insert(const T &tValue)
         {
-            return m_tBinTree.GetIterator(InsertValue(tValue));
+            return Iterator(InsertValue(tValue));
         }
 
         template <typename I>
-        void Insert(const I &itFirstToInsert, const I &itAfterLastToInsert)
+        void Insert(const I &itBegin, const I &itEnd)
         {
-            for (I it = itFirstToInsert; it != itAfterLastToInsert; ++it)
+            for (I it = itBegin; it != itEnd; ++it)
             {
                 Insert(*it);
             }
         }
 
-        Iterator Delete(const Iterator &itWhich)
+        Iterator Delete(const Iterator &itWhere)
         {
-            NodeType *pNext = m_tBinTree.NextOf(itWhich.m_pCurrent);
-
-            DeleteNode(itWhich.m_pCurrent);
-
-            return m_tBinTree.GetIterator(pNext);
-
+            Iterator itNext = itWhere;
+            ++itNext;
+            DeleteNode((NodeType *)itWhere);
+            return itNext;
         }
 
-        ReverseIterator Delete(const ReverseIterator &itWhich)
+        ReverseIterator Delete(const ReverseIterator &itWhere)
         {
-            NodeType *pPrev = m_tBinTree.PreviousOf(itWhich.m_pCurrent);
-
-            DeleteNode(itWhich.m_pCurrent);
-
-            return m_tBinTree.GetReverseIterator(pPrev);
+            ReverseIterator itNext = itWhere;
+            ++itNext;
+            DeleteNode((NodeType *)itWhere);
+            return itNext;
         }
     };
 
 } // namespace xl
-
-//
-// For convenience of debugging, put the following code to the [AutoExpand] section of
-//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
-// 
-// ;------------------------------------------------------------------------------
-// ;  xl::RBTree
-// ;------------------------------------------------------------------------------
-// xl::RBTree<*>{
-//     preview (
-//         #(
-//             "[",
-//             $e.m_nSize,
-//             "](",
-//             #tree(
-//                 head: $e.m_tBinTree.m_pRoot,
-//                 left: pLeft,
-//                 right: pRight,
-//                 size: $e.m_nSize
-//             ) : $e.tValue.tValue,
-//             ")"
-//         )
-//     )
-//     children (
-//         #(
-//             #tree(
-//                 head: $e.m_tBinTree.m_pRoot,
-//                 left: pLeft,
-//                 right: pRight,
-//                 size: $e.m_nSize
-//             ) : $e.tValue.tValue
-//         )
-//     )
-// }
-// xl::RBTree<*>::Iterator|xl::RBTree<*>::ReverseIterator{
-//     preview (
-//         $e.m_pCurrent->tValue.tValue
-//     )
-//     children (
-//         #(
-//             [ptr] : &$e.m_pCurrent->tValue.tValue
-//         )
-//     )
-// }
-//
 
 #endif // #ifndef __XLTREE_H_6BB48AA6_133A_4E9F_944E_504B887B6980_INCLUDED__

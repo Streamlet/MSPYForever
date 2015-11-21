@@ -13,8 +13,9 @@
 #define __XLBINTREE_H_6C3F6F71_DCAC_4B1D_9BAC_1333FB803DEE_INCLUDED__
 
 
-#include "xlBinTreeNode.h"
 #include "../Memory/xlMemory.h"
+#include "xlBinTreeNode.h"
+#include "xlIterator.h"
 
 namespace xl
 {
@@ -27,20 +28,16 @@ namespace xl
 
         }
 
-        BinTree(const BinTree &that) : m_pRoot(nullptr)
+        BinTree(const BinTree &that) : m_pRoot(CopySubTree(that.m_pRoot))
         {
-            *this = that;
+
         }
 
-        ~BinTree()
+        BinTree(BinTree &&that) : m_pRoot(that.m_pRoot)
         {
-            Clear();
+            that.m_pRoot = nullptr;
         }
 
-    protected:
-        NodeType *m_pRoot;
-
-    public:
         BinTree &operator = (const BinTree &that)
         {
             if (this == &that)
@@ -53,6 +50,28 @@ namespace xl
             return *this;
         }
 
+        BinTree &operator = (BinTree &&that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            this->SetRoot(that.m_pRoot);
+            that.m_pRoot = nullptr;
+
+            return *this;
+        }
+
+        ~BinTree()
+        {
+            Clear();
+        }
+
+    protected:
+        NodeType *m_pRoot;
+
+    public:
         bool operator == (const BinTree &that) const
         {
             if (this == &that)
@@ -138,76 +157,6 @@ namespace xl
 
             return (IsSubTreeUnequal(pThisNode->pLeft, pThatNode->pLeft) ||
                     IsSubTreeUnequal(pThisNode->pRight, pThatNode->pRight));
-        }
-
-        static NodeType *RightmostOf(NodeType *pRoot)
-        {
-            if (pRoot == nullptr || pRoot->pRight == nullptr)
-            {
-                return pRoot;
-            }
-
-            return RightmostOf(pRoot->pRight);
-        }
-
-        static NodeType *LeftmostOf(NodeType *pRoot)
-        {
-            if (pRoot == nullptr || pRoot->pLeft == nullptr)
-            {
-                return pRoot;
-            }
-
-            return LeftmostOf(pRoot->pLeft);
-        }
-
-        static NodeType *PreviousOf(NodeType *pNode)
-        {
-            if (pNode == nullptr)
-            {
-                return nullptr;
-            }
-
-            if (pNode->pLeft != nullptr)
-            {
-                return RightmostOf(pNode->pLeft);
-            }
-
-            if (pNode->pParent == nullptr)
-            {
-                return nullptr;
-            }
-
-            while (pNode->pParent != nullptr && pNode == pNode->pParent->pLeft)
-            {
-                pNode = pNode->pParent;
-            }
-
-            return pNode->pParent;
-        }
-
-        static NodeType *NextOf(NodeType *pNode)
-        {
-            if (pNode == nullptr)
-            {
-                return nullptr;
-            }
-
-            if (pNode->pRight != nullptr)
-            {
-                return LeftmostOf(pNode->pRight);
-            }
-
-            if (pNode->pParent == nullptr)
-            {
-                return nullptr;
-            }
-
-            while (pNode->pParent != nullptr && pNode == pNode->pParent->pRight)
-            {
-                pNode = pNode->pParent;
-            }
-
-            return pNode->pParent;
         }
 
     public:
@@ -496,245 +445,32 @@ namespace xl
             return pNewNode;
         }
 
-    // Iterator
-
     public:
-        class Iterator
-        {
-        public:
-            Iterator() : m_pCurrent(nullptr), m_pHead(nullptr)
-            {
-
-            }
-
-            Iterator(const Iterator &that) : m_pCurrent(nullptr), m_pHead(nullptr)
-            {
-                *this = that;
-            }
-
-        protected:
-            Iterator(NodeType *pCurrent) : m_pCurrent(pCurrent), m_pHead(nullptr)
-            {
-
-            }
-
-            Iterator(NodeType *pCurrent, NodeType *pHead) : m_pCurrent(pCurrent), m_pHead(pHead)
-            {
-
-            }
-
-        protected:
-            friend class BinTree;
-
-        protected:
-            NodeType *m_pCurrent;
-            NodeType *m_pHead;
-
-        public:
-            T &operator * ()
-            {
-                return m_pCurrent->tValue.tValue;
-            }
-
-            T *operator -> ()
-            {
-                return &m_pCurrent->tValue.tValue;
-            }
-
-            operator T * ()
-            {
-                return &m_pCurrent->tValue.tValue;
-            }
-
-            operator const T * () const
-            {
-                return &m_pCurrent->tValue.tValue;
-            }
-
-        public:
-            Iterator &operator = (const Iterator &that)
-            {
-                if (this == &that)
-                {
-                    return *this;
-                }
-
-                this->m_pCurrent = that.m_pCurrent;
-                this->m_pHead = that.m_pHead;
-
-                return *this;
-            }
-
-            bool operator == (const Iterator &that) const
-            {
-                return (this->m_pCurrent == that.m_pCurrent);
-            }
-
-            bool operator != (const Iterator &that) const
-            {
-                return (this->m_pCurrent != that.m_pCurrent);
-            }
-
-        public:
-            Iterator &operator ++ ()
-            {
-                m_pCurrent = BinTree::NextOf(m_pCurrent);
-
-                return *this;
-            }
-
-            Iterator operator ++ (int)
-            {
-                typename BinTree<T>::Iterator itRet = *this;
-
-                ++*this;
-
-                return itRet;
-            }
-
-            Iterator &operator -- ()
-            {
-                if (m_pCurrent == nullptr)
-                {
-                    return BinTree::ReverseIterator(BinTree::RightmostOf(m_pHead), m_pHead);
-                }
-                else
-                {
-                    m_pCurrent = BinTree::NextOf(m_pCurrent);
-                }
-            }
-
-            Iterator operator -- (int)
-            {
-                typename BinTree<T>::Iterator itRet = *this;
-
-                --*this;
-
-                return itRet;
-            }
-        };
-
-        class ReverseIterator : public Iterator
-        {
-        public:
-            ReverseIterator() : Iterator()
-            {
-
-            }
-
-            ReverseIterator(const ReverseIterator &that) : Iterator()
-            {
-                *this = that;
-            }
-
-        protected:
-            ReverseIterator(NodeType *pCurrent) : Iterator(pCurrent)
-            {
-
-            }
-
-            ReverseIterator(NodeType *pCurrent, NodeType *pHead) : Iterator(pCurrent, pHead)
-            {
-
-            }
-
-
-        protected:
-            friend class BinTree;
-
-        public:
-            ReverseIterator &operator ++ ()
-            {
-                Iterator::m_pCurrent = BinTree::PreviousOf(m_pCurrent);
-
-                return *this;
-            }
-
-            ReverseIterator operator ++ (int)
-            {
-                typename BinTree<T>::ReverseIterator itRet = *this;
-
-                ++*this;
-
-                return itRet;
-            }
-
-            ReverseIterator &operator -- ()
-            {
-                if (m_pCurrent == nullptr)
-                {
-                    return BinTree::ReverseIterator(BinTree::LeftmostOf(m_pHead), m_pHead);
-                }
-                else
-                {
-                    m_pCurrent = BinTree::NextOf(m_pCurrent);
-                }
-
-                return *this;
-            }
-
-            ReverseIterator operator -- (int)
-            {
-                typename BinTree<T>::ReverseIterator itRet = *this;
-
-                --*this;
-
-                return itRet;
-            }
-        };
+        typedef BinTreeIterator<T, NodeType> Iterator;
+        typedef ReverseBinTreeIterator<T, NodeType> ReverseIterator;
 
     public:
         Iterator Begin() const
         {
-            return BinTree::Iterator(LeftmostOf(m_pRoot), m_pRoot);
+            return Iterator(Iterator::LeftmostChildOf(m_pRoot));
         }
 
         Iterator End() const
         {
-            return BinTree::Iterator(nullptr, m_pRoot);
+            return Iterator(nullptr);
         }
 
         ReverseIterator ReverseBegin() const
         {
-            return BinTree::ReverseIterator(RightmostOf(m_pRoot), m_pRoot);
+            return ReverseIterator(ReverseIterator::RightmostChildOf(m_pRoot));
         }
 
         ReverseIterator ReverseEnd() const
         {
-            return BinTree::ReverseIterator(nullptr, m_pRoot);
-        }
-
-    public:
-        Iterator GetIterator(NodeType *pNode) const
-        {
-            return Iterator(pNode, m_pRoot);
-        }
-
-        ReverseIterator GetReverseIterator(NodeType *pNode) const
-        {
-            return ReverseIterator(pNode, m_pRoot);
+            return ReverseIterator(nullptr);
         }
     };
 
 } // namespace xl
-
-//
-// For convenience of debugging, put the following code to the [AutoExpand] section of
-//     X:\Program Files\Microsoft Visual Studio 10.0\Common7\Packages\Debugger\autoexp.dat
-// 
-// ;------------------------------------------------------------------------------
-// ;  xl::BinTree
-// ;------------------------------------------------------------------------------
-// xl::BinTree<*>::Iterator|xl::BinTree<*>::ReverseIterator{
-//     preview (
-//         $e.m_pCurrent->tValue.tValue
-//     )
-//     children (
-//         #(
-//             [ptr] : &$e.m_pCurrent->tValue.tValue
-//         )
-//     )
-// }
-//
 
 #endif // #ifndef __XLBINTREE_H_6C3F6F71_DCAC_4B1D_9BAC_1333FB803DEE_INCLUDED__

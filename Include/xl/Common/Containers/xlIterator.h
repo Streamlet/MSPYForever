@@ -180,9 +180,9 @@ namespace xl
         }
 
         LinkedListIteratorT(const LinkedListIteratorT &that)
-            : m_pNode(nullptr), m_pHead(nullptr)
+            : m_pNode(that.m_pNode)
         {
-            *this = that;
+
         }
 
         LinkedListIteratorT &operator = (const LinkedListIteratorT &that)
@@ -213,12 +213,12 @@ namespace xl
 
         operator T * () const
         {
-            return m_pNode->tValue;
+            return &m_pNode->tValue;
         }
 
         operator const T * () const
         {
-            return m_pNode->tValue;
+            return &m_pNode->tValue;
         }
 
         operator NodeType * () const
@@ -284,6 +284,214 @@ namespace xl
         }
     };
 
+
+    template <typename NodeType>
+    class BinTreeIteratorBase
+    {
+    public:
+        static NodeType *RootOf(NodeType *pNode)
+        {
+            if (pNode == nullptr)
+            {
+                return pNode;
+            }
+
+
+            while (pNode->pParent != nullptr)
+            {
+                pNode = pNode->pParent;
+            }
+
+            return pNode;
+        }
+
+        static NodeType *LeftmostChildOf(NodeType *pNode)
+        {
+            if (pNode == nullptr)
+            {
+                return pNode;
+            }
+
+            while (pNode->pLeft != nullptr)
+            {
+                pNode = pNode->pLeft;
+            }
+
+            return pNode;
+        }
+
+        static NodeType *RightmostChildOf(NodeType *pNode)
+        {
+            if (pNode == nullptr)
+            {
+                return pNode;
+            }
+
+            while (pNode->pRight != nullptr)
+            {
+                pNode = pNode->pRight;
+            }
+
+            return pNode;
+        }
+
+    protected:
+        static NodeType *PreviousOf(NodeType *pNode)
+        {
+            if (pNode->pLeft != nullptr)
+            {
+                return RightmostChildOf(pNode->pLeft);
+            }
+
+            if (pNode->pParent == nullptr)
+            {
+                return nullptr;
+            }
+
+            while (pNode->pParent != nullptr && pNode == pNode->pParent->pLeft)
+            {
+                pNode = pNode->pParent;
+            }
+
+            return pNode->pParent;
+        }
+
+        static NodeType *NextOf(NodeType *pNode)
+        {
+            if (pNode->pRight != nullptr)
+            {
+                return LeftmostChildOf(pNode->pRight);
+            }
+
+            if (pNode->pParent == nullptr)
+            {
+                return nullptr;
+            }
+
+            while (pNode->pParent != nullptr && pNode == pNode->pParent->pRight)
+            {
+                pNode = pNode->pParent;
+            }
+
+            return pNode->pParent;
+        }
+    };
+
+    template <typename T, typename NodeType, bool R>
+    class BinTreeIteratorT : public BinTreeIteratorBase<NodeType>
+    {
+    public:
+        BinTreeIteratorT(NodeType *pNode = nullptr) : m_pNode(pNode)
+        {
+
+        }
+
+        BinTreeIteratorT(const BinTreeIteratorT &that) : m_pNode(that.m_pNode)
+        {
+
+        }
+
+        BinTreeIteratorT &operator = (const BinTreeIteratorT &that)
+        {
+            if (this == &that)
+            {
+                return *this;
+            }
+
+            this->m_pNode = that.m_pNode;
+
+            return *this;
+        }
+
+    protected:
+        NodeType *m_pNode;
+
+    public:
+        T &operator * () const
+        {
+            return m_pNode->tValue;
+        }
+
+        T *operator -> () const
+        {
+            return &m_pNode->tValue;
+        }
+
+        operator T * () const
+        {
+            return &m_pNode->tValue;
+        }
+
+        operator const T * () const
+        {
+            return &m_pNode->tValue;
+        }
+
+        operator NodeType * () const
+        {
+            return m_pNode;
+        }
+
+        operator const NodeType * () const
+        {
+            return m_pNode;
+        }
+
+    public:
+
+        bool operator == (const BinTreeIteratorT &that) const
+        {
+            return (this->m_pNode == that.m_pNode);
+        }
+
+        bool operator != (const BinTreeIteratorT &that) const
+        {
+            return (this->m_pNode != that.m_pNode);
+        }
+
+    public:
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && !R, BinTreeIteratorT<T, NodeType, R> &>::Type operator ++ ()
+        {
+            m_pNode = NextOf(m_pNode);
+            return *this;
+        }
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && R, BinTreeIteratorT<T, NodeType, R> &>::Type operator ++ ()
+        {
+            m_pNode = PreviousOf(m_pNode);
+            return *this;
+        }
+
+        BinTreeIteratorT operator ++ (int)
+        {
+            auto itRet = *this;
+            ++*this;
+            return itRet;
+        }
+
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && !R, BinTreeIteratorT<T, NodeType, R> &>::Type operator -- ()
+        {
+            m_pNode = PreviousOf(m_pNode);
+            return *this;
+        }
+        template <bool RR = R>
+        inline typename EnableIf<RR == R && R, BinTreeIteratorT<T, NodeType, R> &>::Type operator -- ()
+        {
+            m_pNode = NextOf(m_pNode);
+            return *this;
+        }
+
+        BinTreeIteratorT operator -- (int)
+        {
+            auto itRet = *this;
+            --*this;
+            return itRet;
+        }
+    };
+
+
     template <typename T>
     using BufferIterator = BufferIteratorT<T, false>;
 
@@ -296,6 +504,14 @@ namespace xl
 
     template <typename T, typename NodeType>
     using ReverseLinkedListIterator = LinkedListIteratorT<T, NodeType, true>;
+
+
+    template <typename T, typename NodeType>
+    using BinTreeIterator = BinTreeIteratorT<T, NodeType, false>;
+
+    template <typename T, typename NodeType>
+    using ReverseBinTreeIterator = BinTreeIteratorT<T, NodeType, true>;
+
 
 } // namespace xl
 
