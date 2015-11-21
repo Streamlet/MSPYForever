@@ -125,14 +125,10 @@
         </Expand>
     </Type>
 
-    <Type Name="xl::BinTree&lt;*&gt;::Iterator">
-        <AlternativeType Name="xl::BinTree&lt;*&gt;::Iterator" />
-        <AlternativeType Name="xl::BinTree&lt;*&gt;::ReverseIterator" />
-        <AlternativeType Name="xl::RBTree&lt;*&gt;::Iterator" />
-        <AlternativeType Name="xl::RBTree&lt;*&gt;::ReverseIterator" />
-        <DisplayString>{m_pCurrent-&gt;tValue.tValue}</DisplayString>
+    <Type Name="xl::BinTreeIteratorT&lt;*,*&gt;">
+        <DisplayString>{m_pNode-&gt;tValue}</DisplayString>
         <Expand>
-            <Item Name="[ptr]">&amp;m_pCurrent-&gt;tValue.tValue</Item>
+            <Item Name="[ptr]">&amp;m_pNode-&gt;tValue</Item>
         </Expand>
     </Type>
 
@@ -141,10 +137,10 @@
         <Expand>
             <TreeItems>
                 <Size>m_nSize</Size>
-                <HeadPointer>m_tBinTree.m_pRoot</HeadPointer>
+                <HeadPointer>m_pRoot</HeadPointer>
                 <LeftPointer>pLeft</LeftPointer>
                 <RightPointer>pRight</RightPointer>
-                <ValueNode>tValue.tValue</ValueNode>
+                <ValueNode>tValue</ValueNode>
             </TreeItems>
         </Expand>
     </Type>
@@ -154,20 +150,6 @@
         <Expand>
             <Item Name="[Key]">Key</Item>
             <Item Name="[Value]">Value</Item>
-        </Expand>
-    </Type>
-
-    <Type Name="xl::Set&lt;*&gt;">
-        <AlternativeType Name="xl::Map&lt;*&gt;" />
-        <DisplayString>{{ size={m_tRBTree.m_nSize} }}</DisplayString>
-        <Expand>
-            <TreeItems>
-                <Size>m_tRBTree.m_nSize</Size>
-                <HeadPointer>m_tRBTree.m_tBinTree.m_pRoot</HeadPointer>
-                <LeftPointer>pLeft</LeftPointer>
-                <RightPointer>pRight</RightPointer>
-                <ValueNode>tValue.tValue</ValueNode>
-            </TreeItems>
         </Expand>
     </Type>
 

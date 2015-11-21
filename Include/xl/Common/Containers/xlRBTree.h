@@ -33,25 +33,25 @@ namespace xl
         RBTreeNode *pRight;
         RBTreeNodeColor eColor;
 
-        RBTreeNode(RBTreeNodeColor eColor = RBTreeNodeColor_Black) :
+        inline RBTreeNode(RBTreeNodeColor eColor = RBTreeNodeColor_Black) :
             tValue(), pParent(nullptr), pLeft(nullptr), pRight(nullptr), eColor(eColor)
         {
 
         }
 
-        RBTreeNode(const T &tValue, RBTreeNodeColor eColor = RBTreeNodeColor_Black) :
+        inline RBTreeNode(const T &tValue, RBTreeNodeColor eColor = RBTreeNodeColor_Black) :
             tValue(tValue), pParent(nullptr), pLeft(nullptr), pRight(nullptr), eColor(eColor)
         {
 
         }
 
-        RBTreeNode(const RBTreeNode &that) :
+        inline RBTreeNode(const RBTreeNode &that) :
             tValue(that.tValue), pParent(nullptr), pLeft(nullptr), pRight(nullptr), eColor(that.eColor)
         {
 
         }
 
-        RBTreeNode &operator = (const RBTreeNode &that)
+        inline RBTreeNode &operator = (const RBTreeNode &that)
         {
             if (this == &that)
             {
@@ -67,32 +67,32 @@ namespace xl
             return *this;
         }
 
-        bool operator == (const RBTreeNode &that) const
+        inline bool operator == (const RBTreeNode &that) const
         {
             return this->tValue == that.tValue;
         }
 
-        bool operator != (const RBTreeNode &that) const
+        inline bool operator != (const RBTreeNode &that) const
         {
             return this->tValue != that.tValue;
         }
 
-        bool operator < (const RBTreeNode &that) const
+        inline bool operator < (const RBTreeNode &that) const
         {
             return this->tValue < that.tValue;
         }
 
-        bool operator > (const RBTreeNode &that) const
+        inline bool operator > (const RBTreeNode &that) const
         {
             return this->tValue > that.tValue;
         }
 
-        bool operator <= (const RBTreeNode &that) const
+        inline bool operator <= (const RBTreeNode &that) const
         {
             return this->tValue <= that.tValue;
         }
 
-        bool operator >= (const RBTreeNode &that) const
+        inline bool operator >= (const RBTreeNode &that) const
         {
             return this->tValue >= that.tValue;
         }
@@ -102,56 +102,56 @@ namespace xl
     class RBTree : public BinTree<T, RBTreeNode<T>>
     {
     public:
-        RBTree() : m_nSize(0)
+        inline RBTree() : m_nSize(0)
         {
 
         }
 
-        RBTree(const RBTree &that) : BinTree(that), m_nSize(that.m_nSize)
+        inline RBTree(const RBTree &that) : BinTree(that), m_nSize(that.m_nSize)
         {
 
         }
 
-        RBTree(RBTree &&that) : BinTree(that), m_nSize(that.m_nSize)
+        inline RBTree(RBTree &&that) : BinTree(that), m_nSize(that.m_nSize)
         {
             that.m_nSize = 0;
         }
 
-        RBTree &operator = (const RBTree &that)
+        inline RBTree &operator = (const RBTree &that)
         {
             if (this == &that)
             {
                 return *this;
             }
 
-            *(BinTree *)this = (BinTree)that;
+            *(BinTree *)this = (BinTree &)that;
             this->m_nSize = that.m_nSize;
 
             return *this;
         }
 
-        RBTree &operator = (RBTree &&that)
+        inline RBTree &operator = (RBTree &&that)
         {
             if (this == &that)
             {
                 return *this;
             }
 
-            *(BinTree *)this = Memory::Move((BinTree)that);
+            *(BinTree *)this = Memory::Move((BinTree &)that);
             this->m_nSize = that.m_nSize;
             that.m_nSize = 0;
 
             return *this;
         }
 
+    public:
         typedef RBTreeNode<T> NodeType;
 
     protected:
-        size_t       m_nSize;
+        size_t m_nSize;
 
     public:
-
-        bool operator == (const RBTree &that) const
+        inline bool operator == (const RBTree &that) const
         {
             if (this == &that)
             {
@@ -163,10 +163,10 @@ namespace xl
                 return false;
             }
 
-            return *(BinTree *)this == (BinTree)that;
+            return *(BinTree *)this == (BinTree &)that;
         }
 
-        bool operator != (const RBTree &that) const
+        inline bool operator != (const RBTree &that) const
         {
             if (this == &that)
             {
@@ -178,29 +178,29 @@ namespace xl
                 return true;
             }
 
-            return *(BinTree *)this != (BinTree)that;
+            return *(BinTree *)this != (BinTree &)that;
         }
 
     public:
-        bool Empty() const
+        inline bool Empty() const
         {
             return m_nSize == 0;
         }
 
-        size_t Size() const
+        inline size_t Size() const
         {
             return m_nSize;
         }
 
     public:
-        void Clear()
+        inline void Clear()
         {
             BinTree::Clear();
             m_nSize = 0;
         }
 
     protected:
-        void SwapNode(NodeType *pNode1, NodeType *pNode2)
+        inline void SwapNode(NodeType *pNode1, NodeType *pNode2)
         {
             BinTree::SwapNode(pNode1, pNode2);
             Memory::Swap(pNode1->eColor, pNode2->eColor);
@@ -208,7 +208,7 @@ namespace xl
 
     protected:
         // All cases
-        void InsertFixup(NodeType *pNode)
+        inline void InsertFixup(NodeType *pNode)
         {
             // Is root
             if (pNode->pParent == nullptr)
@@ -222,7 +222,7 @@ namespace xl
         }
 
         // Not root
-        void InsertFixupCase1(NodeType *pNode)
+        inline void InsertFixupCase1(NodeType *pNode)
         {
             // Parent is black
             if (pNode->pParent->eColor == RBTreeNodeColor_Black)
@@ -243,7 +243,7 @@ namespace xl
         }
 
         // Not root, Parent is red
-        void InsertFixupCase2L(NodeType *pNode)
+        inline void InsertFixupCase2L(NodeType *pNode)
         {
             NodeType *pGrandParent = pNode->pParent->pParent;
 
@@ -263,7 +263,7 @@ namespace xl
 
         }
 
-        void InsertFixupCase2R(NodeType *pNode)
+        inline void InsertFixupCase2R(NodeType *pNode)
         {
             NodeType *pGrandParent = pNode->pParent->pParent;
 
@@ -282,7 +282,7 @@ namespace xl
         }
 
         // Not root, Parent is red, Uncle is black
-        void InsertFixupCase3L(NodeType *pNode)
+        inline void InsertFixupCase3L(NodeType *pNode)
         {
             // New node is Parent's r-child
             if (pNode == pNode->pParent->pRight)
@@ -296,7 +296,7 @@ namespace xl
             }
         }
 
-        void InsertFixupCase3R(NodeType *pNode)
+        inline void InsertFixupCase3R(NodeType *pNode)
         {
             if (pNode == pNode->pParent->pLeft)
             {
@@ -310,14 +310,14 @@ namespace xl
         }
 
         // Not root, Parent is red, Uncle is black, New node is Parent's l-child
-        void InsertFixupCase4L(NodeType *pNode)
+        inline void InsertFixupCase4L(NodeType *pNode)
         {
             RotateRight(pNode->pParent->pParent);
             pNode->pParent->eColor = RBTreeNodeColor_Black;
             pNode->pParent->pRight->eColor = RBTreeNodeColor_Red;
         }
 
-        void InsertFixupCase4R(NodeType *pNode)
+        inline void InsertFixupCase4R(NodeType *pNode)
         {
             RotateLeft(pNode->pParent->pParent);
             pNode->pParent->eColor = RBTreeNodeColor_Black;
@@ -325,7 +325,7 @@ namespace xl
         }
 
         // All cases
-        void DeleteFixup(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixup(NodeType *pNode, NodeType *pParent)
         {
             // Is root
             if (pParent == nullptr)
@@ -358,7 +358,7 @@ namespace xl
         }
 
         // Not root
-        void DeleteFixupCase1L(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase1L(NodeType *pNode, NodeType *pParent)
         {
             // Sibling is red
             if (pParent->pRight->eColor == RBTreeNodeColor_Red)
@@ -371,7 +371,7 @@ namespace xl
             DeleteFixupCase2L(pNode, pParent);
         }
 
-        void DeleteFixupCase1R(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase1R(NodeType *pNode, NodeType *pParent)
         {
             if (pParent->pLeft->eColor == RBTreeNodeColor_Red)
             {
@@ -384,7 +384,7 @@ namespace xl
         }
 
         // Not root, Sibling is black
-        void DeleteFixupCase2L(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase2L(NodeType *pNode, NodeType *pParent)
         {
             NodeType *pSibling = pParent->pRight;
 
@@ -401,7 +401,7 @@ namespace xl
             }
         }
 
-        void DeleteFixupCase2R(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase2R(NodeType *pNode, NodeType *pParent)
         {
             NodeType *pSibling = pParent->pLeft;
 
@@ -418,7 +418,7 @@ namespace xl
         }
 
         // Not root, Sibling is black, Sibling's r-child is black
-        void DeleteFixupCase3L(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase3L(NodeType *pNode, NodeType *pParent)
         {
             NodeType *pSibling = pParent->pRight;
 
@@ -437,7 +437,7 @@ namespace xl
             }
         }
 
-        void DeleteFixupCase3R(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase3R(NodeType *pNode, NodeType *pParent)
         {
             NodeType *pSibling = pParent->pLeft;
 
@@ -456,7 +456,7 @@ namespace xl
         }
 
         // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black
-        void DeleteFixupCase4L(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase4L(NodeType *pNode, NodeType *pParent)
         {
             // Parent is red
             if (pParent->eColor == RBTreeNodeColor_Red)
@@ -471,7 +471,7 @@ namespace xl
 
         }
 
-        void DeleteFixupCase4R(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase4R(NodeType *pNode, NodeType *pParent)
         {
             if (pParent->eColor == RBTreeNodeColor_Red)
             {
@@ -485,14 +485,14 @@ namespace xl
         }
 
         // Not root, Sibling is black, Sibling's r-child is black, Sibling's l-child is black, Parent is black
-        void DeleteFixupCase5L(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase5L(NodeType *pNode, NodeType *pParent)
         {
             pParent->pRight->eColor = RBTreeNodeColor_Red;
 
             DeleteFixup(pParent, pParent->pParent);
         }
 
-        void DeleteFixupCase5R(NodeType *pNode, NodeType *pParent)
+        inline void DeleteFixupCase5R(NodeType *pNode, NodeType *pParent)
         {
             pParent->pLeft->eColor = RBTreeNodeColor_Red;
 
@@ -500,7 +500,7 @@ namespace xl
         }
 
     protected:
-        NodeType *Find(const T &tValue, NodeType *pRoot) const
+        inline NodeType *Find(const T &tValue, NodeType *pRoot) const
         {
             if (pRoot == nullptr)
             {
@@ -515,7 +515,7 @@ namespace xl
             return Find(tValue, tValue < pRoot->tValue ? pRoot->pLeft : pRoot->pRight);
         }
 
-        NodeType *FindMaxBelow(const T &tValue, NodeType *pRoot, bool bIncludeEqual = true) const
+        inline NodeType *FindMaxBelow(const T &tValue, NodeType *pRoot, bool bIncludeEqual = true) const
         {
             if (pRoot == nullptr)
             {
@@ -544,7 +544,7 @@ namespace xl
             }
         }
 
-        NodeType *FindMinAbove(const T &tValue, NodeType *pRoot, bool bIncludeEqual = true) const 
+        inline NodeType *FindMinAbove(const T &tValue, NodeType *pRoot, bool bIncludeEqual = true) const
         {
             if (pRoot == nullptr)
             {
@@ -574,7 +574,7 @@ namespace xl
         }
 
     protected:
-        void DeleteNode(NodeType *pNode)
+        inline void DeleteNode(NodeType *pNode)
         {
             if (pNode == nullptr)
             {
@@ -652,7 +652,7 @@ namespace xl
             DeleteFixup(pNewNode, pNewNode == nullptr ? pParent : pNewNode->pParent);
         }
 
-        NodeType *InsertValue(const T &tValue, NodeType *pRoot = nullptr)
+        inline NodeType *InsertValue(const T &tValue, NodeType *pRoot = nullptr)
         {
             if (pRoot == nullptr)
             {
@@ -705,7 +705,7 @@ namespace xl
         }
 
     public:
-        void Delete(const T &tValue)
+        inline void Delete(const T &tValue)
         {
             NodeType *pNode = Find(tValue, m_pRoot);
 
@@ -716,29 +716,29 @@ namespace xl
         }
 
     public:
-        Iterator Find(const T &tValue) const
+        inline Iterator Find(const T &tValue) const
         {
             return Iterator(Find(tValue, m_pRoot));
         }
 
-        Iterator FindMaxBelow(const T &tValue, bool bIncludeEqual = true) const
+        inline Iterator FindMaxBelow(const T &tValue, bool bIncludeEqual = true) const
         {
             return Iterator(FindMaxBelow(tValue, m_pRoot, bIncludeEqual));
         }
 
-        Iterator FindMinAbove(const T &tValue, bool bIncludeEqual = true) const
+        inline Iterator FindMinAbove(const T &tValue, bool bIncludeEqual = true) const
         {
             return Iterator(FindMinAbove(tValue, m_pRoot, bIncludeEqual));
         }
 
     public:
-        Iterator Insert(const T &tValue)
+        inline Iterator Insert(const T &tValue)
         {
             return Iterator(InsertValue(tValue));
         }
 
         template <typename I>
-        void Insert(const I &itBegin, const I &itEnd)
+        inline void Insert(const I &itBegin, const I &itEnd)
         {
             for (I it = itBegin; it != itEnd; ++it)
             {
@@ -746,7 +746,7 @@ namespace xl
             }
         }
 
-        Iterator Delete(const Iterator &itWhere)
+        inline Iterator Delete(const Iterator &itWhere)
         {
             Iterator itNext = itWhere;
             ++itNext;
@@ -754,7 +754,7 @@ namespace xl
             return itNext;
         }
 
-        ReverseIterator Delete(const ReverseIterator &itWhere)
+        inline ReverseIterator Delete(const ReverseIterator &itWhere)
         {
             ReverseIterator itNext = itWhere;
             ++itNext;
