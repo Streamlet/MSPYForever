@@ -730,7 +730,7 @@ namespace xl
             while (product > temp)
             {
                 --test;
-                product = div.Mul(test);
+                product -= div;
             }
 
             BigIntT<T> res(test);
