@@ -106,6 +106,11 @@ namespace xl
             return RBTree::Find(Pair<K, V>(key));
         }
 
+        inline Iterator Insert(const xl::Pair<K, V> &pair)
+        {
+            return RBTree::Insert(pair);
+        }
+
         inline Iterator Insert(const K &key, const V &value)
         {
             return RBTree::Insert(Pair<K, V>(key, value));
