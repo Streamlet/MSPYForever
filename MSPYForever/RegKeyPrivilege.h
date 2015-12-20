@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <xl/Common/Containers/xlArray.h>
 #include <xl/Common/String/xlString.h>
-#include <xl/Win32/Memory/xlSafeSmartPtr.h>
+#include <xl/Windows/Memory/xlSafeSmartPtr.h>
 
 
 struct IRegKeyPrivilegeAquireRestore
@@ -33,7 +33,7 @@ private:
     SECURITY_INFORMATION m_SecurityInformation;
     HKEY m_hRootKey;
     xl::String m_strSubKey;
-    xl::SafeSharedArray<BYTE> m_pOldSd;
+    xl::Windows::SafeSharedArray<BYTE> m_pOldSd;
     bool m_bBackedup;
 };
 
@@ -68,7 +68,7 @@ private:
     bool Restore();
 
 private:
-    typedef xl::SafeSharedPtr<IRegKeyPrivilegeAquireRestore> IRegKeyPrivilegeAquireRestorePtr;
+    typedef xl::Windows::SafeSharedPtr<IRegKeyPrivilegeAquireRestore> IRegKeyPrivilegeAquireRestorePtr;
     typedef xl::Array<IRegKeyPrivilegeAquireRestorePtr> IRegKeyPrivilegeAquireRestorePtrList;
 
     IRegKeyPrivilegeAquireRestorePtrList m_listAquireRestore;

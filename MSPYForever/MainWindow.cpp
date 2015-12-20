@@ -48,29 +48,29 @@ bool MainWindow::OnInitDialog()
     SetIcon(hLargeIcon);
     SetIcon(hSmallIcon, FALSE);
 
-    SetWindowText(m_hWnd, _T("纪念逝去的的微拼长句模式"));
+    SetWindowText(_T("纪念逝去的的微拼长句模式"));
     SetFont(m_hFont);
 
     m_staticIcon.Create(m_hWnd, ID_STATIC, 20, 20, 48, 48, WS_CHILD | WS_VISIBLE | SS_ICON);
     m_staticIcon.SetIcon(hLargeIcon);
 
     m_staticWatchword.Create(m_hWnd, ID_STATIC, 80, 20, 470, 300, WS_CHILD | WS_VISIBLE);
-    SetWindowText(m_staticWatchword, _T("来，跟我念台词:\r\n")
-                                     _T("\r\n")
-                                     _T("　　众所周知，长句模式是微软拼音输入法诞生以来的经典模式，是神圣不可放弃的精髓模式。\r\n")
-                                     _T("\r\n")
-                                     _T("　　近年来，随着词组输入法的兴起与流入，傻逼大微软终究没有抵制住词组输入法这个糖衣炮")
-                                     _T("弹的诱惑，竟然毅然决然地在 Windows 8 中放弃了长句模式。\r\n")
-                                     _T("\r\n")
-                                     _T("　　如此倒行逆施，广大朝鲜人民不答应！阿佤人民不答应！大韩宇宙后裔不答应！\r\n")
-                                     _T("\r\n")
-                                     _T("　　望傻逼大微软悬崖勒马，在下一个升级中改正，勿谓言之不预也。\r\n"));
+    m_staticWatchword.SetWindowText(_T("来，跟我念台词:\r\n")
+                                    _T("\r\n")
+                                    _T("　　众所周知，长句模式是微软拼音输入法诞生以来的经典模式，是神圣不可放弃的精髓模式。\r\n")
+                                    _T("\r\n")
+                                    _T("　　近年来，随着词组输入法的兴起与流入，傻逼大微软终究没有抵制住词组输入法这个糖衣炮")
+                                    _T("弹的诱惑，竟然毅然决然地在 Windows 8 中放弃了长句模式。\r\n")
+                                    _T("\r\n")
+                                    _T("　　如此倒行逆施，广大朝鲜人民不答应！阿佤人民不答应！大韩宇宙后裔不答应！\r\n")
+                                    _T("\r\n")
+                                    _T("　　望傻逼大微软悬崖勒马，在下一个升级中改正，勿谓言之不预也。\r\n"));
 
     m_lineWebSite.Create(m_hWnd, ID_LINK, 80, 324, 120, 16, WS_CHILD | WS_VISIBLE);
-    SetWindowText(m_lineWebSite, _T("<a>溪流软件工作室出品</a>"));
+    m_lineWebSite.SetWindowText(_T("<a>溪流软件工作室出品</a>"));
 
     m_button.Create(m_hWnd, ID_BUTTON, 390, 320, 160, 30);
-    SetWindowText(m_button, _T("猛击此处找回长句模式"));
+    m_button.SetWindowText(_T("猛击此处找回长句模式"));
     Button_SetElevationRequiredState(m_button, TRUE);
 
     return true;

@@ -5,7 +5,7 @@
 #include <ShlObj.h>
 #include <tchar.h>
 #include <xl/Common/Meta/xlScopeExit.h>
-#include <xl/Win32/Registry/xlRegistry.h>
+#include <xl/Windows/Registry/xlRegistry.h>
 
 
 // Win8
@@ -296,10 +296,10 @@ bool Utility::GetMspyForWin8()
     }
 #endif
 
-    if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
-                                       REG_MSPY_ROOT_80 REG_MSPY_PATH_NE,
-                                       REG_MSPY_KEY_DESC,
-                                       REG_MSPY_VALUE_DESC_NE))
+    if (!xl::Windows::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
+                                                REG_MSPY_ROOT_80 REG_MSPY_PATH_NE,
+                                                REG_MSPY_KEY_DESC,
+                                                REG_MSPY_VALUE_DESC_NE))
     {
         XL_ERROR(_T("Failed to set IME display description."));
         return false;
@@ -372,35 +372,35 @@ bool Utility::GetMspyForWin81()
     }
 #endif
 
-    if (!xl::Registry::DeleteKeyRecursion(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_SF))
+    if (!xl::Windows::Registry::DeleteKeyRecursion(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_SF))
     {
         XL_ERROR(_T("Failed to delete MSPY SimpleFast."));
     }
 
-    if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
-                                       REG_MSPY_ROOT_81 REG_MSPY_PATH_NE,
-                                       REG_MSPY_KEY_DESC,
-                                       REG_MSPY_VALUE_DESC_NE))
+    if (!xl::Windows::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
+                                                REG_MSPY_ROOT_81 REG_MSPY_PATH_NE,
+                                                REG_MSPY_KEY_DESC,
+                                                REG_MSPY_VALUE_DESC_NE))
     {
         XL_ERROR(_T("Failed to set IME display description."));
         return false;
     }
-    if (!xl::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
-                                       REG_MSPY_ROOT_81 REG_MSPY_PATH_NE,
-                                       REG_MSPY_KEY_ICON,
-                                       REG_MSPY_VALUE_ICON_NE))
+    if (!xl::Windows::Registry::SetExpandString(HKEY_LOCAL_MACHINE,
+                                                REG_MSPY_ROOT_81 REG_MSPY_PATH_NE,
+                                                REG_MSPY_KEY_ICON,
+                                                REG_MSPY_VALUE_ICON_NE))
     {
         XL_ERROR(_T("Failed to set IME icon."));
         return false;
     }
 
-    if (!xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_IMMERSIVESUPPORT_NE) ||
-        !xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_ITEM_IMMERSIVESUPPORT_NE))
+    if (!xl::Windows::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_IMMERSIVESUPPORT_NE) ||
+        !xl::Windows::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_ITEM_IMMERSIVESUPPORT_NE))
     {
         XL_WARNING(_T("Failed to declare Metro compatibility."));
     }
-    if (!xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_SYSTRAYSUPPORT_NE) ||
-        !xl::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_ITEM_SYSTRAYSUPPORT_NE))
+    if (!xl::Windows::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_SYSTRAYSUPPORT_NE) ||
+        !xl::Windows::Registry::CreateKey(HKEY_LOCAL_MACHINE, REG_MSPY_ROOT_81 REG_MSPY_PATH_CATEGORY_ITEM_SYSTRAYSUPPORT_NE))
     {
         XL_WARNING(_T("Failed to declare systray support."));
     }

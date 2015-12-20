@@ -1,7 +1,8 @@
 #include "RegKeyPrivilege.h"
 #include <xl/Common/Memory/xlMemory.h>
 #include <xl/Common/Meta/xlScopeExit.h>
-#include <xl/Win32/Registry/xlRegistry.h>
+#include <xl/Windows/Registry/xlRegistry.h>
+#include <tchar.h>
 #include "TraceLog.h"
 
 RegKeyPrivilegeAquireRestore::RegKeyPrivilegeAquireRestore(REGSAM samDesired,
@@ -278,7 +279,7 @@ bool RegKeyOwnerDaclAquireRestoreRec::Aquire(HKEY hRootKey, LPCTSTR lpszSubKey)
 
     xl::String strPath = lpszSubKey;
     xl::Array<xl::String> arrSubKeys;
-    xl::Registry::EnumSubKey(hRootKey, strPath, &arrSubKeys);
+    xl::Windows::Registry::EnumSubKey(hRootKey, strPath, &arrSubKeys);
 
     for (auto it = arrSubKeys.Begin(); it != arrSubKeys.End(); ++it)
     {
