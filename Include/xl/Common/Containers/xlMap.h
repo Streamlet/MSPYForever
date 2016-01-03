@@ -96,9 +96,13 @@ namespace xl
         }
 
     public:
+        // From Base
+        inline Iterator Delete(const Iterator &itWhere);
+        inline ReverseIterator Delete(const ReverseIterator &itWhere);
+
         inline void Delete(const K &key)
         {
-            Delete(Find(key));
+            RBTree::Delete(Find(key));
         }
 
         inline Iterator Find(const K &key)
