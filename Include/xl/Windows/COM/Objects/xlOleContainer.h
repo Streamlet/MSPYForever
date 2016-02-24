@@ -15,7 +15,7 @@
 
 #include "../InterfaceHelper/xlIOleClientSiteImpl.h"
 #include "../InterfaceHelper/xlIOleInPlaceFrameImpl.h"
-#include "../InterfaceHelper/xlIOleInPlaceSiteImpl.h"
+#include "../InterfaceHelper/xlIOleInPlaceSiteWindowlessImpl.h"
 #include "../xlComInclude.h"
 
 namespace xl
@@ -23,7 +23,7 @@ namespace xl
     namespace Windows
     {
         class OleContainerImpl : public IOleClientSiteImpl<>,
-                                 public IOleInPlaceSiteImpl<>,
+                                 public IOleInPlaceSiteWindowlessImpl<>,
                                  public IOleInPlaceFrameImpl<>
         {
         public:
@@ -31,7 +31,8 @@ namespace xl
                                  m_pStorage(nullptr),
                                  m_pOleObj(nullptr),
                                  m_pInPlaceObj(nullptr),
-                                 m_bInPlaceActived(false)
+                                 m_bInPlaceActived(false),
+                                 m_bUIActived(false)
             {
                 ZeroMemory(&m_rect, sizeof(RECT));
 
@@ -40,8 +41,6 @@ namespace xl
 
             ~OleContainerImpl()
             {
-                DestroyOleObject();
-
                 OleUninitialize();
             }
 
@@ -80,6 +79,7 @@ namespace xl
             {
                 if (m_pInPlaceObj != nullptr)
                 {
+                    m_pInPlaceObj->InPlaceDeactivate();
                     m_pInPlaceObj->Release();
                     m_pInPlaceObj = nullptr;
                 }
@@ -137,6 +137,28 @@ namespace xl
                 return m_bInPlaceActived ? S_FALSE : S_OK;
             }
 
+            STDMETHOD(OnInPlaceActivate)()
+            {
+                if (m_bInPlaceActived)
+                {
+                    return E_UNEXPECTED;
+                }
+
+                m_bInPlaceActived = true;
+                return S_OK;
+            }
+
+            STDMETHOD(OnUIActivate)()
+            {
+                if (m_bUIActived)
+                {
+                    return E_UNEXPECTED;
+                }
+
+                m_bUIActived = true;
+                return S_OK;
+            }
+
             STDMETHOD(GetWindowContext)(IOleInPlaceFrame **ppFrame,
                                         IOleInPlaceUIWindow **ppDoc,
                                         LPRECT lprcPosRect,
@@ -165,12 +187,35 @@ namespace xl
                 return S_OK;
             }
 
+            STDMETHOD(OnUIDeactivate)(BOOL fUndoable)
+            {
+                if (!m_bUIActived)
+                {
+                    return E_UNEXPECTED;
+                }
+
+                m_bUIActived = false;
+                return S_OK;
+            }
+
+            STDMETHOD(OnInPlaceDeactivate)()
+            {
+                if (!m_bInPlaceActived)
+                {
+                    return E_UNEXPECTED;
+                }
+
+                m_bInPlaceActived = false;
+                return S_OK;
+            }
+
         protected:
             HWND               m_hOleParent;
             IStorage          *m_pStorage;
             IOleObject        *m_pOleObj;
             IOleInPlaceObject *m_pInPlaceObj;
             bool               m_bInPlaceActived;
+            bool               m_bUIActived;
             RECT               m_rect;
         };
 
@@ -192,6 +237,8 @@ namespace xl
             XL_COM_INTERFACE_BEGIN(OleContainer)
                 XL_COM_INTERFACE(IOleClientSite)
                 XL_COM_INTERFACE(IOleInPlaceSite)
+                XL_COM_INTERFACE(IOleInPlaceSiteEx)
+                XL_COM_INTERFACE(IOleInPlaceSiteWindowless)
                 XL_COM_INTERFACE(IOleInPlaceFrame)
             XL_COM_INTERFACE_END()
         };

@@ -64,15 +64,20 @@
     <ClInclude Include="..\..\Include\xl\Common\String\xlEncoding.h" />
     <ClInclude Include="..\..\Include\xl\Common\String\xlString.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlICanHandleExceptionImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIClassFactoryImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDispatchExImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDispatchImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIObjectWithSiteImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleClientSiteImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteExImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteWindowlessImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleWindowImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIShockwaveFlashImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfCompositionSinkImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h" />
@@ -94,6 +99,7 @@
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIUnknownImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIWMPCoreImpl.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIWMPPlayerImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlFlashPlayer.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlMediaPlayer.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlOleContainer.h" />
     <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlWebBrowser.h" />
@@ -153,6 +159,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\Include\xl\Linux\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Include\xl\Windows\COM\InterfaceHelper\ShockwaveFlash.tlh" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}</ProjectGuid>

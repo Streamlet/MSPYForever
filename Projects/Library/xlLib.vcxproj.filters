@@ -394,6 +394,24 @@
     <ClInclude Include="..\..\Include\xl\Common\Containers\xlLinkedListNode.h">
       <Filter>Common\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDispatchExImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlICanHandleExceptionImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlFlashPlayer.h">
+      <Filter>Windows\COM\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIShockwaveFlashImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteWindowlessImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteExImpl.h">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">
@@ -488,5 +506,10 @@
     <Text Include="..\..\Include\xl\Linux\Readme.txt">
       <Filter>Linux</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Include\xl\Windows\COM\InterfaceHelper\ShockwaveFlash.tlh">
+      <Filter>Windows\COM\InterfaceHelper</Filter>
+    </None>
   </ItemGroup>
 </Project>

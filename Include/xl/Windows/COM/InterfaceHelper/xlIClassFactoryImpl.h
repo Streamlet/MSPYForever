@@ -26,7 +26,7 @@ namespace xl
         template <typename T = IClassFactory>
         class IClassFactoryImpl : public IUnknownImpl<T>
         {
-        public:
+        public: // IClassFactory Methods
             STDMETHOD(CreateInstance)(IUnknown *pUnkOuter,
                                       REFIID riid,
                                       void **ppvObject)
