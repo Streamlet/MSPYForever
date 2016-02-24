@@ -33,7 +33,7 @@ namespace xl
 
             ~FlashPlayerImpl()
             {
-                DestroyFlashPlayer();
+
             }
 
         public:
@@ -45,7 +45,7 @@ namespace xl
                 {
                     return false;
                 }
-                m_pOleObj->SetClientSite(this);
+
                 if (!InPlaceActive(hWnd, lpRect))
                 {
                     return false;
@@ -106,7 +106,7 @@ namespace xl
 
             ~FlashPlayer()
             {
-                DestroyFlashPlayer();
+
             }
 
         public:

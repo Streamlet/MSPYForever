@@ -35,7 +35,7 @@ namespace xl
 
             ~WebBrowserImpl()
             {
-                DestroyWebBrowser();
+
             }
 
         public:
@@ -125,7 +125,7 @@ namespace xl
 
             ~WebBrowser()
             {
-                DestroyWebBrowser();
+
             }
 
         public:

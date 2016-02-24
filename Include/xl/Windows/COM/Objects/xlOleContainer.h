@@ -99,6 +99,13 @@ namespace xl
 
             bool InPlaceActive(HWND hWnd, LPCRECT lpRect = nullptr)
             {
+                HRESULT hr = CanInPlaceActivate();
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
                 if (hWnd == nullptr || m_pOleObj == nullptr)
                 {
                     return false;
@@ -115,7 +122,7 @@ namespace xl
                     GetClientRect(m_hOleParent, &m_rect);
                 }
 
-                HRESULT hr = m_pOleObj->DoVerb(OLEIVERB_INPLACEACTIVATE, nullptr, this, 0, m_hOleParent, &m_rect);
+                hr = m_pOleObj->DoVerb(OLEIVERB_INPLACEACTIVATE, nullptr, this, 0, m_hOleParent, &m_rect);
 
                 if (FAILED(hr))
                 {
