@@ -17,6 +17,7 @@
 
 
 #include "../../Common/Meta/xlNonInstantiable.h"
+#include "../../Common/Meta/xlNonCopyable.h"
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
 #include <Windows.h>
@@ -347,6 +348,7 @@ namespace xl
             }
         };
 
+#if (WINVER >= 0x0602)
         class WinHttpProxyResult : public WINHTTP_PROXY_RESULT
         {
         public:
@@ -361,6 +363,7 @@ namespace xl
                 WinHttpFreeProxyResult(this);
             }
         };
+#endif
 
         template <typename T>
         class WinHttpProxyResolverT : public WinHttpHandleT<T>
@@ -399,10 +402,12 @@ namespace xl
                     reinterpret_cast<DWORD_PTR>(static_cast<T *>(this)));
             }
 
+#if (WINVER >= 0x0602)
             DWORD GetProxyResult(WinHttpProxyResult &result)
             {
                 return WinHttpGetProxyResult(m_hInternet, &result);
             }
+#endif
         };
 
         template <typename T>
@@ -692,6 +697,7 @@ namespace xl
                 case WINHTTP_CALLBACK_STATUS_WRITE_COMPLETE:
                     OnWriteComplete(*static_cast<DWORD *>(lpvStatusInformation));
                     break;
+#if (WINVER >= 0x0602)
                 case WINHTTP_CALLBACK_STATUS_GETPROXYFORURL_COMPLETE:
                     OnGetProxyForUrlComplete();
                     break;
@@ -701,6 +707,7 @@ namespace xl
                 case WINHTTP_CALLBACK_STATUS_SHUTDOWN_COMPLETE:
                     OnShutdownComplete();
                     break;
+#endif
                 default:
                     break;
                 }

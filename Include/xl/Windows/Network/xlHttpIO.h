@@ -377,7 +377,7 @@ namespace xl
                     return false;
                 }
 
-                pArrayOut->InsertBuffer(pArrayOut->Size(), (const BYTE *)lpBuffer, cbSize);
+                pArrayOut->Insert(pArrayOut->Size(), (const BYTE *)lpBuffer, cbSize);
 
                 return true;
             }
@@ -477,7 +477,7 @@ namespace xl
                     return true;
                 }
 
-                pArrayOut->InsertBuffer(pArrayOut->Size(), (const BYTE *)lpBuffer, cbSize);
+                pArrayOut->Insert(pArrayOut->Size(), (const BYTE *)lpBuffer, cbSize);
 
                 return true;
             }
@@ -540,7 +540,7 @@ namespace xl
                     return false;
                 }
 
-                pArrayOut->InsertBuffer(pArrayOut->Size(), (const BYTE *)lpBuffer, cbSize);
+                pArrayOut->Insert(pArrayOut->Size(), (const BYTE *)lpBuffer, cbSize);
 
                 return true;
             }

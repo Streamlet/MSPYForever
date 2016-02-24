@@ -21,6 +21,7 @@
 #include "../Common/String/xlString.h"
 #include "../Windows/Threads/xlCriticalSection.h"
 #include "../Windows/xlHandle.h"
+#include <stdio.h>
 
 // Define following macros before include this file
 // #define XL_LOG_PREFIX L"[LogPrefix] "             // Log prefix
@@ -213,7 +214,7 @@ namespace xl
 
                 va_list args;
                 va_start(args, strFormat);
-                int iLength = _vswprintf(szMessage, MAX_MSG_LENGTH, strFormat, args);
+                int iLength = vswprintf_s(szMessage, MAX_MSG_LENGTH, strFormat, args);
                 va_end(args);
 
                 for (int i = iLength - 1; i >= 0; --i)
@@ -235,21 +236,21 @@ namespace xl
 #define XL_LOG_FUNC        _T(__FUNCTION__)
 #define XL_LOG_LINE        _T(XL_TOSTR(__LINE__))
 
-#define XL_LOG_FUNCTION(level)      ::xl::Log::LogEnterFunction(level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE); \
-                                    XL_ON_BLOCK_EXIT(::xl::Log::LogLeaveFunction, level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE)
-#define XL_LOG(level, format, ...)  ::xl::Log::LogFormat(level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE, format, __VA_ARGS__)
+#define XL_LOG_FUNCTION(level)      ::xl::AppHelper::Log::LogEnterFunction(level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE); \
+                                    XL_ON_BLOCK_EXIT(::xl::AppHelper::Log::LogLeaveFunction, level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE)
+#define XL_LOG(level, format, ...)  ::xl::AppHelper::Log::LogFormat(level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE, format, __VA_ARGS__)
 
-#define XL_LOG_FATAL_FUNCTION()     XL_LOG_FUNCTION(::xl::Log::LogLevel_Fatal)
-#define XL_LOG_ERROR_FUNCTION()     XL_LOG_FUNCTION(::xl::Log::LogLevel_Error)
-#define XL_LOG_WARNING_FUNCTION()   XL_LOG_FUNCTION(::xl::Log::LogLevel_Warning)
-#define XL_LOG_INFO_FUNCTION()      XL_LOG_FUNCTION(::xl::Log::LogLevel_Info)
-#define XL_LOG_VERBOSE_FUNCTION()   XL_LOG_FUNCTION(::xl::Log::LogLevel_Verbose)
+#define XL_LOG_FATAL_FUNCTION()     XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Fatal)
+#define XL_LOG_ERROR_FUNCTION()     XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Error)
+#define XL_LOG_WARNING_FUNCTION()   XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Warning)
+#define XL_LOG_INFO_FUNCTION()      XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Info)
+#define XL_LOG_VERBOSE_FUNCTION()   XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Verbose)
 
-#define XL_LOG_FATAL(format, ...)   XL_LOG(::xl::Log::LogLevel_Fatal,   format, __VA_ARGS__)
-#define XL_LOG_ERROR(format, ...)   XL_LOG(::xl::Log::LogLevel_Error,   format, __VA_ARGS__)
-#define XL_LOG_WARNING(format, ...) XL_LOG(::xl::Log::LogLevel_Warning, format, __VA_ARGS__)
-#define XL_LOG_INFO(format, ...)    XL_LOG(::xl::Log::LogLevel_Info,    format, __VA_ARGS__)
-#define XL_LOG_VERBOSE(format, ...) XL_LOG(::xl::Log::LogLevel_Verbose, format, __VA_ARGS__)
+#define XL_LOG_FATAL(format, ...)   XL_LOG(::xl::AppHelper::Log::LogLevel_Fatal,   format, __VA_ARGS__)
+#define XL_LOG_ERROR(format, ...)   XL_LOG(::xl::AppHelper::Log::LogLevel_Error,   format, __VA_ARGS__)
+#define XL_LOG_WARNING(format, ...) XL_LOG(::xl::AppHelper::Log::LogLevel_Warning, format, __VA_ARGS__)
+#define XL_LOG_INFO(format, ...)    XL_LOG(::xl::AppHelper::Log::LogLevel_Info,    format, __VA_ARGS__)
+#define XL_LOG_VERBOSE(format, ...) XL_LOG(::xl::AppHelper::Log::LogLevel_Verbose, format, __VA_ARGS__)
 
         } // namespace Log
     } // namespace AppHelper
