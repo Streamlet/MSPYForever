@@ -412,6 +412,9 @@
     <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteExImpl.h">
       <Filter>Windows\COM\InterfaceHelper</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlBitValue.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">
