@@ -50,6 +50,46 @@ namespace xl
 
             }
 
+        public:
+            bool CenterWindow()
+            {
+                HMONITOR hMonitor = MonitorFromWindow(m_hWnd, MONITOR_DEFAULTTONEAREST);
+
+                if (hMonitor == nullptr)
+                {
+                    return false;
+                }
+
+                MONITORINFO mi = { sizeof(MONITORINFO) };
+
+                if (!GetMonitorInfo(hMonitor, &mi))
+                {
+                    return false;
+                }
+
+                RECT rcWindow = {};
+
+                if (!GetWindowRect(&rcWindow))
+                {
+                    return false;
+                }
+
+                RECT rcCenter =
+                {
+                    (mi.rcWork.right - mi.rcWork.left) / 2 - (rcWindow.right - rcWindow.left) / 2,
+                    (mi.rcWork.bottom - mi.rcWork.top) / 2 - (rcWindow.bottom - rcWindow.top) / 2,
+                    (mi.rcWork.right - mi.rcWork.left) / 2 + (rcWindow.right - rcWindow.left) / 2,
+                    (mi.rcWork.bottom - mi.rcWork.top) / 2 + (rcWindow.bottom - rcWindow.top) / 2,
+                };
+
+                if (!MoveWindow(&rcCenter))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+
         public: // Attributes
 
             operator HWND() const
