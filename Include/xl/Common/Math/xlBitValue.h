@@ -34,12 +34,17 @@ namespace xl
         template <typename R = unsigned int, typename T = unsigned int>
         inline R Eval(const T *pData, size_t nOffset, size_t nBits)
         {
-            XL_ASSERT(nOffset < sizeof(T) * 8);
             XL_ASSERT(nBits > 0 && nBits <= sizeof(R) * 8);
 
             if (nOffset + nBits <= sizeof(T) * 8)
             {
                 return Eval<R, T>(pData[0], nOffset, nBits);
+            }
+
+            while (nOffset > sizeof(T) * 8)
+            {
+                ++pData;
+                nOffset -= sizeof(T) * 8;
             }
 
             R r = 0;
