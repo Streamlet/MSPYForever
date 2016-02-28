@@ -18,13 +18,13 @@
 namespace xl
 {
     template <typename T, typename U>
-    auto Min(T t, U u) -> decltype(t <= u ? t : u)
+    auto Min(T t, U u) -> decltype(t + u)
     {
         return (t <= u ? t : u);
     }
 
     template <typename T, typename U>
-    auto Max(T t, U u) -> decltype(t >= u ? t : u)
+    auto Max(T t, U u) -> decltype(t + u)
     {
         return (t >= u ? t : u);
     }
