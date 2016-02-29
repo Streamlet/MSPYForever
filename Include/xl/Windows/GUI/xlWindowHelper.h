@@ -390,7 +390,7 @@ namespace xl
                 ::SendMessage(m_hWnd, WM_PRINTCLIENT, (WPARAM)hDC, dwFlags);
             }
 
-            BOOL Update()
+            BOOL UpdateWindow()
             {
                 return ::UpdateWindow(m_hWnd);
             }

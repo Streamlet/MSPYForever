@@ -127,6 +127,7 @@
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdProgressBar.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdScrollBar.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdStatic.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdTrackBar.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlThunk.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindowHelper.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindow.h" />

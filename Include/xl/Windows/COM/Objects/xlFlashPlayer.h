@@ -65,6 +65,21 @@ namespace xl
                     return false;
                 }
 
+                hr = m_pCPC->FindConnectionPoint(__uuidof(ShockwaveFlashObjects::_IShockwaveFlashEvents), &m_pCP);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
+                DWORD dwCookie = 0;
+                hr = m_pCP->Advise((ShockwaveFlashObjects::_IShockwaveFlashEvents *)this, &dwCookie);
+
+                if (FAILED(hr))
+                {
+                    return false;
+                }
+
                 return true;
             }
 
@@ -115,7 +130,7 @@ namespace xl
                 XL_COM_INTERFACE(IOleInPlaceSite)
                 XL_COM_INTERFACE(IOleInPlaceSiteWindowless)
                 XL_COM_INTERFACE(IOleInPlaceFrame)
-                XL_COM_INTERFACE(_IShockwaveFlashEvents)
+                XL_COM_INTERFACE(ShockwaveFlashObjects::_IShockwaveFlashEvents)
             XL_COM_INTERFACE_END()
         };
 

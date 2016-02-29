@@ -50,11 +50,9 @@ namespace xl
 
             // NotifyMsgHandler Parameters:
             // HWND:     hWnd
-            // UINT_PTR: wID
-            // UINT:     uCode
-            // HWND:     hControl
+            // LPNMHDR:  lpNMHDR
             // BOOL &:   bHandled
-            typedef Function<LRESULT(HWND, UINT_PTR, UINT, HWND, BOOL &)> NotifyMsgHandler;
+            typedef Function<LRESULT(HWND, LPNMHDR, BOOL &)> NotifyMsgHandler;
 
         public:
             WindowMessage()
@@ -233,7 +231,7 @@ namespace xl
 
                     for (NotifyMsgHandlerList::Iterator it = pNotifyMsgHandlers->Begin(); it != pNotifyMsgHandlers->End(); ++it)
                     {
-                        lResult = (*it)(hWnd, uID, uCode, pNMHDR->hwndFrom, bHandled);
+                        lResult = (*it)(hWnd, pNMHDR, bHandled);
 
                         if (bHandled)
                         {

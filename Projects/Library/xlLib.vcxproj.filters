@@ -415,6 +415,9 @@
     <ClInclude Include="..\..\Include\xl\Common\Math\xlBitValue.h">
       <Filter>Common\Math</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdTrackBar.h">
+      <Filter>Windows\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">

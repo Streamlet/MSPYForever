@@ -148,7 +148,7 @@ int WINAPI wWinMain(__in HINSTANCE hInstance,
         return FALSE;
     });
 
-    wnd.AppendNotifyMsgHandler(8, NM_CLICK, [](HWND hWnd, UINT_PTR wID, UINT wCode, HWND hControl, BOOL &bHandled) -> LRESULT
+    wnd.AppendNotifyMsgHandler(8, NM_CLICK, [](HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled) -> LRESULT
     {
         ShellExecute(hWnd, L"open", L"http://www.streamlet.org/", L"", L"", SW_SHOW);
 

@@ -38,12 +38,6 @@ namespace xl
 
             }
 
-        protected:
-            static LPCTSTR GetClassName()
-            {
-                return WC_STATIC;
-            }
-
         public:
             bool Create(HWND hParent,
                         UINT nID,
