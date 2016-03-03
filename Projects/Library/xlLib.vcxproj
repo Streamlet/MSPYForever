@@ -117,6 +117,7 @@
     <ClInclude Include="..\..\Include\xl\Windows\File\xlPath.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlCommCtrlInitializer.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlDialog.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlDPI.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlMenu.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdButton.h" />
     <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdComboBox.h" />
