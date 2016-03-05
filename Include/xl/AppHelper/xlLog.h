@@ -31,9 +31,11 @@
 // #define XL_LOG_CONTENT_SOURCEFILE               // Output source file name
 // #define XL_LOG_CONTENT_FUNCTION                 // Output function name
 // #define XL_LOG_CONTENT_LINE                     // Output line number
-#ifndef XL_LOG_LEVEL                            // Output level
-#define XL_LOG_LEVEL    0xffffffff              // Output all for default
-#endif
+// #define XL_LOG_LEVEL_FATAL                      // Output log level fatal
+// #define XL_LOG_LEVEL_ERROR                      // Output log level error
+// #define XL_LOG_LEVEL_WARNING                    // Output log level warning
+// #define XL_LOG_LEVEL_INFO                       // Output log level info
+// #define XL_LOG_LEVEL_VERBOSE                    // Output log level verbose
 
 namespace xl
 {
@@ -41,15 +43,15 @@ namespace xl
     {
         namespace Log
         {
-            enum LogLevel
+#ifdef XL_LOG_TARGET_DEBUGGER
+            inline bool PrintToDebugger(const xl::String &strMessage)
             {
-                LogLevel_Fatal = 0x00000001,
-                LogLevel_Error = 0x00000002,
-                LogLevel_Warning = 0x00000004,
-                LogLevel_Info = 0x00000008,
-                LogLevel_Verbose = 0x00000010,
-            };
+                OutputDebugString(strMessage);
+                return true;
+            }
+#endif
 
+#ifdef XL_LOG_TARGET_CONSOLE
             inline bool PrintToConsole(const xl::String &strMessage)
             {
                 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -69,12 +71,7 @@ namespace xl
 
                 return true;
             }
-
-            inline bool PrintToDebugger(const xl::String &strMessage)
-            {
-                OutputDebugString(strMessage);
-                return true;
-            }
+#endif
 
 #ifdef XL_LOG_TARGET_FILE
             inline bool PrintToFile(const xl::String &strMessage)
@@ -120,7 +117,7 @@ namespace xl
             }
 #endif
 
-            inline void PrintMessage(LogLevel eLevel, const xl::String &strMessage, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
+            inline void PrintMessage(const xl::String &strLevel, const xl::String &strMessage, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
             {
                 xl::String strOutput;
 
@@ -133,31 +130,7 @@ namespace xl
 #ifdef XL_LOG_PREFIX
                 strOutput += XL_LOG_PREFIX;
 #endif
-
-                LPCTSTR lpszLevel = nullptr;
-                switch (eLevel)
-                {
-                case LogLevel_Fatal:
-                    lpszLevel = L"Fatal:  ";
-                    break;
-                case LogLevel_Error:
-                    lpszLevel = L"Error:  ";
-                    break;
-                case LogLevel_Warning:
-                    lpszLevel = L"Warning:";
-                    break;
-                case LogLevel_Info:
-                    lpszLevel = L"Info:   ";
-                    break;
-                case LogLevel_Verbose:
-                    lpszLevel = L"Verbose:";
-                    break;
-                default:
-                    lpszLevel = L"";
-                    break;
-                }
-                strOutput += lpszLevel;
-
+                strOutput += strLevel;
                 strOutput += strMessage;
 
 #if defined(XL_LOG_CONTENT_SOURCEFILE) || defined(XL_LOG_CONTENT_FUNCTION) || defined(XL_LOG_CONTENT_LINE)
@@ -188,11 +161,11 @@ namespace xl
                 strOutput += L"\r\n";
 
 #ifdef XL_LOG_TARGET_DEBUGGER
-                PrintToConsole(strOutput);
+                PrintToDebugger(strOutput);
 #endif
 
 #ifdef XL_LOG_TARGET_CONSOLE
-                PrintToDebugger(strOutput);
+                PrintToConsole(strOutput);
 #endif
 
 #ifdef XL_LOG_TARGET_FILE
@@ -200,23 +173,23 @@ namespace xl
 #endif
             } // PrintMessage
 
-            inline void LogEnterFunction(LogLevel eLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
+            inline void LogEnterFunction(const xl::String &strLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
             {
                 xl::String strMessage;
                 strMessage += L">>>>>>>>>> Enter ";
                 strMessage += strFunctionName;
-                PrintMessage(eLevel, strMessage, strSourceFile, strFunctionName, strLine);
+                PrintMessage(strLevel, strMessage, strSourceFile, strFunctionName, strLine);
             }
 
-            inline void LogLeaveFunction(LogLevel eLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
+            inline void LogLeaveFunction(const xl::String &strLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine)
             {
                 xl::String strMessage;
                 strMessage += L"<<<<<<<<<< Leave ";
                 strMessage += strFunctionName;
-                PrintMessage(eLevel, strMessage, strSourceFile, strFunctionName, strLine);
+                PrintMessage(strLevel, strMessage, strSourceFile, strFunctionName, strLine);
             }
 
-            inline void LogFormat(LogLevel eLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine, const wchar_t *strFormat, ...)
+            inline void LogFormat(const xl::String &strLevel, const xl::String &strSourceFile, const xl::String &strFunctionName, const xl::String &strLine, const wchar_t *strFormat, ...)
             {
                 const int MAX_MSG_LENGTH = 1024;
                 xl::Char szMessage[MAX_MSG_LENGTH] = {};
@@ -238,28 +211,85 @@ namespace xl
                     }
                 }
 
-                PrintMessage(eLevel, szMessage, strSourceFile, strFunctionName, strLine);
+                PrintMessage(strLevel, szMessage, strSourceFile, strFunctionName, strLine);
             }
 
 #define XL_LOG_FILE        XL_CONN(L, __FILE__)
 #define XL_LOG_FUNC        XL_CONN(L, __FUNCTION__)
 #define XL_LOG_LINE        XL_CONN(L, XL_TOSTR(__LINE__))
 
+#define XL_LOG_LEVEL_S_FATAL    L"Fatal:  "
+#define XL_LOG_LEVEL_S_ERROR    L"Error:  "
+#define XL_LOG_LEVEL_S_WARNING  L"Warning:"
+#define XL_LOG_LEVEL_S_INFO     L"Info:   "
+#define XL_LOG_LEVEL_S_VERBOSE  L"Verbose:"
+
 #define XL_LOG_FUNCTION(level)      ::xl::AppHelper::Log::LogEnterFunction(level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE); \
                                     XL_ON_BLOCK_EXIT(::xl::AppHelper::Log::LogLeaveFunction, level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE)
 #define XL_LOG(level, format, ...)  ::xl::AppHelper::Log::LogFormat(level, XL_LOG_FILE, XL_LOG_FUNC, XL_LOG_LINE, format, __VA_ARGS__)
 
-#define XL_LOG_FATAL_FUNCTION()     XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Fatal)
-#define XL_LOG_ERROR_FUNCTION()     XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Error)
-#define XL_LOG_WARNING_FUNCTION()   XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Warning)
-#define XL_LOG_INFO_FUNCTION()      XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Info)
-#define XL_LOG_VERBOSE_FUNCTION()   XL_LOG_FUNCTION(::xl::AppHelper::Log::LogLevel_Verbose)
 
-#define XL_LOG_FATAL(format, ...)   XL_LOG(::xl::AppHelper::Log::LogLevel_Fatal,   format, __VA_ARGS__)
-#define XL_LOG_ERROR(format, ...)   XL_LOG(::xl::AppHelper::Log::LogLevel_Error,   format, __VA_ARGS__)
-#define XL_LOG_WARNING(format, ...) XL_LOG(::xl::AppHelper::Log::LogLevel_Warning, format, __VA_ARGS__)
-#define XL_LOG_INFO(format, ...)    XL_LOG(::xl::AppHelper::Log::LogLevel_Info,    format, __VA_ARGS__)
-#define XL_LOG_VERBOSE(format, ...) XL_LOG(::xl::AppHelper::Log::LogLevel_Verbose, format, __VA_ARGS__)
+#ifdef XL_LOG_LEVEL_FATAL
+#define XL_LOG_FATAL_FUNCTION()     XL_LOG_FUNCTION(XL_LOG_LEVEL_S_FATAL)
+#else
+#define XL_LOG_FATAL_FUNCTION()
+#endif
+
+#ifdef XL_LOG_LEVEL_ERROR
+#define XL_LOG_ERROR_FUNCTION()     XL_LOG_FUNCTION(XL_LOG_LEVEL_S_ERROR)
+#else
+#define XL_LOG_ERROR_FUNCTION()
+#endif
+
+#ifdef XL_LOG_LEVEL_WARNING
+#define XL_LOG_WARNING_FUNCTION()   XL_LOG_FUNCTION(XL_LOG_LEVEL_S_WARNING)
+#else
+#define XL_LOG_WARNING_FUNCTION()
+#endif
+
+#ifdef XL_LOG_LEVEL_INFO
+#define XL_LOG_INFO_FUNCTION()      XL_LOG_FUNCTION(XL_LOG_LEVEL_S_INFO)
+#else
+#define XL_LOG_INFO_FUNCTION()
+#endif
+
+#ifdef XL_LOG_LEVEL_VERBOSE
+#define XL_LOG_VERBOSE_FUNCTION()   XL_LOG_FUNCTION(XL_LOG_LEVEL_S_VERBOSE)
+#else
+#define XL_LOG_VERBOSE_FUNCTION()
+#endif
+
+
+#ifdef XL_LOG_LEVEL_FATAL
+#define XL_LOG_FATAL(format, ...)   XL_LOG(XL_LOG_LEVEL_S_FATAL,   format, __VA_ARGS__)
+#else
+#define XL_LOG_FATAL(format, ...)
+#endif
+
+#ifdef XL_LOG_LEVEL_ERROR
+#define XL_LOG_ERROR(format, ...)   XL_LOG(XL_LOG_LEVEL_S_ERROR,   format, __VA_ARGS__)
+#else
+#define XL_LOG_ERROR(format, ...)
+#endif
+
+#ifdef XL_LOG_LEVEL_WARNING
+#define XL_LOG_WARNING(format, ...) XL_LOG(XL_LOG_LEVEL_S_WARNING, format, __VA_ARGS__)
+#else
+#define XL_LOG_WARNING(format, ...)
+#endif
+
+#ifdef XL_LOG_LEVEL_INFO
+#define XL_LOG_INFO(format, ...)    XL_LOG(XL_LOG_LEVEL_S_INFO,    format, __VA_ARGS__)
+#else
+#define XL_LOG_INFO(format, ...)
+#endif
+
+#ifdef XL_LOG_LEVEL_VERBOSE
+#define XL_LOG_VERBOSE(format, ...) XL_LOG(XL_LOG_LEVEL_S_VERBOSE, format, __VA_ARGS__)
+#else
+#define XL_LOG_VERBOSE(format, ...)
+#endif
+
 
         } // namespace Log
     } // namespace AppHelper
