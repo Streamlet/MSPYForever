@@ -13,6 +13,7 @@
 #define __XLSHA1_H_2D27EEEA_B8E7_46F2_8855_0CDA1C148C4F_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Memory/xlMemory.h"
 
 namespace xl

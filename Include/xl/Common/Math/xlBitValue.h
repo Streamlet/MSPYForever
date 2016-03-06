@@ -13,6 +13,7 @@
 #define __XLBITVALUE_H_2C0491F2_B7F9_41A2_8E10_26C71C5CA0DB_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlAssert.h"
 #include "../Meta/xlTypeTraits.h"
 #include "../Math/xlMathBase.h"

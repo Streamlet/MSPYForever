@@ -13,6 +13,8 @@
 #define __XLCOUNTOF_H_239FC2D1_72EA_4D58_87EA_CD0074D03F11_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     template <typename T, int N>

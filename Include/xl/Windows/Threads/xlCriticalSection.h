@@ -16,7 +16,6 @@
 #include "../../Common/Meta/xlNonCopyable.h"
 #include "../../Common/Meta/xlScopeExit.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 
 namespace xl
 {

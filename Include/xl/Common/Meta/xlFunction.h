@@ -13,6 +13,7 @@
 #define __XLFUNCTION_H_83D86772_25B2_4625_8A4F_0C5EAAF1E93C_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Memory/xlSmartPtr.h"
 #include "../Meta/xlMacros.h"
 #include "../Meta/xlTypeList.h"
@@ -32,7 +33,11 @@ namespace xl
 #define XL_FUNCTION_TYPENAME_VARIABLE_PATTERN(n)    A##n a##n
 #define XL_FUNCTION_TYPENAME_VARIABLE(n)            XL_REPZ(XL_FUNCTION_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
 
+#if _MSC_VER >= 1600
 #define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        static_cast<A##n &&>(a##n)
+#else
+#define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        a##n
+#endif
 #define XL_FUNCTION_VARIABLE_LIST(n)                XL_REPZ(XL_FUNCTION_VARIABLE_LIST_PATTERN, n, XL_COMMA)
 
     template <typename R, typename TL>
@@ -85,7 +90,7 @@ namespace xl
     public:
         FunctionBase *Clone() const
         {
-            return new FunctionPointerHandler(m_fnFunctionPointer);
+            return m_fnFunctionPointer == nullptr ? nullptr : new FunctionPointerHandler(m_fnFunctionPointer);
         }
 
         ReturnType Invoke()
@@ -219,7 +224,7 @@ namespace xl
     public:
         FunctionBase *Clone() const
         {
-            return new MemberFunctionHandler(m_pObject, m_fnFunction);
+            return m_fnFunction == nullptr ? nullptr : new MemberFunctionHandler(m_pObject, m_fnFunction);
         }
 
         ReturnType Invoke()
@@ -299,7 +304,7 @@ namespace xl
         }                                                                                                           \
                                                                                                                     \
     public:                                                                                                         \
-        Function(decltype(nullptr))                                                                                 \
+        Function(const void *)                                                                                      \
             : m_pFunctionBase(nullptr)                                                                              \
         {                                                                                                           \
                                                                                                                     \
@@ -339,18 +344,18 @@ namespace xl
             return *this;                                                                                           \
         }                                                                                                           \
                                                                                                                     \
-        Function &operator = (decltype(nullptr))                                                                    \
+        Function &operator = (const void *)                                                                         \
         {                                                                                                           \
             this->m_pFunctionBase = nullptr;                                                                        \
             return *this;                                                                                           \
         }                                                                                                           \
                                                                                                                     \
-        bool operator == (decltype(nullptr)) const                                                                  \
+        bool operator == (const void *) const                                                                       \
         {                                                                                                           \
             return this->m_pFunctionBase == nullptr;                                                                \
         }                                                                                                           \
                                                                                                                     \
-        bool operator != (decltype(nullptr)) const                                                                  \
+        bool operator != (const void *) const                                                                       \
         {                                                                                                           \
             return this->m_pFunctionBase != nullptr;                                                                \
         }                                                                                                           \

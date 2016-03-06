@@ -13,6 +13,7 @@
 #define __XLBIND_H_E78F97BF_251C_4570_B0C4_0F876ADED799_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlFunction.h"
 #include "../Meta/xlMacros.h"
 #include "../Meta/xlTypeList.h"

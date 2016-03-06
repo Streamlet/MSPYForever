@@ -16,7 +16,6 @@
 #define __XLDLLHELPER_H_0B8EA1C6_DE7D_4131_8096_3FCB72FAB3B9_INCLUDED__
 
 
-#include <Windows.h>
 
 namespace xl
 {

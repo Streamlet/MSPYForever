@@ -13,6 +13,7 @@
 #define __XLTREE_H_E8CDF772_F44E_4CB4_B760_DEC9AE4878A0_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "xlArray.h"
 
 namespace xl

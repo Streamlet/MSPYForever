@@ -13,6 +13,8 @@
 #define __XLNONINSTANTIABLE_H_9903C400_3C1B_42F0_BF4A_3BC1DA68EEBD_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     class NonInstantiable

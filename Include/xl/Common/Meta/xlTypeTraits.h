@@ -13,6 +13,7 @@
 #define __XLTYPETRAITS_H_F84DEF1B_BC39_41ED_A130_A31D78520A8A_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlMetaBase.h"
 #include "../Meta/xlTypeList.h"
 
@@ -33,6 +34,8 @@ namespace xl
         typedef TypeIfFalse Type;
     };
 
+#if _MSC_VER >= 1600
+
     template <size_t Index, typename... T>
     struct TypeAt;
 
@@ -47,6 +50,8 @@ namespace xl
     {
         typedef typename TypeAt<Index - 1, T...>::Type Type;
     };
+
+#endif
 
     template <typename T>
     struct ConstTraits
@@ -80,6 +85,8 @@ namespace xl
         typedef T &RefType;
     };
 
+#if _MSC_VER >= 1600
+
     template <typename T>
     struct RValueRefTraits
     {
@@ -104,6 +111,8 @@ namespace xl
         typedef T &&RRefType;
     };
 
+#endif
+
     template <typename T>
     struct RemoveRef
     {
@@ -116,11 +125,15 @@ namespace xl
         typedef T Type;
     };
 
+#if _MSC_VER >= 1600
+
     template <typename T>
     struct RemoveRef<T &&>
     {
         typedef T Type;
     };
+
+#endif
 
     template <typename T>
     struct PtrTraits
@@ -244,11 +257,15 @@ namespace xl
     template <typename T>
     struct FunctionTraits;
 
+#if _MSC_VER >= 1600
+
     template <typename R, typename ... Args>
     struct FunctionTraits < R(Args ...) >
     {
         typedef R ReturnType;
     };
+
+#endif
 
     template <typename T>
     class StdTypeDetect

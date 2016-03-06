@@ -13,6 +13,8 @@
 #define __XLBINTREENODE_H_EF0AD2F0_D92E_4156_A689_28DEA2CF7465_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     template <typename T>

@@ -17,7 +17,6 @@
 
 
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 #include <Unknwn.h>
 
 namespace xl

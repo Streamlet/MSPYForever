@@ -17,7 +17,6 @@
 #include "../../Common/Meta/xlAssert.h"
 #include "../xlWin32Ver.h"
 #include "xlCriticalSection.h"
-#include <Windows.h>
 #include <process.h>
 
 namespace xl
@@ -192,7 +191,7 @@ namespace xl
                     CloseHandle(m_hThread);
                 }
 
-                m_fnThreadProc = nullptr;
+                m_fnThreadProc = NULL;
                 m_param = ParamType();
             }
 

@@ -13,6 +13,7 @@
 #define __XLTUPLE_H_4720D247_760A_43F2_9611_6673153C5C68_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlStaticAssert.h"
 #include "../Meta/xlTypeTraits.h"
 #include "../Meta/xlEnableIf.h"

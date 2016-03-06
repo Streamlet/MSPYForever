@@ -19,7 +19,6 @@
 #include "../../Common/String/xlString.h"
 #include "xlGraphics.h"
 #include "xlBitmap.h"
-#include <Windows.h>
 #include <gdiplus.h>
 #include <d2d1_1.h>
 #pragma comment(lib, "gdiplus.lib")

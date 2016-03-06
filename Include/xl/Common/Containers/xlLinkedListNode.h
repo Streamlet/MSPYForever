@@ -13,6 +13,8 @@
 #define __XLLINKEDLISTNODE_H_4E427CDC_51D0_43CB_86EE_2B0C478A8712_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     template <typename T>

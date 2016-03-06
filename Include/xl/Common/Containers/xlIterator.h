@@ -13,6 +13,7 @@
 #define __XLITERATOR_H_786C7A8A_FB5F_4A51_9A22_5F999DE71B8C_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlEnableIf.h"
 #include "xlLinkedListNode.h"
 

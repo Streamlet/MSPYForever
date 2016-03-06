@@ -13,6 +13,7 @@
 #define __XLTREE_H_6BB48AA6_133A_4E9F_944E_504B887B6980_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Memory/xlMemory.h"
 #include "xlBinTree.h"
 

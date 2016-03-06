@@ -16,7 +16,6 @@
 #define __XLCONSOLE_H_75B32231_0DCF_442D_8644_01DC76C5E217_INCLUDED__
 
 
-#include <Windows.h>
 #include "../../Common/String/xlString.h"
 
 namespace xl

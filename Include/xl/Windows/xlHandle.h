@@ -16,7 +16,6 @@
 #define __XLHANDLE_H_39C0A466_0EB3_4D32_879B_1984722D3AED_INCLUDED__
 
 
-#include <Windows.h>
 
 namespace xl
 {

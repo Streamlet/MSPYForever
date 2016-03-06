@@ -13,6 +13,7 @@
 #define __XLREGEXP_H_0FCC5122_D6F3_4E9E_AAB0_5D268E87ED44_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Containers/xlGraph.h"
 #include "../Containers/xlArray.h"
 #include "../Math/xlIntervalSet.h"

@@ -13,6 +13,8 @@
 #define __XLNONCOPYABLE_H_C3075108_9FDA_4F7A_93C9_17A61FDA75A3_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     class NonCopyable

@@ -13,6 +13,7 @@
 #define __XLSCOPEEXIT_H_8093BA2C_C4CA_4DB4_99C6_BAA42C6380F0_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlBind.h"
 #include "../Meta/xlMacros.h"
 

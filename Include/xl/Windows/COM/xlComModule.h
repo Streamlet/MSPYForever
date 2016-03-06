@@ -25,7 +25,6 @@
 #include "../xlWin32Ver.h"
 #include "xlComDef.h"
 #include "xlClassFactory.h"
-#include <Windows.h>
 #include <Shlwapi.h>
 #include <stdio.h>
 #pragma comment(lib, "Shlwapi.lib")

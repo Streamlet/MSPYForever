@@ -19,7 +19,6 @@
 #include "../../Common/Meta/xlFunction.h"
 #include "../GUI/xlThunk.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 
 namespace xl
 {

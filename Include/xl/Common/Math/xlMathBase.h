@@ -13,6 +13,7 @@
 #define __XLMATHBASE_H_C306B62C_2117_45D0_A98E_11BE64AFC603_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlTuple.h"
 
 namespace xl

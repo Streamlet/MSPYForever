@@ -13,6 +13,8 @@
 #define __XLMETABASE_H_5432C693_BF0D_45B0_BB18_FA38C6913B74_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     struct NullType;
@@ -21,6 +23,8 @@ namespace xl
     {
 
     };
+
+#if _MSC_VER >= 1600
 
     template <typename S, typename... T>
     class TypeConverter;
@@ -57,6 +61,8 @@ namespace xl
             return (T0)m_pData;
         }
     };
+
+#endif
 
 } // namespace xl
 

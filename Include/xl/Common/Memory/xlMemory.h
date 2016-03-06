@@ -14,6 +14,8 @@
 
 
 #include <memory.h>
+#include <string.h>
+#include "../../xlDef.h"
 #include "../Meta/xlTypeTraits.h"
 #include "../Meta/xlEnableIf.h"
 
@@ -61,18 +63,28 @@ namespace xl
             return pDst;
         }
 
+#if _MSC_VER >= 1600
+
         template <typename T>
         inline typename RemoveRef<T>::Type &&Move(T &&t)
         {
             return (typename RemoveRef<T>::Type &&)t;
         }
 
+#endif
+
         template <typename T>
         inline void Swap(T &t1, T &t2)
         {
+#if _MSC_VER >= 1600
             T t(Move(t1));
             t1 = Move(t2);
             t2 = Move(t);
+#else
+            T t(t1);
+            t1 = t2;
+            t2 = t;
+#endif
         }
     };
 

@@ -18,7 +18,6 @@
 
 #include "../../xlDllHelper.h"
 #include <Gdiplus.h>
-#include <Windows.h>
 
 namespace xl
 {

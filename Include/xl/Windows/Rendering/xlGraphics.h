@@ -17,7 +17,6 @@
 
 
 #include "../../Common/Math/xlMathBase.h"
-#include <Windows.h>
 #include <d2d1.h>
 #include <GdiPlus.h>
 

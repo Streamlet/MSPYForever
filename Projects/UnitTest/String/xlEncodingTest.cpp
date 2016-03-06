@@ -12,7 +12,6 @@
 
 #include "../../../Include/xl/AppHelper/xlUnitTest.h"
 #include "../../../Include/xl/Common/String/xlEncoding.h"
-#include <Windows.h>
 #include <atlstr.h>
 
 namespace

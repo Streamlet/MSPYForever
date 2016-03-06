@@ -23,7 +23,6 @@
 #include "../xlWin32Ver.h"
 #include "xlComClass.h"
 #include "xlDispatcher.h"
-#include <Windows.h>
 
 namespace xl
 {

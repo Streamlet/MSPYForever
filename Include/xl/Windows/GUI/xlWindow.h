@@ -19,7 +19,6 @@
 #include "xlThunk.h"
 #include "xlWindowMessage.h"
 #include "xlWindowHelper.h"
-#include <Windows.h>
 #include <CommCtrl.h>
 
 namespace xl

@@ -22,7 +22,6 @@
 #include "../../Common/Meta/xlNonInstantiable.h"
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 
 namespace xl
 {

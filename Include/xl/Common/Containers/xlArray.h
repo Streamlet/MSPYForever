@@ -13,6 +13,7 @@
 #define __XLARRAY_H_3B18D7E2_B52A_4D57_BE4B_657F9D17320D_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Memory/xlMemory.h"
 #include "xlIterator.h"
 

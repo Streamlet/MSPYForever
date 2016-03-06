@@ -18,7 +18,6 @@
 #include "../../Common/Containers/xlList.h"
 #include "../../Common/Containers/xlMap.h"
 #include "xlCommCtrlInitializer.h"
-#include <Windows.h>
 
 namespace xl
 {

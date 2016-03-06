@@ -13,6 +13,8 @@
 #define __XLCRC32_H_BB025FD4_DA27_4F8F_A8F8_413C98C42FA3_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     class CRC32

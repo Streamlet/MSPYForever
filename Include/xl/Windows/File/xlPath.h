@@ -18,7 +18,6 @@
 
 #include "../../Common/String/xlString.h"
 #include "../../Common/Meta/xlNonInstantiable.h"
-#include <Windows.h>
 
 namespace xl
 {

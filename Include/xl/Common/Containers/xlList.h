@@ -13,6 +13,7 @@
 #define __XLLIST_H_2BEF1B3C_A056_4EC7_B5E3_9898E7945B54_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Memory/xlMemory.h"
 #include "../Meta/xlAssert.h"
 #include "xlLinkedListNode.h"

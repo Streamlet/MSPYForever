@@ -13,6 +13,7 @@
 #define __XLINTERVAL_H_14F2C212_AFD1_4E01_8F71_60E67EACC903_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Containers/xlSet.h"
 #include "../Math/xlMathBase.h"
 

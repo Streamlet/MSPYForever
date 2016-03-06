@@ -13,6 +13,7 @@
 #define __XLENCODING_H_EB12014E_ED0F_4198_8DAC_37836BAD9483_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Memory/xlMemory.h"
 #include "../Meta/xlNonCopyable.h"
 #include "../String/xlString.h"

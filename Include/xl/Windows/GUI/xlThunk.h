@@ -15,7 +15,6 @@
 
 #include "../Memory/xlHeap.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 
 namespace xl
 {

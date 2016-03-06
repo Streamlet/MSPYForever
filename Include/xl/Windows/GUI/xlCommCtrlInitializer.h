@@ -15,7 +15,6 @@
 
 #include "../../Common/Meta/xlNonCopyable.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 #include <CommCtrl.h>
 #pragma comment(lib, "Comctl32.lib")
 

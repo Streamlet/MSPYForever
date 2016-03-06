@@ -13,6 +13,7 @@
 #define __XLBASE64_H_928C9622_19D0_46B0_9222_152367E2F4BF_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Containers/xlArray.h"
 #include "../String/xlString.h"
 

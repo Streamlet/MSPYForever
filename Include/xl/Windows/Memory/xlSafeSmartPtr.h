@@ -15,7 +15,6 @@
 
 #include "../../Common/Memory/xlSmartPtr.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 
 namespace xl
 {

@@ -21,7 +21,6 @@
 #include "../Threads/xlCriticalSection.h"
 #include "../Threads/xlThreadPool.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 
 namespace xl
 {

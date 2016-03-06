@@ -16,6 +16,8 @@
 #define __XLENABLEIF_H_3091E0D8_6B5B_41F1_B29A_B881C5D833D4_INCLUDED__
 
 
+#include "../../xlDef.h"
+
 namespace xl
 {
     template <bool expr, typename EnableType>

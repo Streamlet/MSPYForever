@@ -511,7 +511,10 @@ namespace
         XL_TEST_ASSERT(i == 1);
         --i;
         XL_TEST_ASSERT(Function<int (const int &)>(test_const_ref)(i) == 0);
+
+#if _MSC_VER >= 1600
         XL_TEST_ASSERT(Function<int (int &&)>(test_r_ref)(0) == 0);
         XL_TEST_ASSERT(Function<int (const int &&)>(test_const_r_ref)(0) == 0);
+#endif
     }
 }

@@ -20,7 +20,6 @@
 #include "../../../Common/Memory/xlSmartPtr.h"
 #include "../xlBitmapDef.h"
 #include "../GDIPlus/xlBitmapGDIPlus.h"
-#include <Windows.h>
 
 namespace xl
 {

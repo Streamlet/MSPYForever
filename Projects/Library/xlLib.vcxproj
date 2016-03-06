@@ -159,6 +159,7 @@
     <ClInclude Include="..\..\Include\xl\Windows\xlDllHelper.h" />
     <ClInclude Include="..\..\Include\xl\Windows\xlWin32Ver.h" />
     <ClInclude Include="..\..\Include\xl\Windows\xlHandle.h" />
+    <ClInclude Include="..\..\Include\xl\xlDef.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\Include\xl\Linux\Readme.txt" />

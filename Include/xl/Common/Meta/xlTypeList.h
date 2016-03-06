@@ -13,6 +13,7 @@
 #define __XLTYPELIST_H_E9C48089_4173_48B2_9442_5D9B052D5652_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Meta/xlMacros.h"
 #include "../Meta/xlMetaBase.h"
 
@@ -203,6 +204,8 @@ namespace xl
         typedef typename TLMerge<typename TLReverse<T>::Type, typename TLMerge<NullType, H>::Type>::Type Type;
     };
 
+#if _MSC_VER >= 1600
+
     template <typename TL, template <typename> typename FN, typename P>
     bool TLForeachInternal(P p, TL *)
     {
@@ -226,6 +229,7 @@ namespace xl
         return TLForeachInternal<TL, FN, P>(p, (TL *)0);
     }
 
+#endif
 
 #define XL_TYPELIST_TYPENAME_DECLARE_PATTERN(n) typename T##n = NullType
 #define XL_TYPELIST_TYPENAME_DECLARE(n)         XL_REPZ(XL_TYPELIST_TYPENAME_DECLARE_PATTERN, n, XL_COMMA)

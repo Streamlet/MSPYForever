@@ -20,7 +20,6 @@
 #include "../../Common/Meta/xlNonCopyable.h"
 #include "../../Common/String/xlString.h"
 #include "../xlWin32Ver.h"
-#include <Windows.h>
 #include <WinHttp.h>
 #pragma comment(lib, "WinHttp.lib")
 

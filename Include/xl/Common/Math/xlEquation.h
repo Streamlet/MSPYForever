@@ -16,6 +16,7 @@
 #define __XLEQUATION_H_31B59C91_FBAB_422A_8CD1_CBECE5D3BDCD_INCLUDED__
 
 
+#include "../../xlDef.h"
 #include "../Memory/xlMemory.h"
 
 namespace xl
