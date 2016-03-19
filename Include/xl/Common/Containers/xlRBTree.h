@@ -113,10 +113,14 @@ namespace xl
 
         }
 
+#ifdef __XL_CPP11
+
         inline RBTree(RBTree &&that) : BinTree(that), m_nSize(that.m_nSize)
         {
             that.m_nSize = 0;
         }
+
+#endif
 
         inline RBTree &operator = (const RBTree &that)
         {
@@ -131,6 +135,8 @@ namespace xl
             return *this;
         }
 
+#ifdef __XL_CPP11
+
         inline RBTree &operator = (RBTree &&that)
         {
             if (this == &that)
@@ -144,6 +150,8 @@ namespace xl
 
             return *this;
         }
+
+#endif
 
     public:
         typedef RBTreeNode<T> NodeType;

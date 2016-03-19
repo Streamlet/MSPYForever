@@ -294,7 +294,7 @@ namespace xl
     template <typename T>
     inline int StringT<T>::Length() const
     {
-        return (int)m_aData.Size() - 1;
+        return m_aData.Size() - 1;
     }
 
     template <typename T>
@@ -473,7 +473,7 @@ namespace xl
 
         if (nStart + nLength > (int)m_aData.Size())
         {
-            nLength = m_aData.Size() - nStart;
+            nLength = (int)m_aData.Size() - nStart;
         }
 
         if (nLength > 0)

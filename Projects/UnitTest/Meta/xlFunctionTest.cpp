@@ -364,6 +364,7 @@ namespace
         return i;
     }
 
+#ifdef __XL_CPP11
     int test_r_ref(int &&i)
     {
         return i;
@@ -373,6 +374,7 @@ namespace
     {
         return i;
     }
+#endif
 
     XL_TEST_CASE()
     {
@@ -512,7 +514,7 @@ namespace
         --i;
         XL_TEST_ASSERT(Function<int (const int &)>(test_const_ref)(i) == 0);
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
         XL_TEST_ASSERT(Function<int (int &&)>(test_r_ref)(0) == 0);
         XL_TEST_ASSERT(Function<int (const int &&)>(test_const_r_ref)(0) == 0);
 #endif

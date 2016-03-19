@@ -13,6 +13,8 @@
 #define __XLDPI_H_7D8F7574_55C0_4AAD_A5D1_347D8FF393CD_INCLUDED__
 
 
+#include "../../xlDef.h"
+#include "../xlWin32Ver.h"
 
 namespace xl
 {

@@ -24,6 +24,8 @@ namespace xl
 #define XL_BIND_DEFINE_MAX  XL_FUNCTION_DEFINE_MAX
 #endif
 
+#ifdef __XL_CPP11
+
 #define XL_BIND_TYPENAME_DECLARE_PATTERN(n)     typename A##n
 #define XL_BIND_TYPENAME_DECLARE(n)             XL_REPZ(XL_BIND_TYPENAME_DECLARE_PATTERN, n, XL_COMMA)
 
@@ -37,6 +39,7 @@ namespace xl
 #define XL_BIND_TYPENAME_LIST_B(n)              XL_REPZ(XL_BIND_TYPENAME_LIST_PATTERN_B, n, XL_COMMA)
 
 #define XL_BIND_TYPENAME_VARIABLE_NO_RREF(n)    A##n a##n
+
 #define XL_BIND_TYPENAME_VARIABLE_PATTERN(n)    A##n &&a##n
 #define XL_BIND_TYPENAME_VARIABLE(n)            XL_REPZ(XL_BIND_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
 
@@ -49,6 +52,35 @@ namespace xl
 #define XL_BIND_ARGUMENTS_QUERY_PATTERN(n)      a[static_cast<A##n &&>(a##n)]
 #define XL_BIND_ARGUMENTS_QUERY(n)              XL_REPZ(XL_BIND_ARGUMENTS_QUERY_PATTERN, n, XL_COMMA)
 
+#else
+
+#define XL_BIND_TYPENAME_DECLARE_PATTERN(n)     typename A##n
+#define XL_BIND_TYPENAME_DECLARE(n)             XL_REPZ(XL_BIND_TYPENAME_DECLARE_PATTERN, n, XL_COMMA)
+
+#define XL_BIND_TYPENAME_DECLARE_PATTERN_B(n)   typename B##n
+#define XL_BIND_TYPENAME_DECLARE_B(n)           XL_REPZ(XL_BIND_TYPENAME_DECLARE_PATTERN_B, n, XL_COMMA)
+
+#define XL_BIND_TYPENAME_LIST_PATTERN(n)        A##n
+#define XL_BIND_TYPENAME_LIST(n)                XL_REPZ(XL_BIND_TYPENAME_LIST_PATTERN, n, XL_COMMA)
+
+#define XL_BIND_TYPENAME_LIST_PATTERN_B(n)      B##n
+#define XL_BIND_TYPENAME_LIST_B(n)              XL_REPZ(XL_BIND_TYPENAME_LIST_PATTERN_B, n, XL_COMMA)
+
+#define XL_BIND_TYPENAME_VARIABLE_NO_RREF(n)    A##n a##n
+
+#define XL_BIND_TYPENAME_VARIABLE_PATTERN(n)    A##n a##n
+#define XL_BIND_TYPENAME_VARIABLE(n)            XL_REPZ(XL_BIND_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
+
+#define XL_BIND_VARIABLE_INITIALIZE_PATTERN(n)  a##n(static_cast<A##n>(a##n))
+#define XL_BIND_VARIABLE_INITIALIZE(n)          XL_REPZ(XL_BIND_VARIABLE_INITIALIZE_PATTERN, n, XL_COMMA)
+
+#define XL_BIND_VARIABLE_LIST_PATTERN(n)        static_cast<A##n>(a##n)
+#define XL_BIND_VARIABLE_LIST(n)                XL_REPZ(XL_BIND_VARIABLE_LIST_PATTERN, n, XL_COMMA)
+
+#define XL_BIND_ARGUMENTS_QUERY_PATTERN(n)      a[static_cast<A##n &>(a##n)]
+#define XL_BIND_ARGUMENTS_QUERY(n)              XL_REPZ(XL_BIND_ARGUMENTS_QUERY_PATTERN, n, XL_COMMA)
+
+#endif
     template <int i>
     struct PlaceHolder
     {
@@ -99,11 +131,19 @@ namespace xl
         }
 
     public:
+#ifdef __XL_CPP11
         template <typename T>
         T operator [](T &&t)
         {
             return static_cast<T &&>(t);
         }
+#else
+        template <typename T>
+        T operator [](const T &t)
+        {
+            return static_cast<T>(t);
+        }
+#endif
     };
 
 #define XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER_PATTERN(n)            \
@@ -115,6 +155,7 @@ namespace xl
 
 #define XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER(n)  XL_REPY(XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER_PATTERN, n, XL_NIL)
 
+#ifdef __XL_CPP11
 #define XL_BIND_CALLLIST_PATTERN(n)                                                                                 \
                                                                                                                     \
     template <XL_BIND_TYPENAME_DECLARE(n)>                                                                          \
@@ -137,6 +178,30 @@ namespace xl
             return static_cast<T &&>(t);                                                                            \
         }                                                                                                           \
     };
+#else
+#define XL_BIND_CALLLIST_PATTERN(n)                                                                                 \
+                                                                                                                    \
+    template <XL_BIND_TYPENAME_DECLARE(n)>                                                                          \
+    class CallList<XL_EVAL(XL_CONN(XL_TYPELIST_, n), XL_BIND_TYPENAME_LIST(n))> :                                   \
+        public BindArguments<XL_EVAL(XL_CONN(XL_TYPELIST_, n), XL_BIND_TYPENAME_LIST(n))>                           \
+    {                                                                                                               \
+    public:                                                                                                         \
+        CallList(XL_BIND_TYPENAME_VARIABLE(n)) :                                                                    \
+            BindArguments<XL_EVAL(XL_CONN(XL_TYPELIST_, n), XL_BIND_TYPENAME_LIST(n))>(XL_BIND_VARIABLE_LIST(n))    \
+        {                                                                                                           \
+                                                                                                                    \
+        }                                                                                                           \
+                                                                                                                    \
+    public:                                                                                                         \
+        XL_BIND_CALLLIST_OPERATOR_PLACEHOLDER(n)                                                                    \
+                                                                                                                    \
+        template <typename T>                                                                                       \
+        T operator [](T t)                                                                                          \
+        {                                                                                                           \
+            return static_cast<T &>(t);                                                                             \
+        }                                                                                                           \
+    };
+#endif
 
 #define XL_BIND_CALLLIST(n)  XL_REPX(XL_BIND_CALLLIST_PATTERN, n, XL_NIL)
 

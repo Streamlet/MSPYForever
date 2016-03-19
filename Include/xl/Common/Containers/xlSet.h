@@ -18,8 +18,17 @@
 
 namespace xl
 {
+
+#ifdef __XL_CPP11
+
     template <typename T>
     using Set = RBTree<T>;
+
+#else
+
+#define Set RBTree
+
+#endif
 
 } // namespace xl
 

@@ -57,13 +57,17 @@ namespace xl
         {
             for (size_t i = 0; i < nCount; ++i)
             {
+#ifdef __XL_CPP11
                 pDst[i] = Move(pSrc[i]);
+#else
+                pDst[i] = pSrc[i];
+#endif
             }
 
             return pDst;
         }
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
 
         template <typename T>
         inline typename RemoveRef<T>::Type &&Move(T &&t)
@@ -76,7 +80,7 @@ namespace xl
         template <typename T>
         inline void Swap(T &t1, T &t2)
         {
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
             T t(Move(t1));
             t1 = Move(t2);
             t2 = Move(t);

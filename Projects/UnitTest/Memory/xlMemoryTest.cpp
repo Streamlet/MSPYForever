@@ -184,12 +184,13 @@ namespace
     // Memory::Move/Swap By KJJ
     XL_TEST_CASE()
     {
+#ifdef __XL_CPP11
 
         struct S
         {
-            int iCount = 0;
+            int iCount;
 
-            S()
+            S() : iCount(0)
             {
 
             }
@@ -199,7 +200,7 @@ namespace
 
             }
 
-            S(const S &&that)
+            S(const S &&that) : iCount(-1)
             {
 
             }
@@ -209,7 +210,9 @@ namespace
         S y = x;
         S z = Memory::Move(x);
         XL_TEST_ASSERT(y.iCount == 1);
-        XL_TEST_ASSERT(z.iCount == 0);
+        XL_TEST_ASSERT(z.iCount == -1);
+
+#endif
 
         int a = 1, b = 2;
         Memory::Swap(a, b);

@@ -34,7 +34,7 @@ namespace xl
         typedef TypeIfFalse Type;
     };
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
 
     template <size_t Index, typename... T>
     struct TypeAt;
@@ -85,7 +85,7 @@ namespace xl
         typedef T &RefType;
     };
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
 
     template <typename T>
     struct RValueRefTraits
@@ -125,7 +125,7 @@ namespace xl
         typedef T Type;
     };
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
 
     template <typename T>
     struct RemoveRef<T &&>
@@ -257,7 +257,7 @@ namespace xl
     template <typename T>
     struct FunctionTraits;
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
 
     template <typename R, typename ... Args>
     struct FunctionTraits < R(Args ...) >

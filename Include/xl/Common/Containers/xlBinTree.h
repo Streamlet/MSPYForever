@@ -34,10 +34,14 @@ namespace xl
 
         }
 
+#ifdef __XL_CPP11
+
         BinTree(BinTree &&that) : m_pRoot(that.m_pRoot)
         {
             that.m_pRoot = nullptr;
         }
+
+#endif
 
         BinTree &operator = (const BinTree &that)
         {
@@ -51,6 +55,8 @@ namespace xl
             return *this;
         }
 
+#ifdef __XL_CPP11
+
         BinTree &operator = (BinTree &&that)
         {
             if (this == &that)
@@ -63,6 +69,8 @@ namespace xl
 
             return *this;
         }
+
+#endif
 
         ~BinTree()
         {
@@ -447,8 +455,13 @@ namespace xl
         }
 
     public:
+#ifdef __XL_CPP11
         typedef BinTreeIterator<T, NodeType> Iterator;
         typedef ReverseBinTreeIterator<T, NodeType> ReverseIterator;
+#else
+        typedef BinTreeIteratorT<T, NodeType, false> Iterator;
+        typedef BinTreeIteratorT<T, NodeType, true> ReverseIterator;
+#endif
 
     public:
         Iterator Begin() const

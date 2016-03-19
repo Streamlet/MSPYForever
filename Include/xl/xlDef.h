@@ -26,7 +26,11 @@ namespace xl
 
 #if defined(_MSC_VER)
 
-#if _MSC_VER < 1600
+#if _MSC_VER >= 1600
+#define __XL_CPP11
+#endif
+
+#ifndef __XL_CPP11
 #define nullptr 0
 #endif
 

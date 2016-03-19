@@ -41,10 +41,12 @@ namespace xl
                 XL_ASSERT(false);
             }
 
+#ifdef __XL_CPP11
             Thread(Thread &&that)
             {
                 XL_ASSERT(false);
             }
+#endif
 
             ~Thread()
             {
@@ -60,11 +62,13 @@ namespace xl
                 return *this;
             }
 
+#ifdef __XL_CPP11
             Thread &operator = (Thread &&that)
             {
                 XL_ASSERT(false);
                 return *this;
             }
+#endif
 
         public:
             bool Create(ProcType fnThreadProc, ParamType param, bool bSuspend = false)

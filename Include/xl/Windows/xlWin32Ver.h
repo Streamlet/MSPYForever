@@ -16,7 +16,7 @@
 
 #include "../xlDef.h"
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
 
 // Including SDKDDKVer.h defines the highest available Windows platform.
 

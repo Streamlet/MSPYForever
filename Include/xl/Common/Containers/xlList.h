@@ -37,11 +37,15 @@ namespace xl
             *this = that;
         }
 
+#ifdef __XL_CPP11
+
         inline List(List &&that)
             : m_pHead(nullptr), m_pTail(nullptr), m_nSize(0)
         {
             *this = Memory::Move(that);
         }
+
+#endif
 
         inline ~List()
         {
@@ -66,6 +70,8 @@ namespace xl
             return *this;
         }
 
+#ifdef __XL_CPP11
+
         inline List &&operator = (List &&that)
         {
             if (this == &that)
@@ -83,6 +89,8 @@ namespace xl
 
             return *this;
         }
+
+#endif
 
         inline bool operator == (const List &that) const
         {
@@ -243,8 +251,13 @@ namespace xl
         size_t m_nSize;
 
     public:
+#ifdef __XL_CPP11
         typedef LinkedListIterator<T, NodeType> Iterator;
         typedef ReverseLinkedListIterator<T, NodeType> ReverseIterator;
+#else
+        typedef LinkedListIteratorT<T, NodeType, false> Iterator;
+        typedef LinkedListIteratorT<T, NodeType, true> ReverseIterator;
+#endif
 
     protected:
         inline void Release()

@@ -84,7 +84,7 @@ namespace xl
 
             if (!interval.IsEmpty())
             {
-                for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); ++it)
+                for (Set<IntervalType>::Iterator it = m_setIntervals.Begin(); it != m_setIntervals.End(); ++it)
                 {
                     IntervalType i = it->Intersection(interval);
 
@@ -107,7 +107,7 @@ namespace xl
 
             IntervalType i = interval;
 
-            for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
+            for (Set<IntervalType>::Iterator it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
             {
                 if (it->Contains(interval))
                 {
@@ -137,7 +137,7 @@ namespace xl
 
             Set<IntervalType> s;
 
-            for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
+            for (Set<IntervalType>::Iterator it = m_setIntervals.Begin(); it != m_setIntervals.End(); )
             {
                 if (it->HasIntersectionWith(interval))
                 {
@@ -165,7 +165,7 @@ namespace xl
 
             IntervalSet res = *this;
 
-            for (auto it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
+            for (Set<IntervalType>::Iterator it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
             {
                 res.Intersect(*it);
 
@@ -192,7 +192,7 @@ namespace xl
 
             IntervalSet res = *this;
 
-            for (auto it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
+            for (Set<IntervalType>::Iterator it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
             {
                 res.Union(*it);
             }
@@ -209,7 +209,7 @@ namespace xl
 
             IntervalSet res = *this;
 
-            for (auto it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
+            for (Set<IntervalType>::Iterator it = that.m_setIntervals.Begin(); it != that.m_setIntervals.End(); ++it)
             {
                 res.Exclude(*it);
             }
@@ -221,7 +221,7 @@ namespace xl
         {
             Set<IntervalType> setIntervals;
 
-            for (auto it = m_setIntervals.Begin(); it != m_setIntervals.End(); ++it)
+            for (Set<IntervalType>::Iterator it = m_setIntervals.Begin(); it != m_setIntervals.End(); ++it)
             {
                 IntervalType i = it->CloseInterval(step);
 

@@ -83,87 +83,108 @@ namespace xl
             return (this->m_pData != that.m_pData);
         }
 
-    public:
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator ++ ()
+    private:
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type Increase()
         {
             ++m_pData;
             return *this;
         }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator ++ ()
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type Increase()
         {
             --m_pData;
             return *this;
+        }
+
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type Decrease()
+        {
+            --m_pData;
+            return *this;
+        }
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type Decrease()
+        {
+            ++m_pData;
+            return *this;
+        }
+
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type Increase(int nDistance)
+        {
+            m_pData += nDistance;
+            return *this;
+        }
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type Increase(int nDistance)
+        {
+            m_pData -= nDistance;
+            return *this;
+        }
+
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type Decrease(int nDistance)
+        {
+            m_pData -= nDistance;
+            return *this;
+        }
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type Decrease(int nDistance)
+        {
+            m_pData += nDistance;
+            return *this;
+        }
+
+    public:
+        inline BufferIteratorT &operator ++ ()
+        {
+            return Increase<R>();
         }
 
         inline BufferIteratorT operator ++ (int)
         {
-            auto itRet = *this;
+            BufferIteratorT itRet = *this;
             ++*this;
             return itRet;
         }
 
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator -- ()
+        inline BufferIteratorT &operator -- ()
         {
-            --m_pData;
-            return *this;
-        }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator -- ()
-        {
-            ++m_pData;
-            return *this;
+            return Decrease<R>();
         }
 
         inline BufferIteratorT operator -- (int)
         {
-            auto itRet = *this;
+            BufferIteratorT itRet = *this;
             --*this;
             return itRet;
         }
 
     public:
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator += (int nDistance)
+        inline BufferIteratorT &operator += (int nDistance)
         {
-            m_pData += nDistance;
-            return *this;
-        }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator += (int nDistance)
-        {
-            m_pData -= nDistance;
-            return *this;
+            return Increase<R>(nDistance);
         }
 
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, BufferIteratorT<T, R> &>::Type operator -= (int nDistance)
+        inline BufferIteratorT &operator -= (int nDistance)
         {
-            m_pData -= nDistance;
-            return *this;
-        }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, BufferIteratorT<T, R> &>::Type operator -= (int nDistance)
-        {
-            m_pData += nDistance;
-            return *this;
+            return Decrease<R>(nDistance);
         }
 
         inline BufferIteratorT operator + (int nDistance) const
         {
-            auto itRet = *this;
+            BufferIteratorT itRet = *this;
             return itRet += nDistance;
         }
 
         inline BufferIteratorT operator - (int nDistance) const
         {
-            auto itRet = *this;
+            BufferIteratorT itRet = *this;
             return itRet -= nDistance;
         }
 
-        inline int operator - (const BufferIteratorT &that) const
+        inline long long operator - (const BufferIteratorT &that) const
         {
             return this->m_pData - that.m_pData;
         }
@@ -243,43 +264,54 @@ namespace xl
             return (this->m_pNode != that.m_pNode);
         }
 
-    public:
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, LinkedListIteratorT<T, NodeType, R> &>::Type operator ++ ()
+    private:
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, LinkedListIteratorT<T, NodeType, R> &>::Type Increase()
         {
             m_pNode = m_pNode->pNext;
             return *this;
         }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, LinkedListIteratorT<T, NodeType, R> &>::Type operator ++ ()
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, LinkedListIteratorT<T, NodeType, R> &>::Type Increase()
         {
             m_pNode = m_pNode->pPrev;
             return *this;
+        }
+
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, LinkedListIteratorT<T, NodeType, R> &>::Type Decrease()
+        {
+            m_pNode = m_pNode->pPrev;
+            return *this;
+        }
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, LinkedListIteratorT<T, NodeType, R> &>::Type Decrease()
+        {
+            m_pNode = m_pNode->pNext;
+            return *this;
+        }
+
+    public:
+        inline LinkedListIteratorT &operator ++ ()
+        {
+            return Increase<R>();
         }
 
         LinkedListIteratorT operator ++ (int)
         {
-            auto itRet = *this;
+            LinkedListIteratorT itRet = *this;
             ++*this;
             return itRet;
         }
 
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, LinkedListIteratorT<T, NodeType, R> &>::Type operator -- ()
+        inline LinkedListIteratorT &operator -- ()
         {
-            m_pNode = m_pNode->pPrev;
-            return *this;
-        }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, LinkedListIteratorT<T, NodeType, R> &>::Type operator -- ()
-        {
-            m_pNode = m_pNode->pNext;
-            return *this;
+            return Decrease<R>();
         }
 
         LinkedListIteratorT operator -- (int)
         {
-            auto itRet = *this;
+            LinkedListIteratorT itRet = *this;
             --*this;
             return itRet;
         }
@@ -450,48 +482,61 @@ namespace xl
             return (this->m_pNode != that.m_pNode);
         }
 
-    public:
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, BinTreeIteratorT<T, NodeType, R> &>::Type operator ++ ()
+    private:
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, BinTreeIteratorT<T, NodeType, R> &>::Type Increase()
         {
             m_pNode = NextOf(m_pNode);
             return *this;
         }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, BinTreeIteratorT<T, NodeType, R> &>::Type operator ++ ()
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, BinTreeIteratorT<T, NodeType, R> &>::Type Increase()
         {
             m_pNode = PreviousOf(m_pNode);
             return *this;
+        }
+
+        template <bool RR>
+        inline typename EnableIf<RR == R && !R, BinTreeIteratorT<T, NodeType, R> &>::Type Decrease()
+        {
+            m_pNode = PreviousOf(m_pNode);
+            return *this;
+        }
+        template <bool RR>
+        inline typename EnableIf<RR == R && R, BinTreeIteratorT<T, NodeType, R> &>::Type Decrease()
+        {
+            m_pNode = NextOf(m_pNode);
+            return *this;
+        }
+
+    public:
+        inline BinTreeIteratorT &operator ++ ()
+        {
+            return Increase<R>();
         }
 
         BinTreeIteratorT operator ++ (int)
         {
-            auto itRet = *this;
+            BinTreeIteratorT itRet = *this;
             ++*this;
             return itRet;
         }
 
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && !R, BinTreeIteratorT<T, NodeType, R> &>::Type operator -- ()
+        inline BinTreeIteratorT &operator -- ()
         {
-            m_pNode = PreviousOf(m_pNode);
-            return *this;
-        }
-        template <bool RR = R>
-        inline typename EnableIf<RR == R && R, BinTreeIteratorT<T, NodeType, R> &>::Type operator -- ()
-        {
-            m_pNode = NextOf(m_pNode);
-            return *this;
+            return Decrease<R>();
         }
 
         BinTreeIteratorT operator -- (int)
         {
-            auto itRet = *this;
+            BinTreeIteratorT itRet = *this;
             --*this;
             return itRet;
         }
     };
 
+
+#ifdef __XL_CPP11
 
     template <typename T>
     using BufferIterator = BufferIteratorT<T, false>;
@@ -513,6 +558,7 @@ namespace xl
     template <typename T, typename NodeType>
     using ReverseBinTreeIterator = BinTreeIteratorT<T, NodeType, true>;
 
+#endif
 
 } // namespace xl
 

@@ -279,7 +279,7 @@ namespace xl
                 QuickSort(tData, k, fnComparor);
             }
             
-            if (k < nSize - 2)
+            if (k + 2 < nSize)
             {
                 QuickSort(tData + k + 1, nSize - k - 1, fnComparor);
             }

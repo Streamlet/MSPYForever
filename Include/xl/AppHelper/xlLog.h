@@ -67,7 +67,7 @@ namespace xl
                 }
 
                 DWORD dwWritten = 0;
-                WriteConsole(hConsole, strMessage, strMessage.Length(), &dwWritten, NULL);
+                WriteConsole(hConsole, strMessage, (DWORD)(strMessage.Length()), &dwWritten, NULL);
 
                 return true;
             }
@@ -109,7 +109,7 @@ namespace xl
                 SetFilePointer(hFile, li.LowPart, &li.HighPart, FILE_END);
 
                 DWORD dwWritten = 0;
-                WriteFile(hFile, strMessage, strMessage.Length() * sizeof(xl::Char), &dwWritten, NULL);
+                WriteFile(hFile, strMessage, (DWORD)(strMessage.Length() * sizeof(xl::Char)), &dwWritten, NULL);
 
                 csLogFile.UnLock();
 

@@ -202,6 +202,8 @@ namespace
         return i;
     }
 
+#ifdef __XL_CPP11
+
     int test_r_ref(int &&i)
     {
         return i;
@@ -211,6 +213,8 @@ namespace
     {
         return i;
     }
+
+#endif
 
     DWORD test_const_thread(HANDLE hQuitEvent, LPVOID pParam, const int i)
     {
@@ -227,6 +231,8 @@ namespace
         return i;
     }
 
+#ifdef __XL_CPP11
+
     DWORD test_r_ref_thread(HANDLE hQuitEvent, LPVOID pParam, int &&i)
     {
         return i;
@@ -236,6 +242,8 @@ namespace
     {
         return i;
     }
+
+#endif
 
     XL_TEST_CASE()
     {
@@ -643,14 +651,21 @@ namespace
 
         XL_TEST_ASSERT(Bind(test_const, _1)(i) == 0);
         XL_TEST_ASSERT(Bind(test_const, i)() == 0);
+#ifdef __XL_CPP11
         XL_TEST_ASSERT(Bind(test_ref, _1)(i) == 1);
+#endif
         XL_TEST_ASSERT(i == 1);
+
+#ifdef __XL_CPP11
         XL_TEST_ASSERT(Bind(test_ref, i)() == 2);
+#endif
         XL_TEST_ASSERT(i == 2);
+#ifdef __XL_CPP11
         i = 0;
         XL_TEST_ASSERT(Bind(test_const_ref, _1)(i) == 0);
         XL_TEST_ASSERT(Bind(test_r_ref, _1)(0) == 0);
         XL_TEST_ASSERT(Bind(test_const_r_ref, _1)(0) == 0);
+#endif
     }
 
     XL_TEST_CASE()
@@ -667,6 +682,8 @@ namespace
             t.GetExitCode(&dwExitCode);
             XL_TEST_ASSERT(dwExitCode == 0);
         }
+
+#ifdef __XL_CPP11
 
         {
             Thread<> t;
@@ -725,5 +742,8 @@ namespace
             t.GetExitCode(&dwExitCode);
             XL_TEST_ASSERT(dwExitCode == 0);
         }
+
+#endif
+
     }
 }

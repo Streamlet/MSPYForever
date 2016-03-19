@@ -229,6 +229,7 @@ namespace
         return i;
     }
 
+#ifdef __XL_CPP11
     int test_r_ref(int &&i)
     {
         return i;
@@ -238,6 +239,7 @@ namespace
     {
         return i;
     }
+#endif
 
     XL_TEST_CASE()
     {
@@ -372,9 +374,11 @@ namespace
         {
             XL_ON_BLOCK_EXIT(test_const, 0);
         }
+#ifdef __XL_CPP11
         {
             int i = 0;
-            XL_ON_BLOCK_EXIT(test_ref, i);
+            xl::Bind(test_ref, (int &)i)();
+            XL_ON_BLOCK_EXIT(test_ref, (int &)i);
         }
         {
             XL_ON_BLOCK_EXIT(test_const_ref, 0);
@@ -385,8 +389,9 @@ namespace
         {
             XL_ON_BLOCK_EXIT(test_const_r_ref, 0);
         }
+#endif
     }
-}                            
+}
 
 
                              

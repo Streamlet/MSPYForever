@@ -33,7 +33,7 @@ namespace xl
 #define XL_FUNCTION_TYPENAME_VARIABLE_PATTERN(n)    A##n a##n
 #define XL_FUNCTION_TYPENAME_VARIABLE(n)            XL_REPZ(XL_FUNCTION_TYPENAME_VARIABLE_PATTERN, n, XL_COMMA)
 
-#if _MSC_VER >= 1600
+#ifdef __XL_CPP11
 #define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        static_cast<A##n &&>(a##n)
 #else
 #define XL_FUNCTION_VARIABLE_LIST_PATTERN(n)        a##n

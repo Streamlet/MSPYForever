@@ -26,7 +26,7 @@ namespace xl
         ArrayAlignmentPolicy_Tail
     };
 
-    template <typename T, ArrayAlignmentPolicy P = ArrayAlignmentPolicy_Head>
+    template <typename T, ArrayAlignmentPolicy P = ArrayAlignmentPolicy_Center>
     class ArrayT
     {
     public:
@@ -53,6 +53,8 @@ namespace xl
             *this = that;
         }
 
+#ifdef __XL_CPP11
+
         inline ArrayT(ArrayT &&that)
             : m_pBuffer(nullptr), m_nMemorySize(0), m_nOffset(0), m_nLogicalSize(0)
         {
@@ -63,6 +65,8 @@ namespace xl
         {
             Release();
         }
+
+#endif
 
     public:
         inline ArrayT &operator = (const ArrayT &that)
@@ -84,6 +88,8 @@ namespace xl
             return *this;
         }
 
+#ifdef __XL_CPP11
+
         inline ArrayT &operator = (ArrayT &&that)
         {
             if (this == &that)
@@ -96,6 +102,8 @@ namespace xl
 
             return *this;
         }
+
+#endif
 
         inline bool operator == (const ArrayT &that) const
         {
@@ -385,8 +393,13 @@ namespace xl
         size_t m_nLogicalSize;
 
     public:
+#ifdef __XL_CPP11
         typedef BufferIterator<T> Iterator;
         typedef ReverseBufferIterator<T> ReverseIterator;
+#else
+        typedef BufferIteratorT<T, false> Iterator;
+        typedef BufferIteratorT<T, true> ReverseIterator;
+#endif
 
     public:
         inline Iterator Begin() const
@@ -424,8 +437,8 @@ namespace xl
 
         inline void Insert(const Iterator &itWhere, const Iterator &itBegin, const Iterator &itEnd)
         {
-            size_t nIndex = (T *)itWhere - (m_pBuffer + m_nOffset);
-            Insert(nIndex, (T *)itBegin, itEnd - itBegin);
+            size_t nIndex = (size_t)((T *)itWhere - (m_pBuffer + m_nOffset));
+            Insert(nIndex, (T *)itBegin, (size_t)(itEnd - itBegin));
         }
 
         inline Iterator Delete(const Iterator &itWhere)
@@ -457,6 +470,8 @@ namespace xl
         }
     };
 
+#ifdef __XL_CPP11
+
     template <typename T>
     using Array = ArrayT<T, ArrayAlignmentPolicy_Center>;
 
@@ -471,6 +486,12 @@ namespace xl
 
     template <typename T>
     using Stack = ArrayT<T, ArrayAlignmentPolicy_Tail>;
+
+#else
+
+#define Array ArrayT
+
+#endif
 
 } // namespace xl
 

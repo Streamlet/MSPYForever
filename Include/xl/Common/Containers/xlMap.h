@@ -33,10 +33,14 @@ namespace xl
 
         }
 
+#ifdef __XL_CPP11
+
         inline Map(Map &&that) : RBTree(that)
         {
 
         }
+
+#endif
 
         inline Map &operator = (const Map &that)
         {
@@ -50,6 +54,8 @@ namespace xl
             return *this;
         }
 
+#ifdef __XL_CPP11
+
         inline Map &operator = (Map &&that)
         {
             if (this == &that)
@@ -61,6 +67,8 @@ namespace xl
 
             return *this;
         }
+
+#endif
 
         inline bool operator == (const Map &that) const
         {

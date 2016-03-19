@@ -22,8 +22,8 @@ namespace xl
 {
     namespace BitValue
     {
-        template <typename R = unsigned int, typename T = unsigned int>
-        inline R Eval(const T &tData, size_t nOffset, size_t nBits)
+        template <typename R, typename T>
+        inline R EvalT(const T &tData, size_t nOffset, size_t nBits)
         {
             XL_ASSERT(nOffset < sizeof(T) * 8);
             XL_ASSERT(nOffset + nBits <= sizeof(T) * 8);
@@ -32,14 +32,35 @@ namespace xl
             return (R)(((SizeToUnignedIntType<sizeof(T)>::Type)tData << nOffset) >> (sizeof(T) * 8 - nBits));
         }
 
+#ifdef __XL_CPP11
         template <typename R = unsigned int, typename T = unsigned int>
-        inline R Eval(const T *pData, size_t nOffset, size_t nBits)
+        inline R Eval(const T &tData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<R, T>(tData, nOffset, nBits);
+        }
+#else
+        inline unsigned int Eval(unsigned char tData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<unsigned int, unsigned char>(tData, nOffset, nBits);
+        }
+        inline unsigned int Eval(unsigned int tData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<unsigned int, unsigned int>(tData, nOffset, nBits);
+        }
+        inline unsigned int Eval(int tData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<unsigned int, int>(tData, nOffset, nBits);
+        }
+#endif
+
+        template <typename R, typename T>
+        inline R EvalT(const T *pData, size_t nOffset, size_t nBits)
         {
             XL_ASSERT(nBits > 0 && nBits <= sizeof(R) * 8);
 
             if (nOffset + nBits <= sizeof(T) * 8)
             {
-                return Eval<R, T>(pData[0], nOffset, nBits);
+                return EvalT<R, T>(pData[0], nOffset, nBits);
             }
 
             while (nOffset > sizeof(T) * 8)
@@ -61,6 +82,26 @@ namespace xl
             return r;
         }
 
+#ifdef __XL_CPP11
+        template <typename R = unsigned int, typename T = unsigned int>
+        inline R Eval(const T *pData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<R, T>(pData, nOffset, nBits);
+        }
+#else
+        inline unsigned int Eval(const unsigned char *pData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<unsigned int, unsigned char>(pData, nOffset, nBits);
+        }
+        inline unsigned int Eval(const unsigned int *pData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<unsigned int, unsigned int>(pData, nOffset, nBits);
+        }
+        inline unsigned int Eval(const int *pData, size_t nOffset, size_t nBits)
+        {
+            return EvalT<unsigned int, int>(pData, nOffset, nBits);
+        }
+#endif
 
     }
 } // namespace xl

@@ -18,6 +18,8 @@
 
 namespace xl
 {
+#ifdef __XL_CPP11
+
     template <typename T, typename U>
     auto Min(T t, U u) -> decltype(t + u)
     {
@@ -29,6 +31,24 @@ namespace xl
     {
         return (t >= u ? t : u);
     }
+
+#else
+
+    template <typename T>
+    T Min(T t, T u)
+    {
+        return (t <= u ? t : u);
+    }
+
+    template <typename T>
+    T Max(T t, T u)
+    {
+        return (t >= u ? t : u);
+    }
+
+#endif
+
+#ifdef __XL_CPP11
 
     template <typename T>
     struct SizeT : public TupleT<SizeT<T>, T, T>
@@ -535,6 +555,8 @@ namespace xl
 
     typedef ColorT<unsigned char> Color;
     typedef ColorT<float>         ColorF;
+
+#endif
 
 } // namespace xl
 
