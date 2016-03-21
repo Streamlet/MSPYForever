@@ -201,6 +201,7 @@ namespace xl
             if (nSize == 0)
             {
                 Release();
+                return;
             }
 
             if (nSize < m_nLogicalSize)

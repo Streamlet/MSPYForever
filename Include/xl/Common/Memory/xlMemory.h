@@ -55,13 +55,27 @@ namespace xl
         inline typename EnableIf<(!StdTypeDetect<T>::IsStdType && !PtrTraits<T>::IsPtr) && !ArrayTraits<T>::IsArray, T>::Type *
             CopyT(T *pDst, const T *pSrc, size_t nCount)
         {
-            for (size_t i = 0; i < nCount; ++i)
+            if (pDst < pSrc)
             {
+                for (size_t i = 0; i < nCount; ++i)
+                {
 #ifdef __XL_CPP11
-                pDst[i] = Move(pSrc[i]);
+                    pDst[i] = Move(pSrc[i]);
 #else
-                pDst[i] = pSrc[i];
+                    pDst[i] = pSrc[i];
 #endif
+                }
+            }
+            else if (pDst > pSrc)
+            {
+                for (int i = (int)nCount - 1; i >= 0; --i)
+                {
+#ifdef __XL_CPP11
+                    pDst[i] = Move(pSrc[i]);
+#else
+                    pDst[i] = pSrc[i];
+#endif
+                }
             }
 
             return pDst;
