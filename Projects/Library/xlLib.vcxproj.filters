@@ -422,6 +422,9 @@
       <Filter>Windows\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Include\xl\xlDef.h" />
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlCrashDumper.h">
+      <Filter>AppHelper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Windows">

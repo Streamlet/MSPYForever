@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlCrashDumper.h" />
     <ClInclude Include="..\..\Include\xl\AppHelper\xlLog.h" />
     <ClInclude Include="..\..\Include\xl\AppHelper\xlPerfTest.h" />
     <ClInclude Include="..\..\Include\xl\AppHelper\xlUnitTest.h" />
