@@ -23,7 +23,7 @@
 
 // Define following macros before include this file
 #ifndef XL_DUMP_FILE
-#define XL_DUMP_FILE    L"%Temp%\\xlCrash.mdmp"  // Path of mini dumpp file, supporting environment variables
+#define XL_DUMP_FILE    L"%Temp%\\xlCrash.mdmp"  // Path of mini dump file, supporting environment variables
 #endif
 
 namespace xl
