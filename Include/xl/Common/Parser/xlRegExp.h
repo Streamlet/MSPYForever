@@ -57,24 +57,24 @@ namespace xl
         struct Edge
         {
             Edge()
-                : bEpsilon(true), chBegin(0), chEnd(0), nMinNodePasses(0), nMaxNodePasses(-1)
+                : bReverse(false), bEpsilon(true), chBegin(0), chEnd(0), nMinNodePasses(0), nMaxNodePasses(-1), nRollbackChars(0)
             {
 
             }
 
             Edge(Char ch)
-                : bEpsilon(false), chBegin(ch), chEnd(ch), nMinNodePasses(0), nMaxNodePasses(-1)
+                : bReverse(false), bEpsilon(false), chBegin(ch), chEnd(ch), nMinNodePasses(0), nMaxNodePasses(-1), nRollbackChars(0)
             {
 
             }
 
             Edge(Char chBegin, Char chEnd)
-                : bEpsilon(false), chBegin(chBegin), chEnd(chEnd), nMinNodePasses(0), nMaxNodePasses(-1)
+                : bReverse(false), bEpsilon(false), chBegin(chBegin), chEnd(chEnd), nMinNodePasses(0), nMaxNodePasses(-1), nRollbackChars(0)
             {
 
             }
 
-            bool Match(Char ch)
+            bool MatchNoReverse(Char ch)
             {
                 if (bEpsilon)
                 {
@@ -82,6 +82,12 @@ namespace xl
                 }
 
                 return (ch >= chBegin && ch <= chEnd);
+            }
+
+            bool Match(Char ch)
+            {
+                bool bMatched = MatchNoReverse(ch);
+                return bReverse ? !bMatched : bMatched;
             }
 
             bool IsMatchRule(Node *pNode)
@@ -99,6 +105,7 @@ namespace xl
                 return true;
             }
 
+            bool bReverse;
             bool bEpsilon;
             Char chBegin;
             Char chEnd;
@@ -106,6 +113,8 @@ namespace xl
             // Rules
             int nMinNodePasses;
             int nMaxNodePasses;
+
+            int nRollbackChars;
         };
 
     private:
@@ -204,7 +213,7 @@ namespace xl
                     return false;
                 }
 
-                return Match(s, i + 1, pEdge->pNext, pnPos);
+                return Match(s, i + 1 - pEdge->tValue.nRollbackChars, pEdge->pNext, pnPos);
             }
             else
             {
@@ -359,7 +368,7 @@ namespace xl
             Greeder             -> "?" | ¦Å
             Word                -> "(" GroupFlag Expr ")" | Collection | Char
             GroupFlag           -> "?" GroupFlagContent | ¦Å
-            GroupFlagContent    -> "=" | "!" | ":" | "<" GroupName ">"
+            GroupFlagContent    -> "=" | "!" | "<=" | "<!" | ":" | "<" GroupName ">"
             GroupName           -> IdChar GroupName | ¦Å
             Collection          -> "[" Reverser IntervalSet "]" | "." | "\" CharSetDescriptor
             Reverser            -> "^" | ¦Å
@@ -750,6 +759,7 @@ namespace xl
         StateMachine::NodePtr ParseCollection(StateMachine::NodePtr pNode)
         {
             IntervalSet<Char> is;
+            bool bReverse = false;
             Token token = LookAhead();
 
             switch (token.type)
@@ -777,7 +787,7 @@ namespace xl
                 break;
             case L'[':
                 {
-                    bool bReverse = ParseReverser();
+                    bReverse = ParseReverser();
                     is = ParseIntervalSet();
 
                     token = LookAhead();
@@ -792,14 +802,6 @@ namespace xl
                     {
                         return nullptr;
                     }
-
-                    if (bReverse)
-                    {
-                        IntervalSet<Char> u;
-                        u.Union(Interval<Char>(0, -1));
-                        is = u.Exclude(is);
-                        is.MakeClose(1);
-                    }
                 }
                 break;
             default:
@@ -807,13 +809,35 @@ namespace xl
                 return nullptr;
             }
 
-            StateMachine::NodePtr pCurrent = NewNode();
+            StateMachine::NodePtr pCurrent = nullptr;
             Set<Interval<Char>> intervals = is.GetIntervals();
 
-            for (auto it = intervals.Begin(); it != intervals.End(); ++it)
+            if (bReverse)
             {
-                StateMachine::EdgePtr pEdge = NewEdge(it->left, it->right);
-                m_spStateMachine->AddEdge(pEdge, pNode, pCurrent);
+                StateMachine::EdgePtr pLastEdge = nullptr;
+
+                for (auto it = intervals.Begin(); it != intervals.End(); ++it)
+                {
+                    pLastEdge = NewEdge(it->left, it->right);
+                    pLastEdge->tValue.bReverse = true;
+                    pLastEdge->tValue.nRollbackChars = 1;
+
+                    pCurrent = NewNode();
+                    m_spStateMachine->AddEdge(pLastEdge, pNode, pCurrent);
+                    pNode = pCurrent;
+                }
+
+                pLastEdge->tValue.nRollbackChars = 0;
+            }
+            else
+            {
+                pCurrent = NewNode();
+
+                for (auto it = intervals.Begin(); it != intervals.End(); ++it)
+                {
+                    StateMachine::EdgePtr pEdge = NewEdge(it->left, it->right);
+                    m_spStateMachine->AddEdge(pEdge, pNode, pCurrent);
+                }
             }
 
             m_spStateMachine->AddNode(pCurrent);

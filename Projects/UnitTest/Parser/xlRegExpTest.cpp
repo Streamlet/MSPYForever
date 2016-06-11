@@ -831,6 +831,13 @@ namespace
     {
         RegExp r;
 
+        XL_TEST_ASSERT(r.Parse(L"a{}"));
+    }
+
+    XL_TEST_CASE()
+    {
+        RegExp r;
+
         XL_TEST_ASSERT(r.Parse(L"http://([a-zA-Z0-9\\-]+\\.)+[a-zA-Z]+/"));
         XL_TEST_ASSERT(r.Match(L"http://streamlet.org/"));
         XL_TEST_ASSERT(r.Match(L"http://w-1.streamlet.org/"));
