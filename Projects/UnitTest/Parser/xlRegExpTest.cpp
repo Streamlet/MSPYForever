@@ -831,7 +831,13 @@ namespace
     {
         RegExp r;
 
-        XL_TEST_ASSERT(r.Parse(L"a{}"));
+        XL_TEST_ASSERT(r.Parse(L"(a)"));
+        XL_TEST_ASSERT(r.Parse(L"(?:a)"));
+        XL_TEST_ASSERT(r.Parse(L"(?=a)"));
+        XL_TEST_ASSERT(r.Parse(L"(?!a)"));
+        XL_TEST_ASSERT(r.Parse(L"(?<=a)"));
+        XL_TEST_ASSERT(r.Parse(L"(?<!a)"));
+        XL_TEST_ASSERT(r.Parse(L"(?<a>a)"));
     }
 
     XL_TEST_CASE()

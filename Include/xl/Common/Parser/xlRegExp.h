@@ -312,6 +312,29 @@ namespace xl
             }
         };
 
+        enum GroupType
+        {
+            GroupType_Error,
+            GroupType_Priority,
+            GroupType_Capture,
+            GroupType_LookAhead_Positive,
+            GroupType_LookAhead_Negative,
+            GroupType_LookBehind_Positive,
+            GroupType_LookBehind_Negative,
+        };
+
+        struct Group
+        {
+            GroupType eType;
+            String strName;
+
+            Group(GroupType eType, String strName = L"")
+                : eType(eType), strName(strName)
+            {
+
+            }
+        };
+
         enum SpecialIntegerValue
         {
             Integer_Blank   = -1,
@@ -716,6 +739,7 @@ namespace xl
             {
                 if (token.type == L'(')
                 {
+                    Group group = ParseGroup();
                     pCurrent = ParseExpr(pNode);
 
                     if (pCurrent == nullptr)
@@ -754,6 +778,98 @@ namespace xl
             }
 
             return pCurrent;
+        }
+
+        Group ParseGroup()
+        {
+            Group group(GroupType_Error);
+            Token token = LookAhead();
+
+            if (token.type == L'?')
+            {
+                token = LookAhead();
+
+                switch (token.type)
+                {
+                case ':':
+                    group.eType = GroupType_Priority;
+                    break;
+                case '=':
+                    group.eType = GroupType_LookAhead_Positive;
+                    break;
+                case '!':
+                    group.eType = GroupType_LookAhead_Negative;
+                    break;
+                case '<':
+
+                    token = LookAhead();
+
+                    switch (token.type)
+                    {
+                    case '=':
+                        group.eType = GroupType_LookBehind_Positive;
+                        break;
+                    case '!':
+                        group.eType = GroupType_LookBehind_Negative;
+                        break;
+                    default:
+
+                        group.strName = ParseGroupName();
+
+                        if (group.strName.Length() <= 0)
+                        {
+                            group.eType = GroupType_Error;
+                        }
+                        else
+                        {
+                            token = LookAhead();
+
+                            if (token.type != L'>')
+                            {
+                                group.eType = GroupType_Error;
+                                Backward(token);
+                            }
+                        }
+
+                        group.eType = GroupType_Capture;
+
+                        break;
+                    }
+
+                    break;
+                default:
+                    Backward(token);
+                    break;
+                }
+            }
+            else
+            {
+                Backward(token);
+                group.eType = GroupType_Capture;
+            }
+
+            return group;
+        }
+
+        String ParseGroupName()
+        {
+            String strName;
+
+            while (true)
+            {
+                Token token = LookAhead();
+
+                if (token.length != 1 || token.type != InvalidChar ||
+                    !(token.ch >= L'a' && token.ch <= 'z' || token.ch >= L'A' && token.ch <= 'Z' || token.ch >= L'0' && token.ch <= '9' || token.ch == L'_'))
+                {
+                    Backward(token);
+                    break;
+                }
+
+                strName.AppendBack(token.ch);
+            }
+
+            return strName;
         }
 
         StateMachine::NodePtr ParseCollection(StateMachine::NodePtr pNode)
@@ -893,7 +1009,7 @@ namespace xl
                     is.Union(Interval<Char>(0, -1));
                     is.Exclude(Interval<Char>(L'\n'));
                     is.MakeClose(1);
-            }
+                }
                 break;
             case L'\\':
                 {
