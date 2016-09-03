@@ -26,7 +26,7 @@ namespace xl
 
 #if defined(_MSC_VER)
 
-#if _MSC_VER >= 1600
+#if _MSC_VER >= 1900
 #define __XL_CPP11
 #endif
 

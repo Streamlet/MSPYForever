@@ -24,7 +24,7 @@ namespace xl
 
     };
 
-#if (defined(__XL_CPP11) && _MSC_VER >= 1900)
+#ifdef __XL_CPP11
 
     template <typename S, typename... T>
     class TypeConverter;
