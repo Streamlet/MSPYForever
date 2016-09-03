@@ -82,7 +82,7 @@ LRESULT MainWindow::OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hContr
     return 0;
 }
 
-LRESULT MainWindow::OnLinkWebsiteClick(HWND hWnd, UINT_PTR uID, UINT uCode, HWND hControl, BOOL &bHandled)
+LRESULT MainWindow::OnLinkWebsiteClick(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled)
 {
     ShellExecute(m_hWnd, _T("open"), _T("http://www.streamlet.org/"), NULL, NULL, SW_SHOW);
     return 0;

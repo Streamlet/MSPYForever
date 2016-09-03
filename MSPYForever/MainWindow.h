@@ -21,7 +21,7 @@ private:
 
 private:
     LRESULT OnButtonClicked(HWND hWnd, WORD wID, WORD wCode, HWND hControl, BOOL &bHandled);
-    LRESULT OnLinkWebsiteClick(HWND hWnd, UINT_PTR uID, UINT uCode, HWND hControl, BOOL &bHandled);
+    LRESULT OnLinkWebsiteClick(HWND hWnd, LPNMHDR lpNMHDR, BOOL &bHandled);
 
 private:
     xl::Windows::StdStatic m_staticIcon;
