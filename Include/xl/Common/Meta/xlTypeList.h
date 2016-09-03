@@ -204,7 +204,7 @@ namespace xl
         typedef typename TLMerge<typename TLReverse<T>::Type, typename TLMerge<NullType, H>::Type>::Type Type;
     };
 
-#ifdef __XL_CPP11
+#if (defined(__XL_CPP11) && _MSC_VER >= 1900)
 
     template <typename TL, template <typename> typename FN, typename P>
     bool TLForeachInternal(P p, TL *)
