@@ -35,7 +35,7 @@ namespace xl
 
 #define XL_STATIC_ASSERT(expr) typedef xl::StaticAssertTest<sizeof(xl::StaticAssert<expr>)> XL_CONN(StaticAssert_, __COUNTER__)
 
-#ifndef __XL_CPP11
+#if _MSC_VER < 1600
 #define static_assert(expr, msg)    XL_STATIC_ASSERT(expr)
 #endif
 

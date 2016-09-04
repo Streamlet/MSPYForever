@@ -30,7 +30,7 @@ namespace xl
 #define __XL_CPP11
 #endif
 
-#ifndef __XL_CPP11
+#if _MSC_VER < 1600
 #define nullptr 0
 #endif
 
