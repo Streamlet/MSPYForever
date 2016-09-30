@@ -516,11 +516,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\Include\xl\Linux\Readme.txt">
-      <Filter>Linux</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\Include\xl\Windows\COM\InterfaceHelper\ShockwaveFlash.tlh">
       <Filter>Windows\COM\InterfaceHelper</Filter>
     </None>

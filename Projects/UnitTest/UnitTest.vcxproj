@@ -155,32 +155,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Algorithm\xlSortTest.cpp" />
-    <ClCompile Include="Containers\xlArrayTest.cpp" />
-    <ClCompile Include="Containers\xlListTest.cpp" />
-    <ClCompile Include="Containers\xlMapTest.cpp" />
-    <ClCompile Include="Containers\xlPairTest.cpp" />
-    <ClCompile Include="Containers\xlRBTreeTest.cpp" />
-    <ClCompile Include="Containers\xlSetTest.cpp" />
-    <ClCompile Include="Cryption\xlCRC32Test.cpp" />
-    <ClCompile Include="Cryption\xlMD5Test.cpp" />
-    <ClCompile Include="Cryption\xlSHA1Test.cpp" />
+    <ClCompile Include="Common\Algorithm\xlSortTest.cpp" />
+    <ClCompile Include="Common\Containers\xlArrayTest.cpp" />
+    <ClCompile Include="Common\Containers\xlListTest.cpp" />
+    <ClCompile Include="Common\Containers\xlMapTest.cpp" />
+    <ClCompile Include="Common\Containers\xlPairTest.cpp" />
+    <ClCompile Include="Common\Containers\xlRBTreeTest.cpp" />
+    <ClCompile Include="Common\Containers\xlSetTest.cpp" />
+    <ClCompile Include="Common\Cryption\xlCRC32Test.cpp" />
+    <ClCompile Include="Common\Cryption\xlMD5Test.cpp" />
+    <ClCompile Include="Common\Cryption\xlSHA1Test.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Math\xlBitValueTest.cpp" />
-    <ClCompile Include="Math\xlEquationTest.cpp" />
-    <ClCompile Include="Math\xlIntervalTest.cpp" />
-    <ClCompile Include="Math\xlIntervalSetTest.cpp" />
-    <ClCompile Include="Memory\xlMemoryTest.cpp" />
-    <ClCompile Include="Memory\xlSmartPtrTest.cpp" />
-    <ClCompile Include="Meta\xlBindTest.cpp" />
-    <ClCompile Include="Meta\xlFunctionTest.cpp" />
-    <ClCompile Include="Meta\xlScopedExitTest.cpp" />
-    <ClCompile Include="Meta\xlTupleTest.cpp" />
-    <ClCompile Include="Objects\xlBigIntTest.cpp" />
-    <ClCompile Include="Parser\xlRegExpTest.cpp" />
-    <ClCompile Include="String\xlBase64Test.cpp" />
-    <ClCompile Include="String\xlStringTest.cpp" />
-    <ClCompile Include="String\xlEncodingTest.cpp" />
+    <ClCompile Include="Common\Math\xlBitValueTest.cpp" />
+    <ClCompile Include="Common\Math\xlEquationTest.cpp" />
+    <ClCompile Include="Common\Math\xlIntervalTest.cpp" />
+    <ClCompile Include="Common\Math\xlIntervalSetTest.cpp" />
+    <ClCompile Include="Common\Memory\xlMemoryTest.cpp" />
+    <ClCompile Include="Common\Memory\xlSmartPtrTest.cpp" />
+    <ClCompile Include="Common\Meta\xlBindTest.cpp" />
+    <ClCompile Include="Common\Meta\xlFunctionTest.cpp" />
+    <ClCompile Include="Common\Meta\xlScopedExitTest.cpp" />
+    <ClCompile Include="Common\Meta\xlTupleTest.cpp" />
+    <ClCompile Include="Common\Objects\xlBigIntTest.cpp" />
+    <ClCompile Include="Common\Parser\xlRegExpTest.cpp" />
+    <ClCompile Include="Common\String\xlBase64Test.cpp" />
+    <ClCompile Include="Common\String\xlStringTest.cpp" />
+    <ClCompile Include="Common\String\xlEncodingTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

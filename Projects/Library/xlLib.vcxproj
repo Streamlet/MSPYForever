@@ -163,9 +163,6 @@
     <ClInclude Include="..\..\Include\xl\xlDef.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\Include\xl\Linux\Readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\Include\xl\Windows\COM\InterfaceHelper\ShockwaveFlash.tlh" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
