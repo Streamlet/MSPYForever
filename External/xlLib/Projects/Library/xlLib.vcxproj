@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlCrashDumper.h" />
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlLog.h" />
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlPerfTest.h" />
+    <ClInclude Include="..\..\Include\xl\AppHelper\xlUnitTest.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Algorithm\xlSort.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlArray.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlBinTree.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlBinTreeNode.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlGraph.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlIterator.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlLinkedListNode.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlList.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlMap.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlPair.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlRBTree.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlSet.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Containers\xlTree.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Cryption\xlCRC32.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Cryption\xlMD5.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Cryption\xlSHA1.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlBigInt.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlBitValue.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlEquation.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlInterval.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlIntervalSet.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Math\xlMathBase.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Memory\xlMemory.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Memory\xlSmartPtr.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlAssert.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlBind.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlCountOf.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlEnableIf.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlFunction.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlMacros.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlMetaBase.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlNonCopyable.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlNonInstantiable.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlScopeExit.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlStaticAssert.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlTuple.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlTypeList.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Meta\xlTypeTraits.h" />
+    <ClInclude Include="..\..\Include\xl\Common\Parser\xlRegExp.h" />
+    <ClInclude Include="..\..\Include\xl\Common\String\xlBase64.h" />
+    <ClInclude Include="..\..\Include\xl\Common\String\xlEncoding.h" />
+    <ClInclude Include="..\..\Include\xl\Common\String\xlString.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlDWebBrowserEvents2Impl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlICanHandleExceptionImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIClassFactoryImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDispatchExImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDispatchImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIDocHostUIHandlerImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIObjectWithSiteImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleClientSiteImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceFrameImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteExImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceSiteWindowlessImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleInPlaceUIWindowImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIOleWindowImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIShockwaveFlashImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfActiveLanguageProfileNotifySinkImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfCompositionSinkImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfDisplayAttributeProviderImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfFnGetPreferredTouchKeyboardLayoutImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfFunctionImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfFunctionProviderImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfKeyEventSinkImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfLangBarItemButtonImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfLangBarItemImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfSourceImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfTextEditSinkImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfTextInputProcessorExImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfTextInputProcessorImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfThreadFocusSinkImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITfThreadMgrEventSinkImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITypeCompImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITypeInfoImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlITypeLibImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIUnknownImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIWMPCoreImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\InterfaceHelper\xlIWMPPlayerImpl.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlFlashPlayer.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlMediaPlayer.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlOleContainer.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\Objects\xlWebBrowser.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlClassFactory.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComClass.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComDef.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComInclude.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComLoader.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComModule.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlComPtr.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\COM\xlDispatcher.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Console\xlConsole.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\File\xlIniFile.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\File\xlPath.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlCommCtrlInitializer.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlDialog.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlDPI.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlMenu.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdButton.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdComboBox.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdEdit.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdLink.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdListBox.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdListView.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdProgressBar.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdScrollBar.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdStatic.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlStdTrackBar.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlThunk.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindowHelper.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindow.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\GUI\xlWindowMessage.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Memory\xlHeap.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Memory\xlSafeSmartPtr.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Messaging\xlMessageBus.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Network\xlHttpIO.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Network\xlSocket.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Network\xlWinHttp.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Registry\xlRegistry.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\D2D\xlBitmapD2D1.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\D2D\xlBitmapD2D1Point1.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDIPlus\xlBitmapGDIPlus.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDIPlus\xlGDIPlusImports.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDIPlus\xlGDIPlusUtility.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\GDI\xlBitmapGDI.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlBitmap.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlBitmapDef.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlGraphics.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Rendering\xlRenderer.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlCriticalSection.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlEvent.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlThread.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlThreadPool.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Threads\xlTls.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\Timer\xlTimer.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\xlDllHelper.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\xlWin32Ver.h" />
+    <ClInclude Include="..\..\Include\xl\Windows\xlHandle.h" />
+    <ClInclude Include="..\..\Include\xl\xlDef.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Include\xl\Windows\COM\InterfaceHelper\ShockwaveFlash.tlh" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FFB09932-C27C-47F3-AD30-F40BD48C0A6A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>xlLib</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\xlLib.props" />
+    <Import Project="..\..\Path.props" />
+    <Import Project="..\..\StaticCRT.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\xlLib.props" />
+    <Import Project="..\..\Path.props" />
+    <Import Project="..\..\StaticCRT.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\xlLib.props" />
+    <Import Project="..\..\Path.props" />
+    <Import Project="..\..\StaticCRT.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\xlLib.props" />
+    <Import Project="..\..\Path.props" />
+    <Import Project="..\..\StaticCRT.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
