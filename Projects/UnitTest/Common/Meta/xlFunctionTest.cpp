@@ -10,8 +10,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/AppHelper/xlUnitTest.h"
-#include "../../../Include/xl/Common/Meta/xlFunction.h"
+#include "../../../../Include/xl/AppHelper/xlUnitTest.h"
+#include "../../../../Include/xl/Common/Meta/xlFunction.h"
 
 namespace
 {

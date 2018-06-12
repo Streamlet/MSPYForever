@@ -10,8 +10,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/AppHelper/xlUnitTest.h"
-#include "../../../Include/xl/Common/Memory/xlSmartPtr.h"
+#include "../../../../Include/xl/AppHelper/xlUnitTest.h"
+#include "../../../../Include/xl/Common/Memory/xlSmartPtr.h"
 
 namespace
 {

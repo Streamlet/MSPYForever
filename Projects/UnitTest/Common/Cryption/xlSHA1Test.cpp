@@ -10,9 +10,9 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/AppHelper/xlUnitTest.h"
-#include "../../../Include/xl/Common/Cryption/xlSHA1.h"
-#include "../../../Include/xl/Common/String/xlString.h"
+#include "../../../../Include/xl/AppHelper/xlUnitTest.h"
+#include "../../../../Include/xl/Common/Cryption/xlSHA1.h"
+#include "../../../../Include/xl/Common/String/xlString.h"
 #include <stdio.h>
 
 namespace

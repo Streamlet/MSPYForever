@@ -10,8 +10,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/AppHelper/xlUnitTest.h"
-#include "../../../Include/xl/Common/Meta/xlScopeExit.h"
+#include "../../../../Include/xl/AppHelper/xlUnitTest.h"
+#include "../../../../Include/xl/Common/Meta/xlScopeExit.h"
 
 namespace
 {

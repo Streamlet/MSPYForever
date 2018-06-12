@@ -13,8 +13,8 @@
 //--------------------------------------------------------------------
 
 
-#include "../../../Include/xl/Common/Math/xlEquation.h"
-#include "../../../Include/xl/AppHelper/xlUnitTest.h"
+#include "../../../../Include/xl/Common/Math/xlEquation.h"
+#include "../../../../Include/xl/AppHelper/xlUnitTest.h"
 
 namespace
 {

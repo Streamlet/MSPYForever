@@ -10,8 +10,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/AppHelper/xlUnitTest.h"
-#include "../../../Include/xl/Common/String/xlBase64.h"
+#include "../../../../Include/xl/AppHelper/xlUnitTest.h"
+#include "../../../../Include/xl/Common/String/xlBase64.h"
 
 namespace
 {

@@ -10,8 +10,8 @@
 //------------------------------------------------------------------------------
 
 
-#include "../../../Include/xl/Common/Math/xlBitValue.h"
-#include "../../../Include/xl/AppHelper/xlUnitTest.h"
+#include "../../../../Include/xl/Common/Math/xlBitValue.h"
+#include "../../../../Include/xl/AppHelper/xlUnitTest.h"
 
 namespace
 {
