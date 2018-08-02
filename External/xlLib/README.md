@@ -1,2 +1,0 @@
-# xlLib
-A C++ library
