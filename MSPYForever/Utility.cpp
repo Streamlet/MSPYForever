@@ -3,10 +3,12 @@
 #include "RegKeyPrivilege.h"
 #include <VersionHelpers.h>
 #include <ShlObj.h>
+#include <Shlwapi.h>
 #include <tchar.h>
 #include <xl/Common/Meta/xlScopeExit.h>
 #include <xl/Windows/Registry/xlRegistry.h>
 
+#pragma comment(lib, "Shlwapi.lib")
 
 // Win8
 #define REG_MSPY_ROOT_80       _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}")  // 总路径，要改权限
@@ -345,7 +347,7 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
         {
             if (bCopyIMEShared)
             {
-                if (!MoveFile(folderMap[i].strBackup, folderMap[i].strBackup + _T(".bak")))
+                if (!PathFileExists(folderMap[i].strBackup + _T(".bak")) && !MoveFile(folderMap[i].strBackup, folderMap[i].strBackup + _T(".bak")))
                 {
                     XL_ERROR(_T("Failed to backup folder %s."), (LPCTSTR)folderMap[i].strBackup);
                     return false;
