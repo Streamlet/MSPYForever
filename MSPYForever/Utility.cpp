@@ -50,43 +50,49 @@ OSVersion Utility::GetOSVersion()
 {
     XL_INFO_FUNCTION();
 
-    OSVersion osv = OSV_Other;
-  
-    do
+#define STATUS_SUCCESS (0x00000000)
+    typedef LONG NTSTATUS, *PNTSTATUS;
+    typedef NTSTATUS (WINAPI* RtlGetVersionPtr)(PRTL_OSVERSIONINFOW);
+
+    HMODULE hMod = ::GetModuleHandle(_T("ntdll.dll"));
+    if (hMod == NULL)
     {
-        if (IsWindows8OrGreater())
-        {
-            osv = OSV_Win8;
-        }
+        return OSV_Other;
+    }
 
-        if (IsWindows8Point1OrGreater())
-        {
-            osv = OSV_Win81;
-        }
+    RtlGetVersionPtr RtlGetVersion = (RtlGetVersionPtr)::GetProcAddress(hMod, "RtlGetVersion");
+    if (RtlGetVersion == NULL)
+    {
+        return OSV_Other;
+    }
 
-        if (IsWindowsVersionOrGreater(6, 4, 0))
-        {
-            osv = OSV_Win10;
-        }
+    RTL_OSVERSIONINFOW ovi = { sizeof(ovi) };
+    if (RtlGetVersion(&ovi) != STATUS_SUCCESS)
+    {
+        return OSV_Other;
+    }
 
-        if (IsWindowsVersionOrGreater(6, 5, 0) || IsWindowsVersionOrGreater(7, 0, 0))
-        {
-            osv = OSV_Other;
-        }
+    if (ovi.dwMajorVersion == 6 && ovi.dwMinorVersion == 2)
+    {
+        return OSV_Win8;
+    }
 
-        if (IsWindowsVersionOrGreater(10, 0, 0))
-        {
-            osv = OSV_Win10;
-        }
+    if (ovi.dwMajorVersion == 6 && ovi.dwMinorVersion == 2)
+    {
+        return OSV_Win81;
+    }
 
-        if (IsWindowsVersionOrGreater(10, 1, 0) || IsWindowsVersionOrGreater(11, 0, 0))
-        {
-            osv = OSV_Other;
-        }
+    if (ovi.dwMajorVersion == 10 && ovi.dwMinorVersion == 0 && ovi.dwBuildNumber < 17134)
+    {
+        return OSV_Win10;
+    }
 
-    } while (false);
-    
-    return osv;
+    if (ovi.dwMajorVersion == 10 && ovi.dwMinorVersion == 0 && ovi.dwBuildNumber >= 17134)
+    {
+        return OSV_Win10_1803;
+    }
+
+    return OSV_Other;
 }
 
 bool Utility::SetPrivilege(LPCTSTR szPrivilegeName, bool bEnable)
@@ -308,7 +314,7 @@ bool Utility::GetMspyForWin8()
     return true;
 }
 
-bool Utility::GetMspyForWin81()
+bool Utility::GetMspyForWin81(bool bCopyIMEShared)
 {
     xl::String strExePath = Utility::GetExeDir();
 
@@ -316,21 +322,42 @@ bool Utility::GetMspyForWin81()
     {
         xl::String strSource;
         xl::String strDest;
+        xl::String strBackup;
     };
 
     SourceDestFolder folderMap[] =
     {
-        { strExePath + _T("\\Files\\Windows\\IME\\IMESC\0"),           Utility::GetWinDir() + _T("\\IME\\\0") },
+        { strExePath + _T("\\Files\\Windows\\IME\\IMESC\0"),                Utility::GetWinDir() + _T("\\IME\\\0"),             _T("") },
 #ifdef _WIN64
-        { strExePath + _T("\\Files\\Windows\\System32\\IME\\IMESC\0"), Utility::GetSystemDir() + _T("\\IME\\\0") },
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"), Utility::GetSysWow64Dir() + _T("\\IME\\\0") },
+        { strExePath + _T("\\Files\\Windows\\System32\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\\0"),          _T("") },
+        { strExePath + _T("\\Files\\Windows\\System32\\IME\\shared\0"),     Utility::GetSystemDir() + _T("\\IME\\\0"),          Utility::GetSystemDir() + _T("\\IME\\shared") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        _T("") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSystemDir() + _T("\\IME\\shared") },
 #else
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"), Utility::GetSystemDir() + _T("\\IME\\\0") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\\0"),          _T("") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSystemDir() + _T("\\IME\\shared") },
 #endif
     };
 
     for (int i = 0; i < _countof(folderMap); ++i)
     {
+        if (folderMap[i].strBackup.Length() > 0)
+        {
+            if (bCopyIMEShared)
+            {
+                if (!MoveFile(folderMap[i].strBackup, folderMap[i].strBackup + _T(".bak")))
+                {
+                    DWORD dw = GetLastError();
+                    XL_ERROR(_T("Failed to backup folder %s."), (LPCTSTR)folderMap[i].strBackup);
+                    return false;
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+
         if (!Utility::SHCopyDir(nullptr, folderMap[i].strSource, folderMap[i].strDest))
         {
             XL_ERROR(_T("Failed to copy folder %s."), (LPCTSTR)folderMap[i].strSource);

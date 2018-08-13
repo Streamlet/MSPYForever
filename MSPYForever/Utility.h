@@ -8,6 +8,7 @@ enum OSVersion
     OSV_Win8,
     OSV_Win81,
     OSV_Win10,
+    OSV_Win10_1803,
     OSV_Other,
 };
 
@@ -32,5 +33,5 @@ namespace Utility
     bool MergeRegFile(LPCTSTR lpszFileName);
 
     bool GetMspyForWin8();
-    bool GetMspyForWin81();
+    bool GetMspyForWin81(bool bCopyIMEShared = false);
 }
