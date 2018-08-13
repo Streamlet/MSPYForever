@@ -332,10 +332,10 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
         { strExePath + _T("\\Files\\Windows\\System32\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\\0"),          _T("") },
         { strExePath + _T("\\Files\\Windows\\System32\\IME\\shared\0"),     Utility::GetSystemDir() + _T("\\IME\\\0"),          Utility::GetSystemDir() + _T("\\IME\\shared") },
         { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        _T("") },
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSystemDir() + _T("\\IME\\shared") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSysWow64Dir() + _T("\\IME\\shared") },
 #else
         { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\\0"),          _T("") },
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSystemDir() + _T("\\IME\\shared") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSysWow64Dir() + _T("\\IME\\shared") },
 #endif
     };
 
