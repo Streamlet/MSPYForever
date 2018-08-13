@@ -347,7 +347,6 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
             {
                 if (!MoveFile(folderMap[i].strBackup, folderMap[i].strBackup + _T(".bak")))
                 {
-                    DWORD dw = GetLastError();
                     XL_ERROR(_T("Failed to backup folder %s."), (LPCTSTR)folderMap[i].strBackup);
                     return false;
                 }
