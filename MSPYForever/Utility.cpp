@@ -79,7 +79,7 @@ OSVersion Utility::GetOSVersion()
         return OSV_Win8;
     }
 
-    if (ovi.dwMajorVersion == 6 && ovi.dwMinorVersion == 2)
+    if (ovi.dwMajorVersion == 6 && ovi.dwMinorVersion == 3)
     {
         return OSV_Win81;
     }
