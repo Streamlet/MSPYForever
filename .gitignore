@@ -4,3 +4,6 @@
 /Build/Release/
 *.VC.db
 *.VC.opendb
+*.aps
+*.vcxproj.user
+*.log

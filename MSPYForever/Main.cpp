@@ -2,6 +2,7 @@
 #include "Utility.h"
 #include <Windows.h>
 #include <tchar.h>
+#include "FilePrivilege.h"
 
 
 int WINAPI _tWinMain(__in HINSTANCE hInstance,
@@ -26,7 +27,7 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
 
     if (Utility::GetOSVersion() == OSV_Other)
     {
-        MessageBox(nullptr, _T("本工具只支持 Win8、Win8.1、Win10。再见。"), nullptr, MB_OK | MB_ICONWARNING);
+        MessageBox(nullptr, _T("本工具只支持 Win8、Win8.1、Win10、Win11。再见。"), nullptr, MB_OK | MB_ICONWARNING);
         return 0;
     }
 
@@ -71,6 +72,26 @@ int WINAPI _tWinMain(__in HINSTANCE hInstance,
             if (Utility::GetMspyForWin81(true))
             {
                 MessageBox(hModalOwner, _T("已经帮您找回 Win10 下的微拼长句模式，请打开控制面板进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+            }
+            else
+            {
+                MessageBox(hModalOwner, _T("操作失败。再见。"), nullptr, MB_OK | MB_ICONWARNING);
+            }
+            break;
+        case OSV_Win10_21H2:
+            if (Utility::GetMspyForWin81(true))
+            {
+                MessageBox(hModalOwner, _T("已经帮您找回 Win10 下的微拼长句模式，请打开设置应用进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
+            }
+            else
+            {
+                MessageBox(hModalOwner, _T("操作失败。再见。"), nullptr, MB_OK | MB_ICONWARNING);
+            }
+            break;
+        case OSV_Win11:
+            if (Utility::GetMspyForWin81(true))
+            {
+                MessageBox(hModalOwner, _T("已经帮您找回 Win11 下的微拼长句模式，请打开设置应用进一步设置输入法。"), _T("信息"), MB_OK | MB_ICONINFORMATION);
             }
             else
             {

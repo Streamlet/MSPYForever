@@ -200,7 +200,10 @@ bool RegKeyDaclAquireRestore::Aquire(HKEY hRootKey, LPCTSTR lpszSubKey)
 {
     XL_INFO_FUNCTION();
 
-    Backup(hRootKey, lpszSubKey);
+    if (!Backup(hRootKey, lpszSubKey))
+    {
+        XL_WARNING(_T("Failed to backup, operation will not be restored. Key lpszSubKey."));
+    }
 
     HKEY hKey = nullptr;
 

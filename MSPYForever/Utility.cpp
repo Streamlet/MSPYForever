@@ -1,5 +1,6 @@
 #include "Utility.h"
 #include "TraceLog.h"
+#include "FilePrivilege.h"
 #include "RegKeyPrivilege.h"
 #include <VersionHelpers.h>
 #include <ShlObj.h>
@@ -84,14 +85,24 @@ OSVersion Utility::GetOSVersion()
         return OSV_Win81;
     }
 
-    if (ovi.dwMajorVersion == 10 && ovi.dwMinorVersion == 0 && ovi.dwBuildNumber < 17134)
+    if (ovi.dwMajorVersion == 10 && ovi.dwMinorVersion == 0 && ovi.dwBuildNumber >= 22000)
     {
-        return OSV_Win10;
+        return OSV_Win11;
+    }
+
+    if (ovi.dwMajorVersion == 10 && ovi.dwMinorVersion == 0 && ovi.dwBuildNumber >= 19044)
+    {
+        return OSV_Win10_21H2;
     }
 
     if (ovi.dwMajorVersion == 10 && ovi.dwMinorVersion == 0 && ovi.dwBuildNumber >= 17134)
     {
         return OSV_Win10_1803;
+    }
+
+    if (ovi.dwMajorVersion == 10 && ovi.dwMinorVersion == 0)
+    {
+        return OSV_Win10;
     }
 
     return OSV_Other;
@@ -211,6 +222,7 @@ bool Utility::SHCopyDir(HWND hWnd, LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir)
     op.wFunc = FO_COPY;
     op.pFrom = strSourceDir;
     op.pTo = strDestDir;
+    // op.fFlags = FOF_NO_UI;
 
     int iErrorCode = SHFileOperation(&op);
 
@@ -343,6 +355,9 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
 
     for (int i = 0; i < _countof(folderMap); ++i)
     {
+        FileOwnerAquireRestore fileOwnerPrivilege;
+        FileDaclAquireRestore fileDaclPrivilege;
+
         if (folderMap[i].strBackup.Length() > 0)
         {
             if (bCopyIMEShared)
@@ -357,6 +372,14 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
             {
                 continue;
             }
+
+            xl::String strImeTipDllPath = folderMap[i].strDest + _T("\\IMETIP.DLL");
+            if (PathFileExists(strImeTipDllPath))
+            {
+                fileOwnerPrivilege.Aquire(strImeTipDllPath);
+                fileDaclPrivilege.Aquire(strImeTipDllPath);
+            }
+
         }
 
         if (!Utility::SHCopyDir(nullptr, folderMap[i].strSource, folderMap[i].strDest))

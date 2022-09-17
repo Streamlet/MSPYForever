@@ -9,6 +9,8 @@ enum OSVersion
     OSV_Win81,
     OSV_Win10,
     OSV_Win10_1803,
+    OSV_Win10_21H2,
+    OSV_Win11,
     OSV_Other,
 };
 

@@ -33,6 +33,9 @@
     <ClCompile Include="TraceLog.cpp">
       <Filter>Log</Filter>
     </ClCompile>
+    <ClCompile Include="FilePrivilege.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.h">
@@ -51,6 +54,9 @@
       <Filter>Log</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilePrivilege.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
