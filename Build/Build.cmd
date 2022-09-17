@@ -24,7 +24,7 @@ Echo е§дкБрвы...
 
 "%~dp0%ToolsDir%\RCVersion.exe" /FileVersion:%Version:.=,% /ProductVersion:%PVersion:.=,%,0,0 /String:FileVersion=%Version% /String:ProductVersion=%PVersion% "%~dp0%SourceDir%\%AppName%\*.rc"
 
-Set BuildCmd=%VS140COMNTOOLS%..\IDE\devenv.com
+Set BuildCmd=C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.com
 "%BuildCmd%" "%~dp0%SourceDir%\%AppName%.sln" /Rebuild "Release|Win32"
 "%BuildCmd%" "%~dp0%SourceDir%\%AppName%.sln" /Rebuild "Release|x64"
 
