@@ -210,26 +210,64 @@ xl::String Utility::GetExePath()
     return szPath;
 }
 
-bool Utility::SHCopyDir(HWND hWnd, LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir)
+bool Utility::SHCopyDir(LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir)
 {
-    xl::String strSourceDir = lpszSourceDir;
-    xl::String strDestDir = lpszDestDir;
-    strSourceDir.AppendBack(_T('\0'));
-    strDestDir.AppendBack(_T('\0'));
+    XL_INFO(_T("Copying %s to %s."), lpszSourceDir, lpszDestDir);
 
-    SHFILEOPSTRUCT op = {};
-    op.hwnd = hWnd;
-    op.wFunc = FO_COPY;
-    op.pFrom = strSourceDir;
-    op.pTo = strDestDir;
-    // op.fFlags = FOF_NO_UI;
+    CreateDirectory(lpszSourceDir, NULL);
 
-    int iErrorCode = SHFileOperation(&op);
+    xl::String strSource = lpszSourceDir, strDest = lpszDestDir;
 
-    if (iErrorCode != ERROR_SUCCESS)
+    WIN32_FIND_DATA wfd = {};
+    HANDLE hFind = FindFirstFile(strSource + _T("\\*"), &wfd);
+    if (hFind == INVALID_HANDLE_VALUE)
     {
+        XL_ERROR(_T("Failed to fild file in %s."), (LPCTSTR)strSource);
         return false;
     }
+
+    XL_ON_BLOCK_EXIT(FindClose, hFind);
+
+    do
+    {
+        xl::String strFileName = wfd.cFileName;
+
+        if (strFileName == _T(".") || strFileName == _T(".."))
+        {
+            continue;
+        }
+
+        xl::String strSourceFile = strSource + _T("\\") + strFileName;
+        xl::String strDestFile = strDest + _T("\\") + strFileName;
+
+        if ((wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
+        {
+            if (!SHCopyDir(strSourceFile, strDestFile))
+            {
+                XL_ERROR(_T("Failed to copy folder %s to %s."), (LPCTSTR)strSourceFile, (LPCTSTR)strDestFile);
+                return false;
+            }
+        }
+        else
+        {
+            FileOwnerAquireRestore fileOwnerPrivilege;
+            FileDaclAquireRestore fileDaclPrivilege;
+
+            if (PathFileExists(strDestFile))
+            {
+                fileOwnerPrivilege.Aquire(strDestFile);
+                fileDaclPrivilege.Aquire(strDestFile);
+            }
+
+            if (!CopyFile(strSourceFile, strDestFile, FALSE))
+            {
+                XL_ERROR(_T("Failed to copy file %s to %s."), (LPCTSTR)strSourceFile, (LPCTSTR)strDestFile);
+                return false;
+            }
+
+        }
+
+    } while (FindNextFile(hFind , &wfd));
 
     return true;
 }
@@ -341,23 +379,20 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
 
     SourceDestFolder folderMap[] =
     {
-        { strExePath + _T("\\Files\\Windows\\IME\\IMESC\0"),                Utility::GetWinDir() + _T("\\IME\\\0"),             _T("") },
+        { strExePath + _T("\\Files\\Windows\\IME\\IMESC\0"),                Utility::GetWinDir() + _T("\\IME\\IMESC\0"),             _T("") },
 #ifdef _WIN64
-        { strExePath + _T("\\Files\\Windows\\System32\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\\0"),          _T("") },
-        { strExePath + _T("\\Files\\Windows\\System32\\IME\\shared\0"),     Utility::GetSystemDir() + _T("\\IME\\\0"),          Utility::GetSystemDir() + _T("\\IME\\shared") },
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        _T("") },
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSysWow64Dir() + _T("\\IME\\shared") },
+        { strExePath + _T("\\Files\\Windows\\System32\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\IMESC\0"),          _T("") },
+        { strExePath + _T("\\Files\\Windows\\System32\\IME\\shared\0"),     Utility::GetSystemDir() + _T("\\IME\\shared\0"),          Utility::GetSystemDir() + _T("\\IME\\shared") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSysWow64Dir() + _T("\\IME\\IMESC\0"),        _T("") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\shared\0"),        Utility::GetSysWow64Dir() + _T("\\IME\\shared") },
 #else
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\\0"),          _T("") },
-        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\\0"),        Utility::GetSysWow64Dir() + _T("\\IME\\shared") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\IMESC\0"),      Utility::GetSystemDir() + _T("\\IME\\IMESC\0"),          _T("") },
+        { strExePath + _T("\\Files\\Windows\\SysWOW64\\IME\\shared\0"),     Utility::GetSysWow64Dir() + _T("\\IME\\shared\0"),        Utility::GetSysWow64Dir() + _T("\\IME\\shared") },
 #endif
     };
 
     for (int i = 0; i < _countof(folderMap); ++i)
     {
-        FileOwnerAquireRestore fileOwnerPrivilege;
-        FileDaclAquireRestore fileDaclPrivilege;
-
         if (folderMap[i].strBackup.Length() > 0)
         {
             if (bCopyIMEShared)
@@ -372,17 +407,9 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
             {
                 continue;
             }
-
-            xl::String strImeTipDllPath = folderMap[i].strDest + _T("\\IMETIP.DLL");
-            if (PathFileExists(strImeTipDllPath))
-            {
-                fileOwnerPrivilege.Aquire(strImeTipDllPath);
-                fileDaclPrivilege.Aquire(strImeTipDllPath);
-            }
-
         }
 
-        if (!Utility::SHCopyDir(nullptr, folderMap[i].strSource, folderMap[i].strDest))
+        if (!Utility::SHCopyDir(folderMap[i].strSource, folderMap[i].strDest))
         {
             XL_ERROR(_T("Failed to copy folder %s."), (LPCTSTR)folderMap[i].strSource);
             return false;

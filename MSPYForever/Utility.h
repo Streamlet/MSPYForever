@@ -27,7 +27,7 @@ namespace Utility
     xl::String GetExeDir();
     xl::String GetExePath();
 
-    bool SHCopyDir(HWND hWnd, LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir);
+    bool SHCopyDir(LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir);
 
     bool RunProcess(LPCTSTR lpszCmdLine, bool bWait = true);
 
