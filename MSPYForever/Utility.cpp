@@ -8,25 +8,26 @@
 #include <tchar.h>
 #include <xl/Common/Meta/xlScopeExit.h>
 #include <xl/Windows/Registry/xlRegistry.h>
+#include <string>
 
 #pragma comment(lib, "Shlwapi.lib")
 
 // Win8
-#define REG_MSPY_ROOT_80       _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}")  // ×ÜÂ·¾¶£¬Òª¸ÄÈ¨ÏŞ
+#define REG_MSPY_ROOT_80       _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35e}")  // æ€»è·¯å¾„ï¼Œè¦æ”¹æƒé™
 
 // Win8.1
-#define REG_MSPY_ROOT_81       _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}")  // ×ÜÂ·¾¶
-#define REG_MSPY_PATH_SF       _T("\\LanguageProfile\\0x00000804\\{FA550B04-5AD7-411f-A5AC-CA038EC515D7}")  // Î¢ÈíÆ´Òô¼òÆ´£¬×¢²áºóÒªÉ¾³ı
-#define REG_MSPY_PATH_NE       _T("\\LanguageProfile\\0x00000804\\{F3BA9077-6C7E-11D4-97FA-0080C882687E}")  // Î¢ÈíÆ´ÒôĞÂÌåÑé
+#define REG_MSPY_ROOT_81       _T("SOFTWARE\\Microsoft\\CTF\\TIP\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}")  // æ€»è·¯å¾„
+#define REG_MSPY_PATH_SF       _T("\\LanguageProfile\\0x00000804\\{FA550B04-5AD7-411f-A5AC-CA038EC515D7}")  // å¾®è½¯æ‹¼éŸ³ç®€æ‹¼ï¼Œæ³¨å†Œåè¦åˆ é™¤
+#define REG_MSPY_PATH_NE       _T("\\LanguageProfile\\0x00000804\\{F3BA9077-6C7E-11D4-97FA-0080C882687E}")  // å¾®è½¯æ‹¼éŸ³æ–°ä½“éªŒ
 
-// ÉùÃ÷Ö§³Ö Metro Ó¦ÓÃµÄ GUID£¬¼û http://msdn.microsoft.com/zh-cn/library/windows/apps/hh967425.aspx#SET_COMPATIBILITY_FLAG
+// å£°æ˜æ”¯æŒ Metro åº”ç”¨çš„ GUIDï¼Œè§ http://msdn.microsoft.com/zh-cn/library/windows/apps/hh967425.aspx#SET_COMPATIBILITY_FLAG
 #define REG_MSPY_PATH_CATEGORY_IMMERSIVESUPPORT_NE      _T("\\Category\\Category\\{13A016DF-560B-46CD-947A-4C3AF1E0E35D}\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}") 
 #define REG_MSPY_PATH_CATEGORY_ITEM_IMMERSIVESUPPORT_NE  _T("\\Category\\Item\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}\\{13A016DF-560B-46CD-947A-4C3AF1E0E35D}")
-// ÉùÃ÷Ö§³ÖÍĞÅÌÍ¼±ê
+// å£°æ˜æ”¯æŒæ‰˜ç›˜å›¾æ ‡
 #define REG_MSPY_PATH_CATEGORY_SYSTRAYSUPPORT_NE         _T("\\Category\\Category\\{25504FB4-7BAB-4BC1-9C69-CF81890F0EF5}\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}")
 #define REG_MSPY_PATH_CATEGORY_ITEM_SYSTRAYSUPPORT_NE    _T("\\Category\\Item\\{81d4e9c9-1d3b-41bc-9e6c-4b40bf79e35f}\\{25504FB4-7BAB-4BC1-9C69-CF81890F0EF5}")
 
-// Win8¡¢Win8.1 ¹«ÓÃ
+// Win8ã€Win8.1 å…¬ç”¨
 #define REG_MSPY_KEY_DESC      _T("Display Description")
 #define REG_MSPY_VALUE_DESC_NE _T("@%SystemRoot%\\SYSTEM32\\input.dll,-5091")
 #define REG_MSPY_KEY_ICON      _T("IconFile")
@@ -214,7 +215,7 @@ bool Utility::SHCopyDir(LPCTSTR lpszSourceDir, LPCTSTR lpszDestDir)
 {
     XL_INFO(_T("Copying %s to %s."), lpszSourceDir, lpszDestDir);
 
-    CreateDirectory(lpszSourceDir, NULL);
+    CreateDirectory(lpszDestDir, NULL);
 
     xl::String strSource = lpszSourceDir, strDest = lpszDestDir;
 
@@ -397,9 +398,23 @@ bool Utility::GetMspyForWin81(bool bCopyIMEShared)
         {
             if (bCopyIMEShared)
             {
-                if (!PathFileExists(folderMap[i].strBackup + _T(".bak")) && !MoveFile(folderMap[i].strBackup, folderMap[i].strBackup + _T(".bak")))
+                xl::String suffix = _T(".bak");
+                if (PathFileExists(folderMap[i].strBackup + suffix)) {
+                    for (int j = 2; ; ++j) {
+                        suffix = xl::String(_T(".bak_")) + std::to_wstring(j).c_str();
+                        if (!PathFileExists(folderMap[i].strBackup + suffix)) {
+                            XL_ERROR(_T(" backup folder %s not exists."), (LPCTSTR)(folderMap[i].strBackup + suffix));
+                            break;
+                        }
+                        else
+                        {
+                            XL_ERROR(_T(" backup folder %s exists."), (LPCTSTR)(folderMap[i].strBackup + suffix));
+                        }
+                    }
+                }
+                if (PathFileExists(folderMap[i].strBackup) && !MoveFile(folderMap[i].strBackup, folderMap[i].strBackup + suffix))
                 {
-                    XL_ERROR(_T("Failed to backup folder %s."), (LPCTSTR)folderMap[i].strBackup);
+                    XL_ERROR(_T("Failed to backup folder %s to %s."), (LPCTSTR)folderMap[i].strBackup, (LPCTSTR)(folderMap[i].strBackup + suffix));
                     return false;
                 }
             }
